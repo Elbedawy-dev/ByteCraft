@@ -1,0 +1,1087 @@
+{
+	"info": {
+		"_postman_id": "bytecraft-api-v1-collection",
+		"name": "ByteCraft API v1",
+		"description": "Complete Postman collection for ByteCraft Backend API (v1).\nCovers Platform Meta, Owner Auth, Dashboard, Settings, Categories, Projects, Service Plans, Coupons, Orders, Manual & Online Payments, Reviews, Inquiries, and Uploads.\n\nNote: All prices and amounts are in piasters (1 EGP = 100 piasters).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5000/api",
+			"type": "string"
+		},
+		{
+			"key": "orderNumber",
+			"value": "BC-20261016-0001",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "sample-public-token",
+			"type": "string"
+		},
+		{
+			"key": "projectSlug",
+			"value": "bytecraft-pos-system",
+			"type": "string"
+		},
+		{
+			"key": "categoryId",
+			"value": "653a1f8b8e1a2c0012345678",
+			"type": "string"
+		},
+		{
+			"key": "projectId",
+			"value": "653a1f8b8e1a2c0012345679",
+			"type": "string"
+		},
+		{
+			"key": "planId",
+			"value": "653a1f8b8e1a2c001234567a",
+			"type": "string"
+		},
+		{
+			"key": "couponId",
+			"value": "653a1f8b8e1a2c001234567b",
+			"type": "string"
+		},
+		{
+			"key": "orderId",
+			"value": "653a1f8b8e1a2c001234567c",
+			"type": "string"
+		},
+		{
+			"key": "inquiryId",
+			"value": "653a1f8b8e1a2c001234567d",
+			"type": "string"
+		},
+		{
+			"key": "reviewId",
+			"value": "653a1f8b8e1a2c001234567e",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Platform Meta & Health",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/health",
+							"host": ["{{baseUrl}}"],
+							"path": ["health"]
+						},
+						"description": "Liveness check. Returns status OK and timestamp."
+					}
+				},
+				{
+					"name": "Get Platform Meta",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/meta",
+							"host": ["{{baseUrl}}"],
+							"path": ["meta"]
+						},
+						"description": "Public platform metadata for the frontend: active categories, enabled payment methods (safe flags only, no wallet numbers/IPA), guarantee days, and public contact info."
+					}
+				}
+			]
+		},
+		{
+			"name": "Owner Auth",
+			"item": [
+				{
+					"name": "Owner Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"owner@bytecraft.dev\",\n  \"password\": \"OwnerSecretPassword123!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "login"]
+						},
+						"description": "Logs in the owner and sets an httpOnly cookie (bc_owner). Rate limited to 5 attempts / 15 min / IP."
+					}
+				},
+				{
+					"name": "Get Current Owner (Me)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/me",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "me"]
+						},
+						"description": "Returns current logged in owner info."
+					}
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"currentPassword\": \"OwnerSecretPassword123!\",\n  \"newPassword\": \"NewSuperSecretPassword2026!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/password",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "password"]
+						},
+						"description": "Changes the owner password. Requires providing the current password."
+					}
+				},
+				{
+					"name": "Owner Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/logout",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "logout"]
+						},
+						"description": "Clears the bc_owner session cookie."
+					}
+				}
+			]
+		},
+		{
+			"name": "Dashboard & Settings",
+			"item": [
+				{
+					"name": "Get Dashboard Stats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/dashboard",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "dashboard"]
+						},
+						"description": "Aggregated dashboard statistics: revenue totals (paid/delivered), orders counts, 12-month revenue breakdown, status breakdown, top 5 projects, recent orders and inquiries."
+					}
+				},
+				{
+					"name": "Get Settings (Owner)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/settings",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "settings"]
+						},
+						"description": "Full settings including sensitive wallet numbers, InstaPay address, and notifications."
+					}
+				},
+				{
+					"name": "Update Settings (Owner)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"contact\": {\n    \"email\": \"support@bytecraft.dev\",\n    \"phone\": \"+201000000000\",\n    \"whatsapp\": \"+201000000000\"\n  },\n  \"paymentMethods\": {\n    \"vodafoneCash\": {\n      \"enabled\": true,\n      \"walletNumber\": \"01012345678\",\n      \"accountName\": \"ByteCraft Dev\",\n      \"instructions\": \"Send amount to Vodafone Cash wallet and upload screenshot.\"\n    },\n    \"instapay\": {\n      \"enabled\": true,\n      \"ipa\": \"bytecraft@instapay\",\n      \"accountName\": \"ByteCraft Studio\",\n      \"instructions\": \"Transfer via InstaPay and upload reference receipt.\"\n    },\n    \"card\": {\n      \"enabled\": true\n    },\n    \"fawry\": {\n      \"enabled\": true\n    }\n  },\n  \"guaranteeDays\": 30\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/settings",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "settings"]
+						},
+						"description": "Updates settings. Note: tax/VAT is completely removed from ByteCraft."
+					}
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Public List Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/categories",
+							"host": ["{{baseUrl}}"],
+							"path": ["categories"]
+						},
+						"description": "Lists active categories sorted by order."
+					}
+				},
+				{
+					"name": "Owner List Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/categories",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "categories"]
+						},
+						"description": "Lists all categories (both active and inactive) with projects count."
+					}
+				},
+				{
+					"name": "Owner Create Category",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": {\n    \"en\": \"SaaS & Web Apps\",\n    \"ar\": \"تطبيقات الويب وساس\"\n  },\n  \"slug\": \"saas-web-apps\",\n  \"description\": {\n    \"en\": \"Full-stack cloud applications ready for deployment.\",\n    \"ar\": \"تطبيقات سحابية متكاملة وجاهزة للنشر والتشغيل.\"\n  },\n  \"order\": 1,\n  \"isActive\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/categories",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "categories"]
+						},
+						"description": "Creates a new category."
+					}
+				},
+				{
+					"name": "Owner Update Category",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": {\n    \"en\": \"SaaS & Modern Platforms\",\n    \"ar\": \"منصات ساس المتطورة\"\n  },\n  \"order\": 2\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/categories/{{categoryId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "categories", "{{categoryId}}"]
+						},
+						"description": "Updates category fields."
+					}
+				},
+				{
+					"name": "Owner Delete Category",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/categories/{{categoryId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "categories", "{{categoryId}}"]
+						},
+						"description": "Deletes category if no projects are linked."
+					}
+				}
+			]
+		},
+		{
+			"name": "Projects",
+			"item": [
+				{
+					"name": "Public List Projects",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/projects?category=&tech=&featured=true&search=&sort=newest&page=1&limit=12",
+							"host": ["{{baseUrl}}"],
+							"path": ["projects"],
+							"query": [
+								{ "key": "category", "value": "" },
+								{ "key": "tech", "value": "" },
+								{ "key": "featured", "value": "true" },
+								{ "key": "search", "value": "" },
+								{ "key": "sort", "value": "newest", "description": "newest | price-asc | price-desc | popular" },
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "12" }
+							]
+						},
+						"description": "Lists published projects with search, filtering, and pagination."
+					}
+				},
+				{
+					"name": "Public Project Detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/projects/{{projectSlug}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["projects", "{{projectSlug}}"]
+						},
+						"description": "Gets single published project details (privateRepo is hidden)."
+					}
+				},
+				{
+					"name": "Track Preview View",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/projects/{{projectSlug}}/preview-view",
+							"host": ["{{baseUrl}}"],
+							"path": ["projects", "{{projectSlug}}", "preview-view"]
+						},
+						"description": "Increments the previewViews counter. Rate limited per IP."
+					}
+				},
+				{
+					"name": "Public Project Reviews",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/projects/{{projectSlug}}/reviews?page=1&limit=10",
+							"host": ["{{baseUrl}}"],
+							"path": ["projects", "{{projectSlug}}", "reviews"],
+							"query": [
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "10" }
+							]
+						},
+						"description": "Public published reviews for a project. Customer names are masked (e.g. Omar F.), personal info and order numbers/tokens are omitted."
+					}
+				},
+				{
+					"name": "Owner List Projects",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/projects?status=&category=&search=&page=1&limit=20",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "projects"],
+							"query": [
+								{ "key": "status", "value": "" },
+								{ "key": "category", "value": "" },
+								{ "key": "search", "value": "" },
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "20" }
+							]
+						},
+						"description": "Lists all projects in any status (draft, published, archived) including privateRepo."
+					}
+				},
+				{
+					"name": "Owner Create Project",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": {\n    \"en\": \"Cloud POS System\",\n    \"ar\": \"نظام كاشير ونقاط بيع سحابي\"\n  },\n  \"slug\": \"cloud-pos-system\",\n  \"shortDescription\": {\n    \"en\": \"Modern point of sale for retail businesses.\",\n    \"ar\": \"نظام متكامل لنقاط البيع وإدارة الفواتير والمخازن.\"\n  },\n  \"description\": {\n    \"en\": \"Full documentation and modular architecture.\",\n    \"ar\": \"معمارية برمجية متطورة مع توثيق شامل وسهل التخصيص.\"\n  },\n  \"category\": \"{{categoryId}}\",\n  \"techStack\": [\"Node.js\", \"Express\", \"React\", \"MongoDB\"],\n  \"demoUrl\": \"https://pos-demo.bytecraft.dev\",\n  \"thumbnail\": {\n    \"url\": \"https://res.cloudinary.com/demo/image/upload/sample.jpg\",\n    \"publicId\": \"bytecraft/projects/sample\"\n  },\n  \"packages\": [\n    {\n      \"key\": \"starter\",\n      \"name\": { \"en\": \"Starter\", \"ar\": \"الأساسي\" },\n      \"price\": 500000,\n      \"features\": [\n        { \"en\": \"Full Source Code\", \"ar\": \"الكود المصدري كاملاً\" },\n        { \"en\": \"Lifetime Updates\", \"ar\": \"تحديثات مدى الحياة\" }\n      ],\n      \"badge\": \"Popular\"\n    }\n  ],\n  \"privateRepo\": {\n    \"owner\": \"bytecraft-org\",\n    \"repo\": \"pos-system\"\n  },\n  \"status\": \"published\",\n  \"featured\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/projects",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "projects"]
+						},
+						"description": "Creates a new project. All prices in piasters (e.g. 500,000 piasters = 5,000 EGP)."
+					}
+				},
+				{
+					"name": "Owner Update Project Status",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"published\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/projects/{{projectId}}/status",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "projects", "{{projectId}}", "status"]
+						},
+						"description": "Quickly toggle status between draft, published, and archived."
+					}
+				},
+				{
+					"name": "Owner Delete Project",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/projects/{{projectId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "projects", "{{projectId}}"]
+						},
+						"description": "Deletes project. Blocked with 409 if project has paid orders (must be archived instead)."
+					}
+				}
+			]
+		},
+		{
+			"name": "Service Plans",
+			"item": [
+				{
+					"name": "Public List Plans",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/service-plans",
+							"host": ["{{baseUrl}}"],
+							"path": ["service-plans"]
+						},
+						"description": "Returns active service plans for the public pricing page."
+					}
+				},
+				{
+					"name": "Owner List Plans",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/service-plans",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "service-plans"]
+						},
+						"description": "Owner list of all service plans."
+					}
+				},
+				{
+					"name": "Owner Create Plan",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": {\n    \"en\": \"Custom Feature Development\",\n    \"ar\": \"تطوير مميزات مخصصة\"\n  },\n  \"slug\": \"custom-dev\",\n  \"description\": {\n    \"en\": \"Dedicated engineering hours for tailored modifications.\",\n    \"ar\": \"ساعات تطوير مخصصة لإضافة وتعديل متطلباتك الخاصة.\"\n  },\n  \"price\": 350000,\n  \"duration\": {\n    \"en\": \"5 business days\",\n    \"ar\": \"5 أيام عمل\"\n  },\n  \"features\": [\n    { \"en\": \"Architecture planning\", \"ar\": \"تخطيط المعمارية البرمجية\" },\n    { \"en\": \"Code review & testing\", \"ar\": \"مراجعة واختبار الأكواد\" }\n  ],\n  \"isActive\": true,\n  \"order\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/service-plans",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "service-plans"]
+						},
+						"description": "Creates a new service plan. Price in piasters."
+					}
+				},
+				{
+					"name": "Owner Update Plan",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"price\": 400000,\n  \"isActive\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/service-plans/{{planId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "service-plans", "{{planId}}"]
+						},
+						"description": "Updates an existing service plan."
+					}
+				},
+				{
+					"name": "Owner Delete Plan",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/service-plans/{{planId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "service-plans", "{{planId}}"]
+						},
+						"description": "Deletes a service plan."
+					}
+				}
+			]
+		},
+		{
+			"name": "Coupons",
+			"item": [
+				{
+					"name": "Validate Coupon",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"code\": \"WELCOME10\",\n  \"projectId\": \"{{projectId}}\",\n  \"packageKey\": \"starter\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/coupons/validate",
+							"host": ["{{baseUrl}}"],
+							"path": ["coupons", "validate"]
+						},
+						"description": "Validates a coupon code and calculates exact pricing breakdown (subtotal, discount, total in piasters). Rate limited."
+					}
+				},
+				{
+					"name": "Owner List Coupons",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/coupons",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "coupons"]
+						},
+						"description": "Lists all coupons with usage counters and limits."
+					}
+				},
+				{
+					"name": "Owner Create Coupon",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"code\": \"PROMO20\",\n  \"discountType\": \"percentage\",\n  \"discountValue\": 20,\n  \"maxUses\": 50,\n  \"expiresAt\": \"2026-12-31T23:59:59.000Z\",\n  \"isActive\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/coupons",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "coupons"]
+						},
+						"description": "Creates a coupon. Note: 100% discount coupons must have a finite maxUses."
+					}
+				},
+				{
+					"name": "Owner Update Coupon",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"isActive\": false\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/coupons/{{couponId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "coupons", "{{couponId}}"]
+						},
+						"description": "Updates coupon settings."
+					}
+				},
+				{
+					"name": "Owner Delete Coupon",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/coupons/{{couponId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "coupons", "{{couponId}}"]
+						},
+						"description": "Deletes coupon."
+					}
+				}
+			]
+		},
+		{
+			"name": "Orders & Payments",
+			"item": [
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"projectSlug\": \"{{projectSlug}}\",\n  \"packageKey\": \"starter\",\n  \"couponCode\": \"PROMO20\",\n  \"paymentMethod\": \"vodafone_cash\",\n  \"locale\": \"ar\",\n  \"customer\": {\n    \"fullName\": \"عمر فاروق\",\n    \"email\": \"customer@example.com\",\n    \"phone\": \"01011122233\",\n    \"gitProvider\": \"github\",\n    \"gitUsername\": \"omarfarooq\",\n    \"organization\": \"Tech Solutions\"\n  },\n  \"hp\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": ["{{baseUrl}}"],
+							"path": ["orders"]
+						},
+						"description": "Creates a new order. Returns orderNumber and publicToken (the ONLY time token is returned). Includes honeypot field (hp) protection."
+					}
+				},
+				{
+					"name": "Customer Track Order",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/{{orderNumber}}?token={{token}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["orders", "{{orderNumber}}"],
+							"query": [
+								{ "key": "token", "value": "{{token}}" }
+							]
+						},
+						"description": "Tracks order status using orderNumber and query token. Rate limited with tokenGuessLimiter (20 failed guesses / 15 min / IP)."
+					}
+				},
+				{
+					"name": "Customer Upload Payment Proof",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "proof",
+									"type": "file",
+									"src": ""
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders/{{orderNumber}}/payment-proof?token={{token}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["orders", "{{orderNumber}}", "payment-proof"],
+							"query": [
+								{ "key": "token", "value": "{{token}}" }
+							]
+						},
+						"description": "Uploads receipt image/PDF for manual payment methods. Sets status to awaiting_review. Rate limited."
+					}
+				},
+				{
+					"name": "Customer Submit Review",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rating\": 5,\n  \"comment\": \"كود ممتاز ومنظم جداً ودعم فني متميز ومتابعة احترافية.\",\n  \"hp\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders/{{orderNumber}}/reviews?token={{token}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["orders", "{{orderNumber}}", "reviews"],
+							"query": [
+								{ "key": "token", "value": "{{token}}" }
+							]
+						},
+						"description": "Submits review for paid/delivered order. Only one review per order."
+					}
+				},
+				{
+					"name": "Owner List Orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/orders?status=&paymentMethod=&search=&page=1&limit=20",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "orders"],
+							"query": [
+								{ "key": "status", "value": "" },
+								{ "key": "paymentMethod", "value": "" },
+								{ "key": "search", "value": "" },
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "20" }
+							]
+						},
+						"description": "Owner orders list with status filters, customer search, and pagination."
+					}
+				},
+				{
+					"name": "Owner Get Order Detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/orders/{{orderId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "orders", "{{orderId}}"]
+						},
+						"description": "Detailed view of order including payment proof and status history."
+					}
+				},
+				{
+					"name": "Owner Approve Order",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"note\": \"Manual payment verified on Vodafone Cash wallet.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/orders/{{orderId}}/approve",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "orders", "{{orderId}}", "approve"]
+						},
+						"description": "Approves manual payment. Transitions order to paid and executes onOrderPaid (sales counter, GitHub invite, emails)."
+					}
+				},
+				{
+					"name": "Owner Reject Order",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reason\": \"صورة الإيصال غير واضحة ورقم العملية مفقود، يرجى إعادة الإرسال.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/orders/{{orderId}}/reject",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "orders", "{{orderId}}", "reject"]
+						},
+						"description": "Rejects payment proof with reason. Notifies customer by email."
+					}
+				},
+				{
+					"name": "Owner Deliver Order",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"notes\": \"GitHub repository access granted to collaborator. Setup instructions delivered.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/orders/{{orderId}}/delivery",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "orders", "{{orderId}}", "delivery"]
+						},
+						"description": "Marks order as delivered."
+					}
+				},
+				{
+					"name": "Owner Refund Order",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reason\": \"Customer requested full cancellation under money-back guarantee.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/orders/{{orderId}}/refund",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "orders", "{{orderId}}", "refund"]
+						},
+						"description": "Updates order status to refunded. (Status record only)."
+					}
+				},
+				{
+					"name": "Paymob Webhook",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"TRANSACTION\",\n  \"obj\": {\n    \"id\": 987654321,\n    \"order\": {\n      \"id\": 123456\n    },\n    \"amount_cents\": 400000,\n    \"currency\": \"EGP\",\n    \"success\": true,\n    \"pending\": false,\n    \"is_refunded\": false,\n    \"is_voided\": false\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/payments/paymob/webhook?hmac=CALCULATED_HMAC_HEX",
+							"host": ["{{baseUrl}}"],
+							"path": ["payments", "paymob", "webhook"],
+							"query": [
+								{ "key": "hmac", "value": "CALCULATED_HMAC_HEX" }
+							]
+						},
+						"description": "Paymob transaction webhook. Validates SHA512 HMAC, verifies exact amount in piasters, checks status allow-list, executes onOrderPaid atomically, and returns 200 { received: true } or { idempotent: true }."
+					}
+				}
+			]
+		},
+		{
+			"name": "Reviews (Owner Moderation)",
+			"item": [
+				{
+					"name": "Owner List Reviews",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/reviews?status=&page=1&limit=20",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "reviews"],
+							"query": [
+								{ "key": "status", "value": "" },
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "20" }
+							]
+						},
+						"description": "Owner reviews moderation queue."
+					}
+				},
+				{
+					"name": "Owner Moderate Review",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"isPublished\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/reviews/{{reviewId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "reviews", "{{reviewId}}"]
+						},
+						"description": "Toggle review publication status."
+					}
+				},
+				{
+					"name": "Owner Delete Review",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/reviews/{{reviewId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "reviews", "{{reviewId}}"]
+						},
+						"description": "Deletes inappropriate review."
+					}
+				}
+			]
+		},
+		{
+			"name": "Inquiries",
+			"item": [
+				{
+					"name": "Public Submit Inquiry",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"محمود حسن\",\n  \"email\": \"mahmoud@example.com\",\n  \"phone\": \"01099887766\",\n  \"subject\": \"استفسار عن تخصيص نظام نقاط البيع\",\n  \"message\": \"السلام عليكم، هل يمكن ربط النظام بفواتير الضرائب الإلكترونية المصرية وتخصيص الطابعات الحرارية؟\",\n  \"locale\": \"ar\",\n  \"hp\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/inquiries",
+							"host": ["{{baseUrl}}"],
+							"path": ["inquiries"]
+						},
+						"description": "Public contact form submission. Includes honeypot protection (hp) and strict rate limiting."
+					}
+				},
+				{
+					"name": "Owner List Inquiries",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/inquiries?status=&page=1&limit=20",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "inquiries"],
+							"query": [
+								{ "key": "status", "value": "" },
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "20" }
+							]
+						},
+						"description": "Owner list of inquiries."
+					}
+				},
+				{
+					"name": "Owner Get Inquiry",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/inquiries/{{inquiryId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "inquiries", "{{inquiryId}}"]
+						},
+						"description": "Gets single inquiry details."
+					}
+				},
+				{
+					"name": "Owner Update Inquiry",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"replied\",\n  \"ownerNotes\": \"تم الرد عبر الواتساب وتقديم عرض السعر المخصص.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/inquiries/{{inquiryId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "inquiries", "{{inquiryId}}"]
+						},
+						"description": "Updates inquiry status (new, read, replied, archived) and internal owner notes."
+					}
+				},
+				{
+					"name": "Owner Delete Inquiry",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/inquiries/{{inquiryId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "inquiries", "{{inquiryId}}"]
+						},
+						"description": "Deletes inquiry."
+					}
+				}
+			]
+		},
+		{
+			"name": "Uploads",
+			"item": [
+				{
+					"name": "Upload Images",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"src": ""
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/uploads/images",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "uploads", "images"]
+						},
+						"description": "Uploads up to 10 project images (multipart field images). Only JPEG, PNG, WEBP allowed (max 5MB each). In production, uploads to Cloudinary."
+					}
+				},
+				{
+					"name": "Delete Uploaded Image",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"publicId\": \"bytecraft/projects/sample-id\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/uploads",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "uploads"]
+						},
+						"description": "Deletes asset from Cloudinary."
+					}
+				}
+			]
+		}
+	]
+}
