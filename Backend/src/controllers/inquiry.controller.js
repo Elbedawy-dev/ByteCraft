@@ -5,9 +5,9 @@ const asyncHandler = require('../utils/asyncHandler');
  * Inquiry Controller
  */
 
-// POST /api/inquiries (Public)
+// POST /api/inquiries (Public — accepts application/json or multipart/form-data with up to 3 attachments)
 const createInquiry = asyncHandler(async (req, res) => {
-  const inquiry = await inquiryService.createInquiry(req.body);
+  const inquiry = await inquiryService.createInquiry(req.body, req.files || []);
   res.status(201).json({
     success: true,
     data: { inquiry },

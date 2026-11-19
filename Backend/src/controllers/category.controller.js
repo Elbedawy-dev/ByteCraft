@@ -10,7 +10,7 @@ const asyncHandler = require('../utils/asyncHandler');
 
 const getCategories = asyncHandler(async (req, res) => {
   // If requested by public endpoint, only active categories are listed
-  const onlyActive = req.baseUrl.startsWith('/api/categories');
+  const onlyActive = !req.baseUrl.startsWith('/api/owner');
   const categories = await categoryService.listCategories(onlyActive);
 
   res.status(200).json({

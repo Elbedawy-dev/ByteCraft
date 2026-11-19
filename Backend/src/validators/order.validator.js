@@ -55,7 +55,7 @@ const submitProofSchema = z.object({
 const ownerOrdersQuerySchema = z.object({
   query: z.object({
     status: z
-      .enum(['pending_payment', 'awaiting_review', 'paid', 'delivered', 'rejected', 'cancelled', 'refunded'])
+      .enum(['pending_payment', 'awaiting_review', 'paid', 'delivered', 'rejected', 'cancelled', 'refunded', 'expired'])
       .optional(),
     paymentMethod: z.enum(['vodafone_cash', 'instapay', 'fawry', 'card']).optional(),
     search: z.string().trim().optional(),

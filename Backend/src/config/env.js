@@ -91,7 +91,7 @@ if (!parsedEnv.success) {
   parsedEnv.error.issues.forEach((issue) => {
     console.error(`   - Field "${issue.path.join('.')}": ${issue.message}`);
   });
-  console.error('\nPlease check your server/.env file against .env.example before restarting.\n');
+  console.error('\nPlease check your Backend/.env file against .env.example before restarting.\n');
   process.exit(1);
 }
 

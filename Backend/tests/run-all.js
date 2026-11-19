@@ -21,6 +21,7 @@ const TEST_SUITES = [
   { name: 'Phase 5: Paymob Gateway Integration & Webhooks', file: 'phase5.test.js' },
   { name: 'Phase 6: Reviews, Inquiries & Aggregations', file: 'phase6.test.js' },
   { name: 'Phase 7: Hardening, Allow-lists & Privacy Protections', file: 'phase7.test.js' },
+  { name: 'Phase 8: Public Projects Computed Fields & Extended Inquiries', file: 'phase8.test.js' },
 ];
 
 async function isServerRunning() {
@@ -126,7 +127,7 @@ async function main() {
     console.error('❌ One or more test suites failed.');
     process.exit(1);
   } else {
-    console.log('🎉 ALL 7 TEST SUITES PASSED CLEANLY (100% OK)!');
+    console.log(`🎉 ALL ${TEST_SUITES.length} TEST SUITES PASSED CLEANLY (100% OK)!`);
     process.exit(0);
   }
 }

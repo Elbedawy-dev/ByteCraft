@@ -1,4 +1,4 @@
-const { rateLimit } = require('express-rate-limit');
+const { rateLimit, ipKeyGenerator } = require('express-rate-limit');
 const { ERROR_CODES } = require('../config/constants');
 
 /**
@@ -11,6 +11,18 @@ const { ERROR_CODES } = require('../config/constants');
  * 3. Standard Envelope: If a limit is exceeded, responds with the unified error format
  *    instead of express-rate-limit's default plain text.
  */
+
+// Helper to allow isolated IP keys strictly on the local test server (PORT 5001, non-production)
+function testAwareKeyGenerator(req) {
+  if (
+    process.env.NODE_ENV !== 'production' &&
+    String(process.env.PORT) === '5001' &&
+    req.headers['x-test-ip']
+  ) {
+    return String(req.headers['x-test-ip']);
+  }
+  return ipKeyGenerator(req.ip);
+}
 
 // Helper to create uniform rate-limit responses
 function createRateLimitHandler(message) {
@@ -32,6 +44,7 @@ const globalLimiter = rateLimit({
   limit: 200,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
+  keyGenerator: testAwareKeyGenerator,
   handler: createRateLimitHandler('Too many requests from this IP, please try again after 15 minutes.'),
 });
 
@@ -87,6 +100,7 @@ const inquiryLimiter = rateLimit({
   limit: 5,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
+  keyGenerator: testAwareKeyGenerator,
   handler: createRateLimitHandler('Too many contact inquiries from this IP. Please try again after 15 minutes.'),
 });
 
@@ -106,7 +120,7 @@ const tokenGuessLimiter = rateLimit({
   standardHeaders: 'draft-7',
   legacyHeaders: false,
   skipSuccessfulRequests: true, // Legitimate requests with valid tokens do not count towards lockout
-  keyGenerator: (req) => req.headers['x-test-ip'] || req.ip,
+  keyGenerator: testAwareKeyGenerator,
   handler: createRateLimitHandler('Too many access attempts. Please try again after 15 minutes.'),
 });
 

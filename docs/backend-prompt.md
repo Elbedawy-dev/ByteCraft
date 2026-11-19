@@ -44,7 +44,7 @@ ByteCraft is the owner's personal studio site. It:
 
 ### Folder structure
 ```
-server/
+Backend/
   src/
     config/        env.js (zod-validated env, fail fast), db.js, cloudinary.js, constants.js
     models/        Owner, Project, Category, ServicePlan, Order, Coupon, Inquiry, Settings, Counter

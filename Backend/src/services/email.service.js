@@ -213,41 +213,118 @@ class EmailService {
     });
   }
 
-  // 6. New Customer Inquiry (to Owner)
-  async sendInquiryOwner(inquiry) {
-    const to = env.OWNER_NOTIFY_EMAIL || env.OWNER_EMAIL || 'owner@bytecraft.dev';
-    const isAr = inquiry.locale === 'ar';
+  // Helper: Build HTML-escaped Owner Inquiry notification payload
+  buildInquiryOwnerEmail(inquiry) {
+    const projectTypeLabels = {
+      lms: 'LMS Platform (lms)',
+      ecommerce: 'E-Commerce Store (ecommerce)',
+      custom_mern: 'Custom MERN Web App (custom_mern)',
+      consulting: 'Technical Consulting (consulting)',
+      other: 'Other (other)',
+    };
+    const budgetRangeLabels = {
+      '5k_10k': '5,000 - 10,000 EGP (5k_10k)',
+      '10k_20k': '10,000 - 20,000 EGP (10k_20k)',
+      '20k_plus': '20,000+ EGP (20k_plus)',
+      undecided: 'Undecided (undecided)',
+    };
+    const timelineLabels = {
+      urgent: 'Urgent (urgent)',
+      standard: 'Standard (standard)',
+      flexible: 'Flexible (flexible)',
+    };
+
     const subject = `📩 New Inquiry from ${inquiry.name}: ${inquiry.subject}`;
 
-    // Strictly escape raw user inputs to prevent HTML/XSS injection in owner emails
+    // Strictly escape ALL user-controlled values to prevent HTML/XSS injection in owner emails
     const safeName = escapeHtml(inquiry.name);
     const safeEmail = escapeHtml(inquiry.email);
     const safePhone = escapeHtml(inquiry.phone || 'Not provided');
+    const safeLocale = escapeHtml(inquiry.locale || 'ar');
+    const safeProjectType = escapeHtml(projectTypeLabels[inquiry.projectType] || inquiry.projectType || 'other');
+    const safeBudgetRange = escapeHtml(budgetRangeLabels[inquiry.budgetRange] || inquiry.budgetRange || 'undecided');
+    const safeTimeline = escapeHtml(timelineLabels[inquiry.timeline] || inquiry.timeline || 'standard');
     const safeSubject = escapeHtml(inquiry.subject);
     const safeMessage = escapeHtml(inquiry.message).replace(/\n/g, '<br />');
+
+    const attachments = Array.isArray(inquiry.attachments) ? inquiry.attachments : [];
+    let attachmentsHtml = '';
+    if (attachments.length > 0) {
+      const itemsHtml = attachments
+        .map((att) => {
+          const safeFilename = escapeHtml(att.originalName || 'Attachment');
+          const safeMime = escapeHtml(att.mimeType || 'file');
+          const sizeKb = att.size ? `${Math.max(1, Math.round(att.size / 1024))} KB` : '';
+          const rawUrl = typeof att.url === 'string' ? att.url : '';
+          const isSafeHref = /^(https?:\/\/|\/)/i.test(rawUrl);
+          const safeUrl = escapeHtml(rawUrl);
+          const linkHtml = isSafeHref
+            ? `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeFilename}</a>`
+            : safeFilename;
+          return `<li>${linkHtml} (${safeMime}${sizeKb ? `, ${sizeKb}` : ''})</li>`;
+        })
+        .join('');
+
+      attachmentsHtml = `
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>Attachments (${attachments.length}):</strong>
+          <ul style="margin: 8px 0 0 18px; padding: 0;">${itemsHtml}</ul>
+        </div>
+      `;
+    }
 
     const html = `
       <div style="font-family: Arial, sans-serif; direction: ltr; color: #1e293b; max-width: 600px; margin: auto; padding: 20px;">
         <h2 style="color: #6366f1;">New Customer Inquiry Received</h2>
         <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin: 15px 0;">
           <p><strong>From:</strong> ${safeName} (&lt;<a href="mailto:${safeEmail}">${safeEmail}</a>&gt;)</p>
-          <p><strong>Phone:</strong> ${safePhone}</p>
-          <p><strong>Locale:</strong> ${inquiry.locale}</p>
+          <p><strong>Phone / WhatsApp:</strong> ${safePhone}</p>
+          <p><strong>Project Type:</strong> ${safeProjectType}</p>
+          <p><strong>Estimated Budget:</strong> ${safeBudgetRange}</p>
+          <p><strong>Timeline:</strong> ${safeTimeline}</p>
+          <p><strong>Locale:</strong> ${safeLocale}</p>
           <p><strong>Subject:</strong> ${safeSubject}</p>
         </div>
         <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 15px; margin: 15px 0;">
-          <strong>Message:</strong>
+          <strong>Details / Message:</strong>
           <p style="margin-top: 8px; line-height: 1.6;">${safeMessage}</p>
         </div>
+        ${attachmentsHtml}
         <p style="font-size: 12px; color: #64748b;">ByteCraft Lead Notification</p>
       </div>
     `;
+
+    const attachmentsText =
+      attachments.length > 0
+        ? `\nAttachments (${attachments.length}):\n` +
+          attachments.map((a) => `- ${a.originalName || 'Attachment'}: ${a.url}`).join('\n')
+        : '';
+
+    const text = [
+      `New Inquiry from ${inquiry.name} (${inquiry.email})`,
+      `Phone: ${inquiry.phone || 'Not provided'}`,
+      `Project Type: ${inquiry.projectType || 'other'}`,
+      `Budget Range: ${inquiry.budgetRange || 'undecided'}`,
+      `Timeline: ${inquiry.timeline || 'standard'}`,
+      `Subject: ${inquiry.subject}`,
+      '',
+      inquiry.message,
+      attachmentsText,
+    ].join('\n');
+
+    return { subject, html, text };
+  }
+
+  // 6. New Customer Inquiry (to Owner)
+  async sendInquiryOwner(inquiry) {
+    const to = env.OWNER_NOTIFY_EMAIL || env.OWNER_EMAIL || 'owner@bytecraft.dev';
+    const { subject, html, text } = this.buildInquiryOwnerEmail(inquiry);
 
     await this.sendMail({
       to,
       subject,
       html,
-      text: `New Inquiry from ${inquiry.name} (${inquiry.email}):\nSubject: ${inquiry.subject}\n\n${inquiry.message}`,
+      text,
     });
   }
 }

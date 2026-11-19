@@ -1,6 +1,7 @@
 const multer = require('multer');
 const AppError = require('../utils/AppError');
 const { ERROR_CODES } = require('../config/constants');
+const sanitizeInput = require('./sanitize.middleware');
 
 /**
  * Multer Upload Middleware Configuration
@@ -8,13 +9,16 @@ const { ERROR_CODES } = require('../config/constants');
  * WHY:
  * 1. Uses memoryStorage so that uploaded files stay in buffer memory before being streamed
  *    directly to Cloudinary, avoiding temporary disk clutter on servers.
- * 2. Strictly validates file MIME types (only JPEG, PNG, WebP) to prevent malicious executable uploads.
+ * 2. Strictly validates file MIME types (only JPEG, PNG, WebP for images; plus PDF for proofs
+ *    and inquiry attachments) to prevent malicious executable uploads.
  * 3. Enforces 5 MB file size limit directly at the stream parsing level.
  */
 
 const ALLOWED_IMAGE_MIMES = new Set(['image/jpeg', 'image/png', 'image/webp']);
 const ALLOWED_PROOF_MIMES = new Set(['image/jpeg', 'image/png', 'image/webp', 'application/pdf']);
+const ALLOWED_ATTACHMENT_MIMES = new Set(['image/jpeg', 'image/png', 'image/webp', 'application/pdf']);
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 Megabytes
+const MAX_INQUIRY_ATTACHMENTS = 3;
 
 const storage = multer.memoryStorage();
 
@@ -39,6 +43,20 @@ function proofFileFilter(req, file, cb) {
     cb(
       AppError.badRequest(
         `Invalid file type: "${file.mimetype}". Only images (JPEG, PNG, WebP) and PDF documents are allowed for payment proof.`,
+        ERROR_CODES.INVALID_FILE_TYPE
+      ),
+      false
+    );
+  }
+}
+
+function attachmentFileFilter(req, file, cb) {
+  if (ALLOWED_ATTACHMENT_MIMES.has(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(
+      AppError.badRequest(
+        `Invalid file type: "${file.mimetype}". Only images (JPEG, PNG, WebP) and PDF documents are allowed for inquiry attachments.`,
         ERROR_CODES.INVALID_FILE_TYPE
       ),
       false
@@ -84,16 +102,40 @@ const uploadProofMulter = multer({
   fileFilter: proofFileFilter,
 });
 
+const uploadInquiryMulter = multer({
+  storage,
+  limits: { fileSize: MAX_FILE_SIZE, files: MAX_INQUIRY_ATTACHMENTS },
+  fileFilter: attachmentFileFilter,
+});
+
 // Up to 10 images under field name 'images'
 const uploadImages = upload.array('images', 10);
 
 // Single proof under field name 'proof' for payment proofs (images & PDF)
 const uploadSingleProof = uploadProofMulter.single('proof');
 
+// Up to 3 optional attachments under field name 'attachments' for public inquiries (multipart only; JSON passes through)
+function uploadInquiryAttachments(req, res, next) {
+  if (!req.is('multipart/form-data')) {
+    return next();
+  }
+
+  return uploadInquiryMulter.array('attachments', MAX_INQUIRY_ATTACHMENTS)(req, res, (err) => {
+    if (err) {
+      return next(err);
+    }
+    // Re-run NoSQL sanitizer on newly parsed multipart text fields
+    return sanitizeInput(req, res, next);
+  });
+}
+
 module.exports = {
   upload,
   uploadImages,
   uploadSingleProof,
+  uploadInquiryAttachments,
   validateMagicBytes,
+  ALLOWED_ATTACHMENT_MIMES,
   MAX_FILE_SIZE,
+  MAX_INQUIRY_ATTACHMENTS,
 };

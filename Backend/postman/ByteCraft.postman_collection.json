@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "bytecraft-api-v1-collection",
 		"name": "ByteCraft API v1",
-		"description": "Complete Postman collection for ByteCraft Backend API (v1).\nCovers Platform Meta, Owner Auth, Dashboard, Settings, Categories, Projects, Service Plans, Coupons, Orders, Manual & Online Payments, Reviews, Inquiries, and Uploads.\n\nNote: All prices and amounts are in piasters (1 EGP = 100 piasters).",
+		"description": "Complete Postman collection for ByteCraft Backend API (v1).\nCovers Platform Meta, Owner Auth, Dashboard, Settings, Categories, Projects, Service Plans, Coupons, Orders, Manual & Online Payments (Paymob), Reviews, Inquiries (JSON & Multipart Attachments), and Uploads.\n\nNotes:\n- All prices and amounts are integers in piasters (1 EGP = 100 piasters).\n- Tax-free billing: total = max(0, subtotal - discount).\n- Owner endpoints require the `bc_owner` httpOnly cookie (set automatically by POST /owner/login).",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"variable": [
@@ -13,7 +13,7 @@
 		},
 		{
 			"key": "orderNumber",
-			"value": "BC-20261016-0001",
+			"value": "BC-2026-000001",
 			"type": "string"
 		},
 		{
@@ -23,7 +23,7 @@
 		},
 		{
 			"key": "projectSlug",
-			"value": "bytecraft-pos-system",
+			"value": "lms-pro-platform",
 			"type": "string"
 		},
 		{
@@ -76,7 +76,7 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["health"]
 						},
-						"description": "Liveness check. Returns status OK and timestamp."
+						"description": "Liveness check. Returns status, uptime, timestamp, and database connection state."
 					}
 				},
 				{
@@ -89,7 +89,7 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["meta"]
 						},
-						"description": "Public platform metadata for the frontend: active categories, enabled payment methods (safe flags only, no wallet numbers/IPA), guarantee days, and public contact info."
+						"description": "Public platform metadata: siteName, guaranteeDays, contact, active categories, and sanitized paymentMethods (enabled flags & bilingual instructions only; no walletNumber/ipa/accountName)."
 					}
 				}
 			]
@@ -116,7 +116,7 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "login"]
 						},
-						"description": "Logs in the owner and sets an httpOnly cookie (bc_owner). Rate limited to 5 attempts / 15 min / IP."
+						"description": "Logs in the owner and sets an httpOnly cookie (bc_owner). Rate limited to 5 failed attempts / 15 min / IP."
 					}
 				},
 				{
@@ -129,7 +129,7 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "me"]
 						},
-						"description": "Returns current logged in owner info."
+						"description": "Returns current logged-in owner profile."
 					}
 				},
 				{
@@ -151,7 +151,7 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "password"]
 						},
-						"description": "Changes the owner password. Requires providing the current password."
+						"description": "Changes the owner password. Requires currentPassword and newPassword (min 8 chars)."
 					}
 				},
 				{
@@ -182,7 +182,7 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "dashboard"]
 						},
-						"description": "Aggregated dashboard statistics: revenue totals (paid/delivered), orders counts, 12-month revenue breakdown, status breakdown, top 5 projects, recent orders and inquiries."
+						"description": "Aggregated dashboard statistics: totals (revenue in piasters, ordersCount, paidOrders, pendingProofs, newInquiries, publishedProjects), revenueByMonth (12m), ordersByStatus, topProjects (top 5), recentOrders (last 8), recentInquiries (last 8)."
 					}
 				},
 				{
@@ -195,7 +195,7 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "settings"]
 						},
-						"description": "Full settings including sensitive wallet numbers, InstaPay address, and notifications."
+						"description": "Full singleton site settings including sensitive walletNumber, ipa, accountName, and bilingual instructions."
 					}
 				},
 				{
@@ -210,14 +210,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"contact\": {\n    \"email\": \"support@bytecraft.dev\",\n    \"phone\": \"+201000000000\",\n    \"whatsapp\": \"+201000000000\"\n  },\n  \"paymentMethods\": {\n    \"vodafoneCash\": {\n      \"enabled\": true,\n      \"walletNumber\": \"01012345678\",\n      \"accountName\": \"ByteCraft Dev\",\n      \"instructions\": \"Send amount to Vodafone Cash wallet and upload screenshot.\"\n    },\n    \"instapay\": {\n      \"enabled\": true,\n      \"ipa\": \"bytecraft@instapay\",\n      \"accountName\": \"ByteCraft Studio\",\n      \"instructions\": \"Transfer via InstaPay and upload reference receipt.\"\n    },\n    \"card\": {\n      \"enabled\": true\n    },\n    \"fawry\": {\n      \"enabled\": true\n    }\n  },\n  \"guaranteeDays\": 30\n}"
+							"raw": "{\n  \"siteName\": \"ByteCraft\",\n  \"guaranteeDays\": 30,\n  \"contact\": {\n    \"email\": \"contact@bytecraft.dev\",\n    \"phone\": \"+201012345678\",\n    \"whatsapp\": \"+201012345678\",\n    \"location\": {\n      \"ar\": \"القاهرة، مصر\",\n      \"en\": \"Cairo, Egypt\"\n    },\n    \"socials\": {\n      \"github\": \"https://github.com/ByteCraft\",\n      \"linkedin\": \"https://linkedin.com/company/bytecraft\",\n      \"twitter\": \"\",\n      \"facebook\": \"\"\n    }\n  },\n  \"paymentMethods\": {\n    \"vodafone_cash\": {\n      \"enabled\": true,\n      \"walletNumber\": \"01012345678\",\n      \"accountName\": \"ByteCraft Studio\",\n      \"instructions\": {\n        \"ar\": \"حول المبلغ المطلوب عبر فودافون كاش ثم ارفع إيصال التحويل.\",\n        \"en\": \"Transfer the required amount via Vodafone Cash and upload the payment proof.\"\n      }\n    },\n    \"instapay\": {\n      \"enabled\": true,\n      \"ipa\": \"bytecraft@instapay\",\n      \"accountName\": \"ByteCraft Studio\",\n      \"instructions\": {\n        \"ar\": \"حول المبلغ المطلوب عبر انستاباي ثم ارفع إيصال التحويل.\",\n        \"en\": \"Transfer the required amount via InstaPay and upload the payment proof.\"\n      }\n    },\n    \"card\": {\n      \"enabled\": true\n    },\n    \"fawry\": {\n      \"enabled\": true\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/owner/settings",
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "settings"]
 						},
-						"description": "Updates settings. Note: tax/VAT is completely removed from ByteCraft."
+						"description": "Updates singleton site settings. Note: platform is tax-free (no vatRate)."
 					}
 				}
 			]
@@ -248,7 +248,20 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "categories"]
 						},
-						"description": "Lists all categories (both active and inactive) with projects count."
+						"description": "Lists all categories (both active and inactive)."
+					}
+				},
+				{
+					"name": "Owner Get Category by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/categories/{{categoryId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "categories", "{{categoryId}}"]
+						},
+						"description": "Retrieves a single category by MongoDB ObjectId."
 					}
 				},
 				{
@@ -263,14 +276,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": {\n    \"en\": \"SaaS & Web Apps\",\n    \"ar\": \"تطبيقات الويب وساس\"\n  },\n  \"slug\": \"saas-web-apps\",\n  \"description\": {\n    \"en\": \"Full-stack cloud applications ready for deployment.\",\n    \"ar\": \"تطبيقات سحابية متكاملة وجاهزة للنشر والتشغيل.\"\n  },\n  \"order\": 1,\n  \"isActive\": true\n}"
+							"raw": "{\n  \"key\": \"education\",\n  \"name\": {\n    \"ar\": \"منصات تعليمية\",\n    \"en\": \"Education Platforms\"\n  },\n  \"order\": 1,\n  \"isActive\": true\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/owner/categories",
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "categories"]
 						},
-						"description": "Creates a new category."
+						"description": "Creates a new category. `key` is optional (auto-generated from `name.en` if omitted; lowercase letters, numbers, dashes only)."
 					}
 				},
 				{
@@ -285,7 +298,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": {\n    \"en\": \"SaaS & Modern Platforms\",\n    \"ar\": \"منصات ساس المتطورة\"\n  },\n  \"order\": 2\n}"
+							"raw": "{\n  \"name\": {\n    \"ar\": \"منصات تعليمية متقدمة\",\n    \"en\": \"Advanced Education Platforms\"\n  },\n  \"order\": 2,\n  \"isActive\": true\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/owner/categories/{{categoryId}}",
@@ -305,7 +318,7 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "categories", "{{categoryId}}"]
 						},
-						"description": "Deletes category if no projects are linked."
+						"description": "Deletes category. Returns 409 CATEGORY_IN_USE if any project references it."
 					}
 				}
 			]
@@ -319,20 +332,22 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/projects?category=&tech=&featured=true&search=&sort=newest&page=1&limit=12",
+							"raw": "{{baseUrl}}/projects?category=&tech=&featured=&search=&minPrice=&maxPrice=&sort=newest&page=1&limit=12",
 							"host": ["{{baseUrl}}"],
 							"path": ["projects"],
 							"query": [
-								{ "key": "category", "value": "" },
-								{ "key": "tech", "value": "" },
-								{ "key": "featured", "value": "true" },
+								{ "key": "category", "value": "", "description": "Category key slug" },
+								{ "key": "tech", "value": "", "description": "Comma-separated tech stack items (e.g. React,Node.js)" },
+								{ "key": "featured", "value": "", "description": "true | false" },
 								{ "key": "search", "value": "" },
-								{ "key": "sort", "value": "newest", "description": "newest | price-asc | price-desc | popular" },
+								{ "key": "minPrice", "value": "", "description": "Integer piasters" },
+								{ "key": "maxPrice", "value": "", "description": "Integer piasters" },
+								{ "key": "sort", "value": "newest", "description": "newest | popular | price_asc | price_desc" },
 								{ "key": "page", "value": "1" },
-								{ "key": "limit", "value": "12" }
+								{ "key": "limit", "value": "12", "description": "1..50" }
 							]
 						},
-						"description": "Lists published projects with search, filtering, and pagination."
+						"description": "Lists published projects with computed startingPrice (cheapest active package, piasters) and reviewsSummary ({ average, count } of published reviews). Active packages only; privateRepo is never exposed; consistent `id`."
 					}
 				},
 				{
@@ -345,7 +360,7 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["projects", "{{projectSlug}}"]
 						},
-						"description": "Gets single published project details (privateRepo is hidden)."
+						"description": "Gets single published project details including preview object, active packages only, computed startingPrice, and reviewsSummary ({ average, count }). Increments stats.views for non-owner visitors. privateRepo is hidden."
 					}
 				},
 				{
@@ -358,7 +373,7 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["projects", "{{projectSlug}}", "preview-view"]
 						},
-						"description": "Increments the previewViews counter. Rate limited per IP."
+						"description": "Increments stats.previewViews counter. Rate limited (60 / 15 min / IP)."
 					}
 				},
 				{
@@ -372,10 +387,10 @@
 							"path": ["projects", "{{projectSlug}}", "reviews"],
 							"query": [
 								{ "key": "page", "value": "1" },
-								{ "key": "limit", "value": "10" }
+								{ "key": "limit", "value": "10", "description": "1..50" }
 							]
 						},
-						"description": "Public published reviews for a project. Customer names are masked (e.g. Omar F.), personal info and order numbers/tokens are omitted."
+						"description": "Public published reviews for a project. Customer names are masked (e.g. Ahmed M.); orderNumber/email/phone/token are never returned."
 					}
 				},
 				{
@@ -384,18 +399,31 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/owner/projects?status=&category=&search=&page=1&limit=20",
+							"raw": "{{baseUrl}}/owner/projects?status=&category=&search=&page=1&limit=10",
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "projects"],
 							"query": [
-								{ "key": "status", "value": "" },
-								{ "key": "category", "value": "" },
+								{ "key": "status", "value": "", "description": "draft | published | archived" },
+								{ "key": "category", "value": "", "description": "Category ObjectId or key" },
 								{ "key": "search", "value": "" },
 								{ "key": "page", "value": "1" },
-								{ "key": "limit", "value": "20" }
+								{ "key": "limit", "value": "10", "description": "1..50" }
 							]
 						},
-						"description": "Lists all projects in any status (draft, published, archived) including privateRepo."
+						"description": "Lists all projects across all statuses (draft, published, archived)."
+					}
+				},
+				{
+					"name": "Owner Get Project by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/projects/{{projectId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "projects", "{{projectId}}"]
+						},
+						"description": "Returns full project details INCLUDING `privateRepo` and inactive packages."
 					}
 				},
 				{
@@ -410,14 +438,36 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"title\": {\n    \"en\": \"Cloud POS System\",\n    \"ar\": \"نظام كاشير ونقاط بيع سحابي\"\n  },\n  \"slug\": \"cloud-pos-system\",\n  \"shortDescription\": {\n    \"en\": \"Modern point of sale for retail businesses.\",\n    \"ar\": \"نظام متكامل لنقاط البيع وإدارة الفواتير والمخازن.\"\n  },\n  \"description\": {\n    \"en\": \"Full documentation and modular architecture.\",\n    \"ar\": \"معمارية برمجية متطورة مع توثيق شامل وسهل التخصيص.\"\n  },\n  \"category\": \"{{categoryId}}\",\n  \"techStack\": [\"Node.js\", \"Express\", \"React\", \"MongoDB\"],\n  \"demoUrl\": \"https://pos-demo.bytecraft.dev\",\n  \"thumbnail\": {\n    \"url\": \"https://res.cloudinary.com/demo/image/upload/sample.jpg\",\n    \"publicId\": \"bytecraft/projects/sample\"\n  },\n  \"packages\": [\n    {\n      \"key\": \"starter\",\n      \"name\": { \"en\": \"Starter\", \"ar\": \"الأساسي\" },\n      \"price\": 500000,\n      \"features\": [\n        { \"en\": \"Full Source Code\", \"ar\": \"الكود المصدري كاملاً\" },\n        { \"en\": \"Lifetime Updates\", \"ar\": \"تحديثات مدى الحياة\" }\n      ],\n      \"badge\": \"Popular\"\n    }\n  ],\n  \"privateRepo\": {\n    \"owner\": \"bytecraft-org\",\n    \"repo\": \"pos-system\"\n  },\n  \"status\": \"published\",\n  \"featured\": true\n}"
+							"raw": "{\n  \"slug\": \"lms-pro-platform\",\n  \"title\": {\n    \"ar\": \"منصة تعليمية احترافية\",\n    \"en\": \"LMS Pro Platform\"\n  },\n  \"tagline\": {\n    \"ar\": \"نظام متكامل لإدارة الدورات والطلاب\",\n    \"en\": \"Complete MERN LMS for academies\"\n  },\n  \"description\": {\n    \"ar\": \"منصة تعليمية جاهزة بالكامل مبنية بـ MERN Stack مع بوابات دفع ولوحة تحكم شاملة.\",\n    \"en\": \"Turnkey MERN learning management system with payment gateways and analytics dashboard.\"\n  },\n  \"category\": \"{{categoryId}}\",\n  \"techStack\": [\"React\", \"Node.js\", \"Express\", \"MongoDB\", \"TailwindCSS\"],\n  \"features\": [\n    { \"ar\": \"بث فيديو محمي\", \"en\": \"Protected video streaming\" },\n    { \"ar\": \"بوابات دفع مصرية\", \"en\": \"Egyptian payment gateways\" }\n  ],\n  \"thumbnail\": {\n    \"url\": \"https://res.cloudinary.com/demo/image/upload/sample.jpg\",\n    \"publicId\": \"bytecraft/projects/sample\"\n  },\n  \"gallery\": [\n    {\n      \"url\": \"https://res.cloudinary.com/demo/image/upload/sample.jpg\",\n      \"publicId\": \"bytecraft/projects/sample-1\"\n    }\n  ],\n  \"preview\": {\n    \"url\": \"https://demo.bytecraft.dev/lms-pro\",\n    \"mode\": \"iframe\",\n    \"demoNote\": {\n      \"ar\": \"استخدم الحساب التجريبي للدخول\",\n      \"en\": \"Use demo credentials to explore\"\n    },\n    \"demoCredentials\": {\n      \"label\": \"Teacher Demo\",\n      \"email\": \"demo@lms.dev\",\n      \"password\": \"DemoUser123!\"\n    }\n  },\n  \"packages\": [\n    {\n      \"key\": \"standard\",\n      \"name\": { \"ar\": \"ترخيص فردي\", \"en\": \"Standard License\" },\n      \"price\": 780000,\n      \"compareAtPrice\": 950000,\n      \"features\": [\n        { \"ar\": \"كود المصدر كاملاً\", \"en\": \"Full source code\" },\n        { \"ar\": \"دعم فني 30 يوم\", \"en\": \"30 days support\" }\n      ],\n      \"licenseType\": \"single\",\n      \"supportDays\": 30,\n      \"isPopular\": true,\n      \"isActive\": true\n    }\n  ],\n  \"privateRepo\": {\n    \"provider\": \"github\",\n    \"owner\": \"ByteCraftDev\",\n    \"name\": \"lms-pro-private\",\n    \"url\": \"https://github.com/ByteCraftDev/lms-pro-private\"\n  },\n  \"status\": \"published\",\n  \"isFeatured\": true,\n  \"sortOrder\": 1\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/owner/projects",
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "projects"]
 						},
-						"description": "Creates a new project. All prices in piasters (e.g. 500,000 piasters = 5,000 EGP)."
+						"description": "Creates a new project. All prices are integers in piasters (780000 = 7,800 EGP). Published projects must have at least one active package."
+					}
+				},
+				{
+					"name": "Owner Update Project",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"isFeatured\": true,\n  \"sortOrder\": 2,\n  \"preview\": {\n    \"url\": \"https://demo.bytecraft.dev/lms-pro-v2\",\n    \"mode\": \"iframe\",\n    \"demoNote\": {\n      \"ar\": \"نسخة محدثة\",\n      \"en\": \"Updated demo\"\n    },\n    \"demoCredentials\": {\n      \"label\": \"Admin Demo\",\n      \"email\": \"demo@lms.dev\",\n      \"password\": \"DemoUser123!\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/projects/{{projectId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "projects", "{{projectId}}"]
+						},
+						"description": "Updates project fields (partial update). Returns full updated project including `privateRepo`."
 					}
 				},
 				{
@@ -439,7 +489,7 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "projects", "{{projectId}}", "status"]
 						},
-						"description": "Quickly toggle status between draft, published, and archived."
+						"description": "Transitions project status between `draft`, `published`, and `archived`."
 					}
 				},
 				{
@@ -452,7 +502,7 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "projects", "{{projectId}}"]
 						},
-						"description": "Deletes project. Blocked with 409 if project has paid orders (must be archived instead)."
+						"description": "Deletes project and cleans up its Cloudinary assets. Blocked with 409 PROJECT_HAS_PAID_ORDERS if project has paid/delivered orders."
 					}
 				}
 			]
@@ -466,9 +516,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/service-plans",
+							"raw": "{{baseUrl}}/service-plans?group=",
 							"host": ["{{baseUrl}}"],
-							"path": ["service-plans"]
+							"path": ["service-plans"],
+							"query": [
+								{ "key": "group", "value": "", "description": "Optional group filter (e.g. lms, ecommerce, custom)" }
+							]
 						},
 						"description": "Returns active service plans for the public pricing page."
 					}
@@ -479,11 +532,27 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/owner/service-plans",
+							"raw": "{{baseUrl}}/owner/service-plans?group=",
 							"host": ["{{baseUrl}}"],
-							"path": ["owner", "service-plans"]
+							"path": ["owner", "service-plans"],
+							"query": [
+								{ "key": "group", "value": "" }
+							]
 						},
-						"description": "Owner list of all service plans."
+						"description": "Owner list of all service plans (active & inactive)."
+					}
+				},
+				{
+					"name": "Owner Get Plan by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/service-plans/{{planId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "service-plans", "{{planId}}"]
+						},
+						"description": "Gets a single service plan by ID."
 					}
 				},
 				{
@@ -498,14 +567,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": {\n    \"en\": \"Custom Feature Development\",\n    \"ar\": \"تطوير مميزات مخصصة\"\n  },\n  \"slug\": \"custom-dev\",\n  \"description\": {\n    \"en\": \"Dedicated engineering hours for tailored modifications.\",\n    \"ar\": \"ساعات تطوير مخصصة لإضافة وتعديل متطلباتك الخاصة.\"\n  },\n  \"price\": 350000,\n  \"duration\": {\n    \"en\": \"5 business days\",\n    \"ar\": \"5 أيام عمل\"\n  },\n  \"features\": [\n    { \"en\": \"Architecture planning\", \"ar\": \"تخطيط المعمارية البرمجية\" },\n    { \"en\": \"Code review & testing\", \"ar\": \"مراجعة واختبار الأكواد\" }\n  ],\n  \"isActive\": true,\n  \"order\": 1\n}"
+							"raw": "{\n  \"group\": \"lms\",\n  \"name\": {\n    \"ar\": \"بناء منصة تعليمية مخصصة\",\n    \"en\": \"Custom LMS Build\"\n  },\n  \"description\": {\n    \"ar\": \"تصميم وتطوير منصة مخصصة بالكامل\",\n    \"en\": \"End-to-end tailored LMS platform\"\n  },\n  \"startingPrice\": 1500000,\n  \"features\": [\n    { \"ar\": \"تصميم UI/UX مخصص\", \"en\": \"Custom UI/UX design\" },\n    { \"ar\": \"ربط بوابات الدفع\", \"en\": \"Payment gateway integration\" }\n  ],\n  \"deliveryDays\": 21,\n  \"isPopular\": true,\n  \"isActive\": true,\n  \"sortOrder\": 1\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/owner/service-plans",
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "service-plans"]
 						},
-						"description": "Creates a new service plan. Price in piasters."
+						"description": "Creates a new service plan. `startingPrice` is integer piasters; `deliveryDays` >= 1."
 					}
 				},
 				{
@@ -520,7 +589,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"price\": 400000,\n  \"isActive\": true\n}"
+							"raw": "{\n  \"startingPrice\": 1800000,\n  \"deliveryDays\": 25,\n  \"isActive\": true\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/owner/service-plans/{{planId}}",
@@ -560,14 +629,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"code\": \"WELCOME10\",\n  \"projectId\": \"{{projectId}}\",\n  \"packageKey\": \"starter\"\n}"
+							"raw": "{\n  \"code\": \"LAUNCH10\",\n  \"projectSlug\": \"{{projectSlug}}\",\n  \"packageKey\": \"standard\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/coupons/validate",
 							"host": ["{{baseUrl}}"],
 							"path": ["coupons", "validate"]
 						},
-						"description": "Validates a coupon code and calculates exact pricing breakdown (subtotal, discount, total in piasters). Rate limited."
+						"description": "Read-only coupon validation & authoritative server-side pricing calculation (subtotal, discount, total in piasters). Rate limited (30 / 15 min / IP)."
 					}
 				},
 				{
@@ -584,6 +653,19 @@
 					}
 				},
 				{
+					"name": "Owner Get Coupon by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/coupons/{{couponId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "coupons", "{{couponId}}"]
+						},
+						"description": "Retrieves a single coupon by ID."
+					}
+				},
+				{
 					"name": "Owner Create Coupon",
 					"request": {
 						"method": "POST",
@@ -595,14 +677,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"code\": \"PROMO20\",\n  \"discountType\": \"percentage\",\n  \"discountValue\": 20,\n  \"maxUses\": 50,\n  \"expiresAt\": \"2026-12-31T23:59:59.000Z\",\n  \"isActive\": true\n}"
+							"raw": "{\n  \"code\": \"LAUNCH10\",\n  \"type\": \"percent\",\n  \"value\": 10,\n  \"maxUses\": 50,\n  \"expiresAt\": \"2027-12-31T23:59:59.000Z\",\n  \"isActive\": true,\n  \"appliesToProjects\": []\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/owner/coupons",
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "coupons"]
 						},
-						"description": "Creates a coupon. Note: 100% discount coupons must have a finite maxUses."
+						"description": "Creates a coupon (`type`: `percent` [1..100] or `fixed` [piasters]). Note: 100% coupons MUST specify a finite `maxUses`."
 					}
 				},
 				{
@@ -617,7 +699,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"isActive\": false\n}"
+							"raw": "{\n  \"maxUses\": 100,\n  \"isActive\": true\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/owner/coupons/{{couponId}}",
@@ -657,14 +739,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"projectSlug\": \"{{projectSlug}}\",\n  \"packageKey\": \"starter\",\n  \"couponCode\": \"PROMO20\",\n  \"paymentMethod\": \"vodafone_cash\",\n  \"locale\": \"ar\",\n  \"customer\": {\n    \"fullName\": \"عمر فاروق\",\n    \"email\": \"customer@example.com\",\n    \"phone\": \"01011122233\",\n    \"gitProvider\": \"github\",\n    \"gitUsername\": \"omarfarooq\",\n    \"organization\": \"Tech Solutions\"\n  },\n  \"hp\": \"\"\n}"
+							"raw": "{\n  \"projectSlug\": \"{{projectSlug}}\",\n  \"packageKey\": \"standard\",\n  \"couponCode\": \"LAUNCH10\",\n  \"paymentMethod\": \"vodafone_cash\",\n  \"locale\": \"ar\",\n  \"customer\": {\n    \"fullName\": \"عمر فاروق\",\n    \"email\": \"customer@example.com\",\n    \"phone\": \"+201011122233\",\n    \"gitProvider\": \"github\",\n    \"gitUsername\": \"omarfarooq\",\n    \"organization\": \"Tech Solutions\"\n  }\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/orders",
 							"host": ["{{baseUrl}}"],
 							"path": ["orders"]
 						},
-						"description": "Creates a new order. Returns orderNumber and publicToken (the ONLY time token is returned). Includes honeypot field (hp) protection."
+						"description": "Creates a guest checkout order. Returns `orderNumber` and `publicToken` (the ONLY time the raw token is returned). Rate limited (15 / hour / IP)."
 					}
 				},
 				{
@@ -680,7 +762,7 @@
 								{ "key": "token", "value": "{{token}}" }
 							]
 						},
-						"description": "Tracks order status using orderNumber and query token. Rate limited with tokenGuessLimiter (20 failed guesses / 15 min / IP)."
+						"description": "Tracks order status using orderNumber and query token. Protected by tokenGuessLimiter (20 failed guesses / 15 min / IP)."
 					}
 				},
 				{
@@ -695,6 +777,11 @@
 									"key": "proof",
 									"type": "file",
 									"src": ""
+								},
+								{
+									"key": "reference",
+									"value": "VF-TXN-987654",
+									"type": "text"
 								}
 							]
 						},
@@ -706,7 +793,7 @@
 								{ "key": "token", "value": "{{token}}" }
 							]
 						},
-						"description": "Uploads receipt image/PDF for manual payment methods. Sets status to awaiting_review. Rate limited."
+						"description": "Uploads receipt image (JPEG/PNG/WebP) or PDF (max 5 MB, magic-byte validated) for manual payment methods when status is `pending_payment` or `rejected`."
 					}
 				},
 				{
@@ -721,7 +808,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"rating\": 5,\n  \"comment\": \"كود ممتاز ومنظم جداً ودعم فني متميز ومتابعة احترافية.\",\n  \"hp\": \"\"\n}"
+							"raw": "{\n  \"rating\": 5,\n  \"comment\": \"كود ممتاز ومنظم جداً ودعم فني متميز ومتابعة احترافية.\",\n  \"customerName\": \"عمر فاروق\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/orders/{{orderNumber}}/reviews?token={{token}}",
@@ -731,7 +818,7 @@
 								{ "key": "token", "value": "{{token}}" }
 							]
 						},
-						"description": "Submits review for paid/delivered order. Only one review per order."
+						"description": "Submits a verified buyer review for a `paid` or `delivered` order (one review per order). `customerName` is optional (defaults to order customer fullName) and masked on public endpoints."
 					}
 				},
 				{
@@ -740,18 +827,21 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/owner/orders?status=&paymentMethod=&search=&page=1&limit=20",
+							"raw": "{{baseUrl}}/owner/orders?status=&paymentMethod=&isFreeOrder=&search=&from=&to=&page=1&limit=20",
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "orders"],
 							"query": [
-								{ "key": "status", "value": "" },
-								{ "key": "paymentMethod", "value": "" },
+								{ "key": "status", "value": "", "description": "pending_payment | awaiting_review | paid | delivered | rejected | cancelled | refunded | expired" },
+								{ "key": "paymentMethod", "value": "", "description": "vodafone_cash | instapay | fawry | card" },
+								{ "key": "isFreeOrder", "value": "", "description": "true | false" },
 								{ "key": "search", "value": "" },
+								{ "key": "from", "value": "", "description": "ISO date string" },
+								{ "key": "to", "value": "", "description": "ISO date string" },
 								{ "key": "page", "value": "1" },
-								{ "key": "limit", "value": "20" }
+								{ "key": "limit", "value": "20", "description": "1..50" }
 							]
 						},
-						"description": "Owner orders list with status filters, customer search, and pagination."
+						"description": "Owner orders list with status, payment method, free-order, date range, search filters, and pagination."
 					}
 				},
 				{
@@ -764,29 +854,20 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "orders", "{{orderId}}"]
 						},
-						"description": "Detailed view of order including payment proof and status history."
+						"description": "Detailed view of an order including populated project summary, customer info, payment proof, delivery info, and statusHistory."
 					}
 				},
 				{
 					"name": "Owner Approve Order",
 					"request": {
 						"method": "PATCH",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"note\": \"Manual payment verified on Vodafone Cash wallet.\"\n}"
-						},
+						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/owner/orders/{{orderId}}/approve",
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "orders", "{{orderId}}", "approve"]
 						},
-						"description": "Approves manual payment. Transitions order to paid and executes onOrderPaid (sales counter, GitHub invite, emails)."
+						"description": "Approves manual payment from `awaiting_review` or `pending_payment` -> `paid` and runs onOrderPaid (sales counter, GitHub invite, customer email)."
 					}
 				},
 				{
@@ -808,11 +889,11 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "orders", "{{orderId}}", "reject"]
 						},
-						"description": "Rejects payment proof with reason. Notifies customer by email."
+						"description": "Rejects payment proof (`awaiting_review` -> `rejected`) with required `reason` (min 3 chars). Notifies customer by email."
 					}
 				},
 				{
-					"name": "Owner Deliver Order",
+					"name": "Owner Update Delivery",
 					"request": {
 						"method": "PATCH",
 						"header": [
@@ -823,14 +904,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"notes\": \"GitHub repository access granted to collaborator. Setup instructions delivered.\"\n}"
+							"raw": "{\n  \"repoAccess\": \"granted\",\n  \"notes\": \"GitHub repository access granted to collaborator. Setup instructions delivered.\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/owner/orders/{{orderId}}/delivery",
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "orders", "{{orderId}}", "delivery"]
 						},
-						"description": "Marks order as delivered."
+						"description": "Updates delivery status (`pending | granted | failed | manual`) and notes for `paid`/`delivered` orders. Setting `repoAccess: \"granted\"` marks the order as `delivered`."
 					}
 				},
 				{
@@ -845,14 +926,36 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"reason\": \"Customer requested full cancellation under money-back guarantee.\"\n}"
+							"raw": "{\n  \"note\": \"Customer requested full refund under 30-day guarantee.\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/owner/orders/{{orderId}}/refund",
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "orders", "{{orderId}}", "refund"]
 						},
-						"description": "Updates order status to refunded. (Status record only)."
+						"description": "Marks a `paid` or `delivered` order as `refunded` (status record only — does not issue an automatic Paymob refund)."
+					}
+				},
+				{
+					"name": "Owner Cleanup Expired Orders",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cardHours\": 24,\n  \"fawryHours\": 48,\n  \"manualHours\": 48\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/orders/cleanup-expired",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "orders", "cleanup-expired"]
+						},
+						"description": "Manually triggers abandoned `pending_payment` order expiration and atomically releases reserved coupon uses. All fields are optional (defaults: 24h card, 48h fawry, 48h manual)."
 					}
 				},
 				{
@@ -867,7 +970,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"type\": \"TRANSACTION\",\n  \"obj\": {\n    \"id\": 987654321,\n    \"order\": {\n      \"id\": 123456\n    },\n    \"amount_cents\": 400000,\n    \"currency\": \"EGP\",\n    \"success\": true,\n    \"pending\": false,\n    \"is_refunded\": false,\n    \"is_voided\": false\n  }\n}"
+							"raw": "{\n  \"type\": \"TRANSACTION\",\n  \"obj\": {\n    \"amount_cents\": 780000,\n    \"created_at\": \"2026-10-16T15:30:00.000Z\",\n    \"currency\": \"EGP\",\n    \"error_occured\": false,\n    \"has_parent_transaction\": false,\n    \"id\": 987654321,\n    \"integration_id\": 12345,\n    \"is_3d_secure\": true,\n    \"is_auth\": false,\n    \"is_capture\": false,\n    \"is_refunded\": false,\n    \"is_standalone_payment\": true,\n    \"is_voided\": false,\n    \"order\": {\n      \"id\": \"123456\",\n      \"merchant_order_id\": \"{{orderNumber}}\"\n    },\n    \"owner\": 100,\n    \"pending\": false,\n    \"source_data\": {\n      \"pan\": \"2346\",\n      \"sub_type\": \"MasterCard\",\n      \"type\": \"card\"\n    },\n    \"success\": true\n  }\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/payments/paymob/webhook?hmac=CALCULATED_HMAC_HEX",
@@ -877,7 +980,7 @@
 								{ "key": "hmac", "value": "CALCULATED_HMAC_HEX" }
 							]
 						},
-						"description": "Paymob transaction webhook. Validates SHA512 HMAC, verifies exact amount in piasters, checks status allow-list, executes onOrderPaid atomically, and returns 200 { received: true } or { idempotent: true }."
+						"description": "Paymob server-to-server transaction webhook. Validates 20-field SHA-512 HMAC, checks exact amount_cents & EGP currency, enforces payable status allow-list, and executes onOrderPaid atomically."
 					}
 				}
 			]
@@ -891,16 +994,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/owner/reviews?status=&page=1&limit=20",
+							"raw": "{{baseUrl}}/owner/reviews?projectId=&isPublished=&rating=&page=1&limit=20",
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "reviews"],
 							"query": [
-								{ "key": "status", "value": "" },
+								{ "key": "projectId", "value": "" },
+								{ "key": "isPublished", "value": "", "description": "true | false" },
+								{ "key": "rating", "value": "", "description": "1..5" },
 								{ "key": "page", "value": "1" },
-								{ "key": "limit", "value": "20" }
+								{ "key": "limit", "value": "20", "description": "1..50" }
 							]
 						},
-						"description": "Owner reviews moderation queue."
+						"description": "Owner reviews moderation queue with populated project & order info."
 					}
 				},
 				{
@@ -915,14 +1020,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"isPublished\": true\n}"
+							"raw": "{\n  \"isPublished\": true,\n  \"ownerResponse\": \"شكراً جزيلاً لتقييمك! سعداء بالتعامل معك.\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/owner/reviews/{{reviewId}}",
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "reviews", "{{reviewId}}"]
 						},
-						"description": "Toggle review publication status."
+						"description": "Toggle review visibility (`isPublished`) and/or attach an `ownerResponse` (max 2000 chars)."
 					}
 				},
 				{
@@ -935,7 +1040,7 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "reviews", "{{reviewId}}"]
 						},
-						"description": "Deletes inappropriate review."
+						"description": "Deletes a review permanently."
 					}
 				}
 			]
@@ -944,7 +1049,7 @@
 			"name": "Inquiries",
 			"item": [
 				{
-					"name": "Public Submit Inquiry",
+					"name": "Public Submit Inquiry (JSON)",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -955,14 +1060,43 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"محمود حسن\",\n  \"email\": \"mahmoud@example.com\",\n  \"phone\": \"01099887766\",\n  \"subject\": \"استفسار عن تخصيص نظام نقاط البيع\",\n  \"message\": \"السلام عليكم، هل يمكن ربط النظام بفواتير الضرائب الإلكترونية المصرية وتخصيص الطابعات الحرارية؟\",\n  \"locale\": \"ar\",\n  \"hp\": \"\"\n}"
+							"raw": "{\n  \"name\": \"محمود حسن\",\n  \"email\": \"mahmoud@example.com\",\n  \"phone\": \"+201099887766\",\n  \"projectType\": \"lms\",\n  \"budgetRange\": \"10k_20k\",\n  \"timeline\": \"standard\",\n  \"message\": \"السلام عليكم، نحتاج بناء منصة تعليمية مخصصة مع حماية فيديوهات وربط بوابات الدفع المصرية.\",\n  \"projectSlug\": \"{{projectSlug}}\",\n  \"servicePlanId\": \"{{planId}}\",\n  \"locale\": \"ar\",\n  \"website\": \"\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/inquiries",
 							"host": ["{{baseUrl}}"],
 							"path": ["inquiries"]
 						},
-						"description": "Public contact form submission. Includes honeypot protection (hp) and strict rate limiting."
+						"description": "Public contact / start-a-project form (JSON mode). `subject` is optional (auto-generated from `projectType` if omitted). Includes honeypot (`hp`/`_hp`/`website`) and rate limiting (5 / 15 min / IP)."
+					}
+				},
+				{
+					"name": "Public Submit Inquiry (Multipart with Attachments)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{ "key": "name", "value": "Sara Hassan", "type": "text" },
+								{ "key": "email", "value": "sara@example.com", "type": "text" },
+								{ "key": "phone", "value": "+201122334455", "type": "text" },
+								{ "key": "projectType", "value": "custom_mern", "type": "text", "description": "lms | ecommerce | custom_mern | consulting | other" },
+								{ "key": "budgetRange", "value": "20k_plus", "type": "text", "description": "5k_10k | 10k_20k | 20k_plus | undecided" },
+								{ "key": "timeline", "value": "urgent", "type": "text", "description": "urgent | standard | flexible" },
+								{ "key": "subject", "value": "", "type": "text", "description": "Optional — auto-generated from projectType if omitted" },
+								{ "key": "message", "value": "Attached are our wireframes and project requirements PDF.", "type": "text" },
+								{ "key": "locale", "value": "en", "type": "text" },
+								{ "key": "website", "value": "", "type": "text", "description": "Honeypot — keep empty" },
+								{ "key": "attachments", "type": "file", "src": "", "description": "Up to 3 files: JPEG, PNG, WebP, or PDF, max 5 MB each" }
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/inquiries",
+							"host": ["{{baseUrl}}"],
+							"path": ["inquiries"]
+						},
+						"description": "Public contact form with optional file attachments (up to 3 files under field `attachments`: JPEG/PNG/WebP/PDF, max 5 MB each, validated by magic bytes, stored in Cloudinary `bytecraft/inquiries`)."
 					}
 				},
 				{
@@ -971,16 +1105,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/owner/inquiries?status=&page=1&limit=20",
+							"raw": "{{baseUrl}}/owner/inquiries?status=&projectType=&search=&page=1&limit=20",
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "inquiries"],
 							"query": [
-								{ "key": "status", "value": "" },
+								{ "key": "status", "value": "", "description": "new | read | in_progress | resolved | archived" },
+								{ "key": "projectType", "value": "", "description": "lms | ecommerce | custom_mern | consulting | other" },
+								{ "key": "search", "value": "" },
 								{ "key": "page", "value": "1" },
-								{ "key": "limit", "value": "20" }
+								{ "key": "limit", "value": "20", "description": "1..50" }
 							]
 						},
-						"description": "Owner list of inquiries."
+						"description": "Owner list of inquiries including projectType, budgetRange, timeline, and attachments."
 					}
 				},
 				{
@@ -993,7 +1129,7 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "inquiries", "{{inquiryId}}"]
 						},
-						"description": "Gets single inquiry details."
+						"description": "Gets single inquiry details including attachments. Automatically transitions status from `new` to `read`."
 					}
 				},
 				{
@@ -1008,14 +1144,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"status\": \"replied\",\n  \"ownerNotes\": \"تم الرد عبر الواتساب وتقديم عرض السعر المخصص.\"\n}"
+							"raw": "{\n  \"status\": \"in_progress\",\n  \"ownerNotes\": \"تم الرد عبر الواتساب وتقديم عرض السعر المخصص.\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/owner/inquiries/{{inquiryId}}",
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "inquiries", "{{inquiryId}}"]
 						},
-						"description": "Updates inquiry status (new, read, replied, archived) and internal owner notes."
+						"description": "Updates inquiry status (`new | read | in_progress | resolved | archived`) and internal `ownerNotes` (max 2000 chars)."
 					}
 				},
 				{
@@ -1028,7 +1164,7 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "inquiries", "{{inquiryId}}"]
 						},
-						"description": "Deletes inquiry."
+						"description": "Deletes inquiry and cleans up any uploaded attachments."
 					}
 				}
 			]
@@ -1037,7 +1173,7 @@
 			"name": "Uploads",
 			"item": [
 				{
-					"name": "Upload Images",
+					"name": "Upload Project Images",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -1056,7 +1192,7 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "uploads", "images"]
 						},
-						"description": "Uploads up to 10 project images (multipart field images). Only JPEG, PNG, WEBP allowed (max 5MB each). In production, uploads to Cloudinary."
+						"description": "Uploads up to 10 project images (multipart field `images`). Only JPEG, PNG, WebP allowed (max 5 MB each). Stored in Cloudinary folder `bytecraft/projects`."
 					}
 				},
 				{
@@ -1078,7 +1214,7 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "uploads"]
 						},
-						"description": "Deletes asset from Cloudinary."
+						"description": "Deletes an uploaded asset from Cloudinary (or local dev fallback) by `publicId`."
 					}
 				}
 			]

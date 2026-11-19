@@ -11,6 +11,17 @@ const mongoose = require('mongoose');
  * 4. Audit & Notes: Allows the owner to keep private administrative notes on client interactions.
  */
 
+const attachmentSchema = new mongoose.Schema(
+  {
+    url: { type: String, required: true, trim: true },
+    publicId: { type: String, required: true, trim: true },
+    originalName: { type: String, trim: true, default: '' },
+    mimeType: { type: String, trim: true, default: '' },
+    size: { type: Number, default: 0 },
+  },
+  { _id: false }
+);
+
 const inquirySchema = new mongoose.Schema(
   {
     name: {
@@ -30,6 +41,22 @@ const inquirySchema = new mongoose.Schema(
       trim: true,
       default: '',
     },
+    projectType: {
+      type: String,
+      enum: ['lms', 'ecommerce', 'custom_mern', 'consulting', 'other'],
+      default: 'other',
+      index: true,
+    },
+    budgetRange: {
+      type: String,
+      enum: ['5k_10k', '10k_20k', '20k_plus', 'undecided'],
+      default: 'undecided',
+    },
+    timeline: {
+      type: String,
+      enum: ['urgent', 'standard', 'flexible'],
+      default: 'standard',
+    },
     subject: {
       type: String,
       required: true,
@@ -39,6 +66,10 @@ const inquirySchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+    },
+    attachments: {
+      type: [attachmentSchema],
+      default: [],
     },
     project: {
       type: mongoose.Schema.Types.ObjectId,

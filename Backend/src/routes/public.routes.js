@@ -19,7 +19,7 @@ const {
   reviewLimiter,
   tokenGuessLimiter,
 } = require('../middleware/rateLimiters.middleware');
-const { uploadSingleProof } = require('../middleware/upload.middleware');
+const { uploadSingleProof, uploadInquiryAttachments } = require('../middleware/upload.middleware');
 const { publicProjectQuerySchema } = require('../validators/project.validator');
 const { publicServicePlanQuerySchema } = require('../validators/servicePlan.validator');
 const { validateCouponSchema } = require('../validators/coupon.validator');
@@ -126,10 +126,11 @@ router.post('/payments/paymob/webhook', paymentController.handlePaymobWebhook);
 // 8. Contact Inquiries (Public Leads)
 // ==========================================
 
-// POST /api/inquiries - Submit inquiry / contact request
+// POST /api/inquiries - Submit inquiry / contact request (supports JSON or multipart/form-data with up to 3 attachments)
 router.post(
   '/inquiries',
   inquiryLimiter,
+  uploadInquiryAttachments,
   validate(createInquirySchema),
   inquiryController.createInquiry
 );

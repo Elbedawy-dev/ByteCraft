@@ -199,7 +199,7 @@ const projectSchema = new mongoose.Schema(
     timestamps: true,
     toJSON: {
       transform(doc, ret) {
-        ret.id = ret._id;
+        ret.id = String(ret._id);
         delete ret._id;
         delete ret.__v;
         // Ensure privateRepo is stripped if it somehow was selected

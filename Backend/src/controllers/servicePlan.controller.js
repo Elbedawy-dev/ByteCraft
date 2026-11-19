@@ -9,7 +9,7 @@ const asyncHandler = require('../utils/asyncHandler');
  */
 
 const getServicePlans = asyncHandler(async (req, res) => {
-  const isPublic = req.baseUrl.startsWith('/api/service-plans');
+  const isPublic = !req.baseUrl.startsWith('/api/owner');
   const plans = await servicePlanService.listServicePlans({
     onlyActive: isPublic,
     group: req.query.group,

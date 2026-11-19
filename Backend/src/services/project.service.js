@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Project = require('../models/Project');
 const Category = require('../models/Category');
 const Order = require('../models/Order');
+const Review = require('../models/Review');
 const AppError = require('../utils/AppError');
 const { ERROR_CODES } = require('../config/constants');
 const { generateUniqueSlug } = require('../utils/slug');
@@ -34,14 +35,94 @@ class ProjectService {
   }
 
   /**
-   * Filter packages on a project so public clients only see active packages
+   * Computes published reviews summary ({ average, count }) for a batch of project IDs
+   * in a single aggregation query (avoids N+1 queries).
    */
-  _filterActivePackages(project) {
-    const plain = project.toObject ? project.toObject() : { ...project };
-    if (Array.isArray(plain.packages)) {
-      plain.packages = plain.packages.filter((p) => p.isActive !== false);
+  async _getReviewsSummaryMap(projectIds = []) {
+    const summaryMap = new Map();
+    if (!Array.isArray(projectIds) || projectIds.length === 0) {
+      return summaryMap;
     }
+
+    const objectIds = projectIds
+      .filter((id) => mongoose.Types.ObjectId.isValid(id))
+      .map((id) => (id instanceof mongoose.Types.ObjectId ? id : new mongoose.Types.ObjectId(id)));
+
+    if (objectIds.length === 0) {
+      return summaryMap;
+    }
+
+    const stats = await Review.aggregate([
+      {
+        $match: {
+          project: { $in: objectIds },
+          isPublished: true,
+        },
+      },
+      {
+        $group: {
+          _id: '$project',
+          average: { $avg: '$rating' },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    for (const row of stats) {
+      summaryMap.set(String(row._id), {
+        average: Math.round(row.average * 10) / 10,
+        count: row.count,
+      });
+    }
+
+    return summaryMap;
+  }
+
+  /**
+   * Formats a project for public API responses:
+   * - Exposes `id` consistently (strips `_id` and `__v`)
+   * - Filters `packages` to active packages only
+   * - Always strips `privateRepo`
+   * - Computes `startingPrice` (cheapest active package price in piasters)
+   * - Attaches `reviewsSummary: { average, count }` (published reviews only)
+   */
+  _formatPublicProject(project, reviewsSummary = { average: 0, count: 0 }) {
+    const plain = project.toJSON ? project.toJSON() : { ...project };
+
+    if (!plain.id && plain._id) {
+      plain.id = String(plain._id);
+    } else if (plain.id) {
+      plain.id = String(plain.id);
+    }
+    delete plain._id;
+    delete plain.__v;
     delete plain.privateRepo;
+
+    // Ensure populated category also exposes consistent `id`
+    if (plain.category && typeof plain.category === 'object') {
+      if (!plain.category.id && plain.category._id) {
+        plain.category = { ...plain.category, id: String(plain.category._id) };
+      } else if (plain.category.id) {
+        plain.category = { ...plain.category, id: String(plain.category.id) };
+      }
+      delete plain.category._id;
+      delete plain.category.__v;
+    }
+
+    const activePackages = Array.isArray(plain.packages)
+      ? plain.packages.filter((p) => p.isActive !== false)
+      : [];
+
+    plain.packages = activePackages;
+    plain.startingPrice =
+      activePackages.length > 0
+        ? Math.min(...activePackages.map((p) => p.price))
+        : null;
+    plain.reviewsSummary = {
+      average: reviewsSummary?.average || 0,
+      count: reviewsSummary?.count || 0,
+    };
+
     return plain;
   }
 
@@ -298,35 +379,75 @@ class ProjectService {
       filter.packages = { $elemMatch: priceFilter };
     }
 
-    // Sorting
-    let sort = { sortOrder: 1, createdAt: -1 };
-    switch (query.sort) {
-      case 'popular':
+    // Fetch paginated projects & total count
+    let projects = [];
+    let total = 0;
+
+    if (query.sort === 'price_asc' || query.sort === 'price_desc') {
+      // Sort accurately by the cheapest ACTIVE package price (startingPrice)
+      const priceDir = query.sort === 'price_asc' ? 1 : -1;
+      const [aggIds, count] = await Promise.all([
+        Project.aggregate([
+          { $match: filter },
+          {
+            $addFields: {
+              _computedStartingPrice: {
+                $min: {
+                  $map: {
+                    input: {
+                      $filter: {
+                        input: '$packages',
+                        as: 'pkg',
+                        cond: { $ne: ['$$pkg.isActive', false] },
+                      },
+                    },
+                    as: 'activePkg',
+                    in: '$$activePkg.price',
+                  },
+                },
+              },
+            },
+          },
+          { $sort: { _computedStartingPrice: priceDir, createdAt: -1 } },
+          { $skip: skip },
+          { $limit: limit },
+          { $project: { _id: 1 } },
+        ]),
+        Project.countDocuments(filter),
+      ]);
+
+      total = count;
+      const orderedIds = aggIds.map((doc) => doc._id);
+      if (orderedIds.length > 0) {
+        const docs = await Project.find({ _id: { $in: orderedIds } }).populate('category', 'key name');
+        const docMap = new Map(docs.map((d) => [String(d._id), d]));
+        projects = orderedIds.map((id) => docMap.get(String(id))).filter(Boolean);
+      }
+    } else {
+      let sort = { createdAt: -1 };
+      if (query.sort === 'popular') {
         sort = { 'stats.purchases': -1, 'stats.views': -1 };
-        break;
-      case 'price_asc':
-        sort = { 'packages.0.price': 1 };
-        break;
-      case 'price_desc':
-        sort = { 'packages.0.price': -1 };
-        break;
-      case 'newest':
-      default:
-        sort = { createdAt: -1 };
-        break;
+      }
+
+      const [docs, count] = await Promise.all([
+        Project.find(filter)
+          .populate('category', 'key name')
+          .sort(sort)
+          .skip(skip)
+          .limit(limit),
+        Project.countDocuments(filter),
+      ]);
+      projects = docs;
+      total = count;
     }
 
-    const [projects, total] = await Promise.all([
-      Project.find(filter)
-        .populate('category', 'key name')
-        .sort(sort)
-        .skip(skip)
-        .limit(limit),
-      Project.countDocuments(filter),
-    ]);
+    // Compute published review summaries in a single batch query
+    const reviewsSummaryMap = await this._getReviewsSummaryMap(projects.map((p) => p._id));
 
-    // Format output: strip inactive packages and ensure privateRepo is NEVER exposed
-    const sanitizedProjects = projects.map((p) => this._filterActivePackages(p));
+    // Format output: consistent `id`, active packages only, startingPrice, reviewsSummary, NO privateRepo
+    const sanitizedProjects = projects.map((p) =>
+      this._formatPublicProject(p, reviewsSummaryMap.get(String(p._id)))
+    );
 
     return {
       projects: sanitizedProjects,
@@ -358,7 +479,8 @@ class ProjectService {
       await project.save();
     }
 
-    return this._filterActivePackages(project);
+    const reviewsSummaryMap = await this._getReviewsSummaryMap([project._id]);
+    return this._formatPublicProject(project, reviewsSummaryMap.get(String(project._id)));
   }
 
   /**

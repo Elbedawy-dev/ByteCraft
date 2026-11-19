@@ -109,7 +109,7 @@ class DashboardService {
     // 5. Top 5 Projects by Purchases
     const topProjects = await Project.find({ status: { $ne: 'archived' } })
       .select('title slug thumbnail stats.purchases stats.views category')
-      .populate('category', 'name slug')
+      .populate('category', 'name key')
       .sort({ 'stats.purchases': -1, createdAt: -1 })
       .limit(5)
       .lean();
@@ -125,7 +125,7 @@ class DashboardService {
 
     // 7. Recent 8 Inquiries
     const recentInquiries = await Inquiry.find({})
-      .select('name email subject status createdAt')
+      .select('name email subject projectType budgetRange timeline status createdAt')
       .sort({ createdAt: -1 })
       .limit(8)
       .lean();

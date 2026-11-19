@@ -32,7 +32,13 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const PORT = 5001;
 const BASE_URL = `http://localhost:${PORT}/api`;
-const TEST_DB_URI = 'mongodb://127.0.0.1:27017/bytecraft_test';
+const LOCAL_TEST_DB_URI = 'mongodb://127.0.0.1:27017/bytecraft_test';
+let TEST_DB_URI = (process.env.MONGODB_URI || LOCAL_TEST_DB_URI).trim();
+if (TEST_DB_URI.includes('.mongodb.net/')) {
+  TEST_DB_URI = TEST_DB_URI.replace(/\.mongodb\.net\/([^?]+)/, '.mongodb.net/bytecraft_test');
+} else {
+  TEST_DB_URI = TEST_DB_URI.replace(/\/([^/?]+)(\?|$)/, '/bytecraft_test$2');
+}
 const PAYMOB_HMAC_SECRET = process.env.PAYMOB_HMAC_SECRET || 'test_hmac_secret_phase7_hardening';
 
 // Calculate Paymob HMAC
@@ -94,8 +100,12 @@ async function runTests() {
     }
   }
 
-  // Connect to DB directly for model fixtures and assertions
-  await mongoose.connect(TEST_DB_URI);
+  // Connect to DB directly (matching testServer.js) for model fixtures and assertions
+  try {
+    await mongoose.connect(TEST_DB_URI, { serverSelectionTimeoutMS: 3000 });
+  } catch {
+    await mongoose.connect(LOCAL_TEST_DB_URI);
+  }
   const OrderModel = require('../src/models/Order');
   const ProjectModel = require('../src/models/Project');
   const CouponModel = require('../src/models/Coupon');

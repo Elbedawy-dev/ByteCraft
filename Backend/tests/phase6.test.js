@@ -8,7 +8,13 @@ const bcrypt = require('bcryptjs');
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const BASE_URL = 'http://localhost:5001/api';
-const TEST_DB_URI = 'mongodb://127.0.0.1:27017/bytecraft_test';
+const LOCAL_TEST_DB_URI = 'mongodb://127.0.0.1:27017/bytecraft_test';
+let TEST_DB_URI = (process.env.MONGODB_URI || LOCAL_TEST_DB_URI).trim();
+if (TEST_DB_URI.includes('.mongodb.net/')) {
+  TEST_DB_URI = TEST_DB_URI.replace(/\.mongodb\.net\/([^?]+)/, '.mongodb.net/bytecraft_test');
+} else {
+  TEST_DB_URI = TEST_DB_URI.replace(/\/([^/?]+)(\?|$)/, '/bytecraft_test$2');
+}
 const OWNER_EMAIL = (process.env.OWNER_EMAIL || 'moaazelbedawy@gmail.com').trim();
 const OWNER_PASSWORD = (process.env.OWNER_PASSWORD || 'TestPassword123!').trim();
 
@@ -37,8 +43,12 @@ async function runTests() {
   let testReviewId = '';
 
   try {
-    // 0. Ensure direct connection to bytecraft_test for DB audits
-    await mongoose.connect(TEST_DB_URI);
+    // 0. Ensure direct connection to bytecraft_test (matching testServer.js) for DB audits
+    try {
+      await mongoose.connect(TEST_DB_URI, { serverSelectionTimeoutMS: 3000 });
+    } catch {
+      await mongoose.connect(LOCAL_TEST_DB_URI);
+    }
     const OrderModel = require('../src/models/Order');
     const ProjectModel = require('../src/models/Project');
     const CouponModel = require('../src/models/Coupon');

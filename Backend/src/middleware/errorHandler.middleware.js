@@ -87,11 +87,17 @@ function errorHandler(err, req, res, next) {
     if (err.code === 'LIMIT_FILE_SIZE') {
       code = ERROR_CODES.FILE_TOO_LARGE;
       message = 'File size exceeds maximum allowed limit of 5MB';
+    } else if (err.code === 'LIMIT_FILE_COUNT') {
+      code = ERROR_CODES.VALIDATION_ERROR;
+      message = 'Too many files uploaded. Maximum allowed file count exceeded.';
+    } else if (err.code === 'LIMIT_UNEXPECTED_FILE') {
+      code = ERROR_CODES.VALIDATION_ERROR;
+      message = `Unexpected file field or file count limit exceeded${err.field ? ` (${err.field})` : ''}`;
     } else {
       code = ERROR_CODES.VALIDATION_ERROR;
       message = `Upload error: ${err.message}`;
     }
-    details = [{ field: err.field || 'images', message }];
+    details = [{ field: err.field || 'files', message }];
   }
 
   // In development, log the error stack for debugging
