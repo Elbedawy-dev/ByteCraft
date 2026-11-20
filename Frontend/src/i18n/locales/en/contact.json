@@ -46,8 +46,7 @@
       },
       "phone": {
         "label": "Phone / WhatsApp",
-        "placeholder": "+20 10 1234 5678",
-        "hint": "Used for fast follow-up via WhatsApp or call"
+        "placeholder": "+20 10 1234 5678"
       },
       "email": {
         "label": "Email Address",

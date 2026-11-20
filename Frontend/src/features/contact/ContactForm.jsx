@@ -426,7 +426,6 @@ export function ContactForm() {
               label={t('form.fields.phone.label')}
               required
               error={errors.phone?.message}
-              hint={t('form.fields.phone.hint')}
             >
               <Input
                 {...register('phone')}

@@ -116,14 +116,23 @@ export function CustomerInfoSection({ register, errors, watch, disabled = false 
           />
         </FormField>
 
-        <FormField
-          id="checkout-gitProvider"
-          label={t('customer.gitProviderLabel')}
-          hint={t('customer.gitProviderHint')}
-          error={errors.gitProvider?.message}
-          required
-        >
-          <fieldset className="border-0 p-0 m-0" disabled={disabled}>
+        <div className="flex flex-col">
+          <span className="text-sm font-medium text-on-surface mb-2 flex items-center gap-1 select-none">
+            <span>{t('customer.gitProviderLabel')}</span>
+            <span className="text-primary font-bold text-base leading-none" aria-hidden="true">
+              *
+            </span>
+          </span>
+          <fieldset
+            id="checkout-gitProvider"
+            className="border-0 p-0 m-0"
+            disabled={disabled}
+            aria-describedby={
+              errors.gitProvider?.message
+                ? 'checkout-gitProvider-error'
+                : 'checkout-gitProvider-hint'
+            }
+          >
             <legend className="sr-only">{t('aria.gitProviderGroup')}</legend>
             <div className="grid grid-cols-2 gap-3">
               {GIT_PROVIDERS.map(({ key, icon }) => {
@@ -158,7 +167,15 @@ export function CustomerInfoSection({ register, errors, watch, disabled = false 
               })}
             </div>
           </fieldset>
-        </FormField>
+          <p id="checkout-gitProvider-hint" className="text-xs text-on-surface-variant mt-2">
+            {t('customer.gitProviderHint')}
+          </p>
+          {errors.gitProvider?.message && (
+            <p id="checkout-gitProvider-error" role="alert" className="text-xs text-error mt-1">
+              {errors.gitProvider.message}
+            </p>
+          )}
+        </div>
 
         <FormField
           id="checkout-gitUsername"

@@ -55,6 +55,8 @@ export function OrderSummaryContent({
   const appliedCode = appliedPricing?.couponCode || null;
 
   const couponInputId = `checkout-coupon-${idPrefix}`;
+  const couponBtnId = `checkout-coupon-btn-${idPrefix}`;
+  const couponRemoveBtnId = `checkout-coupon-remove-${idPrefix}`;
   const couponMsgId = `checkout-coupon-msg-${idPrefix}`;
   const whatsAppUrl = buildWhatsAppUrl(contactMeta?.whatsapp);
 
@@ -182,6 +184,7 @@ export function OrderSummaryContent({
               </span>
             </div>
             <Button
+              id={couponRemoveBtnId}
               type="button"
               variant="ghost"
               size="sm"
@@ -211,6 +214,7 @@ export function OrderSummaryContent({
               />
             </div>
             <Button
+              id={couponBtnId}
               type="button"
               variant="secondary"
               size="md"

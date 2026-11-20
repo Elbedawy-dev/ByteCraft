@@ -56,10 +56,11 @@ export default function CheckoutPage() {
   const { lang } = useLang();
   const toast = useToast();
 
-  const { data: meta, isLoading: isMetaLoading } = useMeta();
+  const { data: meta, isLoading: isMetaLoading, isPending: isMetaPending } = useMeta();
   const {
     data: project,
     isLoading: isProjectLoading,
+    isPending: isProjectPending,
     isError: isProjectError,
     error: projectError,
     refetch: refetchProject,
@@ -334,8 +335,8 @@ export default function CheckoutPage() {
     );
   }
 
-  // 2. Loading Project
-  if (isProjectLoading) {
+  // 2. Loading Project or Meta
+  if (isProjectLoading || isProjectPending || isMetaLoading || isMetaPending) {
     return (
       <div className="relative w-full max-w-[1280px] mx-auto px-margin-mobile md:px-margin pt-6 pb-16">
         <AmbientGlow />
@@ -355,9 +356,9 @@ export default function CheckoutPage() {
   // 3. Project Load Error or 404
   if (isProjectError || !project) {
     const isNotFound =
-      !project ||
-      (projectError instanceof ApiError &&
-        (projectError.status === 404 || projectError.code === 'NOT_FOUND'));
+      projectError instanceof ApiError
+        ? projectError.status === 404 || projectError.code === 'NOT_FOUND'
+        : !project && !isProjectError;
 
     return (
       <div className="relative w-full max-w-[1280px] mx-auto px-margin-mobile md:px-margin py-10 sm:py-16">
