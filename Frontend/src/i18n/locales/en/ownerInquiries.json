@@ -1,0 +1,111 @@
+{
+  "title": "Inquiries Management",
+  "subtitle": "Track custom engineering leads, inspect attachments, and manage follow-up statuses.",
+  "pageTitle": "Inquiries Management — ByteCraft",
+  "stats": {
+    "total": "Total Inquiries",
+    "unreadBadge": "Unread",
+    "showing": "Showing {{from}} - {{to}} of {{total}}"
+  },
+  "filters": {
+    "searchPlaceholder": "Search by name, email, or subject...",
+    "searchLabel": "Search inquiries",
+    "statusLabel": "Status",
+    "allStatuses": "All Statuses",
+    "projectTypeLabel": "Project Type",
+    "allProjectTypes": "All Types",
+    "clearFilters": "Clear Filters"
+  },
+  "status": {
+    "new": "New",
+    "read": "Read",
+    "in_progress": "In Progress",
+    "resolved": "Resolved",
+    "archived": "Archived"
+  },
+  "projectType": {
+    "lms": "LMS Platform",
+    "ecommerce": "E-Commerce",
+    "custom_mern": "Custom MERN App",
+    "consulting": "Consulting",
+    "other": "Other"
+  },
+  "budgetRange": {
+    "5k_10k": "EGP 5,000 – 10,000",
+    "10k_20k": "EGP 10,000 – 20,000",
+    "20k_plus": "EGP 20,000+",
+    "undecided": "Undecided"
+  },
+  "timeline": {
+    "urgent": "Urgent",
+    "standard": "Standard",
+    "flexible": "Flexible"
+  },
+  "table": {
+    "regionLabel": "Inquiries table",
+    "sender": "Sender",
+    "subjectType": "Subject & Type",
+    "budgetTimeline": "Budget & Timeline",
+    "attachments": "Files",
+    "status": "Status",
+    "date": "Date",
+    "actions": "Actions",
+    "viewDetails": "View Details",
+    "replyEmail": "Email",
+    "replyWhatsApp": "WhatsApp",
+    "delete": "Delete"
+  },
+  "drawer": {
+    "title": "Inquiry Details",
+    "close": "Close inquiry details",
+    "quickReply": "Quick Reply",
+    "replyByEmail": "Reply by Email",
+    "replyByWhatsApp": "Reply by WhatsApp",
+    "whatsappPrefill": "Hi {{name}}, following up on your ByteCraft inquiry: {{subject}}",
+    "sections": {
+      "contact": "Contact Details",
+      "scope": "Project Specifications",
+      "message": "Message",
+      "attachments": "Attachments ({{count}})",
+      "management": "Status & Owner Notes"
+    },
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone / WhatsApp",
+      "noPhone": "Not provided",
+      "locale": "Locale",
+      "createdAt": "Submitted At",
+      "projectType": "Project Type",
+      "budget": "Estimated Budget",
+      "timeline": "Timeline",
+      "linkedProject": "Referenced Project",
+      "linkedPlan": "Referenced Service Plan",
+      "deliveryDays": "{{days}} days delivery",
+      "statusLabel": "Update Status",
+      "ownerNotes": "Private Owner Notes",
+      "ownerNotesPlaceholder": "Record call summaries, quote details, or follow-up reminders...",
+      "notesLimit": "{{count}} / 2000 chars",
+      "saveNotes": "Save Notes",
+      "openAttachment": "Open",
+      "downloadAttachment": "Download",
+      "noAttachments": "No attachments were uploaded with this inquiry."
+    }
+  },
+  "messages": {
+    "statusUpdated": "Inquiry status updated.",
+    "notesSaved": "Owner notes saved successfully.",
+    "deleted": "Inquiry deleted successfully."
+  },
+  "deleteDialog": {
+    "title": "Delete Inquiry",
+    "message": "Are you sure you want to permanently delete the inquiry from \"{{name}}\" and any attached files?",
+    "confirm": "Delete Inquiry"
+  },
+  "empty": {
+    "title": "No matching inquiries",
+    "description": "Try adjusting your search or filter criteria.",
+    "noInquiriesTitle": "No inquiries yet",
+    "noInquiriesDescription": "Custom build requests and contact leads will appear here once submitted."
+  }
+}

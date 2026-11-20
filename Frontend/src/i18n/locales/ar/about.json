@@ -1,0 +1,219 @@
+{
+  "meta": {
+    "title": "عن بايت كرافت | بايت كرافت"
+  },
+  "hero": {
+    "eyebrow": "هندسة برمجية متقدمة • بايت كرافت",
+    "titleBefore": "نصنع حلول ويب ذكية وسريعة ",
+    "titleHighlight": "تنقل أعمالك",
+    "titleAfter": " إلى المستوى التالي"
+  },
+  "story": {
+    "whoWeAre": {
+      "title": "عن ByteCraft",
+      "bodyBefore": "استوديو تطوير برمجيات ويب مستقل مقره القاهرة، متخصص في هندسة تطبيقات الويب فائقة السرعة والقابلية للتوسع باستخدام تقنيات الـ ",
+      "highlight": "MERN Stack",
+      "bodyAfter": " الحديثة والأنظمة السحابية الموثوقة."
+    },
+    "mission": {
+      "title": "رسالتنا التقنية",
+      "body": "سد الفجوة العميقة بين القوالب الجاهزة البطيئة والحلول البرمجية الباهظة غير المبررة. نعمل على توفير كود عالي الجودة ومعماريات برمجية نظيفة وقابلة للصيانة بأسعار عادلة واستثمار مجدٍ يناسب متطلبات نمو السوق العربي والشركات الناشئة الطموحة."
+    },
+    "methodology": {
+      "title": "منهجية البناء في الاستوديو",
+      "items": [
+        {
+          "icon": "code_blocks",
+          "accent": "primary",
+          "title": "كود نظيف Clean Code",
+          "description": "معايير هندسية صارمة وتوثيق تفصيلي لكل وحدة."
+        },
+        {
+          "icon": "touch_app",
+          "accent": "secondary",
+          "title": "واجهات تفاعلية UX",
+          "description": "تجارب مستخدم انسيابية تضمن أعلى نسب تحويل وتفاعل."
+        },
+        {
+          "icon": "speed",
+          "accent": "tertiary",
+          "title": "أداء استثنائي",
+          "description": "زمن تحميل فائق السرعة واستهلاك أمثل لموارد الخوادم."
+        }
+      ]
+    }
+  },
+  "owner": {
+    "name": "مؤسس بايت كرافت",
+    "initials": "BC",
+    "photoAlt": "صورة مؤسس ومهندس المعمارية البرمجية في بايت كرافت",
+    "role": "Lead Fullstack Architect & Founder",
+    "availabilityBadge": "متاح للاستشارات التقنية",
+    "experience": "أكثر من 7 سنوات خبرة برمجية",
+    "bio": "متخصص في هندسة تطبيقات الويب المركبة، تصميم وبناء قواعد البيانات ذات الكثافة العالية، وإدارة مسارات النشر السحابي الآلي. قاد وأشرف على تنفيذ أكثر من 45 مشروعاً برمجياً ناجحاً داخل مصر وبمنطقة الخليج العربي.",
+    "tags": [
+      "Fullstack Arch",
+      "System Design",
+      "Cloud DevOps"
+    ],
+    "locationPrefix": "مقر العمل:",
+    "defaultLocation": "القاهرة، جمهورية مصر العربية",
+    "requestChat": "طلب محادثة",
+    "contactChannelsLabel": "قنوات التواصل المباشر",
+    "channels": {
+      "github": "جيت هاب",
+      "linkedin": "لينكدإن",
+      "twitter": "إكس (تويتر)",
+      "facebook": "فيسبوك",
+      "whatsapp": "واتساب",
+      "email": "البريد الإلكتروني",
+      "phone": "اتصال هاتفي"
+    }
+  },
+  "stats": [
+    {
+      "id": "shipments",
+      "icon": "deployed_code",
+      "codeLabel": "Shipments",
+      "value": "+45",
+      "title": "مشروع ناجح تم تسليمه",
+      "description": "منصات تعليمية، لوحات تحكم، وأنظمة دفع مكتملة",
+      "accent": "primary"
+    },
+    {
+      "id": "satisfaction",
+      "icon": "sentiment_very_satisfied",
+      "codeLabel": "Satisfaction",
+      "value": "99.8%",
+      "title": "رضا وثقة العملاء",
+      "description": "شراكات عمل ممتدة وتكرار طلب الخدمات",
+      "accent": "secondary"
+    },
+    {
+      "id": "latency",
+      "icon": "bolt",
+      "codeLabel": "Latency",
+      "value": "100ms",
+      "title": "متوسط سرعة استجابة الـ API",
+      "description": "استعلامات محسنة وكاشينغ ذكي عبر Redis",
+      "accent": "tertiary"
+    },
+    {
+      "id": "uptime",
+      "icon": "support_agent",
+      "codeLabel": "Uptime",
+      "value": "24/7",
+      "title": "جاهزية الدعم الفني",
+      "description": "مراقبة مستمرة واستجابة فورية للحالات الطارئة",
+      "accent": "primary"
+    }
+  ],
+  "skills": {
+    "eyebrow": "الترسانة البرمجية",
+    "title": "المهارات والتقنيات الأساسية",
+    "subtitle": "نعتمد فقط على التقنيات الحديثة المستقرة التي تضمن أعلى مستويات المرونة والأمان وسرعة الإطلاق دون أعباء تراكمية.",
+    "categories": [
+      {
+        "id": "frontend",
+        "icon": "devices",
+        "accent": "primary",
+        "title": "واجهات المستخدم",
+        "subtitle": "Frontend Architecture",
+        "footer": "Core: 100% Responsive & Arabic RTL",
+        "items": [
+          { "name": "React.js", "tag": "v18+ Hooks", "accent": "primary" },
+          { "name": "Next.js", "tag": "SSR & App Router", "accent": "neutral" },
+          { "name": "React Query / Zustand", "tag": "State Engine", "accent": "neutral" },
+          { "name": "TailwindCSS", "tag": "RTL Design System", "accent": "secondary" }
+        ]
+      },
+      {
+        "id": "backend",
+        "icon": "dns",
+        "accent": "secondary",
+        "title": "الخوادم والمنطق",
+        "subtitle": "Backend & Microservices",
+        "footer": "Throughput: Low Overhead Endpoints",
+        "items": [
+          { "name": "Node.js", "tag": "High Concurrency", "accent": "primary" },
+          { "name": "Express.js", "tag": "Modular Routing", "accent": "neutral" },
+          { "name": "RESTful Architecture", "tag": "Strict Validation", "accent": "neutral" },
+          { "name": "WebSockets", "tag": "Real-Time Streams", "accent": "secondary" }
+        ]
+      },
+      {
+        "id": "dataCloud",
+        "icon": "cloud_queue",
+        "accent": "tertiary",
+        "title": "البيانات والسحابة",
+        "subtitle": "Data Storage & Infra",
+        "footer": "Resilience: Automated Backups",
+        "items": [
+          { "name": "MongoDB Atlas", "tag": "NoSQL Schema", "accent": "primary" },
+          { "name": "Redis Cache", "tag": "In-Memory Engine", "accent": "neutral" },
+          { "name": "Docker", "tag": "Containerized Apps", "accent": "neutral" },
+          { "name": "AWS & VPS", "tag": "Cloud Hosting", "accent": "secondary" }
+        ]
+      },
+      {
+        "id": "securityPayments",
+        "icon": "security",
+        "accent": "primary",
+        "title": "الأمان والدفع",
+        "subtitle": "Auth & FinTech APIs",
+        "footer": "Compliance: Hardened Workflows",
+        "items": [
+          { "name": "JWT & OAuth 2.0", "tag": "Encrypted Sessions", "accent": "primary" },
+          { "name": "Paymob & Fawry", "tag": "EG Gateways", "accent": "neutral" },
+          { "name": "Vodafone Cash / InstaPay", "tag": "Direct Checkout", "accent": "neutral" },
+          { "name": "Stripe / Tap", "tag": "GCC & Global", "accent": "secondary" }
+        ]
+      }
+    ]
+  },
+  "lifecycle": {
+    "eyebrow": "منهجية الإنجاز المبرمجة",
+    "title": "دورة حياة التطوير في ByteCraft",
+    "subtitle": "خطوات واضحة وخارطة طريق شفافة من الفكرة وحتى الإطلاق، دون تعقيدات أو مفاجآت تقنية.",
+    "steps": [
+      {
+        "number": "01",
+        "icon": "architecture",
+        "accent": "primary",
+        "title": "تحليل المتطلبات وهندسة البيانات",
+        "description": "جلسة نقاش شاملة لفهم نموذج العمل، وتحديد الكيانات البرمجية (Schemas)، واختيار أفضل بنية تحتية سحابية تحقق السرعة وتخفض تكلفة الاستضافة.",
+        "deliverable": "مخطط المعمارية + ERD Schema"
+      },
+      {
+        "number": "02",
+        "icon": "palette",
+        "accent": "secondary",
+        "title": "تصميم الواجهات وتجربة الاستخدام UX/UI",
+        "description": "بناء نماذج تفاعلية عالية الدقة تركز على انسيابية رحلة العميل باللغتين العربية والإنجليزية، وتطبيق نظام Design System متناسق مع هوية العلامة.",
+        "deliverable": "نموذج تفاعلي Prototype معتمد"
+      },
+      {
+        "number": "03",
+        "icon": "code",
+        "accent": "tertiary",
+        "title": "البرمجة والربط واختبار الأمان",
+        "description": "تحويل التصاميم إلى كود إنتاجي نظيف، ربط بوابات الدفع وقواعد البيانات، وإجراء اختبارات أمان واختراق (Security Audits) لضمان متانة الكود.",
+        "deliverable": "بيئة Staging تجريبية للاختبار"
+      },
+      {
+        "number": "04",
+        "icon": "publish",
+        "accent": "primary",
+        "title": "النشر والتدريب والمتابعة",
+        "description": "إطلاق المنصة على الخوادم السحابية مع شهادات الأمان SSL، تدريب فريقك على لوحة التحكم، وتوفير فترة دعم فني مجانية لضمان استقرار العمليات.",
+        "deliverable": "تسليم السورس كود + رعاية مستمرة"
+      }
+    ]
+  },
+  "cta": {
+    "title": "جاهز لنقل مشروعك من فكرة إلى منصة حية؟",
+    "subtitle": "احصل على استشارة تقنية ودراسة أولية لمتطلبات نظامك البرمجي مجاناً.",
+    "primaryAction": "ابدأ استشارتك التقنية",
+    "secondaryAction": "تصفح المنصات الجاهزة"
+  }
+}

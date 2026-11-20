@@ -1,0 +1,58 @@
+{
+  "title": "Reviews Moderation",
+  "subtitle": "Moderate verified buyer reviews, toggle public visibility, and publish official studio replies.",
+  "pageTitle": "Reviews Moderation — ByteCraft",
+  "stats": {
+    "total": "Total Reviews",
+    "showing": "Showing {{from}} - {{to}} of {{total}}"
+  },
+  "filters": {
+    "visibilityLabel": "Visibility",
+    "all": "All Reviews",
+    "published": "Published",
+    "hidden": "Hidden",
+    "ratingLabel": "Rating",
+    "allRatings": "All Ratings",
+    "stars": "{{count}} Stars",
+    "starSingle": "1 Star",
+    "clearFilters": "Clear Filters"
+  },
+  "card": {
+    "verifiedBuyer": "Verified Buyer",
+    "orderNumber": "Order",
+    "project": "Project",
+    "viewProject": "View Project",
+    "unknownProject": "Project unavailable",
+    "publishedBadge": "Published",
+    "hiddenBadge": "Hidden",
+    "togglePublish": "Publish Review",
+    "toggleHide": "Hide Review",
+    "visibilitySwitchLabel": "Publicly visible",
+    "moderatedAt": "Moderated {{date}}",
+    "ownerResponseTitle": "Studio Response",
+    "addResponse": "Add Reply",
+    "editResponse": "Edit Reply",
+    "responsePlaceholder": "Write an official public reply to appear below this review...",
+    "responseLimit": "{{count}} / 2000 chars",
+    "saveResponse": "Save Reply",
+    "clearResponse": "Clear Reply",
+    "delete": "Delete Review"
+  },
+  "messages": {
+    "published": "Review published and visible on the project page.",
+    "hidden": "Review hidden from public project listings.",
+    "responseSaved": "Owner response saved successfully.",
+    "deleted": "Review permanently deleted."
+  },
+  "deleteDialog": {
+    "title": "Delete Review Permanently",
+    "message": "Are you sure you want to permanently delete the review from \"{{name}}\"? Project rating summaries will update immediately.",
+    "confirm": "Delete Review"
+  },
+  "empty": {
+    "title": "No matching reviews",
+    "description": "No reviews matched your current visibility or rating filter.",
+    "noReviewsTitle": "No reviews yet",
+    "noReviewsDescription": "Verified buyer reviews will appear here once customers submit feedback."
+  }
+}

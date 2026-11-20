@@ -1,0 +1,109 @@
+{
+  "pageTitle": "Manage Service Plans — ByteCraft",
+  "heading": "Custom Service Plans",
+  "subtitle": "Manage custom build pricing tiers displayed on the public Pricing & Services page.",
+  "totalBadge": "{{count}} plans",
+  "addPlan": "Add Service Plan",
+  "refresh": "Refresh",
+  "filters": {
+    "regionLabel": "Filter service plans",
+    "searchLabel": "Search service plans",
+    "searchPlaceholder": "Search by plan name, description, or group...",
+    "allGroups": "All groups",
+    "groupLabel": "Group",
+    "reset": "Clear"
+  },
+  "table": {
+    "caption": "Service plans table",
+    "plan": "Plan",
+    "group": "Group",
+    "startingPrice": "Starting Price",
+    "deliveryDays": "Delivery",
+    "featuresCount": "Features",
+    "sortOrder": "Order",
+    "status": "Status",
+    "actions": "Actions",
+    "daysValue": "{{days}} days",
+    "featuresValue": "{{count}} items"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "popular": "Popular"
+  },
+  "actions": {
+    "edit": "Edit plan",
+    "delete": "Delete plan",
+    "toggleActive": "Toggle active status"
+  },
+  "empty": {
+    "title": "No service plans found",
+    "description": "Create your first custom build tier to showcase it on the pricing page.",
+    "filteredDescription": "No service plans match your current filter."
+  },
+  "modal": {
+    "createTitle": "Add Service Plan",
+    "editTitle": "Edit Service Plan",
+    "subtitle": "Enter the starting price in EGP; it converts automatically to integer piasters on submit.",
+    "closeLabel": "Close modal",
+    "groupLabel": "Group",
+    "groupPlaceholder": "lms, ecommerce, custom...",
+    "groupHint": "Lowercase group identifier (e.g. lms, ecommerce, custom).",
+    "groupPresetsLabel": "Quick groups:",
+    "nameArLabel": "Plan Name (AR)",
+    "nameArPlaceholder": "مثال: بناء منصة تعليمية مخصصة",
+    "nameEnLabel": "Plan Name (EN)",
+    "nameEnPlaceholder": "e.g. Custom LMS Build",
+    "descriptionArLabel": "Description (AR)",
+    "descriptionArPlaceholder": "تصميم وتطوير منصة مخصصة بالكامل",
+    "descriptionEnLabel": "Description (EN)",
+    "descriptionEnPlaceholder": "End-to-end tailored LMS platform",
+    "startingPriceLabel": "Starting Price (EGP)",
+    "startingPricePlaceholder": "15000",
+    "currencySuffix": "EGP",
+    "piastersHint": "{{piasters}} piasters",
+    "deliveryDaysLabel": "Estimated Delivery (Days)",
+    "deliveryDaysPlaceholder": "21",
+    "sortOrderLabel": "Sort Order",
+    "isPopularLabel": "Mark as Popular",
+    "isActiveLabel": "Active on Public Pricing Page",
+    "featuresHeading": "Plan Features (AR / EN)",
+    "addFeature": "Add Feature",
+    "featureArPlaceholder": "Arabic feature (e.g. تصميم UI/UX مخصص)",
+    "featureEnPlaceholder": "English feature (e.g. Custom UI/UX design)",
+    "moveUp": "Up",
+    "moveDown": "Down",
+    "removeFeature": "Remove feature",
+    "noFeaturesHint": "No features added yet. Click \"Add Feature\" to list deliverables.",
+    "saveCreate": "Create Plan",
+    "saveEdit": "Save Changes",
+    "cancel": "Cancel"
+  },
+  "unsaved": {
+    "banner": "You have unsaved changes. Discard them and close?",
+    "keepEditing": "Keep Editing",
+    "discard": "Discard Changes"
+  },
+  "deleteDialog": {
+    "title": "Confirm Plan Deletion",
+    "message": "Are you sure you want to delete \"{{name}}\"? It will be removed from the public pricing page.",
+    "confirm": "Delete Plan",
+    "cancel": "Cancel"
+  },
+  "toasts": {
+    "created": "Service plan created successfully.",
+    "updated": "Service plan updated successfully.",
+    "deleted": "Service plan deleted successfully."
+  },
+  "validation": {
+    "groupRequired": "Group is required",
+    "nameArRequired": "Arabic name is required",
+    "nameEnRequired": "English name is required",
+    "descriptionArRequired": "Arabic description is required",
+    "descriptionEnRequired": "English description is required",
+    "priceInvalid": "Enter a valid starting price (0 or greater)",
+    "deliveryDaysMin": "Delivery days must be at least 1",
+    "sortOrderInt": "Sort order must be an integer",
+    "featureBilingualRequired": "Both Arabic and English feature texts are required"
+  }
+}

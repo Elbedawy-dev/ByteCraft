@@ -1,0 +1,111 @@
+{
+  "title": "إدارة الاستفسارات",
+  "subtitle": "متابعة طلبات البرمجة الخاصة، مراجعة المرفقات، وتحديث حالات العملاء المحتملين.",
+  "pageTitle": "إدارة الاستفسارات — بايت كرافت",
+  "stats": {
+    "total": "إجمالي الاستفسارات",
+    "unreadBadge": "غير مقروء",
+    "showing": "عرض {{from}} - {{to}} من {{total}}"
+  },
+  "filters": {
+    "searchPlaceholder": "ابحث باسم العميل أو البريد الإلكتروني أو الموضوع...",
+    "searchLabel": "بحث في الاستفسارات",
+    "statusLabel": "الحالة",
+    "allStatuses": "جميع الحالات",
+    "projectTypeLabel": "نوع المشروع",
+    "allProjectTypes": "جميع الأنواع",
+    "clearFilters": "مسح الفلاتر"
+  },
+  "status": {
+    "new": "جديد",
+    "read": "تمت القراءة",
+    "in_progress": "قيد التنفيذ",
+    "resolved": "تم الحل",
+    "archived": "مؤرشف"
+  },
+  "projectType": {
+    "lms": "منصة تعليمية (LMS)",
+    "ecommerce": "متجر إلكتروني",
+    "custom_mern": "تطبيق MERN مخصص",
+    "consulting": "استشارة تقنية",
+    "other": "أخرى"
+  },
+  "budgetRange": {
+    "5k_10k": "5,000 – 10,000 ج.م",
+    "10k_20k": "10,000 – 20,000 ج.م",
+    "20k_plus": "أكثر من 20,000 ج.م",
+    "undecided": "غير محددة بعد"
+  },
+  "timeline": {
+    "urgent": "عاجل",
+    "standard": "قياسي",
+    "flexible": "مرن"
+  },
+  "table": {
+    "regionLabel": "جدول الاستفسارات",
+    "sender": "العميل",
+    "subjectType": "الموضوع والنوع",
+    "budgetTimeline": "الميزانية والجدول",
+    "attachments": "المرفقات",
+    "status": "الحالة",
+    "date": "التاريخ",
+    "actions": "الإجراءات",
+    "viewDetails": "عرض التفاصيل",
+    "replyEmail": "رد بالبريد",
+    "replyWhatsApp": "رد عبر واتساب",
+    "delete": "حذف"
+  },
+  "drawer": {
+    "title": "تفاصيل الاستفسار",
+    "close": "إغلاق التفاصيل",
+    "quickReply": "الرد السريع",
+    "replyByEmail": "الرد بالبريد الإلكتروني",
+    "replyByWhatsApp": "الرد عبر واتساب",
+    "whatsappPrefill": "مرحباً {{name}}، بخصوص استفسارك لدى ByteCraft: {{subject}}",
+    "sections": {
+      "contact": "بيانات التواصل",
+      "scope": "تفاصيل المشروع المطلوب",
+      "message": "رسالة العميل",
+      "attachments": "المرفقات ({{count}})",
+      "management": "إدارة الحالة والملاحظات"
+    },
+    "fields": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف / واتساب",
+      "noPhone": "غير متوفر",
+      "locale": "لغة العميل",
+      "createdAt": "تاريخ الإرسال",
+      "projectType": "نوع المشروع",
+      "budget": "الميزانية التقديرية",
+      "timeline": "الجدول الزمني",
+      "linkedProject": "المشروع المرتبط",
+      "linkedPlan": "خطة الخدمة المرتبطة",
+      "deliveryDays": "{{days}} يوم تسليم",
+      "statusLabel": "تغيير الحالة",
+      "ownerNotes": "ملاحظات الإدارة (خاصة)",
+      "ownerNotesPlaceholder": "اكتب ملاحظاتك حول المكالمة، عرض السعر المرسل، أو الخطوات القادمة...",
+      "notesLimit": "{{count}} / 2000 حرف",
+      "saveNotes": "حفظ الملاحظات",
+      "openAttachment": "فتح",
+      "downloadAttachment": "تحميل",
+      "noAttachments": "لا توجد مرفقات لهذا الاستفسار."
+    }
+  },
+  "messages": {
+    "statusUpdated": "تم تحديث حالة الاستفسار بنجاح.",
+    "notesSaved": "تم حفظ ملاحظات الإدارة بنجاح.",
+    "deleted": "تم حذف الاستفسار بنجاح."
+  },
+  "deleteDialog": {
+    "title": "حذف الاستفسار",
+    "message": "هل أنت متأكد من حذف استفسار \"{{name}}\"؟ سيتم حذف الاستفسار وأي مرفقات مرتبطة به نهائياً.",
+    "confirm": "نعم، حذف الاستفسار"
+  },
+  "empty": {
+    "title": "لا توجد استفسارات مطابقة",
+    "description": "جرّب تعديل معايير البحث أو الفلاتر لعرض نتائج أخرى.",
+    "noInquiriesTitle": "لا توجد استفسارات بعد",
+    "noInquiriesDescription": "ستظهر استفسارات وطلبات المشاريع المخصصة هنا فور إرسالها من صفحة التواصل."
+  }
+}

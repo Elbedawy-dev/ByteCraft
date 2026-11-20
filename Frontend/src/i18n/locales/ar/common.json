@@ -1,0 +1,269 @@
+{
+  "brand": {
+    "name": "بايت كرافت",
+    "latinName": "ByteCraft",
+    "fullName": "بايت كرافت | ByteCraft",
+    "tagline": "استوديو تطوير MERN Stack ومنصات جاهزة للإطلاق",
+    "copyright": "© {{year}} بايت كرافت (ByteCraft). جميع الحقوق محفوظة."
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "projects": "المشاريع الجاهزة",
+    "pricing": "الخدمات والأسعار",
+    "about": "عن بايت كرافت",
+    "contact": "تواصل معنا",
+    "getStarted": "اطلب مشروعك",
+    "skipToContent": "انتقل إلى المحتوى الرئيسي",
+    "primaryNavLabel": "التنقل الرئيسي",
+    "mobileNavLabel": "قائمة التنقل",
+    "breadcrumbLabel": "مسار التصفح",
+    "openMenu": "فتح القائمة",
+    "closeMenu": "إغلاق القائمة",
+    "language": "اللغة",
+    "switchToAr": "التبديل إلى العربية",
+    "switchToEn": "Switch to English",
+    "theme": "المظهر",
+    "switchToLight": "التبديل إلى الوضع الفاتح",
+    "switchToDark": "التبديل إلى الوضع الداكن",
+    "darkMode": "الوضع الداكن",
+    "lightMode": "الوضع الفاتح"
+  },
+  "footer": {
+    "description": "استوديو هندسي متخصص في بناء وتطوير منصات الويب الحديثة وحلول الـ MERN Stack للشركات الناشئة والمراكز التعليمية والمتاجر الإلكترونية المتطورة بأعلى معايير الأداء والسرعة.",
+    "quickLinks": "روابط سريعة",
+    "contactChannels": "قنوات التواصل المباشر",
+    "contactSubtitle": "جاهزون لمناقشة فكرة مشروعك وتحويلها إلى كود إنتاجي فوري.",
+    "availableBadge": "متاح لاستقبال المشاريع البرمجية الجديدة",
+    "links": {
+      "projects": "المشاريع والمنصات الجاهزة",
+      "pricing": "باقات الأسعار والخدمات البرمجية",
+      "about": "منهجية العمل والخبرات التقنية",
+      "customBuild": "طلب منصة مخصصة (Custom Build)"
+    },
+    "channels": {
+      "whatsapp": "واتساب",
+      "email": "البريد الإلكتروني",
+      "github": "جيت هاب",
+      "linkedin": "لينكدإن",
+      "twitter": "إكس (تويتر)",
+      "facebook": "فيسبوك",
+      "contactPage": "تواصل معنا"
+    }
+  },
+  "ownerNav": {
+    "dashboard": "نظرة عامة",
+    "projects": "المشاريع",
+    "orders": "الطلبات",
+    "inquiries": "الاستفسارات",
+    "reviews": "التقييمات",
+    "coupons": "كوبونات الخصم",
+    "categories": "التصنيفات",
+    "servicePlans": "خطط الخدمات",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج",
+    "backToSite": "العودة للموقع"
+  },
+  "actions": {
+    "submit": "إرسال",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "save": "حفظ",
+    "saveChanges": "حفظ التغييرات",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "close": "إغلاق",
+    "retry": "إعادة المحاولة",
+    "back": "رجوع",
+    "backHome": "العودة للرئيسية",
+    "viewAll": "عرض الكل",
+    "viewDetails": "عرض التفاصيل",
+    "buy": "طلب المنظومة",
+    "buyNow": "شراء الآن",
+    "liveDemo": "معاينة حية",
+    "copy": "نسخ",
+    "copied": "تم النسخ",
+    "clear": "مسح",
+    "apply": "تطبيق",
+    "remove": "إزالة",
+    "add": "إضافة",
+    "upload": "رفع",
+    "search": "بحث",
+    "filter": "تصفية",
+    "resetFilters": "إعادة تعيين الفلاتر",
+    "previous": "السابق",
+    "next": "التالي",
+    "loading": "جاري التحميل...",
+    "showPassword": "إظهار كلمة المرور",
+    "hidePassword": "إخفاء كلمة المرور"
+  },
+  "states": {
+    "loading": "جاري التحميل...",
+    "emptyTitle": "لا توجد بيانات لعرضها",
+    "emptyDescription": "لم يتم العثور على عناصر مطابقة حالياً.",
+    "errorTitle": "حدث خطأ غير متوقع",
+    "errorDescription": "تعذر تحميل البيانات. يرجى المحاولة مرة أخرى.",
+    "notFoundCode": "404",
+    "notFoundTitle": "الصفحة غير موجودة",
+    "notFoundDescription": "عذراً، الرابط الذي تبحث عنه غير متاح أو تم نقله إلى مسار آخر.",
+    "boundaryTitle": "حدث عطل في عرض الصفحة",
+    "boundaryDescription": "نعتذر عن هذا الخلل. يمكنك إعادة تحميل الصفحة أو العودة للرئيسية.",
+    "reloadPage": "إعادة تحميل الصفحة",
+    "noImage": "لا توجد صورة"
+  },
+  "errors": {
+    "generic": "حدث خطأ ما، يرجى المحاولة مرة أخرى.",
+    "network": "تعذر الاتصال بالخادم. تأكد من اتصالك بالإنترنت وحاول مجدداً.",
+    "unauthorized": "انتهت الجلسة أو ليست لديك صلاحية الوصول. يرجى تسجيل الدخول.",
+    "forbidden": "ليست لديك صلاحية لتنفيذ هذا الإجراء.",
+    "notFound": "العنصر المطلوب غير موجود.",
+    "rateLimited": "لقد تجاوزت الحد المسموح من الطلبات. يرجى الانتظار قليلاً ثم المحاولة لاحقاً.",
+    "serverError": "حدث خطأ في الخادم. يرجى المحاولة لاحقاً.",
+    "conflict": "تعارض في البيانات: القيمة مستخدمة بالفعل.",
+    "validationFailed": "يرجى مراجعة الحقول المدخلة وتصحيح الأخطاء.",
+    "codes": {
+      "VALIDATION_ERROR": "يرجى مراجعة البيانات المدخلة والتأكد من صحتها.",
+      "INVALID_CURRENT_PASSWORD": "كلمة المرور الحالية غير صحيحة.",
+      "NO_FILES_PROVIDED": "لم يتم إرفاق أي ملفات.",
+      "INVALID_FILE_TYPE": "نوع الملف غير مدعوم.",
+      "FILE_TOO_LARGE": "حجم الملف يتجاوز الحد الأقصى المسموح به (5 ميجابايت).",
+      "PROJECT_NOT_AVAILABLE": "هذا المشروع غير متاح للشراء حالياً.",
+      "PACKAGE_NOT_ACTIVE": "الباقة المختارة غير مفعلة حالياً.",
+      "INVALID_COUPON": "كود الكوبون غير صحيح.",
+      "COUPON_INACTIVE": "هذا الكوبون غير مفعل حالياً.",
+      "COUPON_EXPIRED": "انتهت صلاحية هذا الكوبون.",
+      "COUPON_MAX_USES_REACHED": "وصل هذا الكوبون إلى الحد الأقصى للاستخدام.",
+      "COUPON_NOT_APPLICABLE": "هذا الكوبون لا ينطبق على هذا المشروع.",
+      "PAYMENT_FAILED": "تعذر إتمام عملية الدفع. يرجى المحاولة مرة أخرى أو اختيار وسيلة أخرى.",
+      "UNAUTHORIZED": "غير مصرح بالوصول. يرجى تسجيل الدخول أو التحقق من رمز الطلب.",
+      "INVALID_CREDENTIALS": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+      "FORBIDDEN": "ليس لديك صلاحية لتنفيذ هذا الإجراء.",
+      "NOT_FOUND": "المورد المطلوب غير موجود.",
+      "CONFLICT": "توجد قيمة مكررة بالفعل.",
+      "ALREADY_EXISTS": "تم إرسال تقييم لهذا الطلب مسبقاً.",
+      "INVALID_STATE": "لا يمكن تنفيذ هذا الإجراء في الحالة الحالية للطلب.",
+      "PROJECT_HAS_PAID_ORDERS": "لا يمكن حذف مشروع مرتبط بطلبات مدفوعة؛ يمكنك أرشفته بدلاً من ذلك.",
+      "CATEGORY_IN_USE": "لا يمكن حذف التصنيف لارتباطه بمشاريع حالية.",
+      "UNSUPPORTED_MEDIA_TYPE": "تنسيق الطلب غير مدعوم.",
+      "TOO_MANY_REQUESTS": "طلبات كثيرة جداً في وقت قصير. يرجى الانتظار والمحاولة لاحقاً.",
+      "INTERNAL_ERROR": "حدث خطأ داخلي في الخادم. يرجى المحاولة لاحقاً."
+    }
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "invalidEmail": "يرجى إدخال بريد إلكتروني صحيح",
+    "invalidPhone": "يرجى إدخال رقم هاتف صحيح",
+    "invalidUrl": "يرجى إدخال رابط صحيح يبدأ بـ http:// أو https://",
+    "minLength": "يجب ألا يقل عن {{min}} أحرف",
+    "maxLength": "يجب ألا يتجاوز {{max}} حرفاً",
+    "minNumber": "يجب أن تكون القيمة {{min}} أو أكثر",
+    "maxNumber": "يجب ألا تتجاوز القيمة {{max}}",
+    "fileTooLarge": "حجم الملف {{name}} يتجاوز الحد الأقصى ({{max}})",
+    "invalidFileType": "نوع الملف {{name}} غير مدعوم",
+    "maxFiles": "يمكنك إرفاق {{max}} ملفات كحد أقصى"
+  },
+  "status": {
+    "order": {
+      "pending_payment": "بانتظار الدفع",
+      "awaiting_review": "قيد المراجعة",
+      "paid": "مدفوع",
+      "delivered": "تم التسليم",
+      "rejected": "مرفوض",
+      "cancelled": "ملغي",
+      "refunded": "مسترد",
+      "expired": "منتهي الصلاحية"
+    },
+    "inquiry": {
+      "new": "جديد",
+      "read": "تمت القراءة",
+      "in_progress": "قيد التنفيذ",
+      "resolved": "تم الحل",
+      "archived": "مؤرشف"
+    },
+    "project": {
+      "draft": "مسودة",
+      "published": "منشور",
+      "archived": "مؤرشف"
+    },
+    "delivery": {
+      "pending": "قيد الانتظار",
+      "granted": "تم منح الصلاحية",
+      "failed": "تعذر الإرسال",
+      "manual": "تسليم يدوي"
+    },
+    "review": {
+      "published": "منشور",
+      "hidden": "مخفي"
+    }
+  },
+  "paymentMethods": {
+    "vodafone_cash": "فودافون كاش",
+    "instapay": "إنستاباي (InstaPay)",
+    "fawry": "فوري (Fawry)",
+    "card": "بطاقة بنكية"
+  },
+  "currency": {
+    "egp": "ج.م",
+    "startingFrom": "يبدأ من",
+    "fullLicense": "تكلفة الترخيص الكامل:",
+    "free": "مجاناً",
+    "reviewsCount": "({{count}} تقييم)",
+    "ratingOutOf": "{{value}} من 5"
+  },
+  "cta": {
+    "eyebrow": "هندسة إنتاجية • تسليم سريع",
+    "title": "هل أنت جاهز لإطلاق منصتك القادمة وتنمية مبيعاتك؟",
+    "description": "تواصل معنا الآن عبر الواتساب أو اطلب عرض سعر تفصيلي لمشروعك، وسيقوم مهندس برمجيات بمراجعة فكرتك والرد سريعاً.",
+    "primaryAction": "ابدأ الآن واطلب مشروعك",
+    "secondaryAction": "تصفح المشاريع الجاهزة",
+    "bullets": [
+      "بدون أي مصاريف خفية",
+      "استشارة تقنية مجانية"
+    ]
+  },
+  "pagination": {
+    "label": "التنقل بين الصفحات",
+    "previous": "الصفحة السابقة",
+    "next": "الصفحة التالية",
+    "page": "صفحة {{page}}",
+    "showingRange": "عرض {{from}} - {{to}} من إجمالي {{total}}"
+  },
+  "table": {
+    "scrollRegion": "جدول البيانات",
+    "empty": "لا توجد سجلات متاحة"
+  },
+  "dropzone": {
+    "title": "اسحب الملفات هنا أو",
+    "browse": "انقر للاختيار",
+    "hint": "يدعم JPG, PNG, WebP, PDF (حتى {{maxSize}})",
+    "removeFile": "حذف {{name}}"
+  },
+  "tagInput": {
+    "placeholder": "أضف وسماً واضغط Enter...",
+    "add": "إضافة",
+    "removeTag": "إزالة {{tag}}",
+    "count": "{{count}} وسوم"
+  },
+  "titles": {
+    "home": "الرئيسية",
+    "projects": "المشاريع الجاهزة",
+    "projectDetails": "تفاصيل المشروع",
+    "pricing": "الخدمات والأسعار",
+    "about": "عن بايت كرافت",
+    "contact": "ابدأ مشروعك",
+    "checkout": "إتمام الطلب",
+    "orderTracking": "متابعة الطلب",
+    "paymentResult": "نتيجة الدفع",
+    "notFound": "الصفحة غير موجودة",
+    "ownerLogin": "دخول الإدارة",
+    "ownerDashboard": "لوحة التحكم",
+    "ownerProjects": "إدارة المشاريع",
+    "ownerOrders": "إدارة الطلبات",
+    "ownerInquiries": "إدارة الاستفسارات",
+    "ownerReviews": "إدارة التقييمات",
+    "ownerCoupons": "إدارة الكوبونات",
+    "ownerCategories": "إدارة التصنيفات",
+    "ownerServicePlans": "إدارة خطط الخدمات",
+    "ownerSettings": "إعدادات المنصة",
+    "uiShowcase": "مكتبة المكونات (تطوير)"
+  }
+}

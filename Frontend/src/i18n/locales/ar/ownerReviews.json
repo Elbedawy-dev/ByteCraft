@@ -1,0 +1,58 @@
+{
+  "title": "إدارة التقييمات",
+  "subtitle": "مراجعة تقييمات المشترين الموثقين، التحكم في النشر والإخفاء، والرد الرسمي على العملاء.",
+  "pageTitle": "إدارة التقييمات — بايت كرافت",
+  "stats": {
+    "total": "إجمالي التقييمات",
+    "showing": "عرض {{from}} - {{to}} من {{total}}"
+  },
+  "filters": {
+    "visibilityLabel": "حالة الظهور",
+    "all": "الكل",
+    "published": "منشور",
+    "hidden": "مخفي",
+    "ratingLabel": "التقييم",
+    "allRatings": "جميع التقييمات",
+    "stars": "{{count}} نجوم",
+    "starSingle": "نجمة واحدة",
+    "clearFilters": "مسح الفلاتر"
+  },
+  "card": {
+    "verifiedBuyer": "مشتري موثق",
+    "orderNumber": "رقم الطلب",
+    "project": "المشروع",
+    "viewProject": "فتح المشروع",
+    "unknownProject": "مشروع غير متوفر",
+    "publishedBadge": "منشور في المتجر",
+    "hiddenBadge": "مخفي",
+    "togglePublish": "نشر التقييم",
+    "toggleHide": "إخفاء التقييم",
+    "visibilitySwitchLabel": "إظهار التقييم للزوار",
+    "moderatedAt": "آخر مراجعة: {{date}}",
+    "ownerResponseTitle": "رد الإدارة (بايت كرافت)",
+    "addResponse": "إضافة رد",
+    "editResponse": "تعديل الرد",
+    "responsePlaceholder": "اكتب رداً احترافياً يظهر للعملاء أسفل هذا التقييم...",
+    "responseLimit": "{{count}} / 2000 حرف",
+    "saveResponse": "حفظ الرد",
+    "clearResponse": "إزالة الرد",
+    "delete": "حذف التقييم"
+  },
+  "messages": {
+    "published": "تم نشر التقييم وظهوره في صفحة المشروع.",
+    "hidden": "تم إخفاء التقييم من العرض العام.",
+    "responseSaved": "تم حفظ رد الإدارة بنجاح.",
+    "deleted": "تم حذف التقييم نهائياً."
+  },
+  "deleteDialog": {
+    "title": "حذف التقييم نهائياً",
+    "message": "هل أنت متأكد من حذف تقييم \"{{name}}\"؟ لا يمكن التراجع عن هذا الإجراء وسيتم تحديث متوسط تقييم المشروع فوراً.",
+    "confirm": "نعم، حذف التقييم"
+  },
+  "empty": {
+    "title": "لا توجد تقييمات مطابقة",
+    "description": "لم يتم العثور على تقييمات مطابقة للفلاتر المحددة حالياً.",
+    "noReviewsTitle": "لا توجد تقييمات بعد",
+    "noReviewsDescription": "ستظهر تقييمات المشترين هنا بمجرد إرسال العملاء لتقييماتهم بعد الشراء."
+  }
+}

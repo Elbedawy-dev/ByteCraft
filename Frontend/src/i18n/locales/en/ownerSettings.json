@@ -1,0 +1,110 @@
+{
+  "title": "Platform Settings",
+  "description": "Manage general brand settings, contact details, Egyptian payment methods, and owner password.",
+  "unsavedBadge": "You have unsaved changes",
+  "actions": {
+    "saveSettings": "Save Settings",
+    "saving": "Saving...",
+    "discard": "Discard Changes",
+    "updatePassword": "Update Password",
+    "updatingPassword": "Updating..."
+  },
+  "sections": {
+    "general": {
+      "title": "General Settings",
+      "description": "Platform brand name and guarantee period shown across the storefront.",
+      "siteNameLabel": "Site Name",
+      "siteNamePlaceholder": "ByteCraft",
+      "guaranteeDaysLabel": "Guarantee Period (Days)",
+      "guaranteeDaysHint": "Non-negative integer number of support/guarantee days.",
+      "taxFreeBadge": "Tax-free pricing model (0% VAT)"
+    },
+    "contact": {
+      "title": "Contact Information & Social Links",
+      "description": "Public contact channels displayed in the footer and contact page.",
+      "emailLabel": "Contact Email",
+      "emailPlaceholder": "contact@bytecraft.dev",
+      "whatsappLabel": "WhatsApp Number",
+      "whatsappPlaceholder": "+201012345678",
+      "phoneLabel": "Phone Number",
+      "phonePlaceholder": "+201012345678",
+      "locationArLabel": "Location (Arabic)",
+      "locationArPlaceholder": "القاهرة، مصر",
+      "locationEnLabel": "Location (English)",
+      "locationEnPlaceholder": "Cairo, Egypt",
+      "socialsTitle": "Social Profiles",
+      "githubLabel": "GitHub URL",
+      "githubPlaceholder": "https://github.com/ByteCraft",
+      "linkedinLabel": "LinkedIn URL",
+      "linkedinPlaceholder": "https://linkedin.com/company/bytecraft",
+      "twitterLabel": "X (Twitter) URL",
+      "twitterPlaceholder": "https://x.com/bytecraft",
+      "facebookLabel": "Facebook URL",
+      "facebookPlaceholder": "https://facebook.com/bytecraft"
+    },
+    "payments": {
+      "title": "Payment Methods",
+      "description": "Enable and configure manual and gateway payment methods available at checkout.",
+      "vodafone": {
+        "title": "Vodafone Cash",
+        "description": "Manual wallet transfer with payment receipt upload and owner review.",
+        "enabledLabel": "Enable Vodafone Cash",
+        "walletNumberLabel": "Wallet Number",
+        "walletNumberPlaceholder": "01012345678",
+        "accountNameLabel": "Account Name",
+        "accountNamePlaceholder": "ByteCraft Studio",
+        "instructionsArLabel": "Payment Instructions (Arabic)",
+        "instructionsEnLabel": "Payment Instructions (English)"
+      },
+      "instapay": {
+        "title": "InstaPay",
+        "description": "Instant transfer to your InstaPay Payment Address (IPA) with receipt verification.",
+        "enabledLabel": "Enable InstaPay",
+        "ipaLabel": "InstaPay Address (IPA)",
+        "ipaPlaceholder": "bytecraft@instapay",
+        "accountNameLabel": "Account Name",
+        "accountNamePlaceholder": "ByteCraft Studio",
+        "instructionsArLabel": "Payment Instructions (Arabic)",
+        "instructionsEnLabel": "Payment Instructions (English)"
+      },
+      "fawry": {
+        "title": "Fawry",
+        "description": "Generate Fawry kiosk reference codes via Paymob integration.",
+        "enabledLabel": "Enable Fawry Payments",
+        "serverNote": "Note: Fawry payments require valid Paymob keys (API Key, Fawry Integration ID, HMAC Secret) configured in the server environment."
+      },
+      "card": {
+        "title": "Bank Cards",
+        "description": "Online Visa & Mastercard checkout via Paymob iFrame.",
+        "enabledLabel": "Enable Card Payments",
+        "serverNote": "Note: Card payments require valid Paymob keys (API Key, Card Integration ID, iFrame ID, HMAC Secret) configured in the server environment."
+      }
+    },
+    "security": {
+      "title": "Account Security & Change Password",
+      "description": "Update your owner console password. Your current password is required to confirm.",
+      "currentPasswordLabel": "Current Password",
+      "currentPasswordPlaceholder": "Enter current password",
+      "newPasswordLabel": "New Password",
+      "newPasswordPlaceholder": "Minimum 8 characters",
+      "newPasswordHint": "New password must be at least 8 characters long."
+    }
+  },
+  "validation": {
+    "siteNameRequired": "Site name cannot be empty",
+    "guaranteeDaysInteger": "Guarantee days must be a whole number",
+    "guaranteeDaysMin": "Guarantee days must be 0 or greater",
+    "invalidEmail": "Please enter a valid email address",
+    "invalidUrl": "Please enter a valid URL starting with http:// or https://",
+    "currentPasswordRequired": "Current password is required",
+    "newPasswordMin": "New password must be at least 8 characters long"
+  },
+  "toasts": {
+    "settingsSaved": "Platform settings saved successfully",
+    "passwordUpdated": "Password updated successfully"
+  },
+  "error": {
+    "title": "Failed to load settings",
+    "description": "An error occurred while loading platform settings. Please try again."
+  }
+}

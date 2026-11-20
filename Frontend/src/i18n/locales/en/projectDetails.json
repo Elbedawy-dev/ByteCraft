@@ -1,0 +1,150 @@
+{
+  "pageTitle": "{{title}} — Project Details",
+  "notFoundTitle": "Project Not Found",
+  "badges": {
+    "livePreview": "Live Preview Available",
+    "featured": "Featured",
+    "popular": "Popular",
+    "discount": "Save {{percent}}%",
+    "verifiedBuyer": "Verified Buyer"
+  },
+  "gallery": {
+    "openLightbox": "View full-size image",
+    "closeLightbox": "Close image viewer",
+    "lightboxTitle": "{{title}} Gallery",
+    "previousImage": "Previous image",
+    "nextImage": "Next image",
+    "selectImage": "View image {{index}} of {{total}}",
+    "imageAlt": "{{title}} screenshot {{index}}",
+    "counter": "{{current}} / {{total}}",
+    "placeholder": "No preview image available"
+  },
+  "highlights": {
+    "purchases": "Purchases",
+    "views": "Project Views",
+    "support": "Technical Support",
+    "supportDays": "{{days}} Days",
+    "license": "License Type",
+    "techCount": "Tech Stack",
+    "techUnit": "{{count}} Technologies"
+  },
+  "ratings": {
+    "outOf": "{{value}} / 5.0",
+    "count_zero": "No reviews yet",
+    "count_one": "(1 review)",
+    "count_other": "({{count}} reviews)",
+    "jumpToReviews": "See reviews"
+  },
+  "sections": {
+    "overviewTitle": "Project Overview",
+    "featuresTitle": "Technical Specs & Operational Features",
+    "featuresSubtitle": "Included modules and production capabilities engineered into this platform",
+    "techStackTitle": "Tech Stack Architecture",
+    "faqTitle": "Delivery & Licensing FAQ",
+    "reviewsTitle": "Verified Buyer Reviews",
+    "reviewsSubtitle": "Feedback from verified customers who purchased and received this codebase",
+    "relatedEyebrow": "Similar Turnkey Solutions",
+    "relatedTitle": "Related Projects",
+    "browseAllProjects": "Browse All Projects"
+  },
+  "packages": {
+    "choosePackage": "Choose your delivery package:",
+    "selectPackageLabel": "Package selection",
+    "includedFeatures": "Included in selected package:",
+    "noFeatures": "Includes full source code and setup documentation.",
+    "singleLicense": "Single-Project License",
+    "multiLicense": "Multi-Project License",
+    "supportBadge": "{{days}} days support",
+    "buyNow": "Buy Now & Get Source Code",
+    "liveDemo": "Live Demo",
+    "openExternalDemo": "Open Live Demo",
+    "changePackage": "Packages",
+    "sheetTitle": "Select Package & License",
+    "unavailable": "No packages are currently available for purchase"
+  },
+  "trust": {
+    "guarantee": "{{days}}-day setup & technical bug support",
+    "cleanCode": "Clean, unencrypted source code (Frontend & Backend)",
+    "consultation": "Direct engineering consultation before and after purchase",
+    "customPrompt": "Need custom features tailored to your business? Contact us"
+  },
+  "supportCard": {
+    "title": "Have a technical question?",
+    "description": "Discuss customization or deployment requirements directly with our engineering team.",
+    "whatsappAction": "Chat on WhatsApp",
+    "contactAction": "Send Technical Inquiry"
+  },
+  "credentials": {
+    "title": "Demo Account Credentials",
+    "label": "Role",
+    "email": "Email / Username",
+    "password": "Password",
+    "copyEmail": "Copy demo email",
+    "copyPassword": "Copy demo password",
+    "copied": "Copied to clipboard"
+  },
+  "livePreview": {
+    "modalTitle": "Live Preview — {{title}}",
+    "iframeTitle": "Interactive live preview for {{title}}",
+    "loading": "Loading live preview...",
+    "deviceLabel": "Viewport width",
+    "desktop": "Desktop",
+    "tablet": "Tablet",
+    "mobile": "Mobile",
+    "enterFullscreen": "Fullscreen",
+    "exitFullscreen": "Exit fullscreen",
+    "openNewTab": "Open in new tab",
+    "close": "Close preview",
+    "fallbackTitle": "Embedded preview could not be loaded",
+    "fallbackDescription": "Some external demo servers block iframe embedding (X-Frame-Options / CSP). You can open the live demo directly in a new tab.",
+    "fallbackBanner": "Having trouble viewing the embedded demo? Open it directly in a new tab.",
+    "credentialsToggle": "Demo credentials"
+  },
+  "faq": {
+    "items": [
+      {
+        "id": "source-code",
+        "title": "Do I receive the complete source code after purchase?",
+        "content": "Yes. Once your order is confirmed, you are granted private Git repository access containing the complete, unencrypted Frontend, Backend, and Database schemas so you can customize and self-host freely."
+      },
+      {
+        "id": "deployment",
+        "title": "Do you help with server deployment and domain configuration?",
+        "content": "Every package includes step-by-step production setup documentation, plus the support window listed in your chosen package to assist with deployment questions and technical guidance."
+      },
+      {
+        "id": "license",
+        "title": "What is the difference between Single and Multi-Project licenses?",
+        "content": "A Single license authorizes deploying one production instance for yourself or one client. A Multi-Project license allows reusing the codebase across multiple launches and client deployments."
+      },
+      {
+        "id": "delivery-speed",
+        "title": "How and when is access delivered?",
+        "content": "After payment confirmation, repository access is granted directly to the GitHub or GitLab username you provide at checkout, with real-time updates on your order tracking page."
+      }
+    ]
+  },
+  "reviews": {
+    "emptyTitle": "No reviews yet",
+    "emptyDescription": "Verified buyers can submit a review directly from their order tracking page after purchase.",
+    "ownerResponseLabel": "ByteCraft Engineering Response",
+    "totalCount": "{{count}} total reviews"
+  },
+  "related": {
+    "startingFrom": "Starting from",
+    "viewDetails": "View Details"
+  },
+  "notFound": {
+    "code": "404",
+    "title": "Project not found",
+    "description": "This project may have been moved, renamed, or is currently unpublished. Browse our ready-made platforms to find another solution.",
+    "browseProjects": "Browse Ready Projects",
+    "backHome": "Back to Home"
+  },
+  "cta": {
+    "title": "Need a customized version of this platform?",
+    "description": "Our engineers can tailor this codebase to your branding, workflows, and third-party integrations fast.",
+    "primaryAction": "Request Customizations",
+    "secondaryAction": "Browse All Projects"
+  }
+}

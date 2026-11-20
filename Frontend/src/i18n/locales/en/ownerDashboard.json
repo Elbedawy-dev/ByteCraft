@@ -1,0 +1,121 @@
+{
+  "title": "Dashboard",
+  "description": "Overview of platform revenue, orders, top-performing projects, and client inquiries.",
+  "greeting": "Welcome back, {{name}}",
+  "cairoTime": "Cairo time",
+  "liveSync": "Live Metrics",
+  "actions": {
+    "refresh": "Refresh Data",
+    "manageProjects": "Manage Projects",
+    "manageOrders": "Review Orders",
+    "settings": "Settings"
+  },
+  "kpis": {
+    "revenue": {
+      "label": "Total Revenue",
+      "hint": "From paid & delivered orders"
+    },
+    "ordersCount": {
+      "label": "Total Orders",
+      "hint": "All recorded orders"
+    },
+    "paidOrders": {
+      "label": "Paid Orders",
+      "hint": "Paid or delivered"
+    },
+    "pendingProofs": {
+      "label": "Pending Proofs",
+      "hint": "Require manual review",
+      "clearHint": "No pending proofs"
+    },
+    "newInquiries": {
+      "label": "New Inquiries",
+      "hint": "Unread client leads",
+      "clearHint": "All caught up"
+    },
+    "publishedProjects": {
+      "label": "Published Projects",
+      "hint": "Live on marketplace"
+    }
+  },
+  "charts": {
+    "revenueTitle": "Monthly Revenue (Last 12 Months)",
+    "revenueSubtitle": "Net sales from paid and delivered orders in EGP",
+    "revenueSeries": "Revenue (EGP)",
+    "ordersSeries": "Orders",
+    "revenueEmptyTitle": "No revenue recorded yet",
+    "revenueEmptyDesc": "Monthly revenue trends will appear once your first order is paid.",
+    "ordersByStatusTitle": "Orders by Status",
+    "ordersByStatusSubtitle": "{{count}} total order(s) across all statuses",
+    "ordersTotalLabel": "Orders",
+    "ordersEmptyTitle": "No orders yet",
+    "ordersEmptyDesc": "Order status breakdown will appear here once customers place orders."
+  },
+  "topProjects": {
+    "title": "Top Projects",
+    "subtitle": "Top 5 active projects ranked by purchases",
+    "manageAll": "Manage Projects",
+    "purchases": "{{count}} purchases",
+    "views": "{{count}} views",
+    "uncategorized": "Uncategorized",
+    "emptyTitle": "No projects yet",
+    "emptyDesc": "Create your first project to track views and sales here."
+  },
+  "recentOrders": {
+    "title": "Recent Orders",
+    "subtitle": "Latest 8 orders placed on the platform",
+    "viewAll": "View All Orders",
+    "columns": {
+      "orderCustomer": "Order & Customer",
+      "project": "Project",
+      "payment": "Method",
+      "amount": "Total",
+      "status": "Status",
+      "date": "Date"
+    },
+    "emptyTitle": "No orders yet",
+    "emptyDesc": "Incoming customer orders will appear here as soon as they are placed."
+  },
+  "recentInquiries": {
+    "title": "Recent Inquiries",
+    "subtitle": "Latest 8 custom-build and consulting leads",
+    "viewAll": "View All Inquiries",
+    "columns": {
+      "client": "Client",
+      "subject": "Subject & Scope",
+      "budget": "Budget & Timeline",
+      "status": "Status",
+      "date": "Date"
+    },
+    "projectTypes": {
+      "lms": "LMS Platform",
+      "ecommerce": "E-Commerce",
+      "custom_mern": "Custom MERN",
+      "consulting": "Consulting",
+      "other": "Other"
+    },
+    "budgetRanges": {
+      "5k_10k": "EGP 5,000 – 10,000",
+      "10k_20k": "EGP 10,000 – 20,000",
+      "20k_plus": "EGP 20,000+",
+      "undecided": "Undecided"
+    },
+    "timelines": {
+      "urgent": "Urgent",
+      "standard": "Standard",
+      "flexible": "Flexible"
+    },
+    "emptyTitle": "No inquiries yet",
+    "emptyDesc": "Custom project requests and contact inquiries will show up here."
+  },
+  "gettingStarted": {
+    "title": "Your dashboard has no activity yet",
+    "description": "Start by publishing your first project or configuring your payment methods in Settings.",
+    "addProjectAction": "Go to Projects",
+    "settingsAction": "Platform Settings"
+  },
+  "error": {
+    "title": "Couldn't load dashboard metrics",
+    "description": "An error occurred while fetching dashboard metrics. Please try again."
+  }
+}

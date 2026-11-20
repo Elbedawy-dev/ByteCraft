@@ -1,0 +1,94 @@
+{
+  "title": "Coupons Management",
+  "subtitle": "Create percentage or fixed EGP discount codes, set usage caps, expiry dates, and target projects.",
+  "pageTitle": "Coupons Management — ByteCraft",
+  "createButton": "Create Coupon",
+  "stats": {
+    "total": "Total Coupons",
+    "active": "Currently Active"
+  },
+  "table": {
+    "regionLabel": "Coupons table",
+    "code": "Coupon Code",
+    "discount": "Discount",
+    "usage": "Usage",
+    "projects": "Applicable Projects",
+    "expiry": "Expires",
+    "status": "Status",
+    "actions": "Actions",
+    "allProjects": "All Projects",
+    "unlimited": "Unlimited",
+    "noExpiry": "No expiry",
+    "expiredBadge": "Expired",
+    "exhaustedBadge": "Limit Reached",
+    "activeBadge": "Active",
+    "inactiveBadge": "Inactive",
+    "percentType": "Percentage",
+    "fixedType": "Fixed Amount",
+    "copyCode": "Copy coupon code",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "modal": {
+    "createTitle": "Create Discount Coupon",
+    "createDescription": "Configure the code, discount type and amount, usage limit, and project scope.",
+    "editTitle": "Edit Coupon",
+    "editDescription": "Update settings for coupon {{code}}.",
+    "fields": {
+      "code": "Coupon Code",
+      "codePlaceholder": "e.g. LAUNCH20 or PROMO_50",
+      "codeHint": "Uppercase letters, numbers, dashes (-), and underscores (_) only.",
+      "type": "Discount Type",
+      "typePercent": "Percentage (%)",
+      "typeFixed": "Fixed Amount (EGP)",
+      "valuePercent": "Discount Percentage (1–100%)",
+      "valueFixed": "Discount Amount (EGP)",
+      "valuePercentPlaceholder": "e.g. 15",
+      "valueFixedPlaceholder": "e.g. 500",
+      "valueFixedHint": "Entered in EGP and converted to integer piasters for the server.",
+      "maxUses": "Max Uses",
+      "maxUsesPlaceholder": "Leave empty for unlimited uses",
+      "maxUsesHint": "Required when creating a 100% discount coupon (unlimited 100% coupons are prohibited).",
+      "expiresAt": "Expiry Date & Time",
+      "expiresAtHint": "Leave empty if the coupon never expires.",
+      "isActive": "Coupon Active",
+      "isActiveDescription": "Customers can apply this coupon at checkout while active.",
+      "appliesToProjects": "Applicable Projects",
+      "appliesToProjectsHint": "Leave none selected to apply to all projects, or select specific projects.",
+      "searchProjectsPlaceholder": "Filter projects...",
+      "noProjectsAvailable": "No projects available yet.",
+      "selectedProjectsCount": "{{count}} project(s) selected",
+      "clearSelection": "Apply to all"
+    },
+    "validation": {
+      "codeRequired": "Coupon code is required.",
+      "codeMin": "Coupon code must be at least 2 characters.",
+      "codePattern": "Use only uppercase letters (A–Z), numbers (0–9), dashes (-), and underscores (_).",
+      "valueRequired": "Discount value is required.",
+      "percentRange": "Percentage discount must be a whole number between 1 and 100.",
+      "fixedPositive": "Fixed discount must be greater than 0 EGP.",
+      "maxUsesPositive": "Max uses must be a whole number of at least 1.",
+      "freeCouponMaxUsesRequired": "A 100% discount coupon must specify a finite maxUses limit (at least 1).",
+      "invalidDate": "Please enter a valid date."
+    },
+    "submitCreate": "Create Coupon",
+    "submitUpdate": "Save Changes"
+  },
+  "messages": {
+    "created": "Coupon {{code}} created successfully.",
+    "updated": "Coupon {{code}} updated successfully.",
+    "toggledActive": "Coupon {{code}} activated.",
+    "toggledInactive": "Coupon {{code}} deactivated.",
+    "deleted": "Coupon {{code}} deleted successfully.",
+    "duplicateCode": "This coupon code already exists. Please choose a different code."
+  },
+  "deleteDialog": {
+    "title": "Delete Coupon",
+    "message": "Are you sure you want to delete coupon {{code}}? Customers will no longer be able to apply it.",
+    "confirm": "Delete Coupon"
+  },
+  "empty": {
+    "title": "No coupons yet",
+    "description": "Create your first promotional discount code for checkout campaigns."
+  }
+}

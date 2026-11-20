@@ -1,0 +1,110 @@
+{
+  "title": "إعدادات المنصة",
+  "description": "إدارة الهوية العامة، بيانات التواصل، وسائل الدفع المصرية، وأمان حساب المالك.",
+  "unsavedBadge": "يوجد تعديلات غير محفوظة",
+  "actions": {
+    "saveSettings": "حفظ الإعدادات",
+    "saving": "جاري الحفظ...",
+    "discard": "تجاهل التغييرات",
+    "updatePassword": "تحديث كلمة المرور",
+    "updatingPassword": "جاري التحديث..."
+  },
+  "sections": {
+    "general": {
+      "title": "الإعدادات العامة",
+      "description": "اسم المنصة وفترة الضمان المعروضة للعملاء.",
+      "siteNameLabel": "اسم المنصة",
+      "siteNamePlaceholder": "ByteCraft",
+      "guaranteeDaysLabel": "مدة الضمان (بالأيام)",
+      "guaranteeDaysHint": "عدد أيام ضمان الكود البرمجي والدعم (0 أو أكثر).",
+      "taxFreeBadge": "نظام التسعير معفى من الضرائب (بدون ضريبة قيمة مضافة)"
+    },
+    "contact": {
+      "title": "بيانات التواصل والروابط الاجتماعية",
+      "description": "قنوات التواصل الظاهرة في الموقع العام وصفحات الاتصال.",
+      "emailLabel": "البريد الإلكتروني للتواصل",
+      "emailPlaceholder": "contact@bytecraft.dev",
+      "whatsappLabel": "رقم واتساب",
+      "whatsappPlaceholder": "+201012345678",
+      "phoneLabel": "رقم الهاتف",
+      "phonePlaceholder": "+201012345678",
+      "locationArLabel": "الموقع (بالعربية)",
+      "locationArPlaceholder": "القاهرة، مصر",
+      "locationEnLabel": "الموقع (بالإنجليزية)",
+      "locationEnPlaceholder": "Cairo, Egypt",
+      "socialsTitle": "روابط الشبكات الاجتماعية",
+      "githubLabel": "رابط GitHub",
+      "githubPlaceholder": "https://github.com/ByteCraft",
+      "linkedinLabel": "رابط LinkedIn",
+      "linkedinPlaceholder": "https://linkedin.com/company/bytecraft",
+      "twitterLabel": "رابط X (Twitter)",
+      "twitterPlaceholder": "https://x.com/bytecraft",
+      "facebookLabel": "رابط Facebook",
+      "facebookPlaceholder": "https://facebook.com/bytecraft"
+    },
+    "payments": {
+      "title": "وسائل الدفع",
+      "description": "تفعيل وإعداد بوابات الدفع والتحويلات اليدوية المتاحة للعملاء عند الدفع.",
+      "vodafone": {
+        "title": "فودافون كاش (Vodafone Cash)",
+        "description": "تحويل يدوي إلى رقم المحفظة مع رفع إيصال الدفع للمراجعة.",
+        "enabledLabel": "تفعيل الدفع عبر فودافون كاش",
+        "walletNumberLabel": "رقم المحفظة",
+        "walletNumberPlaceholder": "01012345678",
+        "accountNameLabel": "اسم صاحب المحفظة / الحساب",
+        "accountNamePlaceholder": "ByteCraft Studio",
+        "instructionsArLabel": "تعليمات الدفع (بالعربية)",
+        "instructionsEnLabel": "تعليمات الدفع (بالإنجليزية)"
+      },
+      "instapay": {
+        "title": "إنستاباي (InstaPay)",
+        "description": "تحويل فوري عبر عنوان InstaPay (IPA) مع رفع إيصال التحويل.",
+        "enabledLabel": "تفعيل الدفع عبر إنستاباي",
+        "ipaLabel": "عنوان الدفع (IPA)",
+        "ipaPlaceholder": "bytecraft@instapay",
+        "accountNameLabel": "اسم الحساب المستلم",
+        "accountNamePlaceholder": "ByteCraft Studio",
+        "instructionsArLabel": "تعليمات الدفع (بالعربية)",
+        "instructionsEnLabel": "تعليمات الدفع (بالإنجليزية)"
+      },
+      "fawry": {
+        "title": "فوري (Fawry)",
+        "description": "إصدار كود مرجعي للدفع عبر منافذ فوري عبر بوابة Paymob.",
+        "enabledLabel": "تفعيل الدفع عبر فوري",
+        "serverNote": "ملاحظة: يتطلب تفعيل الدفع عبر فوري توفر مفاتيح ربط Paymob (API Key, Fawry Integration ID, HMAC Secret) مضبوطة في متغيرات الخادم."
+      },
+      "card": {
+        "title": "البطاقات البنكية (Card)",
+        "description": "الدفع المباشر ببطاقات Visa / Mastercard عبر بوابة Paymob.",
+        "enabledLabel": "تفعيل الدفع بالبطاقات البنكية",
+        "serverNote": "ملاحظة: يتطلب تفعيل البطاقات البنكية توفر مفاتيح ربط Paymob (API Key, Card Integration ID, iFrame ID, HMAC Secret) مضبوطة في متغيرات الخادم."
+      }
+    },
+    "security": {
+      "title": "أمان الحساب وتغيير كلمة المرور",
+      "description": "تحديث كلمة مرور حساب المالك. يلزم إدخال كلمة المرور الحالية للتحقق.",
+      "currentPasswordLabel": "كلمة المرور الحالية",
+      "currentPasswordPlaceholder": "أدخل كلمة المرور الحالية",
+      "newPasswordLabel": "كلمة المرور الجديدة",
+      "newPasswordPlaceholder": "8 أحرف على الأقل",
+      "newPasswordHint": "يجب أن تتكون كلمة المرور الجديدة من 8 أحرف على الأقل."
+    }
+  },
+  "validation": {
+    "siteNameRequired": "اسم المنصة مطلوب",
+    "guaranteeDaysInteger": "يجب أن يكون عدد الأيام رقماً صحيحاً",
+    "guaranteeDaysMin": "يجب أن تكون مدة الضمان 0 أو أكثر",
+    "invalidEmail": "يرجى إدخال بريد إلكتروني صحيح",
+    "invalidUrl": "يرجى إدخال رابط صحيح يبدأ بـ http:// أو https://",
+    "currentPasswordRequired": "يرجى إدخال كلمة المرور الحالية",
+    "newPasswordMin": "يجب أن تتكون كلمة المرور الجديدة من 8 أحرف على الأقل"
+  },
+  "toasts": {
+    "settingsSaved": "تم حفظ إعدادات المنصة بنجاح",
+    "passwordUpdated": "تم تحديث كلمة المرور بنجاح"
+  },
+  "error": {
+    "title": "تعذر تحميل الإعدادات",
+    "description": "حدث خطأ أثناء تحميل إعدادات المنصة. يرجى المحاولة مجدداً."
+  }
+}

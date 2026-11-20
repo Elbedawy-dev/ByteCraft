@@ -1,0 +1,109 @@
+{
+  "pageTitle": "إدارة خطط الخدمات — ByteCraft",
+  "heading": "خطط الخدمات المخصصة",
+  "subtitle": "إدارة باقات التطوير المخصص الظاهرة للعملاء في صفحة الأسعار والخدمات وربطها بنموذج طلب المشروع.",
+  "totalBadge": "{{count}} خطة",
+  "addPlan": "إضافة خطة خدمة",
+  "refresh": "تحديث",
+  "filters": {
+    "regionLabel": "تصفية خطط الخدمات",
+    "searchLabel": "البحث في خطط الخدمات",
+    "searchPlaceholder": "ابحث باسم الخطة، الوصف، أو المجموعة...",
+    "allGroups": "كل المجموعات",
+    "groupLabel": "المجموعة",
+    "reset": "مسح"
+  },
+  "table": {
+    "caption": "جدول خطط الخدمات المخصصة",
+    "plan": "الخطة",
+    "group": "المجموعة",
+    "startingPrice": "السعر المبدئي",
+    "deliveryDays": "مدة التسليم",
+    "featuresCount": "المميزات",
+    "sortOrder": "الترتيب",
+    "status": "الحالة",
+    "actions": "الإجراءات",
+    "daysValue": "{{days}} يوم",
+    "featuresValue": "{{count}} ميزة"
+  },
+  "status": {
+    "active": "مفعلة",
+    "inactive": "معطلة",
+    "popular": "الأكثر طلباً"
+  },
+  "actions": {
+    "edit": "تعديل الخطة",
+    "delete": "حذف الخطة",
+    "toggleActive": "تغيير التفعيل"
+  },
+  "empty": {
+    "title": "لا توجد خطط خدمات",
+    "description": "أضف أول باقة تطوير مخصص لتظهر في صفحة الأسعار للعملاء.",
+    "filteredDescription": "لا توجد خطط مطابقة لمعايير التصفية الحالية."
+  },
+  "modal": {
+    "createTitle": "إضافة خطة خدمة مخصصة",
+    "editTitle": "تعديل خطة الخدمة",
+    "subtitle": "يتم إدخال السعر المبدئي بالجنيه المصري ويُحوَّل تلقائياً لقروش صحيحة عند الحفظ.",
+    "closeLabel": "إغلاق",
+    "groupLabel": "المجموعة (Group)",
+    "groupPlaceholder": "lms أو ecommerce أو custom",
+    "groupHint": "معرّف المجموعة بأحرف صغيرة (مثل: lms, ecommerce, custom).",
+    "groupPresetsLabel": "مجموعات مقترحة:",
+    "nameArLabel": "اسم الخطة بالعربية",
+    "nameArPlaceholder": "مثال: بناء منصة تعليمية مخصصة",
+    "nameEnLabel": "Plan Name (EN)",
+    "nameEnPlaceholder": "e.g. Custom LMS Build",
+    "descriptionArLabel": "الوصف بالعربية",
+    "descriptionArPlaceholder": "تصميم وتطوير منصة تعليمية متكاملة حسب متطلبات الأكاديمية",
+    "descriptionEnLabel": "Description (EN)",
+    "descriptionEnPlaceholder": "End-to-end tailored LMS platform engineered to your requirements",
+    "startingPriceLabel": "السعر المبدئي (ج.م)",
+    "startingPricePlaceholder": "15000",
+    "currencySuffix": "ج.م",
+    "piastersHint": "يعادل {{piasters}} قرش",
+    "deliveryDaysLabel": "مدة التسليم التقديرية (بالأيام)",
+    "deliveryDaysPlaceholder": "21",
+    "sortOrderLabel": "ترتيب العرض (Sort Order)",
+    "isPopularLabel": "تمييز كخطة شائعة (Popular)",
+    "isActiveLabel": "تفعيل الخطة في صفحة الأسعار",
+    "featuresHeading": "مميزات الخطة (عربي / إنجليزي)",
+    "addFeature": "إضافة ميزة",
+    "featureArPlaceholder": "الميزة بالعربية (مثال: تصميم UI/UX مخصص)",
+    "featureEnPlaceholder": "Feature in English (e.g. Custom UI/UX design)",
+    "moveUp": "أعلى",
+    "moveDown": "أسفل",
+    "removeFeature": "حذف الميزة",
+    "noFeaturesHint": "لا توجد مميزات مضافة بعد. اضغط \"إضافة ميزة\" لإضافة تفاصيل الخطة.",
+    "saveCreate": "إنشاء الخطة",
+    "saveEdit": "حفظ التعديلات",
+    "cancel": "إلغاء"
+  },
+  "unsaved": {
+    "banner": "لديك تغييرات غير محفوظة. هل تريد إغلاق النافذة وتجاهلها؟",
+    "keepEditing": "متابعة التعديل",
+    "discard": "تجاهل التغييرات"
+  },
+  "deleteDialog": {
+    "title": "تأكيد حذف خطة الخدمة",
+    "message": "هل أنت متأكد من حذف خطة \"{{name}}\"؟ لن تظهر بعد الآن في صفحة الأسعار العامة.",
+    "confirm": "حذف الخطة",
+    "cancel": "إلغاء"
+  },
+  "toasts": {
+    "created": "تم إنشاء خطة الخدمة بنجاح.",
+    "updated": "تم تحديث خطة الخدمة بنجاح.",
+    "deleted": "تم حذف خطة الخدمة بنجاح."
+  },
+  "validation": {
+    "groupRequired": "اسم المجموعة مطلوب",
+    "nameArRequired": "اسم الخطة بالعربية مطلوب",
+    "nameEnRequired": "اسم الخطة بالإنجليزية مطلوب",
+    "descriptionArRequired": "الوصف بالعربية مطلوب",
+    "descriptionEnRequired": "الوصف بالإنجليزية مطلوب",
+    "priceInvalid": "أدخل سعراً مبدئياً صحيحاً (0 أو أكثر)",
+    "deliveryDaysMin": "مدة التسليم يجب أن تكون يوماً واحداً على الأقل",
+    "sortOrderInt": "ترتيب العرض يجب أن يكون رقماً صحيحاً",
+    "featureBilingualRequired": "أدخل نص الميزة بالعربية والإنجليزية"
+  }
+}

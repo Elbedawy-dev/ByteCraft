@@ -1,0 +1,154 @@
+{
+  "pageTitle": "Start a Project | ByteCraft",
+  "hero": {
+    "badge": "Fast Response • Production Engineering",
+    "titlePrefix": "Start Your Next Project with ",
+    "titleBrand": "ByteCraft",
+    "subtitle": "Whether you want to license a ready-made platform or architect a custom MERN Stack web application from scratch, we deliver clean, scalable production systems built for speed."
+  },
+  "sidebar": {
+    "channelsEyebrow": "INSTANT SUPPORT CHANNELS",
+    "availableNow": "Available now",
+    "whatsappTitle": "Direct WhatsApp Chat",
+    "whatsappNote": "Instant direct response within minutes",
+    "emailTitle": "Official Email",
+    "emailNote": "Formal proposal & technical scoping within 6 hours",
+    "phoneTitle": "Direct Phone Call",
+    "phoneNote": "Available daily during business hours",
+    "githubTitle": "GitHub Repository",
+    "githubSubtitle": "Explore libraries & open modules",
+    "linkedinTitle": "Official LinkedIn",
+    "linkedinSubtitle": "Follow releases & case studies",
+    "locationLabel": "Location & Availability",
+    "defaultLocation": "Cairo, Egypt",
+    "availabilityNote": "Currently open for new custom engineering & enterprise builds this quarter",
+    "gridTag": "CAI • UTC+2 • PRODUCTION STUDIO",
+    "ndaTitle": "IP Protection & Confidentiality",
+    "ndaBody": "We sign a mutual NDA for all custom concepts and software builds to guarantee your complete intellectual property ownership of the source code and architecture."
+  },
+  "form": {
+    "eyebrow": "TECHNICAL SCOPING & BOOKING",
+    "responseBadge": "Free engineering review",
+    "title": "Project Inquiry Form",
+    "subtitle": "Fill in the details below so our team can analyze your requirements and prepare an accurate technical estimate and timeline.",
+    "prefill": {
+      "loadingPlan": "Loading selected service plan details...",
+      "planLabel": "Linked to service plan:",
+      "planMeta": "Estimated delivery: {{days}} days • Starting at {{price}}",
+      "loadingProject": "Loading selected project details...",
+      "projectLabel": "Inquiry regarding project:",
+      "clear": "Unlink"
+    },
+    "fields": {
+      "name": {
+        "label": "Full Name",
+        "placeholder": "e.g. Ahmed Abdelrahman"
+      },
+      "phone": {
+        "label": "Phone / WhatsApp",
+        "placeholder": "+20 10 1234 5678",
+        "hint": "Used for fast follow-up via WhatsApp or call"
+      },
+      "email": {
+        "label": "Email Address",
+        "placeholder": "ahmed@example.com"
+      },
+      "projectType": {
+        "label": "Project Type",
+        "placeholder": "Select your project type...",
+        "options": {
+          "lms": "Learning Management System (LMS)",
+          "ecommerce": "Full-Featured E-Commerce Store",
+          "custom_mern": "Custom MERN Stack Web Application",
+          "consulting": "Technical Consulting & Code Audit",
+          "other": "Other Custom Software Project"
+        }
+      },
+      "budgetRange": {
+        "label": "Estimated Budget",
+        "options": {
+          "undecided": "Undecided (awaiting technical quote)",
+          "5k_10k": "EGP 5,000 – 10,000",
+          "10k_20k": "EGP 10,000 – 20,000",
+          "20k_plus": "EGP 20,000+"
+        }
+      },
+      "timeline": {
+        "label": "Target Delivery Timeline",
+        "options": {
+          "urgent": {
+            "label": "Urgent",
+            "description": "Within 1 week"
+          },
+          "standard": {
+            "label": "Standard",
+            "description": "2 to 4 weeks"
+          },
+          "flexible": {
+            "label": "Flexible",
+            "description": "Based on roadmap"
+          }
+        }
+      },
+      "message": {
+        "label": "Project Details & Technical Scope",
+        "placeholder": "Describe your idea, key features, target payment gateways, or reference links...",
+        "hint": "Please provide at least 10 characters so we can prepare an accurate estimate."
+      },
+      "attachments": {
+        "label": "Attach Specs or Wireframes (Optional)",
+        "dropLabel": "Drag & drop files here, or click to browse",
+        "dropHint": "Supports JPEG, PNG, WebP, PDF (max 3 files, 5 MB each)",
+        "selectedCount": "{{count}} of {{max}} files attached",
+        "pdfBadge": "PDF Document",
+        "removeFile": "Remove {{name}}"
+      }
+    },
+    "submit": "Send Project Request",
+    "submitting": "Submitting your request...",
+    "securityNote": "Your details are encrypted and handled strictly confidentially — never shared with third parties.",
+    "errors": {
+      "nameRequired": "Please enter your full name (at least 2 characters)",
+      "nameMax": "Name must be 100 characters or fewer",
+      "phoneRequired": "Please enter a valid phone or WhatsApp number (at least 6 characters)",
+      "phoneMax": "Phone number must be 30 characters or fewer",
+      "emailRequired": "Please enter a valid email address",
+      "projectTypeRequired": "Please select a project type",
+      "messageMin": "Please describe your project (at least 10 characters)",
+      "messageMax": "Details must be 5,000 characters or fewer",
+      "maxFiles": "You can attach up to 3 files maximum.",
+      "fileTooLarge": "\"{{name}}\" exceeds the 5 MB limit per file.",
+      "invalidFileType": "\"{{name}}\" has an unsupported type. Allowed: JPEG, PNG, WebP, PDF.",
+      "rateLimited": "Too many inquiries submitted from your network. Please wait a few minutes and try again, or reach us directly on WhatsApp."
+    },
+    "success": {
+      "badge": "Inquiry Received",
+      "title": "Your project request has been received!",
+      "message": "Thank you, {{name}}. We have saved your brief and notified our lead engineer.",
+      "subjectLabel": "Subject:",
+      "emailLabel": "We will reply to:",
+      "nextStepsTitle": "What happens next:",
+      "nextSteps": [
+        "Our lead software engineer reviews your requirements and any attached specs.",
+        "We reach out via WhatsApp or email within 6 hours to clarify key technical details.",
+        "You receive a detailed architecture scope, milestone timeline, and transparent quote."
+      ],
+      "sendAnother": "Send another inquiry",
+      "browseProjects": "Browse Ready Projects"
+    }
+  },
+  "valueProps": {
+    "cleanCode": {
+      "title": "100% Clean Source Code",
+      "description": "Well-documented, scalable architecture with complete API and integration documentation."
+    },
+    "speed": {
+      "title": "Benchmark Loading Speed",
+      "description": "High-performance builds engineered for Core Web Vitals and sub-second page responses."
+    },
+    "support": {
+      "title": "{{days}}-Day Support & Warranty",
+      "description": "Complimentary post-launch maintenance window with full bug-fix coverage."
+    }
+  }
+}

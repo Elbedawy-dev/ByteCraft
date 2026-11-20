@@ -1,0 +1,269 @@
+{
+  "brand": {
+    "name": "ByteCraft",
+    "latinName": "ByteCraft",
+    "fullName": "ByteCraft Studio",
+    "tagline": "Turnkey MERN Stack platforms and custom web engineering",
+    "copyright": "© {{year}} ByteCraft. All rights reserved."
+  },
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "pricing": "Pricing & Services",
+    "about": "About",
+    "contact": "Contact",
+    "getStarted": "Get Started",
+    "skipToContent": "Skip to main content",
+    "primaryNavLabel": "Primary",
+    "mobileNavLabel": "Mobile menu",
+    "breadcrumbLabel": "Breadcrumb",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "language": "Language",
+    "switchToAr": "التبديل إلى العربية",
+    "switchToEn": "Switch to English",
+    "theme": "Theme",
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode",
+    "darkMode": "Dark mode",
+    "lightMode": "Light mode"
+  },
+  "footer": {
+    "description": "Engineering studio specializing in high-performance web platforms and turnkey MERN Stack solutions for startups, academies, and modern e-commerce brands.",
+    "quickLinks": "Quick Links",
+    "contactChannels": "Direct Contact",
+    "contactSubtitle": "Ready to discuss your project idea and ship production-grade code fast.",
+    "availableBadge": "Available for new engineering projects",
+    "links": {
+      "projects": "Ready-Made Platforms",
+      "pricing": "Pricing & Service Plans",
+      "about": "About & Engineering Process",
+      "customBuild": "Request a Custom Build"
+    },
+    "channels": {
+      "whatsapp": "WhatsApp",
+      "email": "Email",
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "twitter": "X (Twitter)",
+      "facebook": "Facebook",
+      "contactPage": "Contact Us"
+    }
+  },
+  "ownerNav": {
+    "dashboard": "Dashboard",
+    "projects": "Projects",
+    "orders": "Orders",
+    "inquiries": "Inquiries",
+    "reviews": "Reviews",
+    "coupons": "Coupons",
+    "categories": "Categories",
+    "servicePlans": "Service Plans",
+    "settings": "Settings",
+    "logout": "Sign out",
+    "backToSite": "Back to site"
+  },
+  "actions": {
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "saveChanges": "Save Changes",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "retry": "Try Again",
+    "back": "Back",
+    "backHome": "Back to Home",
+    "viewAll": "View All",
+    "viewDetails": "View Details",
+    "buy": "Buy License",
+    "buyNow": "Buy Now",
+    "liveDemo": "Live Demo",
+    "copy": "Copy",
+    "copied": "Copied",
+    "clear": "Clear",
+    "apply": "Apply",
+    "remove": "Remove",
+    "add": "Add",
+    "upload": "Upload",
+    "search": "Search",
+    "filter": "Filter",
+    "resetFilters": "Reset Filters",
+    "previous": "Previous",
+    "next": "Next",
+    "loading": "Loading...",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
+  },
+  "states": {
+    "loading": "Loading...",
+    "emptyTitle": "Nothing here yet",
+    "emptyDescription": "No matching records were found at this time.",
+    "errorTitle": "Something went wrong",
+    "errorDescription": "We couldn't load the requested data. Please try again.",
+    "notFoundCode": "404",
+    "notFoundTitle": "Page not found",
+    "notFoundDescription": "Sorry, the page you are looking for doesn't exist or has been moved.",
+    "boundaryTitle": "Something went wrong on this page",
+    "boundaryDescription": "An unexpected error occurred while rendering this view. Reload or return home.",
+    "reloadPage": "Reload Page",
+    "noImage": "No preview image"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "network": "Unable to reach the server. Check your connection and try again.",
+    "unauthorized": "Your session has expired or you are not authorized. Please sign in.",
+    "forbidden": "You don't have permission to perform this action.",
+    "notFound": "The requested resource was not found.",
+    "rateLimited": "Too many requests. Please wait a moment and try again later.",
+    "serverError": "Server error occurred. Please try again later.",
+    "conflict": "This value is already in use.",
+    "validationFailed": "Please review the highlighted fields and fix the errors.",
+    "codes": {
+      "VALIDATION_ERROR": "Please check your input and fix the validation errors.",
+      "INVALID_CURRENT_PASSWORD": "Your current password is incorrect.",
+      "NO_FILES_PROVIDED": "No files were uploaded.",
+      "INVALID_FILE_TYPE": "Unsupported file type.",
+      "FILE_TOO_LARGE": "File exceeds the maximum allowed size (5 MB).",
+      "PROJECT_NOT_AVAILABLE": "This project is currently not available for purchase.",
+      "PACKAGE_NOT_ACTIVE": "The selected package is no longer active.",
+      "INVALID_COUPON": "Invalid coupon code.",
+      "COUPON_INACTIVE": "This coupon is currently inactive.",
+      "COUPON_EXPIRED": "This coupon has expired.",
+      "COUPON_MAX_USES_REACHED": "This coupon has reached its maximum usage limit.",
+      "COUPON_NOT_APPLICABLE": "This coupon does not apply to this project.",
+      "PAYMENT_FAILED": "Payment could not be initialized. Please try again or pick another method.",
+      "UNAUTHORIZED": "Unauthorized access. Please sign in or check your order token.",
+      "INVALID_CREDENTIALS": "Invalid email or password.",
+      "FORBIDDEN": "You don't have permission to perform this action.",
+      "NOT_FOUND": "The requested resource was not found.",
+      "CONFLICT": "A duplicate record already exists.",
+      "ALREADY_EXISTS": "A review has already been submitted for this order.",
+      "INVALID_STATE": "This action is not allowed for the order's current status.",
+      "PROJECT_HAS_PAID_ORDERS": "This project has paid orders and cannot be deleted; archive it instead.",
+      "CATEGORY_IN_USE": "This category is assigned to existing projects and cannot be deleted.",
+      "UNSUPPORTED_MEDIA_TYPE": "Unsupported request content type.",
+      "TOO_MANY_REQUESTS": "Too many requests. Please try again later.",
+      "INTERNAL_ERROR": "Unexpected server error. Please try again later."
+    }
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalidEmail": "Please enter a valid email address",
+    "invalidPhone": "Please enter a valid phone number",
+    "invalidUrl": "Please enter a valid URL starting with http:// or https://",
+    "minLength": "Must be at least {{min}} characters",
+    "maxLength": "Must be at most {{max}} characters",
+    "minNumber": "Must be {{min}} or greater",
+    "maxNumber": "Must be {{max}} or less",
+    "fileTooLarge": "{{name}} exceeds the maximum size ({{max}})",
+    "invalidFileType": "{{name}} has an unsupported file type",
+    "maxFiles": "You can attach up to {{max}} files"
+  },
+  "status": {
+    "order": {
+      "pending_payment": "Pending Payment",
+      "awaiting_review": "Awaiting Review",
+      "paid": "Paid",
+      "delivered": "Delivered",
+      "rejected": "Rejected",
+      "cancelled": "Cancelled",
+      "refunded": "Refunded",
+      "expired": "Expired"
+    },
+    "inquiry": {
+      "new": "New",
+      "read": "Read",
+      "in_progress": "In Progress",
+      "resolved": "Resolved",
+      "archived": "Archived"
+    },
+    "project": {
+      "draft": "Draft",
+      "published": "Published",
+      "archived": "Archived"
+    },
+    "delivery": {
+      "pending": "Pending",
+      "granted": "Granted",
+      "failed": "Failed",
+      "manual": "Manual"
+    },
+    "review": {
+      "published": "Published",
+      "hidden": "Hidden"
+    }
+  },
+  "paymentMethods": {
+    "vodafone_cash": "Vodafone Cash",
+    "instapay": "InstaPay",
+    "fawry": "Fawry",
+    "card": "Bank Card"
+  },
+  "currency": {
+    "egp": "EGP",
+    "startingFrom": "Starting from",
+    "fullLicense": "Full license:",
+    "free": "Free",
+    "reviewsCount": "({{count}} reviews)",
+    "ratingOutOf": "{{value}} out of 5"
+  },
+  "cta": {
+    "eyebrow": "Production Engineering • Fast Delivery",
+    "title": "Ready to launch your next platform and scale faster?",
+    "description": "Reach out on WhatsApp or request a tailored technical quote. An engineer will review your scope and get back to you promptly.",
+    "primaryAction": "Start Your Project",
+    "secondaryAction": "Browse Ready Projects",
+    "bullets": [
+      "No hidden fees",
+      "Free technical consultation"
+    ]
+  },
+  "pagination": {
+    "label": "Pagination",
+    "previous": "Previous page",
+    "next": "Next page",
+    "page": "Page {{page}}",
+    "showingRange": "Showing {{from}} - {{to}} of {{total}}"
+  },
+  "table": {
+    "scrollRegion": "Data table",
+    "empty": "No records available"
+  },
+  "dropzone": {
+    "title": "Drag & drop files here or",
+    "browse": "click to browse",
+    "hint": "Supports JPG, PNG, WebP, PDF (up to {{maxSize}})",
+    "removeFile": "Remove {{name}}"
+  },
+  "tagInput": {
+    "placeholder": "Add a tag and press Enter...",
+    "add": "Add",
+    "removeTag": "Remove {{tag}}",
+    "count": "{{count}} tags"
+  },
+  "titles": {
+    "home": "Home",
+    "projects": "Ready-Made Projects",
+    "projectDetails": "Project Details",
+    "pricing": "Pricing & Services",
+    "about": "About ByteCraft",
+    "contact": "Start a Project",
+    "checkout": "Checkout",
+    "orderTracking": "Order Tracking",
+    "paymentResult": "Payment Result",
+    "notFound": "Page Not Found",
+    "ownerLogin": "Owner Sign In",
+    "ownerDashboard": "Dashboard",
+    "ownerProjects": "Manage Projects",
+    "ownerOrders": "Manage Orders",
+    "ownerInquiries": "Manage Inquiries",
+    "ownerReviews": "Manage Reviews",
+    "ownerCoupons": "Manage Coupons",
+    "ownerCategories": "Manage Categories",
+    "ownerServicePlans": "Manage Service Plans",
+    "ownerSettings": "Platform Settings",
+    "uiShowcase": "UI Primitives (Dev)"
+  }
+}

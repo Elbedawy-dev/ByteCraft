@@ -1,0 +1,71 @@
+{
+  "consoleBadge": "Owner Portal",
+  "navLabel": "Owner console navigation",
+  "skipToMain": "Skip to main content",
+  "sidebar": {
+    "expand": "Expand sidebar",
+    "collapse": "Collapse sidebar",
+    "openMobileMenu": "Open owner navigation menu",
+    "closeMobileMenu": "Close owner navigation menu",
+    "ownerRole": "Platform Owner",
+    "backToSite": "Public Storefront"
+  },
+  "topbar": {
+    "consoleLabel": "Admin",
+    "notifications": "Notifications",
+    "notificationsCount": "{{count}} items awaiting attention",
+    "noNotifications": "No pending notifications",
+    "allCaughtUp": "All payment proofs and inquiries are up to date",
+    "pendingProofs": "Pending Payment Proofs",
+    "pendingProofsDesc": "{{count}} order(s) awaiting receipt review",
+    "newInquiries": "New Client Inquiries",
+    "newInquiriesDesc": "{{count}} unread inquiry(ies) to follow up",
+    "viewOrders": "Review Orders",
+    "viewInquiries": "View Inquiries",
+    "ownerMenu": "Owner menu",
+    "signedInAs": "Signed in as",
+    "settingsLink": "Platform Settings",
+    "publicSiteLink": "View Public Site",
+    "logout": "Sign Out",
+    "loggingOut": "Signing out...",
+    "logoutSuccess": "Signed out successfully"
+  },
+  "session": {
+    "verifying": "Verifying owner session...",
+    "errorTitle": "Unable to verify session",
+    "errorDescription": "Could not reach the server to verify your owner session.",
+    "goToLogin": "Go to Sign In"
+  },
+  "login": {
+    "brandSubtitle": "Owner Authentication",
+    "portalPill": "Admin Console // Protected Gateway",
+    "title": "Sign in to Owner Console",
+    "subtitle": "Enter your authorized owner credentials to manage projects, orders, and platform settings.",
+    "emailLabel": "Admin Email Address",
+    "emailPlaceholder": "owner@bytecraft.dev",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "••••••••••••",
+    "requiredTag": "Required",
+    "submit": "Sign in to Console",
+    "submitting": "Authenticating...",
+    "backToSite": "Back to main site",
+    "invalidCredentials": "Invalid email address or password.",
+    "rateLimited": "Too many failed login attempts. Please wait 15 minutes and try again.",
+    "validation": {
+      "emailInvalid": "Please enter a valid email address",
+      "passwordRequired": "Password is required"
+    }
+  },
+  "unsaved": {
+    "title": "Unsaved Changes",
+    "message": "You have unsaved changes on this page. Are you sure you want to leave and discard them?",
+    "stay": "Stay on Page",
+    "discardAndLeave": "Discard & Leave"
+  },
+  "common": {
+    "freeOrder": "Free Order",
+    "notAvailable": "N/A",
+    "refresh": "Refresh",
+    "viewAll": "View All"
+  }
+}

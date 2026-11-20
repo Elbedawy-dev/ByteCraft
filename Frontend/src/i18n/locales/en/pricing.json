@@ -1,0 +1,199 @@
+{
+  "meta": {
+    "title": "Pricing & Services | ByteCraft"
+  },
+  "hero": {
+    "badge": "MERN STACK PRICING ARCHITECTURE",
+    "title": "Pricing Plans & Engineering Services",
+    "subtitle": "Complete pricing transparency with zero hidden fees, backed by strict performance and code-quality standards."
+  },
+  "tabs": {
+    "ariaLabel": "Service plan groups",
+    "allLabel": "All Plans"
+  },
+  "pillars": [
+    {
+      "id": "source-code",
+      "icon": "code_blocks",
+      "accent": "primary",
+      "title": "Full Source Code Ownership",
+      "description": "100% codebase ownership with zero recurring vendor lock-in"
+    },
+    {
+      "id": "fast-deploy",
+      "icon": "speed",
+      "accent": "secondary",
+      "title": "Predictable Delivery",
+      "description": "Clear engineering milestones and reliable turnaround times"
+    },
+    {
+      "id": "security",
+      "icon": "shield_lock",
+      "accent": "tertiary",
+      "title": "Hardened Security",
+      "description": "Data encryption, session hardening, and resilient infrastructure"
+    }
+  ],
+  "groups": {
+    "lms": {
+      "tabLabel": "Education & LMS",
+      "eyebrow": "LEARNING MANAGEMENT PLATFORMS",
+      "title": "Education Centers & LMS Platforms",
+      "description": "End-to-end learning platforms engineered for concurrent students, protected media, and smooth Arabic & English UX.",
+      "icon": "school",
+      "accent": "primary"
+    },
+    "ecommerce": {
+      "tabLabel": "E-Commerce",
+      "eyebrow": "SCALABLE COMMERCE PLATFORMS",
+      "title": "Modern E-Commerce Platforms",
+      "description": "Fast React-powered storefronts engineered for responsive checkout flows and high conversion rates.",
+      "icon": "storefront",
+      "accent": "secondary"
+    },
+    "custom": {
+      "tabLabel": "Custom Systems",
+      "eyebrow": "CUSTOM ENGINEERING & SAAS",
+      "title": "Custom Web Apps & Systems",
+      "description": "Tailored full-stack software built around your exact workflows with modular APIs and clean architecture.",
+      "icon": "deployed_code",
+      "accent": "tertiary"
+    },
+    "saas": {
+      "tabLabel": "SaaS Platforms",
+      "eyebrow": "MULTI-TENANT SAAS SYSTEMS",
+      "title": "SaaS Products & Dashboards",
+      "description": "Multi-tenant web products with subscription billing, analytics, and role-based access control.",
+      "icon": "cloud_done",
+      "accent": "primary"
+    },
+    "web": {
+      "tabLabel": "Web Applications",
+      "eyebrow": "MODERN WEB APPLICATIONS",
+      "title": "Interactive Web Applications",
+      "description": "High-speed interfaces backed by well-structured RESTful APIs and clean databases.",
+      "icon": "web",
+      "accent": "secondary"
+    },
+    "mobile": {
+      "tabLabel": "PWA & Mobile",
+      "eyebrow": "MOBILE & PWA SOLUTIONS",
+      "title": "Mobile & PWA Experiences",
+      "description": "Installable progressive web applications built to feel fast and native across every viewport.",
+      "icon": "smartphone",
+      "accent": "tertiary"
+    },
+    "consulting": {
+      "tabLabel": "Consulting",
+      "eyebrow": "ARCHITECTURE & AUDITS",
+      "title": "Engineering Consulting & Audits",
+      "description": "Performance tuning, security audits, database modeling, and technical scaling roadmaps.",
+      "icon": "engineering",
+      "accent": "primary"
+    },
+    "default": {
+      "eyebrow": "SERVICE PACKAGES",
+      "description": "Transparent custom software tiers engineered to production standards.",
+      "icon": "layers",
+      "accent": "primary"
+    }
+  },
+  "card": {
+    "popular": "Most Popular",
+    "startingFrom": "Starting from",
+    "deliveryDays": "{{count}}-day delivery",
+    "ctaDefault": "Choose This Plan",
+    "ctaPopular": "Book Popular Plan",
+    "ctaAria": "{{action}} — {{name}}",
+    "noFeatures": "Full custom design and engineering tailored to your scope."
+  },
+  "matrix": {
+    "eyebrow": "FEATURE MATRIX",
+    "title": "Every plan includes these engineering baselines by default:",
+    "description": "Hardened input validation, SSL-ready deployment, encrypted sessions, and fast React hydration with full bilingual RTL/LTR support.",
+    "lighthouseLabel": "Google Lighthouse Benchmark",
+    "lighthouseScore": "98 / 100",
+    "metrics": [
+      { "label": "Performance", "value": "99" },
+      { "label": "Security", "value": "100" },
+      { "label": "SEO", "value": "98" }
+    ],
+    "tableTitle": "Side-by-Side Plan Comparison",
+    "tableSubtitle": "Compare starting investments, estimated delivery timelines, and included features across active plans.",
+    "tableCaption": "Service plans comparison matrix",
+    "tableRegionLabel": "Plans comparison table",
+    "featureCol": "Criteria / Feature",
+    "rows": {
+      "startingPrice": "Starting Price",
+      "delivery": "Estimated Delivery",
+      "deliveryValue": "{{count}} days",
+      "sourceCode": "Full Source Code Ownership",
+      "sourceCodeValue": "100%",
+      "guarantee": "Post-Delivery Guarantee",
+      "guaranteeDays": "{{count}} days",
+      "responsive": "Bilingual RTL/LTR & Dark/Light Mode",
+      "included": "Included",
+      "notIncluded": "Not included",
+      "selectPlan": "Select Plan",
+      "planFeaturesHeading": "Plan Features"
+    }
+  },
+  "customBanner": {
+    "badge": "CUSTOM WEB APPS & SAAS",
+    "title": "Have a unique product idea outside standard packages?",
+    "description": "We architect and build complex web systems from scratch—custom APIs, internal ERPs, or multi-tenant SaaS dashboards—with clear deliverables and strict timelines.",
+    "highlights": [
+      "Modular MERN Architecture",
+      "Clean API Documentation",
+      "Milestone-Driven Delivery"
+    ],
+    "consultantTitle": "Lead Architect Available",
+    "consultantSubtitle": "Free Initial Consultation",
+    "consultantBio": "We review your data schema, system boundaries, and estimated budget in a focused discovery session.",
+    "consultantAlt": "ByteCraft consulting engineer avatar",
+    "cta": "Request a Custom Quote Now"
+  },
+  "faq": {
+    "eyebrow": "CLEAR ANSWERS",
+    "title": "Frequently Asked Questions",
+    "subtitle": "Transparent answers on source code ownership, delivery timelines, payment options, and ongoing support.",
+    "items": [
+      {
+        "id": "source-code",
+        "question": "Do I receive the complete source code?",
+        "answer": "Yes, you own 100% of the codebase. Everything is delivered via a private Git repository containing the full Frontend, Backend, database schemas, and setup documentation with zero proprietary lock-in."
+      },
+      {
+        "id": "delivery-time",
+        "question": "How long does it take to deliver a custom project?",
+        "answer": "Timelines depend on the selected tier and scope. Each plan lists its estimated delivery in days, including domain configuration, cloud deployment, and end-to-end QA before handover."
+      },
+      {
+        "id": "payment-methods",
+        "question": "Which payment methods are supported?",
+        "answer": "We support flexible payment options including Vodafone Cash, InstaPay, Fawry, and bank cards through supported payment gateways."
+      },
+      {
+        "id": "post-delivery-support",
+        "question": "Do you provide post-delivery technical support?",
+        "answer": "Yes. Projects include a complimentary post-delivery guarantee window to ensure smooth production stability, with optional ongoing maintenance plans."
+      },
+      {
+        "id": "future-features",
+        "question": "Can new features be added later as my business grows?",
+        "answer": "Absolutely. Every project follows a clean, modular structure so you can easily add new capabilities later—either with ByteCraft or with your own engineering team."
+      }
+    ]
+  },
+  "helpStrip": {
+    "title": "Need help choosing the right plan for your business?",
+    "subtitle": "Our engineering team is ready to review your requirements free of charge.",
+    "cta": "Talk to a Technical Advisor",
+    "whatsappCta": "Chat on WhatsApp"
+  },
+  "empty": {
+    "title": "No active service plans published yet",
+    "description": "Send us your project details directly and we will prepare a custom technical scope and quote for you.",
+    "cta": "Request a Custom Quote"
+  }
+}

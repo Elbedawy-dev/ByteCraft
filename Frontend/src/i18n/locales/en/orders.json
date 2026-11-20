@@ -1,0 +1,249 @@
+{
+  "tracking": {
+    "pageTitle": "Order {{orderNumber}} | ByteCraft",
+    "defaultPageTitle": "Order Tracking | ByteCraft",
+    "breadcrumbs": {
+      "home": "Home",
+      "projects": "Projects",
+      "order": "Order Tracking"
+    },
+    "header": {
+      "eyebrow": "LIVE ORDER TRACKING PORTAL",
+      "orderNumberLabel": "Order Number:",
+      "createdAt": "Created on {{date}}",
+      "pollingActive": "Auto-updating every 20s",
+      "pollingPaused": "Auto-refresh paused (tab hidden)",
+      "refresh": "Refresh Status",
+      "refreshing": "Refreshing...",
+      "copyLink": "Copy Tracking Link",
+      "copiedLink": "Link Copied",
+      "privacyWarning": "Security notice: This tracking link includes your secret access token. Keep it private and do not share it publicly."
+    },
+    "tokenGate": {
+      "badge": "Order Verification",
+      "title": "Enter Your Order Access Token",
+      "subtitle": "To protect your privacy, viewing order {{orderNumber}} requires the secret access token sent to your confirmation email.",
+      "tokenLabel": "Secret Access Token",
+      "tokenPlaceholder": "Paste your 48-character access token...",
+      "tokenHint": "You can find this token or direct tracking link in your order confirmation email.",
+      "submit": "View Order Status",
+      "requiredError": "Please enter your order access token",
+      "invalidError": "Invalid access token for this order. Please double-check the full token from your confirmation email.",
+      "rateLimitError": "Too many verification attempts. Please wait 15 minutes before trying again."
+    },
+    "notFound": {
+      "title": "Order Not Found",
+      "message": "We couldn't find order {{orderNumber}}. Please check the order number or contact our support team.",
+      "browseProjects": "Browse Projects",
+      "contactSupport": "Contact Support"
+    },
+    "status": {
+      "pending_payment": "Pending Payment",
+      "awaiting_review": "Awaiting Review",
+      "paid": "Paid",
+      "delivered": "Delivered",
+      "rejected": "Proof Rejected",
+      "cancelled": "Cancelled",
+      "refunded": "Refunded",
+      "expired": "Expired"
+    },
+    "timeline": {
+      "title": "Order Progress",
+      "steps": {
+        "pending_payment": {
+          "title": "Order Created — Awaiting Payment",
+          "description": "Complete your payment and upload the transfer receipt (or finish online checkout)."
+        },
+        "awaiting_review": {
+          "title": "Payment Proof Under Review",
+          "description": "We received your receipt and our team is verifying the transfer."
+        },
+        "paid": {
+          "title": "Payment Confirmed",
+          "description": "Your payment is approved and repository access is being provisioned."
+        },
+        "delivered": {
+          "title": "Project Delivered",
+          "description": "Your license and source repository access have been delivered."
+        }
+      },
+      "freeOrderNote": "Free order (100% discount coupon) — automatically confirmed upon checkout.",
+      "variants": {
+        "rejected": {
+          "title": "Payment Proof Was Rejected",
+          "description": "Please review the reason below and upload a clearer image or PDF of the valid transfer receipt.",
+          "reasonLabel": "Rejection Reason:"
+        },
+        "expired": {
+          "title": "Order Expired Due to Unpaid Window",
+          "description": "The payment window for this order has elapsed. You can place a fresh order from the project page at any time.",
+          "reorderCta": "Return to Project"
+        },
+        "cancelled": {
+          "title": "This Order Was Cancelled",
+          "description": "This order has been cancelled and can no longer be paid. Contact support if you need help."
+        },
+        "refunded": {
+          "title": "Order Refunded",
+          "description": "This order has been marked as refunded. Reach out to support if you need further assistance."
+        }
+      }
+    },
+    "payment": {
+      "title": "Payment Details & Actions",
+      "methodLabel": "Selected Payment Method:",
+      "paidAt": "Paid at: {{date}}",
+      "manual": {
+        "instructionsTitle": "Transfer Instructions",
+        "walletLabel": "Vodafone Cash Wallet Number",
+        "ipaLabel": "InstaPay Address (IPA)",
+        "accountNameLabel": "Beneficiary Account Name",
+        "amountLabel": "Exact Amount Due",
+        "copyAmount": "Copy Amount",
+        "proofSubmittedTitle": "Payment Proof Submitted",
+        "proofSubmittedDesc": "Your receipt is currently under review by the ByteCraft team. This page refreshes automatically.",
+        "submittedAtLabel": "Submitted at:",
+        "referenceLabel": "Reference:",
+        "uploadTitle": "Upload Payment Receipt",
+        "uploadRetryTitle": "Re-upload Payment Receipt",
+        "dropLabel": "Drag & drop receipt image or PDF here, or click to browse",
+        "dropHint": "Supports JPEG, PNG, WebP, PDF up to 5 MB",
+        "referenceInputLabel": "Transfer Reference or Sender Note (Optional)",
+        "referenceInputPlaceholder": "e.g. VF-TXN-987654 or last 4 wallet digits",
+        "submitProof": "Submit Payment Proof",
+        "submittingProof": "Uploading proof...",
+        "proofRequired": "Please attach your receipt image or PDF first.",
+        "invalidFileType": "Unsupported file type. Allowed formats: JPEG, PNG, WebP, PDF.",
+        "fileTooLarge": "File exceeds the 5 MB size limit.",
+        "uploadSuccess": "Payment proof uploaded! Your order is now awaiting review."
+      },
+      "fawry": {
+        "title": "Fawry Payment Reference",
+        "instructions": "Visit any Fawry outlet or open the myFawry app, select Fawry Pay, and settle your order using this reference code:",
+        "copyReference": "Copy Reference",
+        "pendingNote": "Once paid via Fawry, the gateway confirms your order automatically within minutes.",
+        "missingReference": "Your Fawry reference was sent to your confirmation email when the order was placed. Check your inbox or contact support if you need it re-sent."
+      },
+      "card": {
+        "pendingTitle": "Bank Card Payment Pending",
+        "pendingBody": "If you just completed 3D Secure verification on Paymob, confirmation can take a few seconds via webhook — this page updates automatically.",
+        "noRetryNote": "For security, expired or interrupted card sessions cannot be retried on the same order. If your payment failed or was aborted, please contact support or place a new order.",
+        "contactSupport": "Contact Support",
+        "newOrder": "Start New Order"
+      },
+      "free": {
+        "title": "Auto-Confirmed Free Order",
+        "description": "A 100% discount coupon was applied — no payment required."
+      }
+    },
+    "delivery": {
+      "title": "Source Code & Delivery Status",
+      "repoAccessLabel": "Git Repository Access:",
+      "grantedAt": "Granted on: {{date}}",
+      "notesLabel": "Engineer Delivery Notes:",
+      "states": {
+        "pending": {
+          "title": "Awaiting Payment Confirmation",
+          "description": "Repository invitation and delivery setup begin immediately once payment is verified."
+        },
+        "granted": {
+          "title": "Repository Access Granted!",
+          "description": "A collaborator invite was sent to the Git account on your order. Check your inbox or GitHub/GitLab notifications to accept."
+        },
+        "manual": {
+          "title": "Manual Provisioning In Progress",
+          "description": "Payment is confirmed! Our team is provisioning repository access for your Git username and will send details shortly."
+        },
+        "failed": {
+          "title": "Automated GitHub Invite Failed",
+          "description": "Your payment is confirmed, but the automated Git invite could not be sent (possibly an invalid username). Contact support with your order number for immediate manual access."
+        }
+      }
+    },
+    "review": {
+      "title": "Rate Your Experience",
+      "subtitle": "Your verified buyer review helps other teams evaluate this platform.",
+      "ratingLabel": "Overall Rating",
+      "starLabel": "{{count}} out of 5 stars",
+      "nameLabel": "Display Name (Optional)",
+      "namePlaceholder": "Leave blank to use your order name",
+      "nameHint": "Publicly masked for privacy (e.g. Ahmed M.)",
+      "commentLabel": "Your Review",
+      "commentPlaceholder": "Share your feedback on code quality, documentation, delivery speed, and support...",
+      "submit": "Publish Review",
+      "submitting": "Publishing...",
+      "ratingRequired": "Please select a rating from 1 to 5 stars",
+      "commentMin": "Review comment must be at least 5 characters",
+      "commentMax": "Review comment must be 2,000 characters or fewer",
+      "submitSuccess": "Thank you! Your verified review is now live.",
+      "alreadyReviewed": {
+        "title": "You Already Reviewed This Order",
+        "description": "Thank you for sharing your feedback with ByteCraft! One verified review is allowed per order.",
+        "viewProject": "View Project Page"
+      }
+    },
+    "summary": {
+      "title": "Order Summary",
+      "projectLabel": "Project",
+      "packageLabel": "Package",
+      "licenseSingle": "Single License",
+      "licenseMulti": "Multi-Project License",
+      "subtotal": "Package Subtotal",
+      "discount": "Discount ({{code}})",
+      "discountNoCode": "Discount",
+      "taxFree": "Tax",
+      "taxFreeValue": "Tax-free (EGP 0)",
+      "total": "Final Total",
+      "supportTitle": "Need help with your order?",
+      "supportSubtitle": "Talk directly with our engineering team",
+      "whatsapp": "WhatsApp",
+      "contact": "Contact Form"
+    }
+  },
+  "paymentResult": {
+    "pageTitle": "Payment Result | ByteCraft",
+    "eyebrow": "PAYMOB GATEWAY VERIFICATION",
+    "orderNumberLabel": "Order Number:",
+    "transactionIdLabel": "Transaction ID:",
+    "cardLabel": "Card:",
+    "gatewayMessageLabel": "Gateway Response:",
+    "states": {
+      "verifying": {
+        "title": "Verifying payment with our server...",
+        "description": "For financial security, we confirm your payment directly against the authoritative webhook status before marking the order paid."
+      },
+      "paid": {
+        "title": "Payment Confirmed!",
+        "description": "Your payment has been verified and recorded. Redirecting to your order tracking page in {{seconds}}s...",
+        "cta": "Go to Order Tracking Now"
+      },
+      "pending": {
+        "title": "Payment Processing",
+        "description": "We are still awaiting final webhook confirmation from the payment gateway. You can monitor live status updates on your order tracking page.",
+        "cta": "Track Order Status"
+      },
+      "failed": {
+        "title": "Payment Not Completed",
+        "description": "The payment gateway reported a declined or cancelled transaction. Your order remains unpaid in pending status.",
+        "cta": "Return to Order Page",
+        "retryProjects": "Browse Projects for New Order",
+        "support": "Contact Support"
+      },
+      "missingToken": {
+        "title": "Order Located — Verify Access Token",
+        "description": "Paymob returned you for order {{orderNumber}}, but no access token was found in this browser session. Enter the token from your confirmation email to view your authoritative order status.",
+        "goToOrder": "Open Order Tracking"
+      },
+      "missingOrder": {
+        "title": "Incomplete Payment Return Parameters",
+        "description": "No order number was found in the payment gateway return URL. Enter your order number and secret token below, or browse our projects.",
+        "orderNumberLabel": "Order Number",
+        "orderNumberPlaceholder": "e.g. BC-2026-000008",
+        "tokenLabel": "Secret Access Token",
+        "tokenPlaceholder": "Paste your order token...",
+        "lookup": "Track Order",
+        "browseProjects": "Browse Ready Projects"
+      }
+    }
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "title": "Orders Management",
+  "subtitle": "Review manual payment proofs, grant repository access, and manage order lifecycle states.",
+  "pageTitle": "Orders Management — ByteCraft",
+  "stats": {
+    "totalOrders": "Total Orders",
+    "awaitingReview": "Pending Proof Review",
+    "showing": "Showing {{from}} - {{to}} of {{total}}"
+  },
+  "filters": {
+    "searchPlaceholder": "Search by order number, customer name, or email...",
+    "searchLabel": "Search orders",
+    "statusLabel": "Order Status",
+    "allStatuses": "All Statuses",
+    "paymentMethodLabel": "Payment Method",
+    "allPaymentMethods": "All Payment Methods",
+    "fromDate": "From Date",
+    "toDate": "To Date",
+    "clearFilters": "Clear Filters"
+  },
+  "status": {
+    "pending_payment": "Pending Payment",
+    "awaiting_review": "Awaiting Review",
+    "paid": "Paid",
+    "delivered": "Delivered",
+    "rejected": "Rejected",
+    "cancelled": "Cancelled",
+    "refunded": "Refunded",
+    "expired": "Expired"
+  },
+  "paymentMethod": {
+    "vodafone_cash": "Vodafone Cash",
+    "instapay": "InstaPay",
+    "fawry": "Fawry",
+    "card": "Bank Card"
+  },
+  "deliveryStatus": {
+    "pending": "Pending",
+    "granted": "Granted",
+    "failed": "Failed",
+    "manual": "Manual"
+  },
+  "licenseType": {
+    "single": "Single License",
+    "multi": "Multi License"
+  },
+  "table": {
+    "regionLabel": "Orders table",
+    "order": "Order",
+    "customer": "Customer",
+    "projectPackage": "Project & Package",
+    "payment": "Payment",
+    "total": "Total",
+    "status": "Status",
+    "date": "Date",
+    "actions": "Actions",
+    "viewDetails": "View Details",
+    "pendingProofBadge": "Proof Needs Review",
+    "freeBadge": "Free Order"
+  },
+  "empty": {
+    "title": "No matching orders",
+    "description": "No orders matched your current search or filter criteria.",
+    "noOrdersTitle": "No orders yet",
+    "noOrdersDescription": "Customer orders will appear here as soon as purchases are made."
+  },
+  "cleanup": {
+    "button": "Clean Expired Orders",
+    "dialogTitle": "Clean Up Expired Orders",
+    "dialogMessage": "Stale orders stuck in \"Pending Payment\" past the abandonment window will be marked \"Expired\" and any reserved coupon uses will be released automatically.",
+    "confirm": "Run Cleanup",
+    "success": "Cleaned up {{count}} expired order(s) successfully.",
+    "noneExpired": "No expired orders needed cleanup."
+  },
+  "drawer": {
+    "title": "Order Details",
+    "close": "Close order details",
+    "createdAt": "Created At",
+    "locale": "Customer Locale",
+    "localeAr": "Arabic",
+    "localeEn": "English",
+    "sections": {
+      "customer": "Customer & Git Access",
+      "pricing": "Pricing Breakdown",
+      "payment": "Payment Information",
+      "proof": "Submitted Payment Proof",
+      "delivery": "Delivery & Repository Access",
+      "actions": "Available Actions",
+      "history": "Status History Timeline"
+    },
+    "customer": {
+      "fullName": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "organization": "Organization",
+      "gitProvider": "Git Provider",
+      "gitUsername": "Git Username",
+      "copyGit": "Copy git username",
+      "copyEmail": "Copy email",
+      "copyPhone": "Copy phone"
+    },
+    "pricing": {
+      "project": "Project",
+      "package": "Package",
+      "license": "License Type",
+      "subtotal": "Subtotal",
+      "coupon": "Coupon Code",
+      "discount": "Discount",
+      "total": "Final Total",
+      "taxNote": "All prices are final (tax-free billing)"
+    },
+    "payment": {
+      "method": "Payment Method",
+      "provider": "Provider",
+      "providerManual": "Manual Transfer",
+      "providerPaymob": "Paymob",
+      "paidAt": "Paid At",
+      "transactionId": "Transaction ID",
+      "fawryRef": "Fawry Reference",
+      "rejectionReason": "Previous Rejection Reason",
+      "notPaidYet": "Not confirmed yet"
+    },
+    "proof": {
+      "reference": "Transfer Reference",
+      "noReference": "No reference provided",
+      "submittedAt": "Submitted At",
+      "zoomIn": "Zoom In",
+      "zoomOut": "Zoom Out",
+      "resetZoom": "Reset Zoom",
+      "fullscreen": "Fullscreen View",
+      "openOriginal": "Open Original",
+      "openPdf": "Open PDF",
+      "downloadPdf": "Download PDF",
+      "pdfLabel": "PDF Receipt Document",
+      "pdfHint": "Open the PDF receipt in a new tab or download it to verify the transfer.",
+      "imageLoadError": "Could not load image preview inline. Open the original link to inspect it.",
+      "noProof": "No payment proof has been uploaded for this order.",
+      "lightboxTitle": "Payment Proof Preview"
+    },
+    "delivery": {
+      "repoAccess": "Repository Access",
+      "grantedAt": "Granted At",
+      "deliveredAt": "Delivered At",
+      "notes": "Delivery Notes",
+      "noNotes": "No delivery notes recorded",
+      "notesPlaceholder": "Add delivery notes or repository invite details...",
+      "saveDelivery": "Update Delivery",
+      "markDelivered": "Mark Delivered"
+    },
+    "history": {
+      "empty": "No status history entries recorded."
+    }
+  },
+  "actions": {
+    "approve": "Approve Payment",
+    "approveTitle": "Approve Payment",
+    "approveMessage": "Confirm that payment has been verified for order {{orderNumber}}? This will mark it as \"Paid\" and trigger customer fulfillment.",
+    "approveConfirm": "Approve Payment",
+    "approveSuccess": "Payment approved for order {{orderNumber}}.",
+    "reject": "Reject Proof",
+    "rejectTitle": "Reject Payment Proof",
+    "rejectDescription": "The customer will be notified by email with the reason so they can upload a clearer receipt.",
+    "rejectReasonLabel": "Rejection Reason",
+    "rejectReasonPlaceholder": "e.g., Screenshot is blurry or transfer amount does not match...",
+    "rejectReasonError": "Rejection reason must be at least 3 characters.",
+    "rejectConfirm": "Confirm Rejection",
+    "rejectSuccess": "Payment proof rejected for order {{orderNumber}}.",
+    "deliveryUpdateTitle": "Confirm Mark Delivered",
+    "deliveryConfirmMarkMessage": "Grant repository access and mark order {{orderNumber}} as \"Delivered\"?",
+    "deliverySuccess": "Delivery details updated successfully.",
+    "refund": "Mark as Refunded",
+    "refundTitle": "Mark Order as Refunded",
+    "refundStatusOnlyWarning": "Status record only: This updates the order status in ByteCraft (and excludes it from revenue totals) without issuing an automatic Paymob/bank refund. Transfer the funds manually first.",
+    "refundNoteLabel": "Refund Note (Optional)",
+    "refundNotePlaceholder": "e.g., Refunded customer manually via InstaPay...",
+    "refundConfirm": "Mark as Refunded",
+    "refundSuccess": "Order {{orderNumber}} marked as refunded.",
+    "noAllowedActions": "No actions are available for this order's current status.",
+    "invalidStateError": "This action is not allowed for the order's current status. The order has been refreshed."
+  }
+}

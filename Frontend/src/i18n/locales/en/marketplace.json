@@ -1,0 +1,119 @@
+{
+  "meta": {
+    "documentTitle": "Ready-Made Projects | ByteCraft"
+  },
+  "header": {
+    "eyebrow": "MERN_STACK_CATALOG // REPO_V2.6",
+    "title": "Ready-Made Platforms for Instant Delivery",
+    "subtitle": "Production-grade MERN Stack systems engineered for immediate launch and complete customization, built with clean architecture and scalable performance.",
+    "stats": {
+      "platforms": {
+        "value": "18+",
+        "label": "Ready Platforms"
+      },
+      "cleanCode": {
+        "value": "100%",
+        "label": "Clean Code"
+      },
+      "delivery": {
+        "value": "24h",
+        "label": "Fast Delivery"
+      }
+    }
+  },
+  "filters": {
+    "searchRegionLabel": "Search and filter ready-made projects",
+    "searchLabel": "Search projects",
+    "searchPlaceholder": "Search by project, technology, or feature...",
+    "clearSearch": "Clear search",
+    "activeFilterBadge": "Active filter",
+    "sortLabel": "Sort by:",
+    "sortOptions": {
+      "newest": "Newest first",
+      "popular": "Most popular",
+      "price_asc": "Price: Low to High",
+      "price_desc": "Price: High to Low"
+    },
+    "categoriesLabel": "Project categories",
+    "allCategories": "All",
+    "techLabel": "Technology",
+    "techPlaceholder": "Filter by tech...",
+    "techEmpty": "No technologies available",
+    "techHint": "Select one or more technologies to show projects matching all of them.",
+    "priceRangeLabel": "Price range (EGP)",
+    "minPriceLabel": "Min price",
+    "maxPriceLabel": "Max price",
+    "minPricePlaceholder": "Min (EGP)",
+    "maxPricePlaceholder": "Max (EGP)",
+    "priceRangeError": "Minimum price must be less than or equal to maximum price.",
+    "featuredLabel": "Featured projects only",
+    "featuredShort": "Featured only",
+    "featuredDescription": "Show curated flagship platforms selected by ByteCraft",
+    "openFilters": "Filters",
+    "drawerTitle": "Filter & Sort Projects",
+    "applyFilters": "Apply filters",
+    "clearAll": "Clear all filters",
+    "removeFilter": "Remove filter: {{label}}",
+    "activeChips": {
+      "search": "Search: {{value}}",
+      "category": "Category: {{value}}",
+      "tech": "Tech: {{value}}",
+      "minPrice": "From EGP {{value}}",
+      "maxPrice": "Up to EGP {{value}}",
+      "priceRange": "EGP {{min}} – {{max}}",
+      "featured": "Featured only"
+    }
+  },
+  "results": {
+    "showingRange": "Showing {{from}}–{{to}} of {{total}} projects",
+    "showingSingle": "Showing 1 matching project",
+    "showingZero": "0 matching projects",
+    "loadingCount": "Loading projects...",
+    "updating": "Updating...",
+    "archBadge": "ARCH: FULL_STACK_READY",
+    "featuredBadge": "Featured",
+    "catalogFootnote": "The technical repository is updated regularly with documented, licensed source code packages.",
+    "empty": {
+      "filteredTitle": "No projects match your filters",
+      "filteredDescription": "Try adjusting your search keywords, widening the price range, or clearing some filters to see more platforms.",
+      "catalogTitle": "No published projects yet",
+      "catalogDescription": "We are preparing new ready-made platforms. You can request a tailored custom build for your business right away.",
+      "clearAction": "Clear all filters",
+      "contactAction": "Request a Custom Build"
+    },
+    "error": {
+      "title": "Unable to load projects",
+      "description": "Something went wrong while fetching the project catalog. Please try again."
+    }
+  },
+  "included": {
+    "title": "What Do You Get With Every Ready-Made Project?",
+    "subtitle": "Instant delivery of full source code with complete production infrastructure—no obfuscation and no hidden subscriptions.",
+    "badge": "DEPLOY_READY // DOCKERIZED",
+    "items": {
+      "sourceCode": {
+        "title": "Full Source Code (Clean Code)",
+        "description": "Separated Front-end and Back-end codebases structured with Clean Architecture and thorough documentation."
+      },
+      "schemas": {
+        "title": "Database Schemas & Seed Data",
+        "description": "Ready-to-run MongoDB seed data and production-tuned Mongoose schemas with optimized compound indexes."
+      },
+      "apiDocs": {
+        "title": "Postman & Swagger API Docs",
+        "description": "Complete collection covering every endpoint, ready for testing and seamless mobile app integration."
+      },
+      "deployment": {
+        "title": "Free Server Deployment Session",
+        "description": "Hands-on guidance to deploy on your VPS or Cloud server, configure production env vars, and enable SSL."
+      }
+    }
+  },
+  "cta": {
+    "eyebrow": "BESPOKE_ENGINEERING // CUSTOM BUILD",
+    "title": "Didn't find the exact project for your needs?",
+    "description": "No problem at all. ByteCraft's engineering team can design and build your digital platform from scratch—100% aligned with your business model and ready to scale.",
+    "primaryAction": "Request a Custom Build",
+    "secondaryAction": "View Development Plans"
+  }
+}

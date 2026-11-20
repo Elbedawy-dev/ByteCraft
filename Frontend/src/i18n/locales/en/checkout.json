@@ -1,0 +1,162 @@
+{
+  "badge": "Verified Commercial License • Ready to Deploy",
+  "title": "Complete Your License Purchase",
+  "subtitle": "Enter your delivery details and choose your preferred payment method for immediate processing and direct repository access.",
+  "breadcrumbs": {
+    "current": "Checkout"
+  },
+  "customer": {
+    "title": "Customer & Git Delivery Details",
+    "subtitle": "Used for license issuance and granting private Git repository access",
+    "fullNameLabel": "Full Name",
+    "fullNameHint": "Technical or billing contact name",
+    "fullNamePlaceholder": "e.g., Ahmed Abdullah",
+    "emailLabel": "Contact & Receipt Email",
+    "emailHint": "Order confirmation & delivery updates are sent here",
+    "emailPlaceholder": "name@company.com",
+    "phoneLabel": "Phone / WhatsApp Number",
+    "phoneHint": "For deployment coordination & direct support",
+    "phonePlaceholder": "+20 100 000 0000",
+    "gitProviderLabel": "Git Provider",
+    "gitProviderHint": "Platform where repository access will be granted",
+    "providers": {
+      "github": "GitHub",
+      "gitlab": "GitLab"
+    },
+    "gitUsernameLabel": "Git Username",
+    "gitUsernameHint": "Your account handle without URL or @",
+    "gitUsernamePlaceholder": "dev-username",
+    "organizationLabel": "Organization / Academy Name (Optional)",
+    "organizationPlaceholder": "e.g., Future Academy"
+  },
+  "validation": {
+    "fullNameRequired": "Full name is required",
+    "fullNameMin": "Full name must be at least 2 characters",
+    "emailRequired": "Email address is required",
+    "emailInvalid": "Please enter a valid email address",
+    "phoneRequired": "Phone or WhatsApp number is required",
+    "phoneMin": "Please enter a valid phone number (at least 6 characters)",
+    "gitProviderRequired": "Please select a Git provider (GitHub or GitLab)",
+    "gitUsernameRequired": "Git username is required for source code delivery",
+    "paymentMethodRequired": "Please select a payment method"
+  },
+  "payment": {
+    "title": "Payment Method",
+    "subtitle": "All transactions are secured with instant confirmation and direct order tracking",
+    "currencyBadge": "EGP Currency",
+    "freeOrderTitle": "100% Discount — Free Order",
+    "freeOrderDescription": "Your coupon covers the entire license amount. Confirm the order below to activate it immediately without payment.",
+    "noMethodsTitle": "No payment methods are currently enabled",
+    "noMethodsDescription": "Please contact our engineering team directly to arrange an alternative payment method.",
+    "contactSupportAction": "Contact Support",
+    "methods": {
+      "vodafone_cash": {
+        "title": "Vodafone Cash & Mobile Wallets",
+        "badge": "Fast Manual Transfer",
+        "description": "Vodafone Cash, Orange Cash, Etisalat Cash, and WE Pay.",
+        "nextStepNote": "The dedicated wallet number and payment proof upload form will appear on the order tracking page right after you submit."
+      },
+      "instapay": {
+        "title": "InstaPay — Instant IPN Transfer",
+        "badge": "0% Fees",
+        "description": "Direct instant bank transfer via the Egyptian Instant Payment Network (IPN).",
+        "nextStepNote": "The InstaPay Payment Address (IPA) and proof upload form will be displayed on the next screen once your order is created."
+      },
+      "fawry": {
+        "title": "Fawry Pay Cash Kiosk",
+        "badge": "Cash Payment",
+        "description": "Generate a Fawry reference number and pay in cash at any Fawry branch or machine within 24 hours.",
+        "nextStepNote": "Your Fawry payment reference code will be generated immediately on the next screen after order confirmation."
+      },
+      "card": {
+        "title": "Bank Card (Visa / Mastercard / Meeza)",
+        "badge": "3D Secure",
+        "description": "Instant online card payment via the encrypted Paymob gateway.",
+        "nextStepNote": "You will be redirected to the secure Paymob hosted payment page to complete your card transaction."
+      }
+    }
+  },
+  "delivery": {
+    "title": "Included Delivery & Engineering Support:",
+    "description": "Once payment is confirmed, you receive direct collaborator access to the private {{provider}} repository along with full setup documentation and {{supportDays}} days of direct engineering support."
+  },
+  "summary": {
+    "title": "Order Summary",
+    "mobileToggle": "Order Summary",
+    "mobileShow": "Show details",
+    "mobileHide": "Hide",
+    "licenseTypes": {
+      "single": "Single-project commercial license",
+      "multi": "Multi-project enterprise license"
+    },
+    "licenseBadges": {
+      "single": "Single License",
+      "multi": "Enterprise"
+    },
+    "supportDaysBadge": "{{days}} days support",
+    "deliverablesTitle": "Included with this package:",
+    "subtotalLabel": "Package license price",
+    "discountLabel": "Coupon discount ({{code}})",
+    "totalLabel": "Final Total",
+    "freeValue": "Free",
+    "supportCardTitle": "Need technical advice before buying?",
+    "supportCardSubtitle": "Chat directly with our engineering team",
+    "whatsappAction": "WhatsApp",
+    "contactAction": "Contact Us"
+  },
+  "coupon": {
+    "label": "Discount Coupon or Partner Code",
+    "placeholder": "Enter promo code...",
+    "apply": "Apply",
+    "remove": "Remove",
+    "appliedSuccess": "Coupon {{code}} applied successfully!",
+    "emptyError": "Please enter a coupon code first.",
+    "errors": {
+      "INVALID_COUPON": "This coupon code is invalid or does not exist.",
+      "COUPON_INACTIVE": "This coupon is currently inactive.",
+      "COUPON_EXPIRED": "This coupon has expired.",
+      "COUPON_MAX_USES_REACHED": "This coupon has reached its maximum usage limit.",
+      "COUPON_NOT_APPLICABLE": "This coupon is not applicable to this project.",
+      "PROJECT_NOT_AVAILABLE": "This project is currently unavailable for purchase.",
+      "PACKAGE_NOT_ACTIVE": "The selected package is currently inactive.",
+      "NOT_FOUND": "The selected project or package was not found.",
+      "TOO_MANY_REQUESTS": "Too many coupon attempts. Please wait a moment and try again.",
+      "VALIDATION_ERROR": "Please enter a valid coupon code.",
+      "GENERIC": "Unable to validate this coupon. Please try again."
+    }
+  },
+  "actions": {
+    "submitWithTotal": "Confirm Order & Continue ({{total}})",
+    "submitFree": "Confirm Free Order ({{total}})",
+    "submitMobile": "Confirm Order",
+    "submitting": "Creating your order...",
+    "redirectingPayment": "Redirecting to payment..."
+  },
+  "trust": {
+    "sslTitle": "256-bit SSL Encryption",
+    "sslSubtitle": "End-to-end encrypted checkout",
+    "guaranteeTitle": "{{days}}-Day Code Guarantee",
+    "guaranteeSubtitle": "Comprehensive bug-fix coverage",
+    "cleanCodeTitle": "100% Production Source Code",
+    "cleanCodeSubtitle": "Documented MERN architecture"
+  },
+  "errors": {
+    "missingParamsTitle": "Incomplete Checkout Link",
+    "missingParamsDescription": "Please choose a project and a valid package from the marketplace to continue to checkout.",
+    "projectNotFoundTitle": "Project Unavailable",
+    "projectNotFoundDescription": "We could not find this project, or it is no longer available for purchase.",
+    "loadFailedTitle": "Could Not Load Checkout Details",
+    "loadFailedDescription": "An error occurred while loading the project details. Please try again.",
+    "invalidPackageTitle": "Package Not Available",
+    "invalidPackageDescription": "The selected package key was not found or is currently inactive for this project.",
+    "browseProjects": "Browse Ready Projects",
+    "viewProject": "Back to Project Page",
+    "submitFailedGeneric": "Could not complete your order. Please review your details and try again.",
+    "paymentFailed": "Unable to initialize the online payment gateway right now. Please try again or pick another method."
+  },
+  "aria": {
+    "gitProviderGroup": "Git hosting provider",
+    "paymentMethodGroup": "Payment method",
+    "orderSummaryRegion": "Order summary and pricing"
+  }
+}

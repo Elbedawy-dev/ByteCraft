@@ -1,0 +1,162 @@
+{
+  "badge": "ترخيص برمجي تجاري موثق • جاهز للتشغيل",
+  "title": "إتمام شراء الترخيص البرمجي",
+  "subtitle": "أكمل بيانات التواصل واستلام السورس كود واختر وسيلة الدفع المناسبة للبدء الفوري والاستلام المباشر لمستودع المشروع.",
+  "breadcrumbs": {
+    "current": "إتمام الطلب والدفع"
+  },
+  "customer": {
+    "title": "بيانات العميل واستلام المستودع",
+    "subtitle": "البيانات المعتمدة لإصدار الترخيص وإرسال دعوة الوصول لمستودع Git",
+    "fullNameLabel": "الاسم الكامل",
+    "fullNameHint": "اسم المسؤول المالي أو التقني",
+    "fullNamePlaceholder": "مثال: أحمد عبد الله الهاشمي",
+    "emailLabel": "البريد الإلكتروني للتواصل والفاتورة",
+    "emailHint": "تُرسل إليه تفاصيل الطلب وتحديثات التسليم",
+    "emailPlaceholder": "name@company.com",
+    "phoneLabel": "رقم الهاتف / واتساب",
+    "phoneHint": "لتنسيق التثبيت والدعم المباشر",
+    "phonePlaceholder": "+20 100 000 0000",
+    "gitProviderLabel": "منصة مستودع Git",
+    "gitProviderHint": "المنصة التي سيُمنح عليها صلاحية الوصول للكود",
+    "providers": {
+      "github": "GitHub",
+      "gitlab": "GitLab"
+    },
+    "gitUsernameLabel": "اسم المستخدم على Git",
+    "gitUsernameHint": "اسم الحساب (Handle) بدون رابط أو @",
+    "gitUsernamePlaceholder": "dev-username",
+    "organizationLabel": "اسم المؤسسة أو المنصة (اختياري)",
+    "organizationPlaceholder": "مثال: أكاديمية المستقبل الدولية"
+  },
+  "validation": {
+    "fullNameRequired": "الاسم الكامل مطلوب",
+    "fullNameMin": "يجب أن لا يقل الاسم الكامل عن حرفين",
+    "emailRequired": "البريد الإلكتروني مطلوب",
+    "emailInvalid": "يرجى إدخال بريد إلكتروني صحيح",
+    "phoneRequired": "رقم الهاتف أو الواتساب مطلوب",
+    "phoneMin": "يرجى إدخال رقم هاتف صحيح (6 أحرف على الأقل)",
+    "gitProviderRequired": "يرجى اختيار منصة Git (GitHub أو GitLab)",
+    "gitUsernameRequired": "اسم المستخدم على Git مطلوب لاستلام الكود",
+    "paymentMethodRequired": "يرجى اختيار وسيلة الدفع المناسبة"
+  },
+  "payment": {
+    "title": "خيارات وسيلة الدفع",
+    "subtitle": "جميع المعاملات مؤمنة وتصدر تأكيداً فورياً عبر البريد والمتابعة المباشرة",
+    "currencyBadge": "EGP • ج.م",
+    "freeOrderTitle": "طلب مجاني بالكامل (خصم 100%)",
+    "freeOrderDescription": "تم تغطية إجمالي قيمة الباقة بالكامل عبر كوبون الخصم. اضغط تأكيد الطلب لتفعيل طلبك فوراً بدون أي دفعات مالية.",
+    "noMethodsTitle": "لا توجد وسائل دفع مفعلة حالياً",
+    "noMethodsDescription": "يرجى التواصل مع فريقنا مباشرة لإتمام الطلب أو تجربة وسيلة تواصل بديلة.",
+    "contactSupportAction": "تواصل مع الدعم الفني",
+    "methods": {
+      "vodafone_cash": {
+        "title": "فودافون كاش والمحافظ الإلكترونية",
+        "badge": "تحويل يدوي سريع",
+        "description": "فودافون كاش، أورنج موني، اتصالات كاش، وي باي (Vodafone, Orange, Etisalat, WE Cash).",
+        "nextStepNote": "سيظهر رقم المحفظة المخصص وتفاصيل رفع إيصال التحويل مباشرة في صفحة متابعة الطلب بعد تأكيد البيانات."
+      },
+      "instapay": {
+        "title": "إنستاباي — تحويل لحظي (InstaPay)",
+        "badge": "بدون رسوم",
+        "description": "تحويل مباشر عبر شبكة المدفوعات اللحظية IPN من أي تطبيق بنكي مصري.",
+        "nextStepNote": "سيظهر عنوان الدفع اللحظي (IPA) ونموذج إرفاق إيصال التحويل في الخطوة التالية فور إنشاء الطلب."
+      },
+      "fawry": {
+        "title": "فوري باي والدفع النقدي (Fawry)",
+        "badge": "دفع نقدي",
+        "description": "استخرج رقم مرجع فوري وسدّد نقداً في أي فرع أو ماكينة فوري خلال 24 ساعة.",
+        "nextStepNote": "سيتم إصدار الرقم المرجعي لفوري فوراً في الصفحة التالية بعد تأكيد الطلب."
+      },
+      "card": {
+        "title": "بطاقة بنكية (Visa / Mastercard / Meeza)",
+        "badge": "3D Secure",
+        "description": "الدفع المباشر بالبطاقة عبر بوابة Paymob المشفرة بأعلى معايير الأمان.",
+        "nextStepNote": "سيتم تحويلك تلقائياً إلى صفحة الدفع الآمنة (Paymob) لإتمام السداد بالبطاقة."
+      }
+    }
+  },
+  "delivery": {
+    "title": "آلية التسليم والدعم الفني المضمنة:",
+    "description": "بعد تأكيد الدفع، تحصل على دعوة وصول مباشر لمستودع الكود الخاص على {{provider}} مع توثيق التشغيل الكامل ودعم فني هندسي لمدة {{supportDays}} يوماً ومساعدة أولية في النشر."
+  },
+  "summary": {
+    "title": "ملخص الطلب",
+    "mobileToggle": "ملخص الطلب",
+    "mobileShow": "عرض التفاصيل",
+    "mobileHide": "إخفاء",
+    "licenseTypes": {
+      "single": "ترخيص استخدام فردي لمشروع واحد",
+      "multi": "ترخيص مؤسسي متعدد المشاريع"
+    },
+    "licenseBadges": {
+      "single": "ترخيص فردي",
+      "multi": "ترخيص مؤسسي"
+    },
+    "supportDaysBadge": "دعم فني {{days}} يوماً",
+    "deliverablesTitle": "المشتملات المسلّمة مع هذه الباقة:",
+    "subtotalLabel": "سعر ترخيص الباقة",
+    "discountLabel": "خصم الكوبون ({{code}})",
+    "totalLabel": "الإجمالي النهائي",
+    "freeValue": "مجاناً",
+    "supportCardTitle": "هل تحتاج استشارة قبل الشراء؟",
+    "supportCardSubtitle": "تواصل مع الفريق الهندسي مباشرة",
+    "whatsappAction": "واتساب",
+    "contactAction": "تواصل معنا"
+  },
+  "coupon": {
+    "label": "كوبون الخصم أو رمز الشريك",
+    "placeholder": "أدخل رمز الكوبون...",
+    "apply": "تطبيق",
+    "remove": "إزالة",
+    "appliedSuccess": "تم تطبيق الكوبون {{code}} بنجاح!",
+    "emptyError": "يرجى إدخال رمز الكوبون أولاً.",
+    "errors": {
+      "INVALID_COUPON": "رمز الكوبون غير صحيح أو غير موجود.",
+      "COUPON_INACTIVE": "هذا الكوبون غير مفعل حالياً.",
+      "COUPON_EXPIRED": "انتهت صلاحية هذا الكوبون.",
+      "COUPON_MAX_USES_REACHED": "وصل هذا الكوبون إلى الحد الأقصى للاستخدام.",
+      "COUPON_NOT_APPLICABLE": "هذا الكوبون لا ينطبق على هذا المشروع.",
+      "PROJECT_NOT_AVAILABLE": "هذا المشروع غير متاح للشراء حالياً.",
+      "PACKAGE_NOT_ACTIVE": "الباقة المختارة غير مفعلة حالياً.",
+      "NOT_FOUND": "الباقة أو المشروع غير موجود.",
+      "TOO_MANY_REQUESTS": "عدد محاولات التحقق كبير. يرجى الانتظار قليلاً والمحاولة مجدداً.",
+      "VALIDATION_ERROR": "يرجى التأكد من كتابة رمز الكوبون بشكل صحيح.",
+      "GENERIC": "تعذر التحقق من الكوبون. يرجى المحاولة مرة أخرى."
+    }
+  },
+  "actions": {
+    "submitWithTotal": "تأكيد الطلب والمتابعة للدفع ({{total}})",
+    "submitFree": "تأكيد الطلب المجاني ({{total}})",
+    "submitMobile": "تأكيد الطلب",
+    "submitting": "جاري إنشاء الطلب...",
+    "redirectingPayment": "جاري التحويل لبوابة الدفع..."
+  },
+  "trust": {
+    "sslTitle": "تشفير SSL 256-bit",
+    "sslSubtitle": "معاملات مشفرة ومحمية بالكامل",
+    "guaranteeTitle": "ضمان برمجي {{days}} يوماً",
+    "guaranteeSubtitle": "إصلاح شامل لأي أخطاء تقنية",
+    "cleanCodeTitle": "سورس كود إنتاجي 100%",
+    "cleanCodeSubtitle": "هيكلية MERN احترافية موثقة"
+  },
+  "errors": {
+    "missingParamsTitle": "بيانات الطلب غير مكتملة",
+    "missingParamsDescription": "يرجى اختيار مشروع وباقة صالحة من كتالوج المشاريع للمتابعة إلى صفحة الدفع.",
+    "projectNotFoundTitle": "المشروع غير متاح",
+    "projectNotFoundDescription": "لم نتمكن من العثور على هذا المشروع أو لم يعد متاحاً للشراء حالياً.",
+    "loadFailedTitle": "تعذر تحميل تفاصيل الطلب",
+    "loadFailedDescription": "حدث خطأ أثناء تحميل بيانات المشروع. يرجى إعادة المحاولة.",
+    "invalidPackageTitle": "الباقة المطلوبة غير متوفرة",
+    "invalidPackageDescription": "الباقة المحددة في الرابط غير موجودة أو غير مفعلة حالياً لهذا المشروع.",
+    "browseProjects": "تصفح المشاريع الجاهزة",
+    "viewProject": "العودة لصفحة المشروع",
+    "submitFailedGeneric": "تعذر إتمام الطلب. يرجى مراجعة البيانات والمحاولة مرة أخرى.",
+    "paymentFailed": "تعذر تهيئة بوابة الدفع الإلكتروني حالياً. يمكنك إعادة المحاولة أو اختيار وسيلة دفع أخرى."
+  },
+  "aria": {
+    "gitProviderGroup": "منصة استضافة الكود (Git)",
+    "paymentMethodGroup": "وسيلة الدفع",
+    "orderSummaryRegion": "ملخص الطلب والتسعير"
+  }
+}

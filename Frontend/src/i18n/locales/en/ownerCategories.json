@@ -1,0 +1,90 @@
+{
+  "pageTitle": "Manage Categories — ByteCraft",
+  "heading": "Project Categories",
+  "subtitle": "Organize turnkey projects into logical domains (e.g. Education, E-Commerce, SaaS) for catalog filtering.",
+  "totalBadge": "{{count}} categories",
+  "addCategory": "Add Category",
+  "refresh": "Refresh",
+  "filters": {
+    "regionLabel": "Filter categories",
+    "searchLabel": "Search categories",
+    "searchPlaceholder": "Search by AR/EN name or key...",
+    "statusLabel": "Status",
+    "all": "All",
+    "active": "Active",
+    "inactive": "Inactive",
+    "reset": "Clear"
+  },
+  "table": {
+    "caption": "Project categories table",
+    "nameAr": "Name (AR)",
+    "nameEn": "Name (EN)",
+    "key": "Key (Slug)",
+    "order": "Order",
+    "status": "Status",
+    "actions": "Actions"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "actions": {
+    "edit": "Edit category",
+    "delete": "Delete category",
+    "toggleActive": "Toggle active status"
+  },
+  "empty": {
+    "title": "No categories found",
+    "description": "Create your first project category to organize marketplace listings.",
+    "filteredDescription": "No categories match the current search filter."
+  },
+  "modal": {
+    "createTitle": "Add New Category",
+    "editTitle": "Edit Category",
+    "subtitle": "Categories organize projects and drive public catalog filtering.",
+    "closeLabel": "Close modal",
+    "nameArLabel": "Category Name (AR)",
+    "nameArPlaceholder": "مثال: منصات تعليمية",
+    "nameEnLabel": "Category Name (EN)",
+    "nameEnPlaceholder": "e.g. Education Platforms",
+    "keyLabel": "Slug Key",
+    "keyPlaceholder": "education-platforms",
+    "keyHint": "Lowercase letters, numbers, and hyphens only (a-z, 0-9, -). Auto-suggested from the English name.",
+    "autoSuggestKey": "Auto-suggest",
+    "orderLabel": "Display Order",
+    "orderHint": "Lower numbers appear first.",
+    "isActiveLabel": "Active Category",
+    "isActiveDescription": "Visible to visitors in the public store and filter controls.",
+    "saveCreate": "Create Category",
+    "saveEdit": "Save Changes",
+    "cancel": "Cancel"
+  },
+  "unsaved": {
+    "banner": "You have unsaved changes. Discard them and close?",
+    "keepEditing": "Keep Editing",
+    "discard": "Discard Changes"
+  },
+  "deleteDialog": {
+    "title": "Confirm Category Deletion",
+    "message": "Are you sure you want to delete category \"{{name}}\"?",
+    "confirm": "Delete Category",
+    "cancel": "Cancel",
+    "inUseTitle": "Category Is In Use",
+    "inUseMessage": "Cannot delete \"{{name}}\" because existing projects are assigned to it. Reassign those projects first or deactivate the category instead.",
+    "deactivateInstead": "Deactivate Instead",
+    "close": "Close"
+  },
+  "toasts": {
+    "created": "Category created successfully.",
+    "updated": "Category updated successfully.",
+    "deleted": "Category deleted successfully.",
+    "deactivated": "Category deactivated successfully."
+  },
+  "validation": {
+    "nameArMin": "Arabic name must be at least 2 characters",
+    "nameEnMin": "English name must be at least 2 characters",
+    "keyInvalid": "Key must be at least 2 characters using lowercase letters, digits, and hyphens only",
+    "orderInt": "Order must be an integer",
+    "duplicateKey": "This category key already exists"
+  }
+}
