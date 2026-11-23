@@ -61,11 +61,11 @@ export function PaymentMethodSection({
   return (
     <section
       aria-labelledby="checkout-payment-heading"
-      className="bg-surface-container-low border border-outline-variant rounded-xl p-5 sm:p-6 shadow-sm"
+      className="bg-card border border-card-border rounded-xl p-5 sm:p-6 shadow-card"
     >
       <div className="flex flex-wrap items-start justify-between gap-3 mb-6">
         <div className="flex items-start gap-3 min-w-0">
-          <div className="w-9 h-9 rounded-lg bg-surface-container-high border border-outline-variant/60 flex items-center justify-center text-primary shrink-0 mt-0.5">
+          <div className="w-9 h-9 rounded-lg bg-badge-green-bg border border-primary/20 flex items-center justify-center text-primary shrink-0 mt-0.5">
             <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
               account_balance_wallet
             </span>
@@ -115,7 +115,7 @@ export function PaymentMethodSection({
         </div>
       ) : enabledKeys.length === 0 ? (
         <div
-          className="p-5 rounded-xl border border-warning/40 bg-warning/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+          className="p-5 rounded-xl border border-chip-amber-border bg-chip-amber-bg/70 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
           role="alert"
         >
           <div className="flex items-start gap-3 min-w-0">
@@ -185,14 +185,9 @@ export function PaymentMethodSection({
                     {visual.icon}
                   </span>
                 }
-                className={
-                  isSelected
-                    ? 'shadow-[0_0_24px_-6px_rgba(78,222,163,0.22)]'
-                    : ''
-                }
               >
                 {isSelected && (
-                  <div className="mt-3 p-3 rounded-lg bg-surface-container-high/80 border border-outline-variant/60 flex items-start gap-2.5 text-xs sm:text-[13px] text-on-surface-variant leading-relaxed">
+                  <div className="mt-3 p-3 rounded-lg bg-surface border border-card-border flex items-start gap-2.5 text-xs sm:text-[13px] text-on-surface-variant leading-relaxed">
                     <span
                       className="material-symbols-outlined text-[18px] text-primary shrink-0 mt-0.5"
                       aria-hidden="true"
@@ -226,7 +221,7 @@ export function PaymentMethodSection({
       )}
 
       {/* Delivery & Support Explanation Block */}
-      <div className="mt-5 p-4 rounded-xl bg-surface-container border border-outline-variant/80 flex items-start gap-3">
+      <div className="mt-5 p-4 rounded-xl bg-surface border border-card-border flex items-start gap-3">
         <span
           className="material-symbols-outlined text-primary text-[22px] shrink-0 mt-0.5"
           aria-hidden="true"

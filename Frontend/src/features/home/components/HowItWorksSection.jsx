@@ -6,26 +6,26 @@ const PROCESS_STEPS = [
   {
     key: 'step1',
     icon: 'lightbulb',
-    badgeBg: 'bg-primary/15 text-primary',
-    tagText: 'text-primary',
+    badgeBg: 'bc-chip-mint border',
+    tagText: 'text-chip-mint-fg',
   },
   {
     key: 'step2',
     icon: 'palette',
-    badgeBg: 'bg-secondary/15 text-secondary',
-    tagText: 'text-secondary',
+    badgeBg: 'bc-chip-sky border',
+    tagText: 'text-chip-sky-fg',
   },
   {
     key: 'step3',
     icon: 'security_update_good',
-    badgeBg: 'bg-tertiary/15 text-tertiary',
-    tagText: 'text-tertiary',
+    badgeBg: 'bc-chip-amber border',
+    tagText: 'text-chip-amber-fg',
   },
   {
     key: 'step4',
     icon: 'verified',
-    badgeBg: 'bg-primary-container/15 text-primary-container',
-    tagText: 'text-primary-container',
+    badgeBg: 'bc-chip-violet border',
+    tagText: 'text-chip-violet-fg',
   },
 ];
 
@@ -49,7 +49,7 @@ export function HowItWorksSection() {
         }
         title={
           <span id="home-how-it-works-heading">
-            {t('howItWorks.title', { count: t('claims.processSteps') })}
+            {t('howItWorks.title')}
           </span>
         }
         subtitle={t('howItWorks.subtitle')}
@@ -60,7 +60,7 @@ export function HowItWorksSection() {
         {PROCESS_STEPS.map((step) => (
           <li
             key={step.key}
-            className="rounded-2xl bg-surface-container border border-outline-variant p-6 shadow-md hover:border-primary/35 transition-colors duration-200 flex flex-col justify-between"
+            className="rounded-2xl bg-card border border-card-border p-6 shadow-card hover:bg-card-hover hover:border-card-hover-border hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between"
           >
             <div>
               <div className="flex items-center justify-between mb-4">
@@ -70,7 +70,7 @@ export function HowItWorksSection() {
                   <bdi dir="ltr">{t(`howItWorks.steps.${step.key}.number`)}</bdi>
                 </span>
                 <span
-                  className="material-symbols-outlined text-outline text-[24px]"
+                  className={`material-symbols-outlined ${step.tagText} text-[24px]`}
                   aria-hidden="true"
                 >
                   {step.icon}
@@ -90,9 +90,7 @@ export function HowItWorksSection() {
               className={`mt-5 pt-2 ${step.tagText} font-label-code text-label-code font-semibold flex items-center gap-1`}
             >
               <span>
-                {t(`howItWorks.steps.${step.key}.tag`, {
-                  percent: t('claims.visualMatchPercent'),
-                })}
+                {t(`howItWorks.steps.${step.key}.tag`)}
               </span>
               <span
                 className="material-symbols-outlined text-[16px] rtl:-scale-x-100"

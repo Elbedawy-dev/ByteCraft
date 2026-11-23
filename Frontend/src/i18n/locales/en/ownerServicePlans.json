@@ -1,5 +1,4 @@
 {
-  "pageTitle": "Manage Service Plans — ByteCraft",
   "heading": "Custom Service Plans",
   "subtitle": "Manage custom build pricing tiers displayed on the public Pricing & Services page.",
   "totalBadge": "{{count}} plans",

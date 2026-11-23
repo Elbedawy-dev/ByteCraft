@@ -38,9 +38,6 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
   const { lang } = useLang();
   const captionId = useId();
 
-  const rawMetrics = t('matrix.metrics', { returnObjects: true });
-  const metrics = Array.isArray(rawMetrics) ? rawMetrics : [];
-
   const uniqueFeatures = useMemo(
     () => collectUniquePlanFeatures(plans, lang, 8),
     [plans, lang]
@@ -48,10 +45,10 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
 
   return (
     <section className="my-12 sm:my-14 space-y-6">
-      {/* Lighthouse & Technical Baseline Card (Stitch bytecraft_4) */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-surface-container-low border border-outline-variant/60 shadow-sm">
-        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 p-5 sm:p-6 rounded-xl bg-surface-container border border-outline-variant/50">
-          <div className="space-y-1.5 max-w-xl">
+      {/* Technical Baseline Card (Stitch bytecraft_4) */}
+      <div className="p-5 sm:p-6 rounded-2xl bg-card border border-card-border shadow-card">
+        <div className="flex flex-col items-start gap-4">
+          <div className="space-y-1.5 max-w-2xl">
             <span className="font-code text-label-code text-primary uppercase tracking-wider block">
               <bdi dir="ltr">{t('matrix.eyebrow')}</bdi>
             </span>
@@ -61,39 +58,6 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
             <p className="text-body-sm text-on-surface-variant leading-relaxed">
               {t('matrix.description')}
             </p>
-          </div>
-
-          <div className="w-full lg:w-72 shrink-0">
-            <div className="flex justify-between items-center mb-1.5 gap-2">
-              <span className="text-body-sm text-on-surface font-medium">
-                {t('matrix.lighthouseLabel')}
-              </span>
-              <span className="font-code text-label-code text-primary font-bold">
-                <bdi dir="ltr">{t('matrix.lighthouseScore')}</bdi>
-              </span>
-            </div>
-
-            <div
-              role="progressbar"
-              aria-valuenow={98}
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-label={t('matrix.lighthouseLabel')}
-              className="w-full h-3 rounded-full bg-surface-container-highest overflow-hidden"
-            >
-              <div
-                className="h-full bg-primary-gradient rounded-full"
-                style={{ width: '98%' }}
-              />
-            </div>
-
-            <div className="flex justify-between items-center text-on-surface-variant font-code text-label-code mt-2">
-              {metrics.map((metric, idx) => (
-                <span key={idx}>
-                  {metric.label}: <bdi dir="ltr">{metric.value}</bdi>
-                </span>
-              ))}
-            </div>
           </div>
         </div>
       </div>
@@ -116,17 +80,17 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
             tabIndex={0}
             role="region"
             aria-labelledby={captionId}
-            className="w-full overflow-x-auto rounded-xl border border-outline-variant bg-surface-container-low shadow-sm focus-visible:outline-2 focus-visible:outline-primary"
+            className="w-full overflow-x-auto rounded-xl border border-card-border bg-card shadow-card focus-visible:outline-2 focus-visible:outline-input-focus"
           >
             <table className="w-full min-w-[600px] border-separate border-spacing-0 text-start text-sm">
               <caption id={captionId} className="sr-only">
                 {t('matrix.tableCaption')}
               </caption>
               <thead>
-                <tr className="bg-surface-container text-on-surface">
+                <tr className="bg-surface-container-high text-on-surface">
                   <th
                     scope="col"
-                    className="sticky start-0 z-20 bg-surface-container py-4 px-4 sm:px-5 text-start font-bold text-label-lg border-b border-e border-outline-variant/70 min-w-[200px]"
+                    className="sticky start-0 z-20 bg-surface-container-high py-4 px-4 sm:px-5 text-start font-bold text-label-lg border-b border-e border-card-border min-w-[200px]"
                   >
                     {t('matrix.featureCol')}
                   </th>
@@ -135,14 +99,14 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
                       key={plan.id}
                       scope="col"
                       className={clsx(
-                        'py-4 px-4 text-center font-bold text-label-lg border-b border-outline-variant/70 min-w-[150px]',
-                        plan.isPopular && 'bg-primary/5 text-primary'
+                        'py-4 px-4 text-center font-bold text-label-lg border-b border-card-border min-w-[150px]',
+                        plan.isPopular && 'bg-badge-green-bg/50 text-primary'
                       )}
                     >
                       <div className="flex flex-col items-center gap-1">
                         <span>{localized(plan.name, lang)}</span>
                         {plan.isPopular && (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/15 text-primary font-code text-[11px] font-semibold">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-badge-green-bg text-badge-green-text border border-primary/25 font-code text-[11px] font-semibold">
                             {t('card.popular')}
                           </span>
                         )}
@@ -268,7 +232,7 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
 
                 {/* Dynamic Feature Rows extracted from active plans */}
                 {uniqueFeatures.map((feat) => (
-                  <tr key={feat.key}>
+                  <tr key={feat.key} className="even:bg-surface-container-high/35">
                     <th
                       scope="row"
                       className="sticky start-0 z-10 bg-surface-container-low py-3.5 px-4 sm:px-5 text-start font-medium text-on-surface-variant border-e border-outline-variant/60"

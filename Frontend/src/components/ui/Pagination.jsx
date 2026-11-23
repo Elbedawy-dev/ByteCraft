@@ -77,7 +77,7 @@ export function Pagination({
             className={clsx(
               'w-9 h-9 sm:w-10 sm:h-10 rounded-lg text-sm font-medium transition-colors flex items-center justify-center font-mono',
               isCurrent
-                ? 'bg-primary text-[#0A0A0A] font-bold shadow-sm'
+                ? 'bg-primary text-on-primary font-bold shadow-sm'
                 : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
             )}
           >

@@ -18,12 +18,12 @@ export const Textarea = forwardRef(function Textarea(
       disabled={disabled}
       aria-invalid={Boolean(error)}
       className={clsx(
-        'w-full min-h-[140px] resize-y px-4 py-3 rounded-lg text-sm bg-surface-container-low text-on-surface placeholder:text-muted/60 transition-colors duration-150',
-        'border outline-none focus:ring-2 focus:ring-primary focus:border-primary',
+        'w-full min-h-[140px] resize-y px-4 py-3 rounded-lg text-sm bg-input text-on-surface placeholder:text-placeholder transition-colors duration-150',
+        'border outline-none focus:ring-2 focus:ring-input-focus focus:border-input-focus',
         'disabled:opacity-50 disabled:cursor-not-allowed',
         error
           ? 'border-error focus:border-error focus:ring-error/20'
-          : 'border-outline-variant hover:border-outline',
+          : 'border-input-border hover:border-outline',
         className
       )}
       {...props}

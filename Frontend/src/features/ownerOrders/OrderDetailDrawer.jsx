@@ -652,7 +652,7 @@ export function OrderDetailDrawer({ orderId, initialOrder = null, onClose }) {
                     >
                       <Textarea
                         rows={3}
-                        className="min-h-[96px] placeholder:text-outline"
+                        className="min-h-[96px]"
                         value={deliveryNotes}
                         onChange={(e) => setDeliveryNotes(e.target.value)}
                         placeholder={t('ownerOrders:drawer.delivery.notesPlaceholder')}
@@ -820,7 +820,7 @@ export function OrderDetailDrawer({ orderId, initialOrder = null, onClose }) {
           >
             <Textarea
               rows={3}
-              className="min-h-[110px] placeholder:text-outline"
+              className="min-h-[110px]"
               value={rejectReason}
               onChange={(e) => {
                 setRejectReason(e.target.value);
@@ -866,9 +866,9 @@ export function OrderDetailDrawer({ orderId, initialOrder = null, onClose }) {
         <form id="refund-order-form" onSubmit={handleRefund} className="space-y-4">
           <div
             role="alert"
-            className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-3.5 text-xs sm:text-sm text-on-surface flex items-start gap-2.5 leading-relaxed"
+            className="rounded-xl border border-warning/40 bg-warning/10 p-3.5 text-xs sm:text-sm text-on-surface flex items-start gap-2.5 leading-relaxed"
           >
-            <span className="material-symbols-outlined text-[20px] text-amber-400 shrink-0 mt-0.5">
+            <span className="material-symbols-outlined text-[20px] text-warning shrink-0 mt-0.5">
               warning
             </span>
             <span>{t('ownerOrders:actions.refundStatusOnlyWarning')}</span>
@@ -880,7 +880,7 @@ export function OrderDetailDrawer({ orderId, initialOrder = null, onClose }) {
           >
             <Textarea
               rows={3}
-              className="min-h-[100px] placeholder:text-outline"
+              className="min-h-[100px]"
               value={refundNote}
               onChange={(e) => setRefundNote(e.target.value)}
               placeholder={t('ownerOrders:actions.refundNotePlaceholder')}

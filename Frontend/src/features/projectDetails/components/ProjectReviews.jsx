@@ -33,10 +33,10 @@ export function ProjectReviews({ slug, reviewsSummary }) {
     <section
       id="reviews"
       aria-labelledby="project-reviews-heading"
-      className="p-5 sm:p-6 rounded-xl bg-surface-container-low border border-outline-variant/60 space-y-5 scroll-mt-24"
+      className="p-5 sm:p-6 rounded-xl bg-card border border-card-border shadow-card space-y-5 scroll-mt-24"
     >
       {/* Header & Summary */}
-      <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-outline-variant/50">
+      <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-card-border">
         <div>
           <h2 id="project-reviews-heading" className="text-lg sm:text-headline-lg font-bold text-on-surface">
             {t('sections.reviewsTitle')}
@@ -47,7 +47,7 @@ export function ProjectReviews({ slug, reviewsSummary }) {
         </div>
 
         {totalCount > 0 && (
-          <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-surface-container border border-outline-variant/60">
+          <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-surface border border-card-border">
             <Rating rating={averageRating} showCount={false} size="sm" />
             <bdi dir="ltr" className="font-mono text-xs text-on-surface-variant">
               / 5.0
@@ -97,12 +97,12 @@ export function ProjectReviews({ slug, reviewsSummary }) {
               return (
                 <li
                   key={review._id || `review-${index}`}
-                  className="p-4 sm:p-5 rounded-xl bg-surface-container border border-outline-variant/60 space-y-3"
+                  className="p-4 sm:p-5 rounded-xl bg-surface border border-card-border space-y-3"
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-3 min-w-0">
                       <div
-                        className="w-9 h-9 rounded-full bg-primary/15 border border-primary/25 text-primary font-bold text-sm flex items-center justify-center shrink-0"
+                        className="w-9 h-9 rounded-full bg-badge-green-bg border border-primary/25 text-primary font-bold text-sm flex items-center justify-center shrink-0"
                         aria-hidden="true"
                       >
                         {initial}
@@ -112,7 +112,7 @@ export function ProjectReviews({ slug, reviewsSummary }) {
                           <span className="font-semibold text-sm text-on-surface">
                             {review.customerName}
                           </span>
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-primary/10 text-primary border border-primary/20">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-badge-green-bg text-badge-green-text border border-primary/25">
                             <span className="material-symbols-outlined text-[12px]" aria-hidden="true">
                               verified
                             </span>

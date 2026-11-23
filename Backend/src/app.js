@@ -22,21 +22,28 @@ const { globalLimiter } = require('./middleware/rateLimiters.middleware');
 
 const app = express();
 
-// 1. Trust proxy configuration (for deployments behind Nginx, Render, Railway, etc.)
-if (env.TRUST_PROXY) {
-  app.set('trust proxy', 1);
+// 1. Trust proxy configuration (supports number of reverse proxy hops; default 1)
+if (env.TRUST_PROXY > 0) {
+  app.set('trust proxy', env.TRUST_PROXY);
+} else {
+  app.set('trust proxy', false);
 }
 
 // 2. HTTP Security Headers with Helmet
 app.use(helmet());
 
 // 3. Strict CORS Configuration
+// Supports multiple comma-separated origins with exact matching
+const allowedOrigins = env.CLIENT_URL.split(',')
+  .map((url) => url.trim())
+  .filter(Boolean);
+
 app.use(
   cors({
-    origin: env.CLIENT_URL, // Exact match with the frontend origin
+    origin: allowedOrigins.length === 1 ? allowedOrigins[0] : allowedOrigins,
     credentials: true, // Allows sending HTTP-only cookies cross-origin
     methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Test-IP'],
   })
 );
 
@@ -66,10 +73,10 @@ app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
 // 10. API Routes
 app.use('/api', routes);
 
-// 10. 404 Route Catch-all
+// 11. 404 Route Catch-all
 app.use(notFound);
 
-// 11. Centralized Error Handler (Unified JSON Envelope)
+// 12. Centralized Error Handler (Unified JSON Envelope)
 app.use(errorHandler);
 
 module.exports = app;

@@ -97,9 +97,9 @@ export function DeleteCategoryDialog({ category, onClose }) {
       {blockedInUse ? (
         <div
           role="alert"
-          className="flex items-start gap-3 p-4 rounded-xl bg-amber-500/10 border border-amber-500/30"
+          className="flex items-start gap-3 p-4 rounded-xl bg-warning/10 border border-warning/30"
         >
-          <span className="material-symbols-outlined text-amber-400 text-[22px] shrink-0 mt-0.5">
+          <span className="material-symbols-outlined text-warning text-[22px] shrink-0 mt-0.5">
             warning
           </span>
           <p className="text-sm text-on-surface leading-relaxed">

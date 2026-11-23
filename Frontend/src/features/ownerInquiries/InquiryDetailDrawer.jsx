@@ -250,7 +250,7 @@ export function InquiryDetailDrawer({ inquiryId, initialInquiry = null, onClose 
                       />
                     </div>
                   ) : (
-                    <div className="text-xs text-outline mt-0.5">
+                    <div className="text-xs text-on-surface-variant mt-0.5">
                       {t('ownerInquiries:drawer.fields.noPhone')}
                     </div>
                   )}
@@ -485,7 +485,7 @@ export function InquiryDetailDrawer({ inquiryId, initialInquiry = null, onClose 
                   <Textarea
                     rows={4}
                     maxLength={2000}
-                    className="min-h-[120px] placeholder:text-outline"
+                    className="min-h-[120px]"
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                     placeholder={t('ownerInquiries:drawer.fields.ownerNotesPlaceholder')}

@@ -1,6 +1,6 @@
 export const STORAGE_KEYS = {
   LANG: 'bc_lang',
-  THEME: 'bc_theme',
+  THEME: 'bc_theme_v2',
   ORDER_TOKEN_PREFIX: 'bc_order_token_',
 };
 

@@ -1,5 +1,14 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/api" }],
-  "functions": { "api/index.js": { "maxDuration": 30 } },
-  "crons": [{ "path": "/api/v1/jobs/cron", "schedule": "0 3 * * *" }]
+  "rewrites": [{ "source": "/(.*)", "destination": "/api/index.js" }],
+  "functions": {
+    "api/index.js": {
+      "maxDuration": 30
+    }
+  },
+  "crons": [
+    {
+      "path": "/api/cron/expire-orders",
+      "schedule": "0 3 * * *"
+    }
+  ]
 }

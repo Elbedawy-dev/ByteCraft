@@ -255,7 +255,7 @@ export function MarketplaceFilterConsole({
 
   return (
     <search aria-label={t('filters.searchRegionLabel')}>
-      <div className="bg-surface-container-low border border-outline-variant/70 rounded-2xl p-4 sm:p-5 space-y-4 shadow-md">
+      <div className="bg-card border border-card-border rounded-2xl p-4 sm:p-5 space-y-4 shadow-card">
         {/* Row 1: Search Input + Mobile Filter Button + Desktop Sort Select */}
         <div className="flex flex-col lg:flex-row gap-3 lg:gap-4 items-stretch lg:items-center justify-between">
           <div className="flex items-center gap-2.5 flex-1 min-w-0">
@@ -288,7 +288,7 @@ export function MarketplaceFilterConsole({
                   <span className="material-symbols-outlined text-[20px]">search</span>
                 }
                 className={clsx(
-                  'bg-surface-container-lowest text-base sm:text-sm placeholder:text-outline rounded-xl [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none',
+                  'bg-input text-base sm:text-sm rounded-xl [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none',
                   searchDraft && 'pe-12'
                 )}
               />
@@ -320,7 +320,7 @@ export function MarketplaceFilterConsole({
             >
               <span>{t('filters.openFilters')}</span>
               {drawerFilterCount > 0 && (
-                <span className="ms-1 min-w-[20px] h-5 px-1.5 rounded-full bg-primary text-[#0A0A0A] font-label-code text-[11px] font-bold inline-flex items-center justify-center">
+                <span className="ms-1 min-w-[20px] h-5 px-1.5 rounded-full bg-primary text-on-primary font-label-code text-[11px] font-bold inline-flex items-center justify-center">
                   {drawerFilterCount}
                 </span>
               )}
@@ -344,7 +344,7 @@ export function MarketplaceFilterConsole({
                 name="sort"
                 value={filters.sort}
                 onChange={(e) => onSortChange(e.target.value)}
-                className="bg-surface-container-lowest rounded-xl"
+                className="bg-input rounded-xl"
               >
                 {SORT_OPTIONS.map((option) => (
                   <option key={option} value={option}>
@@ -472,7 +472,7 @@ export function MarketplaceFilterConsole({
                     }}
                     placeholder={t('filters.minPricePlaceholder')}
                     error={desktopPriceInvalid || isPriceRangeInvalid}
-                    className="bg-surface-container-lowest placeholder:text-outline rounded-xl text-start"
+                    className="bg-input rounded-xl text-start"
                   />
                 </div>
                 <span className="text-on-surface-variant text-sm select-none" aria-hidden="true">
@@ -498,14 +498,14 @@ export function MarketplaceFilterConsole({
                     }}
                     placeholder={t('filters.maxPricePlaceholder')}
                     error={desktopPriceInvalid || isPriceRangeInvalid}
-                    className="bg-surface-container-lowest placeholder:text-outline rounded-xl text-start"
+                    className="bg-input rounded-xl text-start"
                   />
                 </div>
               </div>
             </fieldset>
 
             {/* Featured Toggle */}
-            <div className="flex items-center h-12 px-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant">
+            <div className="flex items-center h-12 px-3.5 rounded-xl bg-input border border-input-border">
               <Switch
                 id={desktopFeaturedId}
                 name="featured"
@@ -616,7 +616,7 @@ export function MarketplaceFilterConsole({
               {t('filters.techHint')}
             </p>
             {availableTechs.length > 0 ? (
-              <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto overscroll-contain pe-1">
+              <div className="flex flex-wrap gap-2 max-h-40 bc-scroll pe-1">
                 {availableTechs.map((tech) => {
                   const selected = drawerDraft.tech.some(
                     (item) => item.toLowerCase() === tech.toLowerCase()
@@ -679,7 +679,7 @@ export function MarketplaceFilterConsole({
                   }
                   placeholder={t('filters.minPricePlaceholder')}
                   error={drawerPriceInvalid}
-                  className="text-base placeholder:text-outline text-start"
+                  className="text-base text-start"
                 />
               </div>
               <div className="space-y-1.5">
@@ -704,7 +704,7 @@ export function MarketplaceFilterConsole({
                   }
                   placeholder={t('filters.maxPricePlaceholder')}
                   error={drawerPriceInvalid}
-                  className="text-base placeholder:text-outline text-start"
+                  className="text-base text-start"
                 />
               </div>
             </div>
@@ -719,7 +719,7 @@ export function MarketplaceFilterConsole({
           </fieldset>
 
           {/* Featured Switch */}
-          <div className="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant">
+          <div className="p-3.5 rounded-xl bg-card border border-card-border">
             <Switch
               id={drawerFeaturedId}
               name="drawer-featured"
@@ -737,7 +737,7 @@ export function MarketplaceFilterConsole({
           </div>
 
           {/* Sticky Footer Actions */}
-          <div className="sticky -bottom-4 sm:-bottom-6 z-20 -mx-4 sm:-mx-6 -mb-4 sm:-mb-6 px-4 sm:px-6 py-4 bg-surface-container border-t border-outline-variant shadow-[0_-8px_20px_rgba(0,0,0,0.28)] flex items-center gap-3">
+          <div className="sticky -bottom-4 sm:-bottom-6 z-20 -mx-4 sm:-mx-6 -mb-4 sm:-mb-6 px-4 sm:px-6 py-4 bg-surface border-t border-outline-variant shadow-sticky-bar flex items-center gap-3">
             <Button
               type="button"
               variant="outline"

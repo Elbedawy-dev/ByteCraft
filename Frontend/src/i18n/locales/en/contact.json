@@ -1,5 +1,4 @@
 {
-  "pageTitle": "Start a Project | ByteCraft",
   "hero": {
     "badge": "Fast Response • Production Engineering",
     "titlePrefix": "Start Your Next Project with ",
@@ -97,7 +96,7 @@
       "attachments": {
         "label": "Attach Specs or Wireframes (Optional)",
         "dropLabel": "Drag & drop files here, or click to browse",
-        "dropHint": "Supports JPEG, PNG, WebP, PDF (max 3 files, 5 MB each)",
+        "dropHint": "Supports JPEG, PNG, WebP, PDF (max 3 files, 4 MB each)",
         "selectedCount": "{{count}} of {{max}} files attached",
         "pdfBadge": "PDF Document",
         "removeFile": "Remove {{name}}"
@@ -116,7 +115,7 @@
       "messageMin": "Please describe your project (at least 10 characters)",
       "messageMax": "Details must be 5,000 characters or fewer",
       "maxFiles": "You can attach up to 3 files maximum.",
-      "fileTooLarge": "\"{{name}}\" exceeds the 5 MB limit per file.",
+      "fileTooLarge": "\"{{name}}\" exceeds the 4 MB limit per file.",
       "invalidFileType": "\"{{name}}\" has an unsupported type. Allowed: JPEG, PNG, WebP, PDF.",
       "rateLimited": "Too many inquiries submitted from your network. Please wait a few minutes and try again, or reach us directly on WhatsApp."
     },
@@ -138,7 +137,7 @@
   },
   "valueProps": {
     "cleanCode": {
-      "title": "100% Clean Source Code",
+      "title": "Production-Grade Clean Code",
       "description": "Well-documented, scalable architecture with complete API and integration documentation."
     },
     "speed": {

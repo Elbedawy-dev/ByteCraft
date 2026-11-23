@@ -15,74 +15,111 @@ const { z } = require('zod');
 // Load the .env file located at the server root
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
-const envSchema = z.object({
-  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-  PORT: z.coerce.number().default(5000),
-  CLIENT_URL: z.string().url().default('http://localhost:5173'),
-  MONGODB_URI: z.string().min(1, 'MONGODB_URI is required'),
-  JWT_SECRET: z.string().min(16, 'JWT_SECRET must be at least 16 characters for security'),
-  JWT_EXPIRES_IN: z.string().default('7d'),
-  COOKIE_SAMESITE: z.enum(['lax', 'none', 'strict']).default('lax'),
-  TRUST_PROXY: z.preprocess((val) => val === 'true' || val === true, z.boolean()).default(false),
+const envSchema = z
+  .object({
+    NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+    PORT: z.coerce.number().default(5000),
+    CLIENT_URL: z
+      .string()
+      .default('http://localhost:5173')
+      .refine((val) => {
+        const origins = val.split(',').map((s) => s.trim()).filter(Boolean);
+        if (origins.length === 0) return false;
+        return origins.every((origin) => {
+          try {
+            new URL(origin);
+            return true;
+          } catch {
+            return false;
+          }
+        });
+      }, 'CLIENT_URL must be a valid URL or comma-separated list of valid URLs'),
+    MONGODB_URI: z.string().min(1, 'MONGODB_URI is required'),
+    JWT_SECRET: z.string().min(16, 'JWT_SECRET must be at least 16 characters for security'),
+    JWT_EXPIRES_IN: z.string().default('7d'),
+    COOKIE_SAMESITE: z.enum(['lax', 'none', 'strict']).default('lax'),
+    TRUST_PROXY: z
+      .preprocess((val) => {
+        if (val === undefined || val === null || val === '') return 1;
+        if (val === 'false' || val === false) return 0;
+        if (val === 'true' || val === true) return 1;
+        const num = Number(val);
+        return Number.isInteger(num) && num >= 0 ? num : 1;
+      }, z.number().int().min(0))
+      .default(1),
 
-  // Owner Seed Credentials (Required when running seed:owner)
-  OWNER_NAME: z.string().optional().default('ByteCraft Owner'),
-  OWNER_EMAIL: z.string().email().optional(),
-  OWNER_PASSWORD: z.string().min(8, 'OWNER_PASSWORD must be at least 8 characters').optional(),
+    // Cron execution secret (required in production)
+    CRON_SECRET: z.string().optional().default(''),
 
-  // Optional keys for upcoming phases (Cloudinary, SMTP, Paymob, GitHub)
-  CLOUDINARY_CLOUD_NAME: z.string().optional().default(''),
-  CLOUDINARY_API_KEY: z.string().optional().default(''),
-  CLOUDINARY_API_SECRET: z.string().optional().default(''),
+    // Owner Seed Credentials (Required when running seed:owner)
+    OWNER_NAME: z.string().optional().default('ByteCraft Owner'),
+    OWNER_EMAIL: z.string().email().optional(),
+    OWNER_PASSWORD: z.string().min(8, 'OWNER_PASSWORD must be at least 8 characters').optional(),
 
-  SMTP_HOST: z.string().optional().default(''),
-  SMTP_PORT: z.coerce.number().optional().default(587),
-  SMTP_USER: z.string().optional().default(''),
-  SMTP_PASS: z.string().optional().default(''),
-  MAIL_FROM: z.string().optional().default(''),
-  OWNER_NOTIFY_EMAIL: z.string().optional().default(''),
+    // Cloudinary Assets Storage
+    CLOUDINARY_CLOUD_NAME: z.string().optional().default(''),
+    CLOUDINARY_API_KEY: z.string().optional().default(''),
+    CLOUDINARY_API_SECRET: z.string().optional().default(''),
 
-  PAYMOB_MODE: z.enum(['sandbox', 'live']).default('sandbox'),
-  PAYMOB_API_KEY: z.string().optional().default(''),
-  PAYMOB_HMAC_SECRET: z.string().optional().default(''),
-  PAYMOB_CARD_INTEGRATION_ID: z.string().optional().default(''),
-  PAYMOB_FAWRY_INTEGRATION_ID: z.string().optional().default(''),
-  PAYMOB_IFRAME_ID: z.string().optional().default(''),
+    // Mail / SMTP Notifications
+    SMTP_HOST: z.string().optional().default(''),
+    SMTP_PORT: z.coerce.number().optional().default(587),
+    SMTP_USER: z.string().optional().default(''),
+    SMTP_PASS: z.string().optional().default(''),
+    MAIL_FROM: z.string().optional().default(''),
+    OWNER_NOTIFY_EMAIL: z.string().optional().default(''),
 
-  AUTO_GITHUB_INVITE: z.preprocess((val) => val === 'true' || val === true, z.boolean()).default(false),
-  GITHUB_TOKEN: z.string().optional().default(''),
-}).superRefine((data, ctx) => {
-  if (data.NODE_ENV === 'production') {
-    if (!data.PAYMOB_API_KEY || data.PAYMOB_API_KEY.includes('placeholder')) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ['PAYMOB_API_KEY'],
-        message: 'PAYMOB_API_KEY is required and cannot be a placeholder in production mode.',
-      });
+    // Paymob Gateway
+    PAYMOB_MODE: z.enum(['sandbox', 'live']).default('sandbox'),
+    PAYMOB_API_KEY: z.string().optional().default(''),
+    PAYMOB_HMAC_SECRET: z.string().optional().default(''),
+    PAYMOB_CARD_INTEGRATION_ID: z.string().optional().default(''),
+    PAYMOB_FAWRY_INTEGRATION_ID: z.string().optional().default(''),
+    PAYMOB_IFRAME_ID: z.string().optional().default(''),
+
+    // GitHub Automation
+    AUTO_GITHUB_INVITE: z.preprocess((val) => val === 'true' || val === true, z.boolean()).default(false),
+    GITHUB_TOKEN: z.string().optional().default(''),
+  })
+  .superRefine((data, ctx) => {
+    if (data.NODE_ENV === 'production') {
+      if (!data.CRON_SECRET || data.CRON_SECRET.trim().length < 16) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['CRON_SECRET'],
+          message: 'CRON_SECRET is required and must be at least 16 characters in production mode.',
+        });
+      }
+      if (!data.PAYMOB_API_KEY || data.PAYMOB_API_KEY.includes('placeholder')) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['PAYMOB_API_KEY'],
+          message: 'PAYMOB_API_KEY is required and cannot be a placeholder in production mode.',
+        });
+      }
+      if (!data.PAYMOB_HMAC_SECRET || data.PAYMOB_HMAC_SECRET.includes('placeholder')) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['PAYMOB_HMAC_SECRET'],
+          message: 'PAYMOB_HMAC_SECRET is required and cannot be a placeholder in production mode.',
+        });
+      }
+      if (!data.PAYMOB_CARD_INTEGRATION_ID || data.PAYMOB_CARD_INTEGRATION_ID.includes('placeholder')) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['PAYMOB_CARD_INTEGRATION_ID'],
+          message: 'PAYMOB_CARD_INTEGRATION_ID is required in production mode.',
+        });
+      }
+      if (!data.PAYMOB_IFRAME_ID || data.PAYMOB_IFRAME_ID.includes('placeholder')) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['PAYMOB_IFRAME_ID'],
+          message: 'PAYMOB_IFRAME_ID is required in production mode.',
+        });
+      }
     }
-    if (!data.PAYMOB_HMAC_SECRET || data.PAYMOB_HMAC_SECRET.includes('placeholder')) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ['PAYMOB_HMAC_SECRET'],
-        message: 'PAYMOB_HMAC_SECRET is required and cannot be a placeholder in production mode.',
-      });
-    }
-    if (!data.PAYMOB_CARD_INTEGRATION_ID || data.PAYMOB_CARD_INTEGRATION_ID.includes('placeholder')) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ['PAYMOB_CARD_INTEGRATION_ID'],
-        message: 'PAYMOB_CARD_INTEGRATION_ID is required in production mode.',
-      });
-    }
-    if (!data.PAYMOB_IFRAME_ID || data.PAYMOB_IFRAME_ID.includes('placeholder')) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ['PAYMOB_IFRAME_ID'],
-        message: 'PAYMOB_IFRAME_ID is required in production mode.',
-      });
-    }
-  }
-});
+  });
 
 const parsedEnv = envSchema.safeParse(process.env);
 

@@ -1,7 +1,5 @@
 {
   "tracking": {
-    "pageTitle": "متابعة الطلب {{orderNumber}} | بايت كرافت",
-    "defaultPageTitle": "متابعة الطلب | بايت كرافت",
     "breadcrumbs": {
       "home": "الرئيسية",
       "projects": "المشاريع الجاهزة",
@@ -107,14 +105,14 @@
         "uploadTitle": "رفع إيصال التحويل",
         "uploadRetryTitle": "إعادة رفع إيصال التحويل",
         "dropLabel": "اسحب صورة الإيصال أو ملف PDF هنا أو انقر للاختيار",
-        "dropHint": "يدعم JPEG, PNG, WebP, PDF بحد أقصى 5 ميجابايت",
+        "dropHint": "يدعم JPEG, PNG, WebP, PDF بحد أقصى 4 ميجابايت",
         "referenceInputLabel": "رقم العملية المرجعي أو رقم المحول منه (اختياري)",
         "referenceInputPlaceholder": "مثال: VF-TXN-987654 أو آخر 4 أرقام للتحويل",
         "submitProof": "إرسال إيصال الدفع للمراجعة",
         "submittingProof": "جاري رفع الإيصال...",
         "proofRequired": "يرجى إرفاق صورة الإيصال أو ملف PDF أولاً.",
         "invalidFileType": "نوع الملف غير مدعوم. يُسمح فقط بملفات JPEG, PNG, WebP, PDF.",
-        "fileTooLarge": "حجم الملف يتجاوز 5 ميجابايت.",
+        "fileTooLarge": "حجم الملف يتجاوز 4 ميجابايت.",
         "uploadSuccess": "تم رفع إيصال الدفع بنجاح، وطلبك الآن قيد المراجعة."
       },
       "fawry": {
@@ -201,7 +199,6 @@
     }
   },
   "paymentResult": {
-    "pageTitle": "نتيجة الدفع الإلكتروني | بايت كرافت",
     "eyebrow": "التحقق من بوابة الدفع Paymob",
     "orderNumberLabel": "رقم الطلب:",
     "transactionIdLabel": "رقم المعاملة:",

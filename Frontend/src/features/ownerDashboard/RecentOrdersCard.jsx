@@ -31,7 +31,7 @@ export function RecentOrdersCard({ recentOrders = [] }) {
 
         <Link
           to={ROUTES.OWNER_ORDERS}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] rounded-lg bg-surface-container border border-outline-variant/70 text-xs font-semibold text-primary hover:bg-surface-container-high transition-colors"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] rounded-lg bg-surface border border-card-border text-xs font-semibold text-primary hover:bg-card-hover hover:border-card-hover-border transition-colors"
         >
           <span>{t('ownerDashboard:recentOrders.viewAll')}</span>
           <span className="material-symbols-outlined text-[15px] rtl:-scale-x-100">
@@ -59,7 +59,7 @@ export function RecentOrdersCard({ recentOrders = [] }) {
               return (
                 <div
                   key={order._id || order.id || order.orderNumber || idx}
-                  className="rounded-xl bg-surface-container border border-outline-variant/80 p-3.5 space-y-2.5"
+                  className="rounded-xl bg-surface border border-card-border p-3.5 space-y-2.5"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
@@ -93,10 +93,10 @@ export function RecentOrdersCard({ recentOrders = [] }) {
           </div>
 
           {/* Desktop/Tablet Scrollable Table (>= sm) */}
-          <div className="hidden sm:block overflow-x-auto rounded-xl border border-outline-variant/70 bg-surface-container">
+          <div className="hidden sm:block overflow-x-auto rounded-xl border border-card-border bg-surface">
             <table className="w-full text-start border-collapse text-xs sm:text-sm">
               <thead>
-                <tr className="border-b border-outline-variant bg-surface-container-low/70 text-on-surface-variant text-xs font-semibold">
+                <tr className="border-b border-card-border bg-surface-container-high text-on-surface-variant text-xs font-semibold">
                   <th className="py-3 px-3.5 text-start whitespace-nowrap">
                     {t('ownerDashboard:recentOrders.columns.orderCustomer')}
                   </th>
@@ -124,7 +124,7 @@ export function RecentOrdersCard({ recentOrders = [] }) {
                   return (
                     <tr
                       key={order._id || order.id || order.orderNumber || idx}
-                      className="hover:bg-surface-container-high/50 transition-colors"
+                      className="even:bg-section-band hover:bg-surface-container-high/60 transition-colors"
                     >
                       <td className="py-3 px-3.5 align-top">
                         <div className="font-semibold text-on-surface whitespace-nowrap">

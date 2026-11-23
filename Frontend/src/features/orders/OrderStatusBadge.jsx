@@ -4,7 +4,7 @@ import { Badge } from '../../components/ui';
 
 const ORDER_STATUS_VARIANT = {
   pending_payment: 'warning',
-  awaiting_review: 'primary',
+  awaiting_review: 'info',
   paid: 'success',
   delivered: 'success',
   rejected: 'error',

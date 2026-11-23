@@ -1,24 +1,27 @@
 <!doctype html>
-<html lang="ar" dir="rtl" class="dark">
+<html lang="ar" dir="rtl" class="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="dark light" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>بايت كرافت | ByteCraft</title>
     <script>
       (function () {
         try {
           var lang = localStorage.getItem('bc_lang') || 'ar';
           if (lang !== 'ar' && lang !== 'en') lang = 'ar';
-          var theme = localStorage.getItem('bc_theme') || 'dark';
-          if (theme !== 'dark' && theme !== 'light') theme = 'dark';
+          var theme = localStorage.getItem('bc_theme_v2') || 'light';
+          if (theme !== 'dark' && theme !== 'light') theme = 'light';
           var root = document.documentElement;
           root.lang = lang;
           root.dir = lang === 'ar' ? 'rtl' : 'ltr';
           if (theme === 'dark') {
             root.classList.add('dark');
+            root.classList.remove('light');
           } else {
             root.classList.remove('dark');
+            root.classList.add('light');
           }
           var meta = document.querySelector('meta[name="color-scheme"]');
           if (meta) meta.setAttribute('content', theme);

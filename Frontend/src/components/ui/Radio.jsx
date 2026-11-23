@@ -46,8 +46,8 @@ export const Radio = forwardRef(function Radio(
         />
         <div
           className={clsx(
-            'w-5 h-5 rounded-full border transition-all duration-150 flex items-center justify-center',
-            'peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-surface',
+            'w-5 h-5 rounded-full border bg-input transition-all duration-150 flex items-center justify-center',
+            'peer-focus-visible:ring-2 peer-focus-visible:ring-input-focus peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-surface',
             error
               ? 'border-error'
               : 'border-outline peer-hover:border-primary',

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import { getApiErrorMessage } from '@/api/client';
@@ -28,10 +28,6 @@ export default function OwnerServicePlansPage() {
   const [formState, setFormState] = useState({ open: false, plan: null });
   const [deletingPlan, setDeletingPlan] = useState(null);
   const [togglingId, setTogglingId] = useState(null);
-
-  useEffect(() => {
-    document.title = t('ownerServicePlans:pageTitle');
-  }, [t, lang]);
 
   // Fetch all plans to know available groups, and pass ?group= when selected
   const { data: allPlansForGroups = [] } = useOwnerServicePlans({});
@@ -241,7 +237,7 @@ export default function OwnerServicePlansPage() {
                   {t('ownerServicePlans:table.caption')}
                 </caption>
                 <thead>
-                  <tr className="border-b border-outline-variant bg-surface-container-low/80 text-on-surface-variant text-xs font-semibold">
+                  <tr className="border-b border-card-border bg-surface-container-high text-on-surface-variant text-xs font-semibold">
                     <th scope="col" className="py-3.5 px-4 text-start">
                       {t('ownerServicePlans:table.plan')}
                     </th>
@@ -268,11 +264,11 @@ export default function OwnerServicePlansPage() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-outline-variant/60">
+                <tbody className="divide-y divide-card-border">
                   {filteredPlans.map((plan) => (
                     <tr
                       key={plan.id}
-                      className="hover:bg-surface-container-high/40 transition-colors"
+                      className="even:bg-surface-container-high/40 hover:bg-card-hover transition-colors"
                     >
                       <th scope="row" className="py-3.5 px-4 text-start max-w-xs">
                         <div className="flex items-start gap-2">

@@ -161,7 +161,7 @@ export default function OwnerCouponsPage() {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <header className="relative overflow-hidden rounded-2xl border border-outline-variant bg-surface-container-low p-5 sm:p-6">
+      <header className="relative overflow-hidden rounded-2xl border border-card-border bg-card shadow-card p-5 sm:p-6">
         <div
           className="pointer-events-none absolute -top-20 -end-20 w-64 h-64 rounded-full bg-primary/10 blur-3xl"
           aria-hidden="true"
@@ -232,7 +232,7 @@ export default function OwnerCouponsPage() {
       ) : (
         <div className={clsx('transition-opacity', isFetching && 'opacity-70')}>
           {/* Desktop Table */}
-          <div className="hidden md:block rounded-xl border border-outline-variant bg-surface-container overflow-hidden">
+          <div className="hidden md:block rounded-xl border border-card-border bg-card shadow-card overflow-hidden">
             <div
               tabIndex={0}
               role="region"
@@ -241,7 +241,7 @@ export default function OwnerCouponsPage() {
             >
               <table className="w-full text-start border-collapse text-sm">
                 <thead>
-                  <tr className="border-b border-outline-variant bg-surface-container-low/80 text-on-surface-variant text-xs font-semibold">
+                  <tr className="border-b border-card-border bg-surface-container-high text-on-surface-variant text-xs font-semibold">
                     <th scope="col" className="py-3.5 px-4 text-start whitespace-nowrap">
                       {t('ownerCoupons:table.code')}
                     </th>
@@ -265,7 +265,7 @@ export default function OwnerCouponsPage() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-outline-variant/60">
+                <tbody className="divide-y divide-card-border">
                   {coupons.map((coupon) => {
                     const id = coupon.id || coupon._id;
                     const isExpired =
@@ -274,10 +274,10 @@ export default function OwnerCouponsPage() {
                     return (
                       <tr
                         key={id}
-                        className="hover:bg-surface-container-high/50 transition-colors"
+                        className="even:bg-surface-container-high/40 hover:bg-card-hover transition-colors"
                       >
                         <td className="py-3.5 px-4 align-middle whitespace-nowrap">
-                          <div className="inline-flex items-center gap-1.5 bg-surface-container-low px-2.5 py-1 rounded-lg border border-outline-variant">
+                          <div className="inline-flex items-center gap-1.5 bg-surface px-2.5 py-1 rounded-lg border border-card-border">
                             <bdi dir="ltr" className="font-mono font-bold text-on-surface">
                               {coupon.code}
                             </bdi>
@@ -380,10 +380,10 @@ export default function OwnerCouponsPage() {
               return (
                 <article
                   key={id}
-                  className="rounded-xl border border-outline-variant bg-surface-container p-4 space-y-3"
+                  className="rounded-xl border border-card-border bg-card shadow-card p-4 space-y-3"
                 >
                   <div className="flex items-start justify-between gap-2">
-                    <div className="inline-flex items-center gap-1.5 bg-surface-container-low px-2.5 py-1 rounded-lg border border-outline-variant">
+                    <div className="inline-flex items-center gap-1.5 bg-surface px-2.5 py-1 rounded-lg border border-card-border">
                       <bdi dir="ltr" className="font-mono font-bold text-sm text-on-surface">
                         {coupon.code}
                       </bdi>

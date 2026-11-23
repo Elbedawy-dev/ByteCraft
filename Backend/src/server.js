@@ -3,12 +3,13 @@ const env = require('./config/env');
 const { connectDB, disconnectDB } = require('./config/db');
 
 /**
- * Server Entrypoint
+ * Server Entrypoint (Local Server Only)
  * 
  * WHY:
  * Separating `app.js` (Express configuration) from `server.js` (HTTP listener & DB initialization)
  * enables clean integration testing without spinning up actual network ports,
  * while managing graceful shutdown signals (SIGINT, SIGTERM) cleanly.
+ * For Vercel Serverless deployment, `api/index.js` is the entrypoint.
  */
 
 const orderService = require('./services/order.service');
@@ -26,7 +27,8 @@ async function startServer() {
   });
 
   // 3. Start recurring abandoned orders cleanup job (every 30 mins, unref'd)
-  if (process.env.NODE_ENV !== 'test') {
+  // Only runs on long-running server instances (never on Vercel serverless functions)
+  if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
     const cleanupInterval = setInterval(() => {
       orderService.expireAbandonedOrders().catch((err) => {
         console.error('Abandoned orders cleanup error:', err.message);

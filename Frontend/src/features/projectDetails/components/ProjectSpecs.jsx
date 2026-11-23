@@ -47,9 +47,9 @@ export function ProjectSpecs({ project }) {
     <>
       {/* Operational Features & Specs */}
       {features.length > 0 && (
-        <section className="p-5 sm:p-6 rounded-xl bg-surface-container-low border border-outline-variant/60 space-y-5">
+        <section className="p-5 sm:p-6 rounded-xl bg-card border border-card-border shadow-card space-y-5">
           <div className="flex items-start sm:items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-badge-green-bg border border-primary/20 flex items-center justify-center text-primary shrink-0">
               <span className="material-symbols-outlined text-[22px]" aria-hidden="true">
                 checklist
               </span>
@@ -68,10 +68,10 @@ export function ProjectSpecs({ project }) {
             {features.map((featureText, idx) => (
               <li
                 key={`${idx}-${featureText.slice(0, 16)}`}
-                className="flex items-start gap-3 p-3.5 rounded-xl bg-surface-container border border-outline-variant/40 hover:border-primary/30 transition-colors"
+                className="flex items-start gap-3 p-3.5 rounded-xl bg-surface border border-card-border transition-colors"
               >
                 <span
-                  className="w-6 h-6 rounded-full bg-primary/15 text-primary flex items-center justify-center shrink-0 mt-0.5"
+                  className="w-6 h-6 rounded-full bg-badge-green-bg text-primary flex items-center justify-center shrink-0 mt-0.5"
                   aria-hidden="true"
                 >
                   <span className="material-symbols-outlined text-[16px]">check</span>
@@ -94,7 +94,7 @@ export function ProjectSpecs({ project }) {
             {techStack.map((tech, idx) => (
               <li
                 key={`${tech}-${idx}`}
-                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-surface-container-low border border-outline-variant/70 shadow-sm"
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-card border border-card-border shadow-card"
               >
                 <span
                   className="material-symbols-outlined text-primary text-[18px]"

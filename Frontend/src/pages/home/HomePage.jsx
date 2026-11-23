@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ROUTES } from '@/config/routes';
 import { useMeta } from '@/api/meta';
@@ -12,12 +12,8 @@ import {
 } from '@/features/home';
 
 export default function HomePage() {
-  const { t, i18n } = useTranslation('home');
+  const { t } = useTranslation('home');
   const { data: meta } = useMeta();
-
-  useEffect(() => {
-    document.title = t('meta.title');
-  }, [t, i18n.language]);
 
   const rawWhatsapp = meta?.contact?.whatsapp || '';
   const whatsappDigits = rawWhatsapp.replace(/[^0-9]/g, '');
@@ -34,9 +30,7 @@ export default function HomePage() {
       <CtaBanner
         icon="auto_awesome"
         title={t('cta.title')}
-        description={t('cta.description', {
-          responseTime: t('claims.responseTime'),
-        })}
+        description={t('cta.description')}
         primaryAction={{
           label: t('cta.primaryAction'),
           to: ROUTES.CONTACT,

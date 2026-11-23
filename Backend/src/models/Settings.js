@@ -45,7 +45,7 @@ const settingsSchema = new mongoose.Schema(
       phone: { type: String, default: '', trim: true },
       location: {
         type: bilingualStringSchema,
-        default: () => ({ ar: 'مصر', en: 'Egypt' }),
+        default: () => ({ ar: '', en: '' }),
       },
       socials: {
         github: { type: String, default: '', trim: true },

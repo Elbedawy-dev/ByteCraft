@@ -59,7 +59,7 @@ export function Drawer({
     >
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -68,7 +68,7 @@ export function Drawer({
       <div
         ref={drawerRef}
         className={clsx(
-          'fixed z-10 bg-surface-container border-outline-variant shadow-2xl flex flex-col overflow-hidden',
+          'fixed z-10 bg-surface border-outline-variant shadow-card-hover flex flex-col overflow-hidden',
           side === 'end' && 'border-s',
           side === 'start' && 'border-e',
           side === 'bottom' && 'border-t',
@@ -93,7 +93,7 @@ export function Drawer({
         </div>
 
         {/* Content */}
-        <div className="p-4 sm:p-6 overflow-y-auto flex-1">{children}</div>
+        <div className="p-4 sm:p-6 bc-scroll flex-1">{children}</div>
       </div>
     </div>,
     document.body

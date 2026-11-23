@@ -1,7 +1,6 @@
 {
   "title": "Orders Management",
   "subtitle": "Review manual payment proofs, grant repository access, and manage order lifecycle states.",
-  "pageTitle": "Orders Management — ByteCraft",
   "stats": {
     "totalOrders": "Total Orders",
     "awaitingReview": "Pending Proof Review",

@@ -17,19 +17,21 @@ export function Badge({
 
   const variantStyles = {
     neutral: 'bg-surface-container-high text-on-surface-variant border border-outline-variant',
-    primary: 'bg-primary/10 text-primary border border-primary/20',
-    success: 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
-    warning: 'bg-amber-500/10 text-amber-400 border border-amber-500/20',
-    error: 'bg-error/10 text-error border border-error/20',
-    outline: 'bg-transparent text-on-surface border border-outline-variant',
+    primary: 'bg-chip-mint-bg text-chip-mint-fg border border-chip-mint-border',
+    success: 'bg-chip-mint-bg text-chip-mint-fg border border-chip-mint-border',
+    warning: 'bg-chip-amber-bg text-chip-amber-fg border border-chip-amber-border',
+    error: 'bg-chip-danger-bg text-chip-danger-fg border border-chip-danger-border',
+    info: 'bg-chip-blue-bg text-chip-blue-fg border border-chip-blue-border',
+    outline: 'bg-surface text-on-surface border border-input-border',
   }[variant] || 'bg-surface-container-high text-on-surface-variant border border-outline-variant';
 
   const dotColors = {
     neutral: 'bg-on-surface-variant',
     primary: 'bg-primary',
-    success: 'bg-emerald-400',
-    warning: 'bg-amber-400',
+    success: 'bg-success',
+    warning: 'bg-warning',
     error: 'bg-error',
+    info: 'bg-info',
     outline: 'bg-on-surface',
   }[variant] || 'bg-on-surface-variant';
 

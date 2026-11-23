@@ -108,7 +108,7 @@ export function SettingsForm({ settings, onDirtyChange }) {
         {isDirty && (
           <div
             role="status"
-            className="rounded-xl border border-warning/35 bg-warning/10 px-4 py-3 flex flex-wrap items-center justify-between gap-3"
+            className="rounded-xl border border-chip-amber-border bg-chip-amber-bg/70 px-4 py-3 flex flex-wrap items-center justify-between gap-3"
           >
             <div className="flex items-center gap-2.5 text-sm font-medium text-warning">
               <span className="material-symbols-outlined text-[20px]">

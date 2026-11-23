@@ -191,7 +191,7 @@ function SidebarNavContent({
                   'group relative flex items-center min-h-[44px] rounded-xl text-sm transition-all duration-150 select-none',
                   collapsed ? 'justify-center px-2' : 'justify-between px-3.5 gap-3',
                   isActive
-                    ? 'btn-primary-gradient font-semibold shadow-sm'
+                    ? 'bg-nav-active-bg text-primary border border-chip-mint-border font-semibold shadow-sm'
                     : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-medium'
                 )
               }
@@ -207,7 +207,7 @@ function SidebarNavContent({
                     <span
                       className={clsx(
                         'material-symbols-outlined text-[20px] shrink-0',
-                        isActive ? 'text-[#0A0A0A]' : 'text-on-surface-variant group-hover:text-primary'
+                        isActive ? 'text-primary' : 'text-on-surface-variant group-hover:text-primary'
                       )}
                       aria-hidden="true"
                     >
@@ -221,7 +221,7 @@ function SidebarNavContent({
                       className={clsx(
                         'px-2 py-0.5 rounded-full text-[11px] font-mono font-bold leading-none shrink-0',
                         isActive
-                          ? 'bg-[#0A0A0A]/15 text-[#0A0A0A]'
+                          ? 'bg-primary text-on-primary'
                           : 'bg-primary/15 text-primary'
                       )}
                     >
@@ -262,7 +262,7 @@ function SidebarNavContent({
         {owner && (
           <div
             className={clsx(
-              'rounded-xl bg-surface-container border border-outline-variant/70 p-2.5 flex items-center',
+              'rounded-xl bg-surface border border-outline-variant p-2.5 flex items-center',
               collapsed ? 'flex-col gap-2' : 'justify-between gap-2'
             )}
           >
@@ -273,7 +273,7 @@ function SidebarNavContent({
               )}
             >
               <div
-                className="w-9 h-9 rounded-full bg-primary/15 border border-primary/30 text-primary flex items-center justify-center shrink-0"
+                className="w-9 h-9 rounded-full bc-chip-mint border flex items-center justify-center shrink-0"
                 aria-hidden="true"
               >
                 <span className="material-symbols-outlined text-[18px]">person</span>
@@ -380,11 +380,6 @@ function OwnerLayoutShell() {
     customPageTitle ||
     (activeNavItem ? t(`common:${activeNavItem.labelKey}`) : t('common:titles.ownerDashboard'));
 
-  useEffect(() => {
-    if (typeof document === 'undefined' || !owner) return;
-    document.title = `${resolvedTitle} — ${t('common:brand.latinName')}`;
-  }, [resolvedTitle, owner, t, lang]);
-
   const pageContextValue = useMemo(
     () => ({
       setPageTitle: setCustomPageTitle,
@@ -436,7 +431,7 @@ function OwnerLayoutShell() {
         {/* Skip to main content link for keyboard users */}
         <a
           href="#owner-main-content"
-          className="visually-hidden focus:not-sr-only focus:fixed focus:top-3 focus:start-3 focus:z-[60] focus:px-4 focus:py-2 focus:rounded-xl focus:bg-primary focus:text-[#0A0A0A] focus:font-semibold"
+          className="visually-hidden focus:not-sr-only focus:fixed focus:top-3 focus:start-3 focus:z-[60] focus:px-4 focus:py-2 focus:rounded-xl focus:bg-primary focus:text-on-primary focus:font-semibold"
         >
           {t('owner:skipToMain')}
         </a>
@@ -444,14 +439,14 @@ function OwnerLayoutShell() {
         {/* Desktop Sidebar */}
         <aside
           className={clsx(
-            'hidden lg:flex lg:flex-col lg:sticky lg:top-0 lg:h-screen shrink-0 bg-surface-container-low border-e border-outline-variant/80 transition-[width] duration-200 z-30',
+            'hidden lg:flex lg:flex-col lg:sticky lg:top-0 lg:h-screen shrink-0 bg-section-band border-e border-outline-variant transition-[width] duration-200 z-30',
             sidebarCollapsed ? 'w-20' : 'w-64'
           )}
         >
           {/* Sidebar Brand & Collapse Toggle */}
           <div
             className={clsx(
-              'h-16 flex items-center border-b border-outline-variant/60 shrink-0 px-3',
+              'h-16 flex items-center border-b border-outline-variant shrink-0 px-3',
               sidebarCollapsed ? 'justify-center' : 'justify-between gap-2'
             )}
           >
@@ -460,7 +455,7 @@ function OwnerLayoutShell() {
                 to={ROUTES.OWNER_DASHBOARD}
                 className="flex items-center gap-2.5 min-w-0 px-1 group"
               >
-                <div className="w-9 h-9 rounded-xl bg-surface-container-high border border-outline-variant flex items-center justify-center text-primary group-hover:border-primary/50 transition-colors shrink-0">
+                <div className="w-9 h-9 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-primary group-hover:border-primary/50 transition-colors shrink-0 shadow-sm">
                   <span className="material-symbols-outlined text-[20px]">terminal</span>
                 </div>
                 <div className="flex flex-col min-w-0">
@@ -497,7 +492,7 @@ function OwnerLayoutShell() {
           </div>
 
           {/* Sidebar Nav Items */}
-          <div className="flex-1 overflow-y-auto p-3">
+          <div className="flex-1 bc-scroll p-3">
             <SidebarNavContent
               collapsed={sidebarCollapsed}
               pendingProofs={pendingProofs}
@@ -546,7 +541,7 @@ function OwnerLayoutShell() {
         {/* Main Column: Top Bar + Page Container */}
         <div className="flex-1 min-w-0 flex flex-col">
           {/* Top Bar */}
-          <header className="sticky top-0 inset-x-0 z-20 h-16 bg-surface/85 backdrop-blur-xl border-b border-outline-variant/70 px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3">
+          <header className="sticky top-0 inset-x-0 z-20 h-16 bg-surface/90 backdrop-blur-xl border-b border-outline-variant px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3">
             {/* Start: Mobile Menu Button + Page Title Slot */}
             <div className="flex items-center gap-3 min-w-0">
               <button
@@ -554,7 +549,7 @@ function OwnerLayoutShell() {
                 onClick={() => setMobileDrawerOpen(true)}
                 aria-expanded={mobileDrawerOpen}
                 aria-label={t('owner:sidebar.openMobileMenu')}
-                className="lg:hidden w-11 h-11 min-h-[44px] min-w-[44px] -ms-1.5 flex items-center justify-center rounded-xl bg-surface-container-low border border-outline-variant/60 text-on-surface hover:text-primary hover:bg-surface-container transition-colors shrink-0"
+                className="lg:hidden w-11 h-11 min-h-[44px] min-w-[44px] -ms-1.5 flex items-center justify-center rounded-xl bg-surface border border-outline-variant text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors shrink-0"
               >
                 <span className="material-symbols-outlined text-[22px]">menu</span>
               </button>
@@ -579,7 +574,7 @@ function OwnerLayoutShell() {
             <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
               {/* Language Segmented Toggle */}
               <div
-                className="inline-flex items-center p-0.5 sm:p-1 bg-surface-container-low rounded-xl border border-outline-variant/60 select-none"
+                className="inline-flex items-center p-0.5 sm:p-1 bg-surface rounded-xl border border-outline-variant select-none"
                 role="group"
                 aria-label={t('common:nav.language')}
               >
@@ -590,8 +585,8 @@ function OwnerLayoutShell() {
                   className={clsx(
                     'px-2 sm:px-2.5 py-1 min-h-[32px] text-xs font-bold rounded-lg transition-colors',
                     lang === 'ar'
-                      ? 'bg-surface-container-high text-primary shadow-sm'
-                      : 'text-on-surface-variant hover:text-on-surface'
+                      ? 'bg-nav-active-bg text-primary shadow-sm'
+                      : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
                   )}
                 >
                   AR
@@ -603,8 +598,8 @@ function OwnerLayoutShell() {
                   className={clsx(
                     'px-2 sm:px-2.5 py-1 min-h-[32px] text-xs font-bold rounded-lg transition-colors',
                     lang === 'en'
-                      ? 'bg-surface-container-high text-primary shadow-sm'
-                      : 'text-on-surface-variant hover:text-on-surface'
+                      ? 'bg-nav-active-bg text-primary shadow-sm'
+                      : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
                   )}
                 >
                   EN
@@ -620,7 +615,7 @@ function OwnerLayoutShell() {
                     ? t('common:nav.switchToLight')
                     : t('common:nav.switchToDark')
                 }
-                className="w-10 h-10 min-h-[40px] min-w-[40px] flex items-center justify-center rounded-xl bg-surface-container-low border border-outline-variant/60 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors"
+                className="w-10 h-10 min-h-[40px] min-w-[40px] flex items-center justify-center rounded-xl bg-surface border border-outline-variant text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors"
               >
                 <span className="material-symbols-outlined text-[20px]">
                   {theme === 'dark' ? 'light_mode' : 'dark_mode'}
@@ -642,7 +637,7 @@ function OwnerLayoutShell() {
                       ? `${t('owner:topbar.notifications')} (${totalNotifications})`
                       : t('owner:topbar.notifications')
                   }
-                  className="relative w-10 h-10 min-h-[40px] min-w-[40px] flex items-center justify-center rounded-xl bg-surface-container-low border border-outline-variant/60 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors"
+                  className="relative w-10 h-10 min-h-[40px] min-w-[40px] flex items-center justify-center rounded-xl bg-surface border border-outline-variant text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors"
                 >
                   <span className="material-symbols-outlined text-[20px]">
                     notifications
@@ -658,94 +653,96 @@ function OwnerLayoutShell() {
                   <div
                     role="menu"
                     aria-label={t('owner:topbar.notifications')}
-                    className="absolute end-0 mt-2 w-72 sm:w-80 rounded-2xl bg-surface-container border border-outline-variant shadow-2xl p-3 z-50"
+                    className="absolute end-0 mt-2 w-72 sm:w-80 rounded-2xl bg-surface border border-outline-variant shadow-card-hover p-1.5 overflow-hidden z-50"
                   >
-                    <div className="flex items-center justify-between px-2 pb-2.5 mb-2 border-b border-outline-variant/60">
-                      <span className="text-sm font-semibold text-on-surface">
-                        {t('owner:topbar.notifications')}
-                      </span>
-                      {totalNotifications > 0 && (
-                        <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-primary/15 text-primary font-semibold">
-                          {formatNumber(totalNotifications)}
+                    <div className="bc-scroll max-h-[min(360px,calc(100dvh-6rem))] p-1.5">
+                      <div className="flex items-center justify-between px-2 pb-2.5 mb-2 border-b border-outline-variant/60">
+                        <span className="text-sm font-semibold text-on-surface">
+                          {t('owner:topbar.notifications')}
                         </span>
+                        {totalNotifications > 0 && (
+                          <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-chip-mint-bg text-chip-mint-fg font-semibold">
+                            {formatNumber(totalNotifications)}
+                          </span>
+                        )}
+                      </div>
+
+                      {totalNotifications === 0 ? (
+                        <div className="py-6 px-3 text-center">
+                          <span className="material-symbols-outlined text-[28px] text-primary mb-1.5 block">
+                            task_alt
+                          </span>
+                          <p className="text-sm font-medium text-on-surface">
+                            {t('owner:topbar.noNotifications')}
+                          </p>
+                          <p className="text-xs text-on-surface-variant mt-0.5">
+                            {t('owner:topbar.allCaughtUp')}
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col gap-2">
+                          {pendingProofs > 0 && (
+                            <Link
+                              to={`${ROUTES.OWNER_ORDERS}?status=awaiting_review`}
+                              role="menuitem"
+                              onClick={() => setNotifMenuOpen(false)}
+                              className="flex items-start gap-3 p-2.5 rounded-xl bg-card hover:bg-surface-container-high border border-card-border transition-colors"
+                            >
+                              <div className="w-9 h-9 rounded-lg bc-chip-amber border flex items-center justify-center shrink-0">
+                                <span className="material-symbols-outlined text-[18px]">
+                                  receipt_long
+                                </span>
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-center justify-between gap-2">
+                                  <span className="text-xs font-semibold text-on-surface truncate">
+                                    {t('owner:topbar.pendingProofs')}
+                                  </span>
+                                  <span className="text-[11px] font-mono font-bold text-warning shrink-0">
+                                    {formatNumber(pendingProofs)}
+                                  </span>
+                                </div>
+                                <p className="text-xs text-on-surface-variant mt-0.5">
+                                  {t('owner:topbar.pendingProofsDesc', {
+                                    count: pendingProofs,
+                                  })}
+                                </p>
+                              </div>
+                            </Link>
+                          )}
+
+                          {newInquiries > 0 && (
+                            <Link
+                              to={`${ROUTES.OWNER_INQUIRIES}?status=new`}
+                              role="menuitem"
+                              onClick={() => setNotifMenuOpen(false)}
+                              className="flex items-start gap-3 p-2.5 rounded-xl bg-card hover:bg-surface-container-high border border-card-border transition-colors"
+                            >
+                              <div className="w-9 h-9 rounded-lg bc-chip-mint border flex items-center justify-center shrink-0">
+                                <span className="material-symbols-outlined text-[18px]">
+                                  mark_email_unread
+                                </span>
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-center justify-between gap-2">
+                                  <span className="text-xs font-semibold text-on-surface truncate">
+                                    {t('owner:topbar.newInquiries')}
+                                  </span>
+                                  <span className="text-[11px] font-mono font-bold text-primary shrink-0">
+                                    {formatNumber(newInquiries)}
+                                  </span>
+                                </div>
+                                <p className="text-xs text-on-surface-variant mt-0.5">
+                                  {t('owner:topbar.newInquiriesDesc', {
+                                    count: newInquiries,
+                                  })}
+                                </p>
+                              </div>
+                            </Link>
+                          )}
+                        </div>
                       )}
                     </div>
-
-                    {totalNotifications === 0 ? (
-                      <div className="py-6 px-3 text-center">
-                        <span className="material-symbols-outlined text-[28px] text-primary mb-1.5 block">
-                          task_alt
-                        </span>
-                        <p className="text-sm font-medium text-on-surface">
-                          {t('owner:topbar.noNotifications')}
-                        </p>
-                        <p className="text-xs text-on-surface-variant mt-0.5">
-                          {t('owner:topbar.allCaughtUp')}
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col gap-2">
-                        {pendingProofs > 0 && (
-                          <Link
-                            to={`${ROUTES.OWNER_ORDERS}?status=awaiting_review`}
-                            role="menuitem"
-                            onClick={() => setNotifMenuOpen(false)}
-                            className="flex items-start gap-3 p-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container-high border border-outline-variant/50 transition-colors"
-                          >
-                            <div className="w-9 h-9 rounded-lg bg-warning/15 text-warning flex items-center justify-center shrink-0">
-                              <span className="material-symbols-outlined text-[18px]">
-                                receipt_long
-                              </span>
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <div className="flex items-center justify-between gap-2">
-                                <span className="text-xs font-semibold text-on-surface truncate">
-                                  {t('owner:topbar.pendingProofs')}
-                                </span>
-                                <span className="text-[11px] font-mono font-bold text-warning shrink-0">
-                                  {formatNumber(pendingProofs)}
-                                </span>
-                              </div>
-                              <p className="text-xs text-on-surface-variant mt-0.5">
-                                {t('owner:topbar.pendingProofsDesc', {
-                                  count: pendingProofs,
-                                })}
-                              </p>
-                            </div>
-                          </Link>
-                        )}
-
-                        {newInquiries > 0 && (
-                          <Link
-                            to={`${ROUTES.OWNER_INQUIRIES}?status=new`}
-                            role="menuitem"
-                            onClick={() => setNotifMenuOpen(false)}
-                            className="flex items-start gap-3 p-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container-high border border-outline-variant/50 transition-colors"
-                          >
-                            <div className="w-9 h-9 rounded-lg bg-primary/15 text-primary flex items-center justify-center shrink-0">
-                              <span className="material-symbols-outlined text-[18px]">
-                                mark_email_unread
-                              </span>
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <div className="flex items-center justify-between gap-2">
-                                <span className="text-xs font-semibold text-on-surface truncate">
-                                  {t('owner:topbar.newInquiries')}
-                                </span>
-                                <span className="text-[11px] font-mono font-bold text-primary shrink-0">
-                                  {formatNumber(newInquiries)}
-                                </span>
-                              </div>
-                              <p className="text-xs text-on-surface-variant mt-0.5">
-                                {t('owner:topbar.newInquiriesDesc', {
-                                  count: newInquiries,
-                                })}
-                              </p>
-                            </div>
-                          </Link>
-                        )}
-                      </div>
-                    )}
                   </div>
                 )}
               </div>
@@ -761,9 +758,9 @@ function OwnerLayoutShell() {
                   aria-expanded={ownerMenuOpen}
                   aria-haspopup="menu"
                   aria-label={t('owner:topbar.ownerMenu')}
-                  className="h-10 min-h-[40px] ps-1.5 pe-2.5 flex items-center gap-2 rounded-xl bg-surface-container-low border border-outline-variant/60 hover:bg-surface-container transition-colors"
+                  className="h-10 min-h-[40px] ps-1.5 pe-2.5 flex items-center gap-2 rounded-xl bg-surface border border-outline-variant hover:bg-surface-container-high transition-colors"
                 >
-                  <span className="w-7 h-7 rounded-lg bg-primary/15 text-primary flex items-center justify-center shrink-0">
+                  <span className="w-7 h-7 rounded-lg bc-chip-mint border flex items-center justify-center shrink-0">
                     <span className="material-symbols-outlined text-[18px]">
                       person
                     </span>
@@ -780,65 +777,67 @@ function OwnerLayoutShell() {
                   <div
                     role="menu"
                     aria-label={t('owner:topbar.ownerMenu')}
-                    className="absolute end-0 mt-2 w-60 rounded-2xl bg-surface-container border border-outline-variant shadow-2xl p-2 z-50"
+                    className="absolute end-0 mt-2 w-60 rounded-2xl bg-surface border border-outline-variant shadow-card-hover p-1.5 overflow-hidden z-50"
                   >
-                    <div className="px-3 py-2.5 mb-1.5 border-b border-outline-variant/60">
-                      <p className="text-[11px] text-on-surface-variant">
-                        {t('owner:topbar.signedInAs')}
-                      </p>
-                      <p className="text-sm font-semibold text-on-surface truncate mt-0.5">
-                        {owner.name}
-                      </p>
-                      <p className="text-xs font-mono text-on-surface-variant truncate">
-                        <bdi dir="ltr">{owner.email}</bdi>
-                      </p>
+                    <div className="bc-scroll max-h-[min(360px,calc(100dvh-6rem))] p-0.5">
+                      <div className="px-3 py-2.5 mb-1.5 border-b border-outline-variant/60">
+                        <p className="text-[11px] text-on-surface-variant">
+                          {t('owner:topbar.signedInAs')}
+                        </p>
+                        <p className="text-sm font-semibold text-on-surface truncate mt-0.5">
+                          {owner.name}
+                        </p>
+                        <p className="text-xs font-mono text-on-surface-variant truncate">
+                          <bdi dir="ltr">{owner.email}</bdi>
+                        </p>
+                      </div>
+
+                      <Link
+                        to={ROUTES.OWNER_SETTINGS}
+                        role="menuitem"
+                        onClick={() => setOwnerMenuOpen(false)}
+                        className="flex items-center gap-2.5 px-3 py-2.5 min-h-[40px] rounded-xl text-sm text-on-surface hover:bg-surface-container-high transition-colors"
+                      >
+                        <span className="material-symbols-outlined text-[18px] text-on-surface-variant">
+                          settings
+                        </span>
+                        <span>{t('owner:topbar.settingsLink')}</span>
+                      </Link>
+
+                      <Link
+                        to={ROUTES.HOME}
+                        role="menuitem"
+                        onClick={() => setOwnerMenuOpen(false)}
+                        className="flex items-center gap-2.5 px-3 py-2.5 min-h-[40px] rounded-xl text-sm text-on-surface hover:bg-surface-container-high transition-colors"
+                      >
+                        <span className="material-symbols-outlined text-[18px] text-on-surface-variant">
+                          storefront
+                        </span>
+                        <span>{t('owner:topbar.publicSiteLink')}</span>
+                      </Link>
+
+                      <div className="my-1.5 border-t border-outline-variant/60" />
+
+                      <button
+                        type="button"
+                        role="menuitem"
+                        disabled={isLoggingOut}
+                        onClick={() => {
+                          setOwnerMenuOpen(false);
+                          logout();
+                        }}
+                        className="w-full flex items-center gap-2.5 px-3 py-2.5 min-h-[40px] rounded-xl text-sm font-medium text-error hover:bg-error/10 transition-colors disabled:opacity-50"
+                      >
+                        <span className="material-symbols-outlined text-[18px] rtl:-scale-x-100">
+                          logout
+                        </span>
+                        <span>
+                          {isLoggingOut
+                            ? t('owner:topbar.loggingOut')
+                            : t('owner:topbar.logout')}
+                        </span>
+                      </button>
                     </div>
-
-                    <Link
-                      to={ROUTES.OWNER_SETTINGS}
-                      role="menuitem"
-                      onClick={() => setOwnerMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-3 py-2.5 min-h-[40px] rounded-xl text-sm text-on-surface hover:bg-surface-container-high transition-colors"
-                    >
-                      <span className="material-symbols-outlined text-[18px] text-on-surface-variant">
-                        settings
-                      </span>
-                      <span>{t('owner:topbar.settingsLink')}</span>
-                    </Link>
-
-                    <Link
-                      to={ROUTES.HOME}
-                      role="menuitem"
-                      onClick={() => setOwnerMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-3 py-2.5 min-h-[40px] rounded-xl text-sm text-on-surface hover:bg-surface-container-high transition-colors"
-                    >
-                      <span className="material-symbols-outlined text-[18px] text-on-surface-variant">
-                        storefront
-                      </span>
-                      <span>{t('owner:topbar.publicSiteLink')}</span>
-                    </Link>
-
-                    <div className="my-1.5 border-t border-outline-variant/60" />
-
-                    <button
-                      type="button"
-                      role="menuitem"
-                      disabled={isLoggingOut}
-                      onClick={() => {
-                        setOwnerMenuOpen(false);
-                        logout();
-                      }}
-                      className="w-full flex items-center gap-2.5 px-3 py-2.5 min-h-[40px] rounded-xl text-sm font-medium text-error hover:bg-error/10 transition-colors disabled:opacity-50"
-                    >
-                      <span className="material-symbols-outlined text-[18px] rtl:-scale-x-100">
-                        logout
-                      </span>
-                      <span>
-                        {isLoggingOut
-                          ? t('owner:topbar.loggingOut')
-                          : t('owner:topbar.logout')}
-                      </span>
-                    </button>
                   </div>
                 )}
               </div>

@@ -43,8 +43,8 @@ function PackageCardsList({ packages, selectedKey, onSelect, lang, t }) {
             className={clsx(
               'w-full text-start rounded-xl p-3.5 border transition-all duration-150 flex flex-col gap-2',
               isSelected
-                ? 'bg-surface-container-high border-primary ring-1 ring-primary/40 shadow-md'
-                : 'bg-surface-container border-outline-variant/70 hover:border-outline hover:bg-surface-container-high/60'
+                ? 'bg-card-hover border-primary ring-1 ring-primary/40 shadow-sm'
+                : 'bg-surface border-card-border hover:border-card-hover-border hover:bg-card-hover'
             )}
           >
             <div className="flex items-start justify-between gap-2">
@@ -53,7 +53,7 @@ function PackageCardsList({ packages, selectedKey, onSelect, lang, t }) {
                   aria-hidden="true"
                   className={clsx(
                     'mt-0.5 w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors',
-                    isSelected ? 'border-primary bg-primary/15' : 'border-outline'
+                    isSelected ? 'border-primary bg-badge-green-bg' : 'border-outline'
                   )}
                 >
                   {isSelected && <span className="w-2.5 h-2.5 rounded-full bg-primary" />}
@@ -63,7 +63,7 @@ function PackageCardsList({ packages, selectedKey, onSelect, lang, t }) {
                   <div className="flex flex-wrap items-center gap-1.5">
                     <span className="font-bold text-sm text-on-surface">{pkgName}</span>
                     {pkg.isPopular && (
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary/15 text-primary border border-primary/30">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-badge-green-bg text-badge-green-text border border-primary/25">
                         {t('badges.popular')}
                       </span>
                     )}
@@ -81,7 +81,7 @@ function PackageCardsList({ packages, selectedKey, onSelect, lang, t }) {
                       {formatMoney(pkg.compareAtPrice, lang)}
                     </span>
                     {discountPercent > 0 && (
-                      <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 whitespace-nowrap">
+                      <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-badge-green-bg text-badge-green-text border border-primary/25 whitespace-nowrap">
                         -{discountPercent}%
                       </span>
                     )}
@@ -175,11 +175,11 @@ export function PurchasePanel({
     <>
       {/* Desktop Sticky Sidebar Purchase Panel (>= lg) */}
       <aside className="hidden lg:block lg:col-span-4 lg:sticky lg:top-24 space-y-4">
-        <div className="rounded-xl bg-surface-container-low border border-outline-variant/80 shadow-2xl p-6 space-y-5">
+        <div className="rounded-xl bg-card border border-card-border shadow-card p-6 space-y-5">
           {/* Top Badges */}
           {selectedPackage && (
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="px-3 py-1 rounded-full bg-surface-container-highest text-primary font-label-md text-xs font-bold">
+              <span className="px-3 py-1 rounded-full bg-badge-green-bg text-badge-green-text border border-primary/25 font-label-md text-xs font-bold">
                 {selectedPackage.licenseType === 'multi'
                   ? t('packages.multiLicense')
                   : t('packages.singleLicense')}
@@ -310,8 +310,8 @@ export function PurchasePanel({
         </div>
 
         {/* Direct Technical Support Mini-Card */}
-        <div className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/70 flex items-start gap-3">
-          <div className="w-11 h-11 rounded-full bg-surface-container-high border border-outline-variant/60 flex items-center justify-center text-primary shrink-0">
+        <div className="p-4 rounded-xl bg-card border border-card-border shadow-card flex items-start gap-3">
+          <div className="w-11 h-11 rounded-full bg-badge-green-bg border border-primary/20 flex items-center justify-center text-primary shrink-0">
             <span className="material-symbols-outlined text-[22px]" aria-hidden="true">
               contact_support
             </span>
@@ -399,7 +399,7 @@ export function PurchasePanel({
       )}
 
       {/* Mobile Sticky Bottom Bar (< lg) */}
-      <div className="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-surface-container-low/95 backdrop-blur-xl border-t border-outline-variant shadow-[0_-8px_30px_rgba(0,0,0,0.35)] px-3 sm:px-6 py-2.5">
+      <div className="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-surface/95 backdrop-blur-xl border-t border-outline-variant shadow-sticky-bar px-3 sm:px-6 py-2.5">
         <div className="max-w-3xl mx-auto flex items-center justify-between gap-2.5">
           <button
             type="button"
@@ -469,7 +469,7 @@ export function PurchasePanel({
           </button>
         </div>
 
-        <div className="p-4 space-y-5 overflow-y-auto flex-1">
+        <div className="p-4 space-y-5 bc-scroll flex-1">
           {packages.length > 0 ? (
             <>
               <PackageCardsList

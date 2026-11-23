@@ -81,6 +81,10 @@ export function OwnerModal({
   }[size] || 'max-w-lg';
 
   const handlePointerDown = (e) => {
+    if (e.target instanceof Element && e.target.closest('[data-bc-select-portal]')) {
+      pressedOutsideRef.current = false;
+      return;
+    }
     if (!closeOnBackdrop || preventClose || !panelRef.current) {
       pressedOutsideRef.current = false;
       return;
@@ -89,6 +93,10 @@ export function OwnerModal({
   };
 
   const handlePointerUp = (e) => {
+    if (e.target instanceof Element && e.target.closest('[data-bc-select-portal]')) {
+      pressedOutsideRef.current = false;
+      return;
+    }
     if (!closeOnBackdrop || preventClose || !panelRef.current) return;
     if (pressedOutsideRef.current && isOutsideRect(e, panelRef.current.getBoundingClientRect())) {
       onClose?.();
@@ -109,8 +117,8 @@ export function OwnerModal({
       <div
         ref={panelRef}
         className={clsx(
-          'bc-modal-panel relative w-full bg-surface-container border border-outline-variant',
-          'rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col max-h-[94dvh] sm:max-h-[88dvh] overflow-hidden',
+          'bc-modal-panel relative w-full bg-surface border border-outline-variant',
+          'rounded-t-2xl sm:rounded-2xl shadow-card-hover flex flex-col max-h-[94dvh] sm:max-h-[88dvh] overflow-hidden',
           sizeClasses,
           className
         )}
@@ -118,7 +126,7 @@ export function OwnerModal({
         <div className="h-1 w-full bg-primary-gradient shrink-0" aria-hidden="true" />
 
         {(title || !preventClose) && (
-          <div className="flex items-start justify-between gap-4 p-4 sm:p-6 border-b border-outline-variant bg-surface-container-low/60 shrink-0">
+          <div className="flex items-start justify-between gap-4 p-4 sm:p-6 border-b border-outline-variant bg-card shrink-0">
             <div className="min-w-0">
               {title && (
                 <h2
@@ -138,7 +146,7 @@ export function OwnerModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="w-10 h-10 shrink-0 rounded-xl bg-surface-container-high text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest flex items-center justify-center transition-colors"
+                className="w-10 h-10 shrink-0 rounded-xl bg-surface border border-card-border text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high flex items-center justify-center transition-colors"
                 aria-label="Close"
               >
                 <span className="material-symbols-outlined text-[20px]">close</span>
@@ -147,10 +155,10 @@ export function OwnerModal({
           </div>
         )}
 
-        <div className="p-4 sm:p-6 overflow-y-auto flex-1 overscroll-contain">{children}</div>
+        <div className="p-4 sm:p-6 bc-scroll flex-1">{children}</div>
 
         {footer && (
-          <div className="p-4 sm:p-5 border-t border-outline-variant bg-surface-container-low/70 shrink-0 flex items-center justify-end gap-3 flex-wrap">
+          <div className="p-4 sm:p-5 border-t border-outline-variant bg-card shrink-0 flex items-center justify-end gap-3 flex-wrap">
             {footer}
           </div>
         )}
@@ -222,6 +230,10 @@ export function OwnerDrawer({
   }[size] || 'max-w-2xl';
 
   const handlePointerDown = (e) => {
+    if (e.target instanceof Element && e.target.closest('[data-bc-select-portal]')) {
+      pressedOutsideRef.current = false;
+      return;
+    }
     if (!panelRef.current) {
       pressedOutsideRef.current = false;
       return;
@@ -230,6 +242,10 @@ export function OwnerDrawer({
   };
 
   const handlePointerUp = (e) => {
+    if (e.target instanceof Element && e.target.closest('[data-bc-select-portal]')) {
+      pressedOutsideRef.current = false;
+      return;
+    }
     if (!panelRef.current) return;
     if (pressedOutsideRef.current && isOutsideRect(e, panelRef.current.getBoundingClientRect())) {
       onClose?.();
@@ -250,12 +266,12 @@ export function OwnerDrawer({
       <div
         ref={panelRef}
         className={clsx(
-          'bc-drawer-panel relative h-full w-full bg-surface-container border-s border-outline-variant shadow-2xl flex flex-col overflow-hidden',
+          'bc-drawer-panel relative h-full w-full bg-surface border-s border-outline-variant shadow-card-hover flex flex-col overflow-hidden',
           widthClasses,
           className
         )}
       >
-        <div className="flex items-start justify-between gap-3 p-4 sm:p-5 border-b border-outline-variant bg-surface-container-low/80 shrink-0">
+        <div className="flex items-start justify-between gap-3 p-4 sm:p-5 border-b border-outline-variant bg-card shrink-0">
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2.5 flex-wrap">
               {title && (
@@ -272,17 +288,17 @@ export function OwnerDrawer({
           <button
             type="button"
             onClick={onClose}
-            className="w-11 h-11 shrink-0 rounded-xl bg-surface-container-high text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest flex items-center justify-center transition-colors"
+            className="w-11 h-11 shrink-0 rounded-xl bg-surface border border-card-border text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high flex items-center justify-center transition-colors"
             aria-label={closeLabel}
           >
             <span className="material-symbols-outlined text-[20px]">close</span>
           </button>
         </div>
 
-        <div className="p-4 sm:p-6 overflow-y-auto flex-1 overscroll-contain">{children}</div>
+        <div className="p-4 sm:p-6 bc-scroll flex-1">{children}</div>
 
         {footer && (
-          <div className="p-4 sm:p-5 border-t border-outline-variant bg-surface-container-low/80 shrink-0">
+          <div className="p-4 sm:p-5 border-t border-outline-variant bg-card shrink-0">
             {footer}
           </div>
         )}

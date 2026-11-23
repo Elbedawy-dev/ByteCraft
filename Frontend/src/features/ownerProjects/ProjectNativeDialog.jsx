@@ -82,6 +82,10 @@ export function ProjectNativeDialog({
     }[size] || 'sm:max-w-4xl';
 
   const handlePointerDown = (e) => {
+    if (e.target instanceof Element && e.target.closest('[data-bc-select-portal]')) {
+      pressedOutsideRef.current = false;
+      return;
+    }
     if (preventClose || !panelRef.current) {
       pressedOutsideRef.current = false;
       return;
@@ -90,6 +94,10 @@ export function ProjectNativeDialog({
   };
 
   const handlePointerUp = (e) => {
+    if (e.target instanceof Element && e.target.closest('[data-bc-select-portal]')) {
+      pressedOutsideRef.current = false;
+      return;
+    }
     if (preventClose || !panelRef.current) return;
     if (pressedOutsideRef.current && isOutsideRect(e, panelRef.current.getBoundingClientRect())) {
       onClose?.();
@@ -110,9 +118,9 @@ export function ProjectNativeDialog({
       <div
         ref={panelRef}
         className={clsx(
-          'bc-modal-panel relative w-full bg-surface-container-low border-0 sm:border sm:border-outline-variant/60',
+          'bc-modal-panel relative w-full bg-surface border-0 sm:border sm:border-outline-variant',
           'h-[100dvh] max-h-[100dvh] sm:h-auto sm:max-h-[90dvh] rounded-none sm:rounded-2xl',
-          'shadow-2xl sm:shadow-[0_0_50px_-10px_rgba(78,222,163,0.18)] flex flex-col overflow-hidden',
+          'shadow-card-hover flex flex-col overflow-hidden',
           sizeClass,
           className
         )}
@@ -121,11 +129,11 @@ export function ProjectNativeDialog({
         <div className="h-1 w-full bg-primary-gradient shrink-0" aria-hidden="true" />
 
         {/* Sticky Modal Header */}
-        <div className="flex items-start justify-between gap-3 p-4 sm:p-6 bg-surface-container/60 border-b border-outline-variant/70 shrink-0 sticky top-0 z-20">
+        <div className="flex items-start justify-between gap-3 p-4 sm:p-6 bg-card border-b border-outline-variant shrink-0 sticky top-0 z-20">
           <div className="flex flex-col gap-1 min-w-0">
             <div className="flex items-center gap-2.5 flex-wrap">
               {headerIcon && (
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-badge-green-bg border border-primary/20 flex items-center justify-center text-primary shrink-0">
                   <span className="material-symbols-outlined material-symbols-filled text-[20px]">
                     {headerIcon}
                   </span>
@@ -156,7 +164,7 @@ export function ProjectNativeDialog({
             <button
               type="button"
               onClick={onClose}
-              className="w-11 h-11 shrink-0 rounded-xl bg-surface-container-high text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest flex items-center justify-center transition-colors"
+              className="w-11 h-11 shrink-0 rounded-xl bg-surface border border-card-border text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high flex items-center justify-center transition-colors"
               aria-label={closeLabel}
             >
               <span className="material-symbols-outlined text-[20px]">close</span>
@@ -166,17 +174,17 @@ export function ProjectNativeDialog({
 
         {/* Sticky Section / Step Pills */}
         {subHeader && (
-          <div className="px-4 sm:px-6 py-2.5 bg-surface-container-low/95 border-b border-outline-variant/60 shrink-0">
+          <div className="px-4 sm:px-6 py-2.5 bg-card border-b border-outline-variant shrink-0">
             {subHeader}
           </div>
         )}
 
         {/* Scrollable Body */}
-        <div className="p-4 sm:p-6 overflow-y-auto flex-1 overscroll-contain">{children}</div>
+        <div className="p-4 sm:p-6 bc-scroll flex-1">{children}</div>
 
         {/* Sticky Footer */}
         {footer && (
-          <div className="p-4 sm:p-5 border-t border-outline-variant/70 bg-surface-container/70 shrink-0 sticky bottom-0 z-20">
+          <div className="p-4 sm:p-5 border-t border-outline-variant bg-card shrink-0 sticky bottom-0 z-20">
             {footer}
           </div>
         )}

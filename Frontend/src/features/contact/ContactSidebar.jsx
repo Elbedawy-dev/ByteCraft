@@ -27,13 +27,13 @@ export function ContactSidebar() {
   return (
     <aside className="lg:col-span-5 space-y-5 order-2 lg:order-1">
       {/* Instant Support Channels */}
-      <div className="bg-surface-container-low border border-outline-variant/80 rounded-xl p-5 sm:p-6 space-y-4">
+      <div className="bg-card border border-card-border shadow-card rounded-xl p-5 sm:p-6 space-y-4">
         <div className="flex items-center justify-between gap-2">
           <span className="font-mono text-xs font-semibold text-primary tracking-wider uppercase">
             {t('sidebar.channelsEyebrow')}
           </span>
-          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-secondary bg-surface-container-high border border-outline-variant/60 px-2.5 py-1 rounded-full">
-            <span className="w-2 h-2 rounded-full bg-secondary" aria-hidden="true" />
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-badge-green-text bg-badge-green-bg border border-primary/25 px-2.5 py-1 rounded-full">
+            <span className="w-2 h-2 rounded-full bg-primary" aria-hidden="true" />
             <span>{t('sidebar.availableNow')}</span>
           </span>
         </div>
@@ -55,7 +55,7 @@ export function ContactSidebar() {
                 href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-start gap-4 p-4 rounded-xl bg-surface-container border border-outline-variant/70 hover:border-primary/50 hover:bg-surface-container-high transition-all"
+                className="group flex items-start gap-4 p-4 rounded-xl bg-surface border border-card-border shadow-sm hover:border-card-hover-border hover:bg-card-hover hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200"
               >
                 <div className="w-12 h-12 rounded-xl btn-primary-gradient flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
                   <span className="material-symbols-outlined text-[26px]">chat</span>
@@ -83,9 +83,9 @@ export function ContactSidebar() {
             {email && (
               <a
                 href={`mailto:${email}`}
-                className="group flex items-start gap-4 p-4 rounded-xl bg-surface-container border border-outline-variant/70 hover:border-primary/50 hover:bg-surface-container-high transition-all"
+                className="group flex items-start gap-4 p-4 rounded-xl bg-surface border border-card-border shadow-sm hover:border-card-hover-border hover:bg-card-hover hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200"
               >
-                <div className="w-12 h-12 rounded-xl bg-surface-container-high border border-outline-variant/70 flex items-center justify-center text-primary shrink-0 group-hover:scale-105 transition-transform">
+                <div className="w-12 h-12 rounded-xl bc-chip-mint border flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                   <span className="material-symbols-outlined text-[24px]">mail</span>
                 </div>
                 <div className="flex flex-col min-w-0 flex-1">
@@ -111,9 +111,9 @@ export function ContactSidebar() {
             {showSeparatePhone && (
               <a
                 href={`tel:${phone.replace(/\s+/g, '')}`}
-                className="group flex items-start gap-4 p-4 rounded-xl bg-surface-container border border-outline-variant/70 hover:border-primary/50 hover:bg-surface-container-high transition-all"
+                className="group flex items-start gap-4 p-4 rounded-xl bg-surface border border-card-border shadow-sm hover:border-card-hover-border hover:bg-card-hover hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200"
               >
-                <div className="w-12 h-12 rounded-xl bg-surface-container-high border border-outline-variant/70 flex items-center justify-center text-primary shrink-0 group-hover:scale-105 transition-transform">
+                <div className="w-12 h-12 rounded-xl bc-chip-sky border flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                   <span className="material-symbols-outlined text-[24px]">call</span>
                 </div>
                 <div className="flex flex-col min-w-0 flex-1">
@@ -138,7 +138,7 @@ export function ContactSidebar() {
                     href={socials.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-4 rounded-xl bg-surface-container border border-outline-variant/70 hover:border-primary/50 hover:bg-surface-container-high flex flex-col justify-between transition-all group"
+                    className="p-4 rounded-xl bg-surface border border-card-border shadow-sm hover:border-card-hover-border hover:bg-card-hover hover:shadow-card-hover hover:-translate-y-0.5 flex flex-col justify-between transition-all duration-200 group"
                   >
                     <div className="flex items-center justify-between">
                       <span className="material-symbols-outlined text-primary text-[22px]">
@@ -164,7 +164,7 @@ export function ContactSidebar() {
                     href={socials.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-4 rounded-xl bg-surface-container border border-outline-variant/70 hover:border-secondary/50 hover:bg-surface-container-high flex flex-col justify-between transition-all group"
+                    className="p-4 rounded-xl bg-surface border border-card-border shadow-sm hover:border-card-hover-border hover:bg-card-hover hover:shadow-card-hover hover:-translate-y-0.5 flex flex-col justify-between transition-all duration-200 group"
                   >
                     <div className="flex items-center justify-between">
                       <span className="material-symbols-outlined text-secondary text-[22px]">
@@ -191,9 +191,9 @@ export function ContactSidebar() {
       </div>
 
       {/* Location & Availability */}
-      <div className="bg-surface-container-low border border-outline-variant/80 rounded-xl p-5 sm:p-6 space-y-4">
+      <div className="bg-card border border-card-border shadow-card rounded-xl p-5 sm:p-6 space-y-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-surface-container-high border border-outline-variant/70 flex items-center justify-center text-primary shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-badge-green-bg border border-primary/20 flex items-center justify-center text-primary shrink-0">
             <span className="material-symbols-outlined text-[22px]">location_on</span>
           </div>
           <div className="min-w-0">
@@ -210,31 +210,31 @@ export function ContactSidebar() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5 p-3 rounded-lg bg-surface-container border border-outline-variant/60 text-primary text-xs sm:text-sm">
+        <div className="flex items-center gap-2.5 p-3 rounded-lg bg-surface border border-card-border text-primary text-xs sm:text-sm">
           <span className="w-2.5 h-2.5 rounded-full bg-primary shrink-0" aria-hidden="true" />
           <span>{t('sidebar.availabilityNote')}</span>
         </div>
 
         {/* Neutral Architectural Studio Visual (Zero hotlinked images) */}
         <div
-          className="relative h-36 rounded-xl overflow-hidden bg-surface-container border border-outline-variant/70 flex flex-col justify-between p-4"
+          className="relative h-36 rounded-xl overflow-hidden bg-surface border border-card-border flex flex-col justify-between p-4"
           aria-hidden="true"
         >
           <div
-            className="absolute inset-0 opacity-20"
+            className="absolute inset-0 opacity-40"
             style={{
               backgroundImage:
                 'linear-gradient(to right, rgb(var(--bc-outline-variant)) 1px, transparent 1px), linear-gradient(to bottom, rgb(var(--bc-outline-variant)) 1px, transparent 1px)',
               backgroundSize: '24px 24px',
             }}
           />
-          <div className="absolute -bottom-8 -end-8 w-36 h-36 rounded-full bg-primary/15 blur-2xl pointer-events-none" />
+          <div className="absolute -bottom-8 -end-8 w-36 h-36 rounded-full bg-primary/10 blur-2xl pointer-events-none" />
           <div className="relative z-10 flex items-center justify-between">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-low/90 border border-outline-variant/70 font-mono text-[11px] text-primary">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-badge-green-bg border border-primary/25 font-mono text-[11px] text-badge-green-text">
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
               <bdi dir="ltr">{t('sidebar.gridTag')}</bdi>
             </span>
-            <span className="material-symbols-outlined text-primary/70 text-[22px]">
+            <span className="material-symbols-outlined text-primary text-[22px]" aria-hidden="true">
               hub
             </span>
           </div>
@@ -248,7 +248,7 @@ export function ContactSidebar() {
       </div>
 
       {/* NDA / IP Protection Card */}
-      <div className="bg-surface-container-low border border-outline-variant/80 rounded-xl p-5 sm:p-6 space-y-2.5">
+      <div className="bg-card border border-card-border shadow-card rounded-xl p-5 sm:p-6 space-y-2.5">
         <div className="flex items-center gap-2 text-primary">
           <span className="material-symbols-outlined text-[22px]">verified_user</span>
           <h3 className="text-sm sm:text-base font-bold text-on-surface">

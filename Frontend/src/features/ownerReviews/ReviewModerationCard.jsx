@@ -84,10 +84,8 @@ export function ReviewModerationCard({ review }) {
     <>
       <article
         className={clsx(
-          'rounded-2xl border p-5 sm:p-6 space-y-4 transition-colors',
-          isPublished
-            ? 'bg-surface-container border-outline-variant'
-            : 'bg-surface-container-low/80 border-outline-variant/70'
+          'rounded-2xl border p-5 sm:p-6 space-y-4 bg-card border-card-border shadow-card transition-colors',
+          !isPublished && 'opacity-90'
         )}
       >
         {/* Top Header: Reviewer, Rating, Publish Switch & Delete */}
@@ -184,7 +182,7 @@ export function ReviewModerationCard({ review }) {
         </div>
 
         {/* Review Comment */}
-        <p className="text-sm text-on-surface leading-relaxed whitespace-pre-wrap break-words bg-surface-container-low/70 rounded-xl p-4 border border-outline-variant/60">
+        <p className="text-sm text-on-surface leading-relaxed whitespace-pre-wrap break-words bg-surface rounded-xl p-4 border border-card-border">
           {review.comment}
         </p>
 
@@ -193,7 +191,7 @@ export function ReviewModerationCard({ review }) {
           {editingReply ? (
             <form
               onSubmit={handleSaveReply}
-              className="rounded-xl border border-primary/30 bg-surface-container-low p-4 space-y-3"
+              className="rounded-xl border border-primary/30 bg-surface p-4 space-y-3"
             >
               <FormField
                 id={`review-reply-${id}`}
@@ -203,7 +201,7 @@ export function ReviewModerationCard({ review }) {
                 <Textarea
                   rows={3}
                   maxLength={2000}
-                  className="min-h-[100px] placeholder:text-outline"
+                  className="min-h-[100px]"
                   value={replyText}
                   onChange={(e) => setReplyText(e.target.value)}
                   placeholder={t('ownerReviews:card.responsePlaceholder')}

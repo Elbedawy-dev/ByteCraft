@@ -109,12 +109,12 @@ export function OwnerAvatar({
           />
 
           <div className="relative z-10 flex flex-col items-center gap-3">
-            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-surface-container-low/90 border border-primary/35 shadow-primary-glow flex items-center justify-center">
+            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-surface border border-primary/35 shadow-card flex items-center justify-center">
               <span className="font-code text-3xl sm:text-4xl font-extrabold tracking-widest text-primary">
                 <bdi dir="ltr">{displayInitials}</bdi>
               </span>
             </div>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-low/80 border border-outline-variant/60 text-[11px] font-code text-on-surface-variant">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface border border-card-border text-[11px] font-code text-on-surface-variant">
               <span className="material-symbols-outlined text-[14px] text-primary" aria-hidden="true">
                 terminal
               </span>

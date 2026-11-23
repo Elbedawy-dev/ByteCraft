@@ -12,7 +12,7 @@ function ProjectCardSkeleton() {
   return (
     <div
       aria-hidden="true"
-      className="flex flex-col h-full bg-surface-container rounded-2xl border border-outline-variant/80 overflow-hidden"
+      className="flex flex-col h-full bg-card rounded-2xl border border-card-border shadow-card overflow-hidden"
     >
       <Skeleton className="w-full aspect-video rounded-none" />
       <div className="p-5 flex flex-col flex-1 justify-between gap-4">
@@ -125,7 +125,7 @@ export function MarketplaceGrid({
           )}
         </div>
 
-        <span className="hidden sm:inline-block text-on-surface-variant/75">
+        <span className="hidden sm:inline-block text-on-surface-variant">
           <bdi dir="ltr">{t('results.archBadge')}</bdi>
         </span>
       </div>

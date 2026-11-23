@@ -5,65 +5,111 @@ const env = require('./env');
  * MongoDB Connection Handler
  * 
  * WHY:
- * Encapsulates Mongoose database connection lifecycle, event logging,
- * and clean disconnection utilities for graceful server shutdowns.
- * In test mode (PORT 5001), falls back to local test DB if Atlas IP is not whitelisted.
+ * 1. Encapsulates Mongoose database connection lifecycle, event logging,
+ *    and clean disconnection utilities for graceful server shutdowns.
+ * 2. Caches connection on globalThis for serverless environments (Vercel) to reuse
+ *    the active database connection across warm function invocations.
+ * 3. Never calls process.exit when running on Vercel or when exitOnError is false.
+ * 4. In test mode (PORT 5001), falls back to local test DB if Atlas IP is not whitelisted.
  */
 
-async function connectDB() {
-  try {
-    const isTestServer = String(process.env.PORT) === '5001';
-    const conn = await mongoose.connect(env.MONGODB_URI, {
+let cached = globalThis.__mongooseCached;
+if (!cached) {
+  cached = globalThis.__mongooseCached = { conn: null, promise: null };
+}
+
+async function connectDB(options = {}) {
+  // If already connected, reuse existing active connection
+  if (mongoose.connection.readyState === 1) {
+    cached.conn = mongoose;
+    return mongoose;
+  }
+
+  if (cached.conn && cached.conn.connection && cached.conn.connection.readyState === 1) {
+    return cached.conn;
+  }
+
+  const isTestServer = String(process.env.PORT) === '5001';
+
+  if (!cached.promise) {
+    const opts = {
       autoIndex: env.NODE_ENV !== 'production',
-      serverSelectionTimeoutMS: isTestServer ? 2000 : 5000, // Fail fast in test mode (2s)
+      serverSelectionTimeoutMS: isTestServer ? 2000 : 5000,
       connectTimeoutMS: isTestServer ? 2000 : 5000,
-    });
+    };
 
-    console.log(`✅ MongoDB Connected: ${conn.connection.host}/${conn.connection.name}`);
+    cached.promise = mongoose
+      .connect(env.MONGODB_URI, opts)
+      .then((conn) => {
+        console.log(`✅ MongoDB Connected: ${conn.connection.host}/${conn.connection.name}`);
+        cached.conn = conn;
+        return conn;
+      })
+      .catch(async (error) => {
+        cached.promise = null;
+        cached.conn = null;
+
+        // Strict Test Fallback: ONLY permitted for test server (PORT 5001) targeting bytecraft_test
+        let exactDbName = '';
+        try {
+          const normalizedUri = env.MONGODB_URI.replace(/^mongodb(?:\+srv)?:\/\//, 'http://');
+          const parsedUrl = new URL(normalizedUri);
+          exactDbName = parsedUrl.pathname.replace(/^\//, '').split('?')[0].trim();
+        } catch {
+          exactDbName = '';
+        }
+
+        const isExactTestDb = exactDbName === 'bytecraft_test';
+
+        if (isTestServer && isExactTestDb && !env.MONGODB_URI.includes('127.0.0.1')) {
+          console.warn('\n*******************************************************************************');
+          console.warn(`⚠️  WARNING: Cloud MongoDB Atlas connection failed (${error.message})`);
+          console.warn('⚠️  AUTOMATIC LOCAL FALLBACK IS ACTIVE FOR TEST DATABASE ONLY:');
+          console.warn('⚠️  Target: mongodb://127.0.0.1:27017/bytecraft_test');
+          console.warn('⚠️  CRITICAL: This fallback is strictly DISABLED for the main ByteCraft database.');
+          console.warn('*******************************************************************************\n');
+          try {
+            const localConn = await mongoose.connect('mongodb://127.0.0.1:27017/bytecraft_test', {
+              autoIndex: true,
+            });
+            console.log(`✅ MongoDB Connected (Local Test DB): ${localConn.connection.host}/${localConn.connection.name}`);
+            cached.conn = localConn;
+            return localConn;
+          } catch (localErr) {
+            console.error(`❌ Local MongoDB Test DB Error: ${localErr.message}`);
+          }
+        }
+
+        console.error(`❌ MongoDB Connection Error: ${error.message}`);
+
+        // In serverless (Vercel) or when exitOnError is false, throw error so handler can return 503
+        const isServerless = Boolean(process.env.VERCEL) || options.exitOnError === false;
+        if (!isServerless && !isTestServer) {
+          process.exit(1);
+        }
+
+        throw error;
+      });
+  }
+
+  try {
+    const conn = await cached.promise;
     return conn;
-  } catch (error) {
-    // Strict Test Fallback:
-    // Automatic local fallback is ONLY permitted for the test server (PORT 5001) targeting bytecraft_test.
-    // It parses the exact database name from the URI and will NEVER activate for the main ByteCraft database or any other DB.
-    const isTestServer = String(process.env.PORT) === '5001';
-    let exactDbName = '';
-    try {
-      const normalizedUri = env.MONGODB_URI.replace(/^mongodb(?:\+srv)?:\/\//, 'http://');
-      const parsedUrl = new URL(normalizedUri);
-      exactDbName = parsedUrl.pathname.replace(/^\//, '').split('?')[0].trim();
-    } catch {
-      exactDbName = '';
-    }
-
-    const isExactTestDb = exactDbName === 'bytecraft_test';
-
-    if (isTestServer && isExactTestDb && !env.MONGODB_URI.includes('127.0.0.1')) {
-      console.warn('\n*******************************************************************************');
-      console.warn(`⚠️  WARNING: Cloud MongoDB Atlas connection failed (${error.message})`);
-      console.warn('⚠️  AUTOMATIC LOCAL FALLBACK IS ACTIVE FOR TEST DATABASE ONLY:');
-      console.warn('⚠️  Target: mongodb://127.0.0.1:27017/bytecraft_test');
-      console.warn('⚠️  CRITICAL: This fallback is strictly DISABLED for the main ByteCraft database.');
-      console.warn('*******************************************************************************\n');
-      try {
-        const localConn = await mongoose.connect('mongodb://127.0.0.1:27017/bytecraft_test', {
-          autoIndex: true,
-        });
-        console.log(`✅ MongoDB Connected (Local Test DB): ${localConn.connection.host}/${localConn.connection.name}`);
-        return localConn;
-      } catch (localErr) {
-        console.error(`❌ Local MongoDB Test DB Error: ${localErr.message}`);
-      }
-    }
-
-    console.error(`❌ MongoDB Connection Error: ${error.message}`);
-    process.exit(1);
+  } catch (err) {
+    cached.promise = null;
+    cached.conn = null;
+    throw err;
   }
 }
 
 async function disconnectDB() {
   try {
-    await mongoose.connection.close(false);
-    console.log('🔌 MongoDB connection closed gracefully.');
+    if (mongoose.connection.readyState !== 0) {
+      await mongoose.connection.close(false);
+      console.log('🔌 MongoDB connection closed gracefully.');
+    }
+    cached.conn = null;
+    cached.promise = null;
   } catch (error) {
     console.error(`❌ Error during MongoDB disconnection: ${error.message}`);
   }

@@ -8,6 +8,7 @@ export default {
     extend: {
       colors: {
         background: rgbVar('--bc-background'),
+        'section-band': rgbVar('--bc-section-band'),
         'on-background': rgbVar('--bc-on-background'),
         surface: rgbVar('--bc-surface'),
         'surface-dim': rgbVar('--bc-surface-dim'),
@@ -21,10 +22,25 @@ export default {
         'surface-container-highest': rgbVar('--bc-surface-container-highest'),
         'on-surface': rgbVar('--bc-on-surface'),
         'on-surface-variant': rgbVar('--bc-on-surface-variant'),
+        muted: rgbVar('--bc-muted'),
         'inverse-surface': rgbVar('--bc-inverse-surface'),
         'inverse-on-surface': rgbVar('--bc-inverse-on-surface'),
         outline: rgbVar('--bc-outline'),
         'outline-variant': rgbVar('--bc-outline-variant'),
+
+        'nav-pill': rgbVar('--bc-nav-pill'),
+        'nav-active-bg': rgbVar('--bc-nav-active-bg'),
+        overlay: 'var(--bc-overlay)',
+
+        card: rgbVar('--bc-card'),
+        'card-hover': rgbVar('--bc-card-hover'),
+        'card-border': rgbVar('--bc-card-border'),
+        'card-hover-border': rgbVar('--bc-card-hover-border'),
+
+        input: rgbVar('--bc-input-bg'),
+        'input-border': rgbVar('--bc-input-border'),
+        'input-focus': rgbVar('--bc-input-focus'),
+        placeholder: rgbVar('--bc-placeholder'),
 
         primary: rgbVar('--bc-primary'),
         'on-primary': rgbVar('--bc-on-primary'),
@@ -35,6 +51,31 @@ export default {
         'primary-fixed-dim': rgbVar('--bc-primary-fixed-dim'),
         'on-primary-fixed': rgbVar('--bc-on-primary-fixed'),
         'on-primary-fixed-variant': rgbVar('--bc-on-primary-fixed-variant'),
+
+        'badge-green-bg': rgbVar('--bc-badge-green-bg'),
+        'badge-green-text': rgbVar('--bc-badge-green-text'),
+
+        'chip-mint-bg': rgbVar('--bc-chip-mint-bg'),
+        'chip-mint-fg': rgbVar('--bc-chip-mint-fg'),
+        'chip-mint-border': rgbVar('--bc-chip-mint-border'),
+        'chip-violet-bg': rgbVar('--bc-chip-violet-bg'),
+        'chip-violet-fg': rgbVar('--bc-chip-violet-fg'),
+        'chip-violet-border': rgbVar('--bc-chip-violet-border'),
+        'chip-sky-bg': rgbVar('--bc-chip-sky-bg'),
+        'chip-sky-fg': rgbVar('--bc-chip-sky-fg'),
+        'chip-sky-border': rgbVar('--bc-chip-sky-border'),
+        'chip-amber-bg': rgbVar('--bc-chip-amber-bg'),
+        'chip-amber-fg': rgbVar('--bc-chip-amber-fg'),
+        'chip-amber-border': rgbVar('--bc-chip-amber-border'),
+        'chip-rose-bg': rgbVar('--bc-chip-rose-bg'),
+        'chip-rose-fg': rgbVar('--bc-chip-rose-fg'),
+        'chip-rose-border': rgbVar('--bc-chip-rose-border'),
+        'chip-blue-bg': rgbVar('--bc-chip-blue-bg'),
+        'chip-blue-fg': rgbVar('--bc-chip-blue-fg'),
+        'chip-blue-border': rgbVar('--bc-chip-blue-border'),
+        'chip-danger-bg': rgbVar('--bc-chip-danger-bg'),
+        'chip-danger-fg': rgbVar('--bc-chip-danger-fg'),
+        'chip-danger-border': rgbVar('--bc-chip-danger-border'),
 
         secondary: rgbVar('--bc-secondary'),
         'on-secondary': rgbVar('--bc-on-secondary'),
@@ -55,6 +96,7 @@ export default {
         'on-tertiary-fixed-variant': rgbVar('--bc-on-tertiary-fixed-variant'),
 
         error: rgbVar('--bc-error'),
+        danger: rgbVar('--bc-error'),
         'on-error': rgbVar('--bc-on-error'),
         'error-container': rgbVar('--bc-error-container'),
         'on-error-container': rgbVar('--bc-on-error-container'),
@@ -62,6 +104,7 @@ export default {
         success: rgbVar('--bc-success'),
         warning: rgbVar('--bc-warning'),
         info: rgbVar('--bc-info'),
+        star: rgbVar('--bc-star'),
       },
       borderRadius: {
         sm: '0.25rem',
@@ -134,8 +177,11 @@ export default {
         'label-code': ['0.75rem', { lineHeight: '1.125rem', fontWeight: '500' }],
       },
       boxShadow: {
-        'primary-glow': '0 0 24px -4px rgba(25, 236, 181, 0.35)',
-        'primary-glow-lg': '0 0 32px -2px rgba(25, 236, 181, 0.48)',
+        card: 'var(--bc-card-shadow)',
+        'card-hover': 'var(--bc-card-hover-shadow)',
+        'primary-glow': 'var(--bc-btn-glow)',
+        'primary-glow-lg': 'var(--bc-btn-glow)',
+        'sticky-bar': '0 -8px 24px -6px rgba(15, 23, 42, 0.10)',
       },
       backgroundImage: {
         'primary-gradient': 'linear-gradient(90deg, #52E982 0%, #19ECB5 100%)',

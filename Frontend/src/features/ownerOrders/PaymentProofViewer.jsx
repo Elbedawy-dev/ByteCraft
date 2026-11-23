@@ -29,8 +29,8 @@ export function PaymentProofViewer({ proof }) {
 
   if (!proof || !url) {
     return (
-      <div className="rounded-xl border border-dashed border-outline-variant bg-surface-container-low/50 p-4 text-sm text-on-surface-variant flex items-center gap-2.5">
-        <span className="material-symbols-outlined text-[20px] text-outline">receipt_long</span>
+      <div className="rounded-xl border border-dashed border-card-border bg-card p-4 text-sm text-on-surface-variant flex items-center gap-2.5">
+        <span className="material-symbols-outlined text-[20px] text-on-surface-variant">receipt_long</span>
         <span>{t('ownerOrders:drawer.proof.noProof')}</span>
       </div>
     );
@@ -59,7 +59,7 @@ export function PaymentProofViewer({ proof }) {
               />
             </div>
           ) : (
-            <span className="text-outline">{t('ownerOrders:drawer.proof.noReference')}</span>
+            <span className="text-on-surface-variant">{t('ownerOrders:drawer.proof.noReference')}</span>
           )}
         </div>
 
@@ -183,7 +183,7 @@ export function PaymentProofViewer({ proof }) {
               </p>
             </div>
           ) : (
-            <div className="rounded-xl border border-outline-variant bg-surface-container-lowest overflow-auto max-h-80 flex items-center justify-center p-2">
+            <div className="rounded-xl border border-outline-variant bg-surface-container-lowest bc-scroll overflow-x-auto max-h-80 flex items-center justify-center p-2">
               <img
                 src={url}
                 alt={t('ownerOrders:drawer.sections.proof')}
@@ -262,7 +262,7 @@ export function PaymentProofViewer({ proof }) {
               </div>
             }
           >
-            <div className="overflow-auto max-h-[65dvh] rounded-xl bg-surface-container-lowest border border-outline-variant p-4 flex items-center justify-center">
+            <div className="bc-scroll overflow-x-auto max-h-[65dvh] rounded-xl bg-surface-container-lowest border border-outline-variant p-4 flex items-center justify-center">
               <img
                 src={url}
                 alt={t('ownerOrders:drawer.sections.proof')}

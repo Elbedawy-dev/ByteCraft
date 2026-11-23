@@ -82,23 +82,6 @@ export default function ProjectDetailsPage() {
     (isError && (error?.status === 404 || error?.code === 'NOT_FOUND')) ||
     (!isLoading && !isError && !project);
 
-  const siteName = meta?.siteName || t('common:brand.name');
-
-  useEffect(() => {
-    if (isLoading) {
-      document.title = `${t('common:titles.projectDetails')} | ${siteName}`;
-      return;
-    }
-    if (isNotFound) {
-      document.title = `${t('projectDetails:notFoundTitle')} | ${siteName}`;
-      return;
-    }
-    if (project) {
-      const title = localized(project.title, lang);
-      document.title = `${t('projectDetails:pageTitle', { title })} | ${siteName}`;
-    }
-  }, [isLoading, isNotFound, project, lang, siteName, t]);
-
   const handleOpenLiveDemo = useCallback(() => {
     const previewUrl = project?.preview?.url?.trim();
     if (!previewUrl) return;
@@ -159,17 +142,7 @@ export default function ProjectDetailsPage() {
   ];
 
   return (
-    <div className="relative w-full bg-surface-container-lowest overflow-x-clip py-6 lg:py-10 pb-24 lg:pb-12">
-      {/* Subtle Ambient Glows */}
-      <div
-        className="absolute top-0 end-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none -me-48 -mt-20"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute bottom-24 start-10 w-80 h-80 bg-secondary-container/10 rounded-full blur-3xl pointer-events-none"
-        aria-hidden="true"
-      />
-
+    <div className="relative w-full bc-hero-wash overflow-x-clip py-6 lg:py-10 pb-24 lg:pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-6 lg:space-y-8">
         <Breadcrumbs items={breadcrumbItems} />
 

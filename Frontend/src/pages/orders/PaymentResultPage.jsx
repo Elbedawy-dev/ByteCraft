@@ -42,10 +42,6 @@ export default function PaymentResultPage() {
   const [redirectSeconds, setRedirectSeconds] = useState(4);
 
   useEffect(() => {
-    document.title = t('paymentResult.pageTitle');
-  }, [t]);
-
-  useEffect(() => {
     if (orderNumber) {
       setManualOrderInput(orderNumber);
       setToken(getOrderToken(orderNumber) || '');
@@ -162,12 +158,12 @@ export default function PaymentResultPage() {
             <div
               className={`w-16 h-16 rounded-2xl flex items-center justify-center border ${
                 viewState === 'paid'
-                  ? 'bg-primary/15 border-primary/35 text-primary'
+                  ? 'bc-chip-mint'
                   : viewState === 'failed'
-                    ? 'bg-error/15 border-error/35 text-error'
+                    ? 'bc-chip-danger'
                     : viewState === 'pending' || viewState === 'missingToken'
-                      ? 'bg-amber-500/15 border-amber-500/35 text-amber-400'
-                      : 'bg-surface-container-high border-outline-variant text-primary'
+                      ? 'bc-chip-amber'
+                      : 'bg-surface border-card-border text-primary'
               }`}
             >
               {viewState === 'verifying' ? (

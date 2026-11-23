@@ -9,7 +9,10 @@
     "dev:test": "node src/testServer.js",
     "test": "node tests/run-all.js",
     "seed:owner": "node src/seed/seedOwner.js",
-    "seed:settings": "node src/seed/seedSettings.js"
+    "seed:settings": "node src/seed/seedSettings.js",
+    "seed:contact": "node src/seed/seedContact.js",
+    "db:indexes": "node src/scripts/syncIndexes.js",
+    "db:cleanup-sample": "node src/scripts/cleanupSampleData.js"
   },
   "keywords": [],
   "author": "",

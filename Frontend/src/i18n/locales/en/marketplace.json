@@ -1,25 +1,8 @@
 {
-  "meta": {
-    "documentTitle": "Ready-Made Projects | ByteCraft"
-  },
   "header": {
     "eyebrow": "MERN_STACK_CATALOG // REPO_V2.6",
     "title": "Ready-Made Platforms for Instant Delivery",
-    "subtitle": "Production-grade MERN Stack systems engineered for immediate launch and complete customization, built with clean architecture and scalable performance.",
-    "stats": {
-      "platforms": {
-        "value": "18+",
-        "label": "Ready Platforms"
-      },
-      "cleanCode": {
-        "value": "100%",
-        "label": "Clean Code"
-      },
-      "delivery": {
-        "value": "24h",
-        "label": "Fast Delivery"
-      }
-    }
+    "subtitle": "Production-grade MERN Stack systems engineered for immediate launch and complete customization, built with clean architecture and scalable performance."
   },
   "filters": {
     "searchRegionLabel": "Search and filter ready-made projects",

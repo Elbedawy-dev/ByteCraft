@@ -115,7 +115,7 @@ function ProjectActionsBar({
           onClick={() => onChangeStatus(project, 'archived')}
           aria-label={t('actions.archive')}
           title={t('actions.archive')}
-          className="hover:text-amber-400 hover:bg-amber-500/10"
+          className="hover:text-warning hover:bg-warning/10"
         >
           <span className="material-symbols-outlined text-[18px]">archive</span>
         </Button>
@@ -159,7 +159,7 @@ export function ProjectsTable({
           <table className="w-full text-start border-collapse text-sm">
             <caption className="visually-hidden">{t('table.caption')}</caption>
             <thead>
-              <tr className="border-b border-outline-variant bg-surface-container-low/80 text-on-surface-variant text-xs font-semibold">
+              <tr className="border-b border-card-border bg-surface-container-high text-on-surface-variant text-xs font-semibold">
                 <th scope="col" className="py-3.5 px-4 text-start">
                   {t('table.project')}
                 </th>
@@ -180,7 +180,7 @@ export function ProjectsTable({
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-outline-variant/60">
+            <tbody className="divide-y divide-card-border">
               {projects.map((project) => {
                 const cheapestPrice = getCheapestPackagePrice(project.packages);
                 const activeCount = (project.packages || []).filter(
@@ -191,7 +191,7 @@ export function ProjectsTable({
                 return (
                   <tr
                     key={project.id}
-                    className="hover:bg-surface-container-high/40 transition-colors"
+                    className="even:bg-surface-container-high/40 hover:bg-card-hover transition-colors"
                   >
                     <th scope="row" className="py-3.5 px-4 text-start max-w-sm">
                       <div className="flex items-start gap-3">
@@ -230,7 +230,7 @@ export function ProjectsTable({
                           <div className="text-xs text-on-surface-variant break-words">
                             <bdi dir="ltr">{project.title?.en}</bdi>
                           </div>
-                          <div className="text-[11px] font-mono text-on-surface-variant/80 truncate">
+                          <div className="text-[11px] font-mono text-on-surface-variant truncate">
                             <bdi dir="ltr">{project.slug}</bdi>
                           </div>
                         </div>

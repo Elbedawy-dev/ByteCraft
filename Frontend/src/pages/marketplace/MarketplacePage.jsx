@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useCategories, useProjects } from '@/api/projects';
 import { useMarketplaceFilters } from '@/features/marketplace/useMarketplaceFilters';
 import { MarketplaceHeader } from '@/features/marketplace/MarketplaceHeader';
@@ -9,13 +8,7 @@ import { IncludedFeaturesSection } from '@/features/marketplace/IncludedFeatures
 import { CustomBuildCta } from '@/features/marketplace/CustomBuildCta';
 
 export default function MarketplacePage() {
-  const { t, i18n } = useTranslation('marketplace');
   const resultsTopRef = useRef(null);
-
-  // Set page <title> via i18n
-  useEffect(() => {
-    document.title = t('meta.documentTitle');
-  }, [t, i18n.language]);
 
   const {
     filters,
@@ -112,17 +105,7 @@ export default function MarketplacePage() {
   };
 
   return (
-    <div className="relative w-full overflow-x-clip bg-surface-container-lowest flex-1">
-      {/* Subtle Ambient Glow Orbs */}
-      <div
-        className="absolute top-10 start-1/4 w-96 h-96 rounded-full bg-primary/5 blur-3xl pointer-events-none"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute top-80 end-10 w-80 h-80 rounded-full bg-secondary-container/10 blur-3xl pointer-events-none"
-        aria-hidden="true"
-      />
-
+    <div className="relative w-full overflow-x-clip bc-hero-wash flex-1">
       <div className="relative z-10 max-w-7xl mx-auto px-gutter-mobile sm:px-6 lg:px-gutter py-space-lg sm:py-space-xl space-y-space-xl">
         {/* Top Section: Header + Stats Strip + Filter Console */}
         <section className="space-y-space-lg">

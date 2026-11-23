@@ -183,12 +183,12 @@ export function OrderReviewSection({ order, token }) {
                   onClick={() =>
                     setValue('rating', star, { shouldValidate: true })
                   }
-                  className="w-11 h-11 rounded-lg flex items-center justify-center transition-transform hover:scale-110 focus-visible:ring-2 focus-visible:ring-primary"
+                  className="w-11 h-11 rounded-lg flex items-center justify-center transition-transform hover:scale-110 focus-visible:ring-2 focus-visible:ring-input-focus"
                 >
                   <span
                     className={clsx(
                       'material-symbols-outlined text-[28px] transition-colors',
-                      active ? 'text-amber-400' : 'text-outline-variant'
+                      active ? 'text-star' : 'text-input-border'
                     )}
                     style={
                       active

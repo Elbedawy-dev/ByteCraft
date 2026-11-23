@@ -59,7 +59,7 @@ export function LivePreviewModal({ isOpen, onClose, project }) {
       )}
     >
       {/* Top Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2.5 sm:px-5 sm:py-3 border-b border-outline-variant bg-surface-container-low shrink-0">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2.5 sm:px-5 sm:py-3 border-b border-card-border bg-card shrink-0">
         <div className="flex items-center gap-2.5 min-w-0">
           <span className="relative flex h-2.5 w-2.5 shrink-0" aria-hidden="true">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
@@ -152,14 +152,14 @@ export function LivePreviewModal({ isOpen, onClose, project }) {
       <DemoCredentialsCard preview={preview} compact />
 
       {/* Iframe Viewport Stage */}
-      <div className="relative flex-1 min-h-0 bg-surface-dim flex items-stretch justify-center p-0 sm:p-3 overflow-auto">
+      <div className="relative flex-1 min-h-0 bg-surface-dim flex items-stretch justify-center p-0 sm:p-3 bc-scroll overflow-x-auto">
         <div
           className={clsx(
             'relative h-full bg-background transition-all duration-200 flex flex-col overflow-hidden',
             activeDevice.widthClass,
             device !== 'desktop'
-              ? 'border border-outline-variant rounded-xl shadow-2xl mx-auto'
-              : 'rounded-none sm:rounded-xl sm:border sm:border-outline-variant/60'
+              ? 'border border-card-border rounded-xl shadow-card mx-auto'
+              : 'rounded-none sm:rounded-xl sm:border sm:border-card-border'
           )}
         >
           {/* Loading Overlay */}

@@ -1,7 +1,6 @@
 {
   "title": "Coupons Management",
   "subtitle": "Create percentage or fixed EGP discount codes, set usage caps, expiry dates, and target projects.",
-  "pageTitle": "Coupons Management — ByteCraft",
   "createButton": "Create Coupon",
   "stats": {
     "total": "Total Coupons",

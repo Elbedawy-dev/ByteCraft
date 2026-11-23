@@ -233,7 +233,7 @@ export function ContactForm() {
   return (
     <section
       aria-labelledby="contact-form-heading"
-      className="lg:col-span-7 bg-surface-container-low border border-outline-variant/80 rounded-xl p-5 sm:p-8 order-1 lg:order-2 space-y-6"
+      className="lg:col-span-7 bg-card border border-card-border shadow-card rounded-xl p-5 sm:p-8 order-1 lg:order-2 space-y-6"
     >
       {/* Card Header */}
       <div className="space-y-2">
@@ -241,7 +241,7 @@ export function ContactForm() {
           <span className="font-mono text-xs font-semibold text-primary uppercase tracking-wider">
             {t('form.eyebrow')}
           </span>
-          <span className="text-xs font-medium text-on-surface-variant bg-surface-container border border-outline-variant/70 px-3 py-1 rounded-full">
+          <span className="text-xs font-medium text-on-surface-variant bg-surface border border-card-border px-3 py-1 rounded-full">
             {t('form.responseBadge')}
           </span>
         </div>

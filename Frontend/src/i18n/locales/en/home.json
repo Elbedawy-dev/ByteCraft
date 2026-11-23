@@ -1,22 +1,5 @@
 {
-  "claims": {
-    "uptime": "99.9%",
-    "lighthouseScore": "100/100",
-    "deliveredProjects": "45+",
-    "ttfbLatency": "< 38ms TTFB",
-    "conversionLift": "+184%",
-    "concurrentVisitors": "4,120",
-    "serverResponse": "99.98%",
-    "cleanArchitecturePercent": "100%",
-    "launchHours": "72",
-    "processSteps": "4",
-    "visualMatchPercent": "100%",
-    "pillarsCount": "4",
-    "deliveryDaysRange": "3 - 7",
-    "responseTime": "1 hour"
-  },
   "meta": {
-    "title": "Home | ByteCraft — MERN Stack Engineering Studio",
     "description": "Turnkey and custom learning platforms and high-performance e-commerce stores engineered with modern MERN Stack in Egypt & MENA."
   },
   "hero": {
@@ -30,19 +13,10 @@
     "subtitle": "Ultra-fast turnkey and custom software solutions built to turn visitors into paying customers and scale your business across Egypt and MENA with production-grade performance.",
     "ctaPrimary": "Browse Ready Projects",
     "ctaSecondary": "Request Custom Project",
-    "stats": {
-      "uptimeLabel": "Continuous Uptime",
-      "lighthouseLabel": "Lighthouse Performance",
-      "deliveredLabel": "Production Projects Delivered"
-    },
     "terminal": {
       "filename": "Production_MERN_Stack.ts",
-      "metricTitle": "Conversion & Sales Growth",
-      "metricBadgeSuffix": "Lift",
-      "concurrentVisitorsLabel": "Concurrent Visitors",
-      "serverResponseLabel": "Server Response",
       "floatingBadgeTitle": "Verified Clean Code",
-      "floatingBadgeSubtitle": "Clean Architecture {{percent}}"
+      "floatingBadgeSubtitle": "Modular Production Architecture"
     }
   },
   "solutions": {
@@ -87,14 +61,14 @@
   },
   "featured": {
     "eyebrow": "Ready for Immediate Deployment",
-    "title": "Ready-Made Projects Launching in {{hours}} Hours",
+    "title": "Ready-Made Projects for Immediate Launch",
     "viewAll": "View All Ready Platforms",
     "errorTitle": "Unable to load featured projects",
     "loadingLabel": "Loading ready-made projects"
   },
   "howItWorks": {
     "eyebrow": "Clear & Direct Methodology",
-    "title": "How We Work: {{count}} Steps to Launch",
+    "title": "How We Work: From Discovery to Launch",
     "subtitle": "We follow an agile engineering workflow that guarantees a bug-free, production-ready launch in record time.",
     "steps": {
       "step1": {
@@ -107,7 +81,7 @@
         "number": "02",
         "title": "Brand & Gateway Setup",
         "description": "We tailor the entire platform to your visual identity: logo, brand palette, payment gateways, and custom domain configuration.",
-        "tag": "{{percent}} visual fidelity"
+        "tag": "High visual fidelity"
       },
       "step3": {
         "number": "03",
@@ -125,7 +99,7 @@
   },
   "pillars": {
     "eyebrow": "Why ByteCraft?",
-    "title": "{{count}} Pillars That Keep Your Platform Ahead of Competitors",
+    "title": "Key Pillars That Keep Your Platform Ahead of Competitors",
     "subtitle": "We never ship sluggish templates or bloated CMS plugins. Every platform is engineered with clean code and milled interfaces.",
     "items": {
       "speed": {
@@ -137,8 +111,8 @@
         "description": "Sensitive data encryption and verified integration with Egyptian payment gateways (Vodafone Cash, InstaPay, Visa) protect every transaction."
       },
       "delivery": {
-        "title": "Record Delivery Speed ({{days}} Days)",
-        "description": "Thanks to our modular studio engine, we deploy your customized turnkey platform in days so you can start selling immediately."
+        "title": "Fast Turnaround Delivery",
+        "description": "Thanks to our modular studio engine, we deploy your customized turnkey platform quickly so you can start selling immediately."
       },
       "support": {
         "title": "Technical Support & Clean Code Warranty",
@@ -148,7 +122,7 @@
   },
   "cta": {
     "title": "Ready to Launch Your Next Platform and Grow Sales?",
-    "description": "Chat with us on WhatsApp or request a detailed technical quote—a software engineer will review your idea and respond within {{responseTime}}.",
+    "description": "Chat with us on WhatsApp or request a detailed technical quote—a software engineer will review your idea and respond promptly.",
     "primaryAction": "Start Now & Request Project",
     "secondaryActionWhatsapp": "Quick WhatsApp Chat",
     "secondaryActionContact": "Talk to an Engineer",

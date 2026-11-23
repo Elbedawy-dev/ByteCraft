@@ -14,7 +14,7 @@ export function Tabs({
       className={clsx(
         'flex items-center gap-1.5 overflow-x-auto no-scrollbar',
         variant === 'underline' && 'border-b border-outline-variant gap-4',
-        variant === 'pills' && 'p-1 rounded-xl bg-surface-container-low border border-outline-variant/60 w-fit',
+        variant === 'pills' && 'p-1 rounded-xl bg-nav-pill border border-outline-variant w-fit',
         className
       )}
     >
@@ -39,7 +39,7 @@ export function Tabs({
               {tab.icon && <span className="material-symbols-outlined text-[18px]">{tab.icon}</span>}
               <span>{tab.label}</span>
               {tab.badge !== undefined && (
-                <span className="text-[11px] px-1.5 py-0.5 rounded-full bg-surface-container-high font-mono">
+                <span className="text-[11px] px-1.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-mono">
                   {tab.badge}
                 </span>
               )}
@@ -67,7 +67,14 @@ export function Tabs({
             {tab.icon && <span className="material-symbols-outlined text-[18px]">{tab.icon}</span>}
             <span>{tab.label}</span>
             {tab.badge !== undefined && (
-              <span className="text-[11px] px-1.5 py-0.5 rounded-full bg-surface-container-highest font-mono">
+              <span
+                className={clsx(
+                  'text-[11px] px-1.5 py-0.5 rounded-full font-mono',
+                  isActive
+                    ? 'bg-chip-mint-bg text-chip-mint-fg'
+                    : 'bg-surface text-on-surface-variant'
+                )}
+              >
                 {tab.badge}
               </span>
             )}

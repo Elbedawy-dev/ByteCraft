@@ -1,7 +1,6 @@
 {
   "title": "Reviews Moderation",
   "subtitle": "Moderate verified buyer reviews, toggle public visibility, and publish official studio replies.",
-  "pageTitle": "Reviews Moderation — ByteCraft",
   "stats": {
     "total": "Total Reviews",
     "showing": "Showing {{from}} - {{to}} of {{total}}"

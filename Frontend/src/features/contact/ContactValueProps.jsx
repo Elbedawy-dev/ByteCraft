@@ -11,21 +11,21 @@ export function ContactValueProps() {
     {
       key: 'cleanCode',
       icon: 'code_blocks',
-      accentClass: 'text-primary',
+      accentClass: 'bc-chip-mint',
       title: t('valueProps.cleanCode.title'),
       description: t('valueProps.cleanCode.description'),
     },
     {
       key: 'speed',
       icon: 'speed',
-      accentClass: 'text-secondary',
+      accentClass: 'bc-chip-sky',
       title: t('valueProps.speed.title'),
       description: t('valueProps.speed.description'),
     },
     {
       key: 'support',
       icon: 'support_agent',
-      accentClass: 'text-primary',
+      accentClass: 'bc-chip-violet',
       title: t('valueProps.support.title', { days: guaranteeDays }),
       description: t('valueProps.support.description'),
     },
@@ -36,10 +36,10 @@ export function ContactValueProps() {
       {items.map((item) => (
         <div
           key={item.key}
-          className="bg-surface-container-low border border-outline-variant/80 rounded-xl p-5 sm:p-6 flex items-start gap-4"
+          className="bg-card border border-card-border shadow-card rounded-xl p-5 sm:p-6 flex items-start gap-4"
         >
           <div
-            className={`w-10 h-10 rounded-xl bg-surface-container border border-outline-variant/70 flex items-center justify-center shrink-0 ${item.accentClass}`}
+            className={`w-10 h-10 rounded-xl border flex items-center justify-center shrink-0 ${item.accentClass}`}
           >
             <span className="material-symbols-outlined text-[24px]">
               {item.icon}

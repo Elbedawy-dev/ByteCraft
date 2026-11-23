@@ -6,19 +6,56 @@ export const ownerAuthKeys = {
   me: ['owner', 'me'],
 };
 
+const OWNER_SESSION_HINT_KEY = 'bc_owner_session';
+
+function hasOwnerSessionHint() {
+  try {
+    return (
+      typeof window !== 'undefined' &&
+      window.localStorage.getItem(OWNER_SESSION_HINT_KEY) === '1'
+    );
+  } catch {
+    return false;
+  }
+}
+
+function setOwnerSessionHint(active) {
+  try {
+    if (typeof window === 'undefined') return;
+    if (active) {
+      window.localStorage.setItem(OWNER_SESSION_HINT_KEY, '1');
+    } else {
+      window.localStorage.removeItem(OWNER_SESSION_HINT_KEY);
+    }
+  } catch {
+    // Ignore storage errors in restricted browsing modes
+  }
+}
+
 /**
  * Checks current authenticated owner session via GET /api/owner/me.
- * Returns null on 401 so session probes resolve cleanly without reload loops.
+ * Returns null on 401 or when no session hint exists so session probes resolve cleanly.
  */
 export async function fetchOwnerMe({ signal } = {}) {
+  const isProtectedOwnerPath =
+    typeof window !== 'undefined' &&
+    window.location.pathname.startsWith('/owner') &&
+    !window.location.pathname.startsWith('/owner/login');
+
+  if (!hasOwnerSessionHint() && !isProtectedOwnerPath) {
+    return null;
+  }
   try {
     const { data } = await api.get('/owner/me', {
       signal,
       skipAuthRedirect: true,
     });
-    return data?.owner ?? null;
+    const owner = data?.owner ?? null;
+    setOwnerSessionHint(Boolean(owner));
+    return owner;
   } catch (error) {
     if (error instanceof ApiError && error.isUnauthorized) {
+      setOwnerSessionHint(false);
       return null;
     }
     throw error;
@@ -31,10 +68,12 @@ export async function loginOwner({ email, password }) {
     { email, password },
     { skipAuthRedirect: true }
   );
+  setOwnerSessionHint(true);
   return data;
 }
 
 export async function logoutOwner() {
+  setOwnerSessionHint(false);
   const { data } = await api.post('/owner/logout', {}, { skipAuthRedirect: true });
   return data;
 }

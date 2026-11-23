@@ -50,7 +50,7 @@ export function MobileMenu({ isOpen, onClose }) {
     >
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -58,7 +58,7 @@ export function MobileMenu({ isOpen, onClose }) {
       {/* Drawer sliding from the end side */}
       <div
         ref={drawerRef}
-        className="fixed inset-y-0 end-0 z-10 w-full max-w-xs sm:max-w-sm bg-surface-container border-s border-outline-variant shadow-2xl flex flex-col justify-between p-6 overflow-y-auto animate-in slide-in-from-right duration-200 rtl:slide-in-from-left"
+        className="fixed inset-y-0 end-0 z-10 w-full max-w-xs sm:max-w-sm bg-surface border-s border-outline-variant shadow-card-hover flex flex-col justify-between p-6 bc-scroll animate-in slide-in-from-right duration-200 rtl:slide-in-from-left"
       >
         <div className="space-y-6">
           {/* Header with close button */}
@@ -87,13 +87,13 @@ export function MobileMenu({ isOpen, onClose }) {
                   clsx(
                     'px-4 py-3 rounded-xl text-sm font-semibold transition-colors flex items-center justify-between',
                     isActive
-                      ? 'bg-primary/10 text-primary border border-primary/20'
+                      ? 'bg-nav-active-bg text-primary border border-chip-mint-border'
                       : 'text-on-surface hover:bg-surface-container-high hover:text-primary'
                   )
                 }
               >
                 <span>{t(`nav.${item.key}`, { defaultValue: item.defaultLabel })}</span>
-                <span className="material-symbols-outlined text-[16px] text-muted rtl:-scale-x-100">
+                <span className="material-symbols-outlined text-[16px] text-on-surface-variant rtl:-scale-x-100">
                   chevron_right
                 </span>
               </NavLink>
@@ -105,15 +105,15 @@ export function MobileMenu({ isOpen, onClose }) {
         <div className="pt-6 border-t border-outline-variant space-y-4">
           <div className="flex items-center justify-between gap-3">
             {/* Language Segmented Toggle */}
-            <div className="flex items-center p-1 bg-surface-container-low rounded-xl border border-outline-variant/60">
+            <div className="flex items-center p-1 bg-surface rounded-xl border border-outline-variant">
               <button
                 type="button"
                 onClick={() => setLang('ar')}
                 className={clsx(
                   'px-3 py-1.5 text-xs font-bold rounded-lg transition-all',
                   lang === 'ar'
-                    ? 'bg-surface text-primary shadow-sm'
-                    : 'text-on-surface-variant hover:text-on-surface'
+                    ? 'bg-nav-active-bg text-primary shadow-sm'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
                 )}
               >
                 العربية
@@ -124,8 +124,8 @@ export function MobileMenu({ isOpen, onClose }) {
                 className={clsx(
                   'px-3 py-1.5 text-xs font-bold rounded-lg transition-all',
                   lang === 'en'
-                    ? 'bg-surface text-primary shadow-sm'
-                    : 'text-on-surface-variant hover:text-on-surface'
+                    ? 'bg-nav-active-bg text-primary shadow-sm'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
                 )}
               >
                 English
@@ -136,7 +136,7 @@ export function MobileMenu({ isOpen, onClose }) {
             <button
               type="button"
               onClick={toggleTheme}
-              className="w-10 h-10 flex items-center justify-center rounded-xl bg-surface-container-low border border-outline-variant/60 text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors"
+              className="w-10 h-10 flex items-center justify-center rounded-xl bg-surface border border-outline-variant text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors"
               aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             >
               <span className="material-symbols-outlined text-[20px]">

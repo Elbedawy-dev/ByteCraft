@@ -25,13 +25,13 @@ const STATUS_COLORS_DARK = {
 
 const STATUS_COLORS_LIGHT = {
   delivered: '#047857',
-  paid: '#10B981',
-  awaiting_review: '#D97706',
-  pending_payment: '#0284C7',
-  rejected: '#DC2626',
-  cancelled: '#6B7280',
-  refunded: '#9333EA',
-  expired: '#9CA3AF',
+  paid: '#0369A1',
+  awaiting_review: '#B45309',
+  pending_payment: '#1D4ED8',
+  rejected: '#B91C1C',
+  cancelled: '#475569',
+  refunded: '#6D28D9',
+  expired: '#64748B',
 };
 
 function StatusTooltip({ active, payload, dir }) {
@@ -42,7 +42,7 @@ function StatusTooltip({ active, payload, dir }) {
   return (
     <div
       dir={dir}
-      className="rounded-xl border border-outline-variant bg-surface-container px-3 py-2 shadow-xl text-xs"
+      className="rounded-xl border border-outline-variant bg-surface px-3 py-2 shadow-card-hover text-xs"
     >
       <div className="flex items-center gap-2">
         <span
@@ -142,7 +142,7 @@ export function OrdersStatusChart({ ordersByStatus = [] }) {
             {items.map((entry) => (
               <li
                 key={entry.status}
-                className="flex items-center justify-between gap-2 text-xs py-1 px-2 rounded-lg bg-surface-container/50"
+                className="flex items-center justify-between gap-2 text-xs py-1.5 px-2.5 rounded-lg bg-surface border border-card-border"
               >
                 <span className="flex items-center gap-2 min-w-0">
                   <span

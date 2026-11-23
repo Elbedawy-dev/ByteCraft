@@ -34,7 +34,7 @@ export function TrustBadges({ guaranteeDays = 30 }) {
       {items.map((item) => (
         <div
           key={item.key}
-          className="flex items-center gap-2.5 p-3 rounded-xl bg-surface-container-low border border-outline-variant/70"
+          className="flex items-center gap-2.5 p-3 rounded-xl bg-card border border-card-border shadow-card"
         >
           <span
             className="material-symbols-outlined text-primary text-[22px] shrink-0"

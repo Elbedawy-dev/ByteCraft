@@ -44,12 +44,12 @@ export const Checkbox = forwardRef(function Checkbox(
         />
         <div
           className={clsx(
-            'w-5 h-5 rounded-[5px] border transition-all duration-150 flex items-center justify-center',
-            'peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-surface',
+            'w-5 h-5 rounded-[5px] border bg-input transition-all duration-150 flex items-center justify-center',
+            'peer-focus-visible:ring-2 peer-focus-visible:ring-input-focus peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-surface',
             error
               ? 'border-error'
               : 'border-outline peer-hover:border-primary',
-            'peer-checked:bg-primary peer-checked:border-primary peer-checked:text-[#0A0A0A]'
+            'peer-checked:bg-primary peer-checked:border-primary peer-checked:text-on-primary'
           )}
         >
           <span className="material-symbols-outlined text-[16px] font-bold opacity-0 peer-checked:opacity-100 transition-opacity">

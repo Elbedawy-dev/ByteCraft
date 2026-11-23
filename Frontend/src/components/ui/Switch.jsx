@@ -58,16 +58,16 @@ export const Switch = forwardRef(function Switch(
         {/* Track: 44px wide (w-11) x 24px high (h-6) */}
         <div
           className={clsx(
-            'w-11 h-6 rounded-full bg-surface-container-highest transition-colors duration-200 border border-outline-variant',
-            'peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-surface',
+            'w-11 h-6 rounded-full bg-surface-container-highest transition-colors duration-200 border border-outline',
+            'peer-focus-visible:ring-2 peer-focus-visible:ring-input-focus peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-surface',
             'peer-checked:bg-primary peer-checked:border-primary'
           )}
         />
         {/* Knob: 20px x 20px (w-5 h-5), positioned with 2px offset */}
         <div
           className={clsx(
-            'absolute start-0.5 top-0.5 w-5 h-5 rounded-full bg-white dark:bg-surface transition-transform duration-200 shadow-sm pointer-events-none',
-            'peer-checked:translate-x-5 rtl:peer-checked:-translate-x-5 peer-checked:bg-[#0A0A0A]'
+            'absolute start-0.5 top-0.5 w-5 h-5 rounded-full bg-white border border-outline/60 transition-transform duration-200 shadow-sm pointer-events-none',
+            'peer-checked:translate-x-5 rtl:peer-checked:-translate-x-5 peer-checked:bg-on-primary peer-checked:border-transparent'
           )}
         />
       </div>

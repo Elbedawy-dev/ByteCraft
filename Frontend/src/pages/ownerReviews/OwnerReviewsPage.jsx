@@ -45,7 +45,7 @@ export default function OwnerReviewsPage() {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <header className="relative overflow-hidden rounded-2xl border border-outline-variant bg-surface-container-low p-5 sm:p-6">
+      <header className="relative overflow-hidden rounded-2xl border border-card-border bg-card shadow-card p-5 sm:p-6">
         <div
           className="pointer-events-none absolute -top-20 -end-20 w-64 h-64 rounded-full bg-primary/10 blur-3xl"
           aria-hidden="true"
@@ -73,7 +73,7 @@ export default function OwnerReviewsPage() {
       <Card variant="flat" padding="sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           {/* Published / Hidden Segmented Pills */}
-          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-surface-container border border-outline-variant w-fit max-w-full overflow-x-auto">
+          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-surface border border-card-border w-fit max-w-full overflow-x-auto">
             {[
               { value: '', label: t('ownerReviews:filters.all') },
               { value: 'true', label: t('ownerReviews:filters.published') },
@@ -91,8 +91,8 @@ export default function OwnerReviewsPage() {
                   className={clsx(
                     'px-4 h-10 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition-colors',
                     active
-                      ? 'bg-primary/15 text-primary font-semibold'
-                      : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
+                      ? 'bg-badge-green-bg text-badge-green-text font-semibold'
+                      : 'text-on-surface-variant hover:text-on-surface hover:bg-card'
                   )}
                 >
                   {tab.label}

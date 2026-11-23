@@ -318,9 +318,9 @@ export function ProjectPackagesSection({ control, register, watch, errors }) {
       {!hasActivePackage && (
         <div
           role="alert"
-          className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center gap-2 text-xs text-on-surface"
+          className="p-3 rounded-xl bg-warning/10 border border-warning/30 flex items-center gap-2 text-xs text-on-surface"
         >
-          <span className="material-symbols-outlined text-amber-400 text-[18px] shrink-0">
+          <span className="material-symbols-outlined text-warning text-[18px] shrink-0">
             warning
           </span>
           <span>{t('modal.packages.activeRequiredBanner')}</span>

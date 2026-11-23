@@ -2,10 +2,26 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 const FEATURE_ITEMS = [
-  { key: 'sourceCode', icon: 'terminal', colorClass: 'text-primary' },
-  { key: 'schemas', icon: 'database', colorClass: 'text-secondary' },
-  { key: 'apiDocs', icon: 'api', colorClass: 'text-tertiary' },
-  { key: 'deployment', icon: 'support_agent', colorClass: 'text-primary' },
+  {
+    key: 'sourceCode',
+    icon: 'terminal',
+    colorClass: 'bc-chip-mint',
+  },
+  {
+    key: 'schemas',
+    icon: 'database',
+    colorClass: 'bc-chip-sky',
+  },
+  {
+    key: 'apiDocs',
+    icon: 'api',
+    colorClass: 'bc-chip-violet',
+  },
+  {
+    key: 'deployment',
+    icon: 'support_agent',
+    colorClass: 'bc-chip-amber',
+  },
 ];
 
 export function IncludedFeaturesSection() {
@@ -14,7 +30,7 @@ export function IncludedFeaturesSection() {
   return (
     <section
       aria-labelledby="included-features-heading"
-      className="bg-surface-container-low border border-outline-variant/60 rounded-2xl p-space-md sm:p-space-lg lg:p-space-xl space-y-space-lg"
+      className="space-y-space-lg pt-space-md border-t border-outline-variant"
     >
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-space-sm pb-space-xs">
         <div className="space-y-1 min-w-0">
@@ -29,7 +45,7 @@ export function IncludedFeaturesSection() {
           </p>
         </div>
 
-        <span className="px-3 py-1.5 rounded-full font-label-code text-label-code bg-surface-container border border-outline-variant/60 text-primary shrink-0 self-start">
+        <span className="px-3 py-1.5 rounded-full font-label-code text-label-code bg-badge-green-bg border border-primary/25 text-badge-green-text shrink-0 self-start">
           <bdi dir="ltr">{t('included.badge')}</bdi>
         </span>
       </div>
@@ -38,10 +54,10 @@ export function IncludedFeaturesSection() {
         {FEATURE_ITEMS.map(({ key, icon, colorClass }) => (
           <article
             key={key}
-            className="bg-surface-container border border-outline-variant/50 p-5 rounded-xl flex flex-col gap-3 h-full hover:border-primary/40 transition-colors"
+            className="bg-card border border-card-border shadow-card p-5 rounded-xl flex flex-col gap-3 h-full"
           >
             <div
-              className={`w-11 h-11 rounded-lg bg-surface-container-highest border border-outline-variant/40 flex items-center justify-center shrink-0 ${colorClass}`}
+              className={`w-11 h-11 rounded-lg border flex items-center justify-center shrink-0 ${colorClass}`}
               aria-hidden="true"
             >
               <span className="material-symbols-outlined text-[24px]">{icon}</span>

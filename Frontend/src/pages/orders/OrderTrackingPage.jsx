@@ -91,12 +91,6 @@ export default function OrderTrackingPage() {
     return () => document.removeEventListener('visibilitychange', handleVisibility);
   }, []);
 
-  useEffect(() => {
-    document.title = orderNumber
-      ? t('tracking.pageTitle', { orderNumber })
-      : t('tracking.defaultPageTitle');
-  }, [orderNumber, t]);
-
   const {
     data: order,
     isLoading,
@@ -277,8 +271,8 @@ export default function OrderTrackingPage() {
               </div>
 
               {/* Privacy Warning for Tracking Link */}
-              <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/25 text-xs text-on-surface-variant flex items-start gap-2">
-                <span className="material-symbols-outlined text-amber-400 text-[18px] shrink-0 mt-0.5">
+              <div className="p-3 rounded-xl bg-chip-amber-bg/70 border border-chip-amber-border text-xs text-on-surface-variant flex items-start gap-2">
+                <span className="material-symbols-outlined text-chip-amber-fg text-[18px] shrink-0 mt-0.5">
                   shield
                 </span>
                 <span className="leading-relaxed">

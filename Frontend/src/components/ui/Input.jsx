@@ -28,14 +28,14 @@ export const Input = forwardRef(function Input(
         disabled={disabled}
         aria-invalid={Boolean(error)}
         className={clsx(
-          'w-full h-12 rounded-lg text-sm bg-surface-container-low text-on-surface placeholder:text-muted/60 transition-colors duration-150',
-          'border outline-none focus:ring-2 focus:ring-primary focus:border-primary',
+          'w-full h-12 rounded-lg text-sm bg-input text-on-surface placeholder:text-placeholder transition-colors duration-150',
+          'border outline-none focus:ring-2 focus:ring-input-focus focus:border-input-focus',
           'disabled:opacity-50 disabled:cursor-not-allowed',
           iconLeading ? 'ps-11' : 'ps-4',
           iconTrailing ? 'pe-11' : 'pe-4',
           error
             ? 'border-error focus:border-error focus:ring-error/20'
-            : 'border-outline-variant hover:border-outline',
+            : 'border-input-border hover:border-outline',
           className
         )}
         {...props}

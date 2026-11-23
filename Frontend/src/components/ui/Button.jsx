@@ -27,7 +27,7 @@ export const Button = forwardRef(function Button(
   ref
 ) {
   const baseStyles =
-    'relative inline-flex items-center justify-center font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none select-none';
+    'relative inline-flex items-center justify-center font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-input-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none select-none';
 
   const sizeStyles = {
     sm: 'h-10 px-4 text-xs sm:text-sm rounded-lg gap-1.5',
@@ -44,9 +44,9 @@ export const Button = forwardRef(function Button(
     ghost:
       'text-on-surface hover:bg-surface-container-high hover:text-primary active:bg-surface-container-highest bg-transparent',
     danger:
-      'bg-error text-white hover:bg-error/90 active:bg-error/80 shadow-sm',
+      'bg-error text-on-error hover:bg-error/90 active:bg-error/80 shadow-sm',
     secondary:
-      'bg-surface-container-high text-on-surface hover:bg-surface-container-highest border border-outline-variant hover:border-outline',
+      'bg-surface text-on-surface hover:bg-surface-container-high border border-input-border hover:border-outline',
   }[variant] || 'btn-primary-gradient font-semibold';
 
   return (

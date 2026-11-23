@@ -14,7 +14,7 @@ export function EmptyState({
   return (
     <div
       className={clsx(
-        'flex flex-col items-center justify-center p-8 sm:p-12 text-center rounded-2xl border border-dashed border-outline-variant bg-surface-container-low/40',
+        'flex flex-col items-center justify-center p-8 sm:p-12 text-center rounded-2xl border border-dashed border-input-border bg-card shadow-card',
         className
       )}
     >

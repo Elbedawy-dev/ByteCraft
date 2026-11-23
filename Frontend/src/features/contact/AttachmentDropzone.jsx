@@ -164,10 +164,10 @@ export function AttachmentDropzone({ files = [], onChange, disabled = false }) {
         onDrop={handleDrop}
         className={clsx(
           'relative flex flex-col items-center justify-center p-6 rounded-xl border-2 border-dashed text-center transition-all duration-150 select-none',
-          'focus-within:ring-2 focus-within:ring-primary focus-within:border-primary',
+          'focus-within:ring-2 focus-within:ring-input-focus focus-within:border-input-focus',
           isDragOver
-            ? 'border-primary bg-primary/5'
-            : 'border-outline-variant bg-surface-container hover:border-outline hover:bg-surface-container-high/60',
+            ? 'border-primary bg-chip-mint-bg/60'
+            : 'border-input-border bg-input hover:border-primary/60 hover:bg-card',
           (disabled || isMaxReached) ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'
         )}
       >
@@ -183,7 +183,7 @@ export function AttachmentDropzone({ files = [], onChange, disabled = false }) {
           className="sr-only"
         />
 
-        <div className="w-12 h-12 rounded-full bg-surface-container-high border border-outline-variant/70 flex items-center justify-center text-primary mb-3">
+        <div className="w-12 h-12 rounded-full bg-badge-green-bg border border-primary/20 flex items-center justify-center text-primary mb-3">
           <span className="material-symbols-outlined text-[24px]">cloud_upload</span>
         </div>
 

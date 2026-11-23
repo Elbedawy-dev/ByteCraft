@@ -1,5 +1,4 @@
 {
-  "pageTitle": "إدارة المشاريع — ByteCraft",
   "heading": "المشاريع البرمجية",
   "subtitle": "إدارة المنصات الجاهزة، حزم الترخيص، لقطات الشاشة، ومعاينة التسليم الخاص.",
   "totalBadge": "{{count}} مشروع",
@@ -123,7 +122,7 @@
       "heading": "لقطات الشاشة ومعرض الوسائط",
       "countLabel": "{{count}} صورة مرفوعة (حتى 10 صور في كل دفعة)",
       "dropzoneTitle": "اسحب لقطات الشاشة أو انقر للاختيار",
-      "dropzoneHint": "PNG, JPG, WebP حتى 5 ميجابايت للملف الواحد",
+      "dropzoneHint": "PNG, JPG, WebP حتى 4 ميجابايت للملف الواحد",
       "uploadingProgress": "جاري رفع الصور... {{percent}}%",
       "primaryCoverBadge": "الغلاف الأساسي",
       "galleryItemLabel": "صورة معرض #{{index}}",
@@ -136,7 +135,7 @@
       "reorderAnnouncement": "تم تغيير ترتيب المعرض ({{count}} صور).",
       "validation": {
         "invalidType": "نوع الملف \"{{name}}\" غير مدعوم. المسموح: JPEG, PNG, WebP فقط.",
-        "tooLarge": "حجم الملف \"{{name}}\" يتجاوز الحد الأقصى (5 ميجابايت).",
+        "tooLarge": "حجم الملف \"{{name}}\" يتجاوز الحد الأقصى (4 ميجابايت).",
         "thumbnailRequired": "صورة الغلاف الأساسي مطلوبة للمشروع."
       }
     },

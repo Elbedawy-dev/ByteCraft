@@ -78,6 +78,10 @@ export function ServicePlanNativeDialog({
     }[size] || 'sm:max-w-3xl';
 
   const handlePointerDown = (e) => {
+    if (e.target instanceof Element && e.target.closest('[data-bc-select-portal]')) {
+      pressedOutsideRef.current = false;
+      return;
+    }
     if (preventClose || !panelRef.current) {
       pressedOutsideRef.current = false;
       return;
@@ -86,6 +90,10 @@ export function ServicePlanNativeDialog({
   };
 
   const handlePointerUp = (e) => {
+    if (e.target instanceof Element && e.target.closest('[data-bc-select-portal]')) {
+      pressedOutsideRef.current = false;
+      return;
+    }
     if (preventClose || !panelRef.current) return;
     if (pressedOutsideRef.current && isOutsideRect(e, panelRef.current.getBoundingClientRect())) {
       onClose?.();
@@ -106,16 +114,16 @@ export function ServicePlanNativeDialog({
       <div
         ref={panelRef}
         className={clsx(
-          'bc-modal-panel relative w-full bg-surface-container-low border-0 sm:border sm:border-outline-variant',
+          'bc-modal-panel relative w-full bg-surface border-0 sm:border sm:border-outline-variant',
           'h-[100dvh] max-h-[100dvh] sm:h-auto sm:max-h-[88dvh] rounded-none sm:rounded-2xl',
-          'shadow-2xl flex flex-col overflow-hidden',
+          'shadow-card-hover flex flex-col overflow-hidden',
           sizeClass,
           className
         )}
       >
         <div className="h-1 w-full bg-primary-gradient shrink-0" aria-hidden="true" />
 
-        <div className="flex items-start justify-between gap-4 p-4 sm:p-6 border-b border-outline-variant bg-surface-container/70 shrink-0 sticky top-0 z-10">
+        <div className="flex items-start justify-between gap-4 p-4 sm:p-6 border-b border-outline-variant bg-card shrink-0 sticky top-0 z-10">
           <div className="min-w-0">
             {title && (
               <h2 id={titleId} className="text-base sm:text-lg font-bold text-on-surface leading-snug">
@@ -132,7 +140,7 @@ export function ServicePlanNativeDialog({
             <button
               type="button"
               onClick={onClose}
-              className="w-11 h-11 shrink-0 rounded-xl bg-surface-container-high text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest flex items-center justify-center transition-colors"
+              className="w-11 h-11 shrink-0 rounded-xl bg-surface border border-card-border text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high flex items-center justify-center transition-colors"
               aria-label={closeLabel}
             >
               <span className="material-symbols-outlined text-[20px]">close</span>
@@ -140,10 +148,10 @@ export function ServicePlanNativeDialog({
           )}
         </div>
 
-        <div className="p-4 sm:p-6 overflow-y-auto flex-1 overscroll-contain">{children}</div>
+        <div className="p-4 sm:p-6 bc-scroll flex-1">{children}</div>
 
         {footer && (
-          <div className="p-4 sm:p-5 border-t border-outline-variant bg-surface-container/80 shrink-0 sticky bottom-0 z-10">
+          <div className="p-4 sm:p-5 border-t border-outline-variant bg-card shrink-0 sticky bottom-0 z-10">
             {footer}
           </div>
         )}

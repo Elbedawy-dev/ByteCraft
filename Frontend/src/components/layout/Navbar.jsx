@@ -16,7 +16,7 @@ export function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 inset-x-0 z-40 bg-surface/85 backdrop-blur-xl border-b border-outline-variant/50 transition-colors">
+      <header className="sticky top-0 inset-x-0 z-40 bg-surface/90 backdrop-blur-xl border-b border-outline-variant transition-colors">
         <div className="h-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
           {/* Logo */}
           <Link
@@ -24,7 +24,7 @@ export function Navbar() {
             className="flex items-center gap-2.5 group shrink-0 select-none"
             aria-label="ByteCraft Home"
           >
-            <div className="w-10 h-10 rounded-xl bg-surface-container-high border border-outline-variant flex items-center justify-center text-primary group-hover:border-primary/50 transition-colors shadow-sm">
+            <div className="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-primary group-hover:border-primary/50 transition-colors shadow-sm">
               <span className="material-symbols-outlined text-[24px]">terminal</span>
             </div>
             <div className="flex flex-col">
@@ -39,7 +39,7 @@ export function Navbar() {
 
           {/* Desktop Navigation Links */}
           <nav
-            className="hidden lg:flex items-center gap-1 bg-surface-container-low/60 px-3 py-1.5 rounded-full border border-outline-variant/40"
+            className="hidden lg:flex items-center gap-1 bg-nav-pill px-3 py-1.5 rounded-full border border-outline-variant"
             aria-label="Primary"
           >
             {navLinks.map((item) => (
@@ -50,8 +50,8 @@ export function Navbar() {
                   clsx(
                     'px-4 py-2 rounded-full text-xs font-semibold transition-all duration-150',
                     isActive
-                      ? 'bg-surface text-primary shadow-sm'
-                      : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60'
+                      ? 'bg-nav-active-bg text-primary shadow-sm'
+                      : 'text-on-surface-variant hover:text-on-surface hover:bg-surface/80'
                   )
                 }
               >
@@ -64,7 +64,7 @@ export function Navbar() {
           <div className="hidden lg:flex items-center gap-3 shrink-0">
             {/* Language Segmented Toggle */}
             <div
-              className="inline-flex items-center p-1 bg-surface-container-low rounded-xl border border-outline-variant/50 select-none"
+              className="inline-flex items-center p-1 bg-surface rounded-xl border border-outline-variant select-none"
               role="group"
               aria-label="Language selection"
             >
@@ -74,8 +74,8 @@ export function Navbar() {
                 className={clsx(
                   'px-2.5 py-1 text-xs font-bold rounded-lg transition-all',
                   lang === 'ar'
-                    ? 'bg-surface text-primary shadow-sm'
-                    : 'text-on-surface-variant hover:text-on-surface'
+                    ? 'bg-nav-active-bg text-primary shadow-sm'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
                 )}
                 aria-pressed={lang === 'ar'}
               >
@@ -87,8 +87,8 @@ export function Navbar() {
                 className={clsx(
                   'px-2.5 py-1 text-xs font-bold rounded-lg transition-all',
                   lang === 'en'
-                    ? 'bg-surface text-primary shadow-sm'
-                    : 'text-on-surface-variant hover:text-on-surface'
+                    ? 'bg-nav-active-bg text-primary shadow-sm'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
                 )}
                 aria-pressed={lang === 'en'}
               >
@@ -100,7 +100,7 @@ export function Navbar() {
             <button
               type="button"
               onClick={toggleTheme}
-              className="w-10 h-10 flex items-center justify-center rounded-xl bg-surface-container-low border border-outline-variant/50 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all"
+              className="w-10 h-10 flex items-center justify-center rounded-xl bg-surface border border-outline-variant text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-all"
               aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             >
               <span className="material-symbols-outlined text-[20px]">
@@ -125,7 +125,7 @@ export function Navbar() {
             <button
               type="button"
               onClick={toggleTheme}
-              className="w-10 h-10 flex items-center justify-center rounded-xl bg-surface-container-low border border-outline-variant/50 text-on-surface-variant hover:text-primary transition-colors"
+              className="w-10 h-10 flex items-center justify-center rounded-xl bg-surface border border-outline-variant text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors"
               aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             >
               <span className="material-symbols-outlined text-[18px]">
@@ -138,7 +138,7 @@ export function Navbar() {
               onClick={() => setMobileMenuOpen(true)}
               aria-expanded={mobileMenuOpen}
               aria-label="Open main navigation menu"
-              className="w-10 h-10 flex items-center justify-center rounded-xl bg-surface-container-low border border-outline-variant/50 text-on-surface hover:text-primary hover:bg-surface-container transition-colors"
+              className="w-10 h-10 flex items-center justify-center rounded-xl bg-surface border border-outline-variant text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors"
             >
               <span className="material-symbols-outlined text-[24px]">menu</span>
             </button>

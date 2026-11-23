@@ -33,10 +33,6 @@ export default function OwnerProjectsPage() {
   const [busyStatusId, setBusyStatusId] = useState(null);
 
   useEffect(() => {
-    document.title = t('ownerProjects:pageTitle');
-  }, [t, lang]);
-
-  useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchInput.trim());
       setPage(1);

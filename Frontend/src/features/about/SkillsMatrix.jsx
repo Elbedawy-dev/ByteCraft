@@ -3,14 +3,14 @@ import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 
 const CATEGORY_ICON_COLORS = {
-  primary: 'text-primary',
-  secondary: 'text-secondary',
-  tertiary: 'text-tertiary',
+  primary: 'bc-chip-mint',
+  secondary: 'bc-chip-sky',
+  tertiary: 'bc-chip-violet',
 };
 
 const TAG_COLORS = {
-  primary: 'text-primary',
-  secondary: 'text-secondary',
+  primary: 'text-chip-mint-fg',
+  secondary: 'text-chip-sky-fg',
   neutral: 'text-on-surface-variant',
 };
 
@@ -47,12 +47,12 @@ export function SkillsMatrix() {
           return (
             <article
               key={cat.id}
-              className="bg-surface-container-low border border-outline-variant/70 rounded-xl p-6 shadow-md flex flex-col justify-between transition-colors hover:border-outline"
+              className="bg-card border border-card-border rounded-xl p-6 shadow-card flex flex-col justify-between"
             >
               <div>
                 <div
                   className={clsx(
-                    'w-12 h-12 rounded-lg bg-surface-container border border-outline-variant/50 flex items-center justify-center mb-4',
+                    'w-12 h-12 rounded-lg border flex items-center justify-center mb-4',
                     CATEGORY_ICON_COLORS[cat.accent] || CATEGORY_ICON_COLORS.primary
                   )}
                 >
@@ -73,7 +73,7 @@ export function SkillsMatrix() {
                   {items.map((tech, idx) => (
                     <li
                       key={`${cat.id}-${idx}`}
-                      className="flex items-center justify-between gap-2 p-2.5 rounded-lg bg-surface-container border border-outline-variant/40"
+                      className="flex items-center justify-between gap-2 p-2.5 rounded-lg bg-surface border border-card-border"
                     >
                       <span className="text-body-sm font-semibold text-on-surface">
                         <bdi dir="ltr">{tech.name}</bdi>
@@ -92,7 +92,7 @@ export function SkillsMatrix() {
               </div>
 
               {cat.footer && (
-                <div className="mt-5 p-2.5 rounded-lg bg-surface-container/60 border border-outline-variant/40 text-center">
+                <div className="mt-5 p-2.5 rounded-lg bg-surface border border-card-border text-center">
                   <span className="font-code text-label-code text-on-surface-variant">
                     <bdi dir="ltr">{cat.footer}</bdi>
                   </span>

@@ -11,13 +11,14 @@ const sanitizeInput = require('./sanitize.middleware');
  *    directly to Cloudinary, avoiding temporary disk clutter on servers.
  * 2. Strictly validates file MIME types (only JPEG, PNG, WebP for images; plus PDF for proofs
  *    and inquiry attachments) to prevent malicious executable uploads.
- * 3. Enforces 5 MB file size limit directly at the stream parsing level.
+ * 3. Enforces 4 MB file size limit directly at the stream parsing level (compliant with
+ *    Vercel serverless request body limits).
  */
 
 const ALLOWED_IMAGE_MIMES = new Set(['image/jpeg', 'image/png', 'image/webp']);
 const ALLOWED_PROOF_MIMES = new Set(['image/jpeg', 'image/png', 'image/webp', 'application/pdf']);
 const ALLOWED_ATTACHMENT_MIMES = new Set(['image/jpeg', 'image/png', 'image/webp', 'application/pdf']);
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 Megabytes
+const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4 Megabytes (Vercel payload limit is 4.5 MB)
 const MAX_INQUIRY_ATTACHMENTS = 3;
 
 const storage = multer.memoryStorage();

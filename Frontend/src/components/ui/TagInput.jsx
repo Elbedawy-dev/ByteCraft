@@ -38,7 +38,7 @@ export function TagInput({
   return (
     <div
       className={clsx(
-        'w-full min-h-[48px] p-2 rounded-lg bg-surface-container-low border border-outline-variant hover:border-outline focus-within:border-primary focus-within:ring-2 focus-within:ring-primary transition-all flex flex-wrap items-center gap-1.5',
+        'w-full min-h-[48px] p-2 rounded-lg bg-input border border-input-border hover:border-outline focus-within:border-input-focus focus-within:ring-2 focus-within:ring-input-focus transition-all flex flex-wrap items-center gap-1.5',
         disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
         className
       )}
@@ -72,7 +72,7 @@ export function TagInput({
         onBlur={() => addTag(inputVal)}
         placeholder={value.length === 0 ? placeholder : ''}
         disabled={disabled || (maxTags && value.length >= maxTags)}
-        className="flex-1 min-w-[120px] bg-transparent text-sm text-on-surface placeholder:text-muted/60 outline-none px-2 py-1"
+        className="flex-1 min-w-[120px] bg-transparent text-sm text-on-surface placeholder:text-placeholder outline-none px-2 py-1"
       />
     </div>
   );

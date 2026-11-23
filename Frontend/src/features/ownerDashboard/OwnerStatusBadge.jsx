@@ -15,7 +15,7 @@ const ORDER_VARIANT_MAP = {
 
 const INQUIRY_VARIANT_MAP = {
   new: 'primary',
-  read: 'outline',
+  read: 'info',
   in_progress: 'warning',
   resolved: 'success',
   archived: 'neutral',

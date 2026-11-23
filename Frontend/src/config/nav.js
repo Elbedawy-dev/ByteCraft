@@ -19,11 +19,7 @@ export const FOOTER_QUICK_LINKS = [
 
 export const footerQuickLinks = FOOTER_QUICK_LINKS;
 
-export const FOOTER_SERVICE_LINKS = [
-  { key: 'ecom', labelKey: 'footer.services.ecom', defaultLabel: 'متاجر إلكترونية MERN', to: `${ROUTES.PROJECTS}?category=ecom` },
-  { key: 'lms', labelKey: 'footer.services.lms', defaultLabel: 'منصات تعليمية محمية', to: `${ROUTES.PROJECTS}?category=lms` },
-  { key: 'saas', labelKey: 'footer.services.saas', defaultLabel: 'بوابات اشتراكات SaaS', to: `${ROUTES.PROJECTS}?category=saas` },
-];
+export const FOOTER_SERVICE_LINKS = [];
 
 export const footerServiceLinks = FOOTER_SERVICE_LINKS;
 

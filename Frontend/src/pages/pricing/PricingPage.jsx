@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
@@ -17,15 +17,15 @@ import { CustomSolutionBanner } from '@/features/pricing/CustomSolutionBanner';
 import { PricingFaq } from '@/features/pricing/PricingFaq';
 
 const PILLAR_ICON_ACCENTS = {
-  primary: 'text-primary',
-  secondary: 'text-secondary',
-  tertiary: 'text-tertiary',
+  primary: 'bc-chip-mint',
+  secondary: 'bc-chip-sky',
+  tertiary: 'bc-chip-violet',
 };
 
 const GROUP_ACCENT_TEXT = {
-  primary: 'text-primary',
-  secondary: 'text-secondary',
-  tertiary: 'text-tertiary',
+  primary: 'text-chip-mint-fg',
+  secondary: 'text-chip-sky-fg',
+  tertiary: 'text-chip-violet-fg',
 };
 
 export default function PricingPage() {
@@ -36,10 +36,6 @@ export default function PricingPage() {
 
   const [activeGroup, setActiveGroup] = useState('all');
   const tabRefs = useRef(new Map());
-
-  useEffect(() => {
-    document.title = t('meta.title');
-  }, [t]);
 
   const groupedPlans = useMemo(() => groupServicePlans(plans), [plans]);
 
@@ -123,21 +119,11 @@ export default function PricingPage() {
   const guaranteeDays = Number(meta?.guaranteeDays) || 30;
 
   return (
-    <div className="relative w-full overflow-x-clip bg-surface-container-lowest">
-      {/* Ambient Background Glows */}
-      <div
-        className="absolute top-0 end-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute top-52 start-10 w-80 h-80 bg-secondary-container/10 rounded-full blur-3xl pointer-events-none"
-        aria-hidden="true"
-      />
-
+    <div className="relative w-full overflow-x-clip bc-hero-wash">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-12 pb-14 relative z-10">
         {/* 1. Centered Hero + Group Tabs */}
         <header className="flex flex-col items-center text-center max-w-3xl mx-auto mb-10 sm:mb-12">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface-container-low border border-outline-variant/60 text-primary mb-4 shadow-sm">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface border border-card-border text-primary mb-4 shadow-card">
             <span className="material-symbols-outlined text-[16px]" aria-hidden="true">
               verified
             </span>
@@ -160,7 +146,7 @@ export default function PricingPage() {
               <div
                 role="tablist"
                 aria-label={t('tabs.ariaLabel')}
-                className="inline-flex items-center gap-1.5 max-w-full overflow-x-auto no-scrollbar p-1.5 rounded-xl bg-surface-container-low border border-outline-variant/60 shadow-sm"
+                className="inline-flex items-center gap-1.5 max-w-full overflow-x-auto no-scrollbar p-1.5 rounded-xl bg-nav-pill border border-outline-variant shadow-sm"
               >
                 {tabs.map((tab, index) => {
                   const isSelected = effectiveGroup === tab.id;
@@ -181,8 +167,8 @@ export default function PricingPage() {
                       className={clsx(
                         'relative flex-none min-h-[44px] px-4 sm:px-5 py-2 rounded-lg text-label-lg transition-colors whitespace-nowrap flex items-center gap-2',
                         isSelected
-                          ? 'bg-surface-container-high text-primary font-bold shadow-sm'
-                          : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 font-medium'
+                          ? 'bg-nav-active-bg text-primary font-bold shadow-sm'
+                          : 'text-on-surface-variant hover:text-on-surface hover:bg-surface/80 font-medium'
                       )}
                     >
                       <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
@@ -193,8 +179,8 @@ export default function PricingPage() {
                         className={clsx(
                           'px-1.5 py-0.5 rounded-full font-code text-[11px]',
                           isSelected
-                            ? 'bg-primary/15 text-primary'
-                            : 'bg-surface-container text-on-surface-variant'
+                            ? 'bg-primary text-on-primary'
+                            : 'bg-surface border border-card-border text-on-surface-variant'
                         )}
                       >
                         <bdi dir="ltr">{tab.count}</bdi>
@@ -219,11 +205,11 @@ export default function PricingPage() {
             {pillars.map((pillar) => (
               <div
                 key={pillar.id}
-                className="p-5 rounded-xl bg-surface-container-low border border-outline-variant/60 flex items-center gap-4 shadow-sm"
+                className="p-5 rounded-xl bg-card border border-card-border flex items-center gap-4 shadow-card"
               >
                 <div
                   className={clsx(
-                    'w-12 h-12 rounded-lg bg-surface-container border border-outline-variant/50 flex items-center justify-center shrink-0',
+                    'w-12 h-12 rounded-lg border flex items-center justify-center shrink-0',
                     PILLAR_ICON_ACCENTS[pillar.accent] || PILLAR_ICON_ACCENTS.primary
                   )}
                 >
@@ -331,7 +317,7 @@ export default function PricingPage() {
         <PricingFaq />
 
         {/* 7. Bottom Help Strip */}
-        <div className="p-6 sm:p-7 rounded-2xl bg-surface-container-low border border-outline-variant/60 flex flex-col md:flex-row items-center justify-between gap-5 text-center md:text-start shadow-sm">
+        <div className="p-6 sm:p-7 rounded-2xl bg-card border border-card-border flex flex-col md:flex-row items-center justify-between gap-5 text-center md:text-start shadow-card">
           <div>
             <div className="text-body-lg text-on-surface font-bold">
               {t('helpStrip.title')}
@@ -347,7 +333,7 @@ export default function PricingPage() {
                 href={`https://wa.me/${whatsappNumber}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 min-h-[48px] px-5 py-2.5 rounded-xl bg-surface-container border border-outline-variant text-on-surface hover:text-primary hover:border-primary/60 text-label-lg font-bold transition-colors"
+                className="inline-flex items-center justify-center gap-2 min-h-[48px] px-5 py-2.5 rounded-xl bg-surface border border-card-border text-on-surface hover:text-primary hover:border-primary/60 text-label-lg font-bold transition-colors"
               >
                 <span className="material-symbols-outlined text-[20px] text-primary" aria-hidden="true">
                   chat
@@ -358,7 +344,7 @@ export default function PricingPage() {
 
             <Link
               to={contactPath({ type: 'consulting' })}
-              className="inline-flex items-center justify-center gap-2 min-h-[48px] px-5 py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant text-primary text-label-lg font-bold transition-colors"
+              className="inline-flex items-center justify-center gap-2 min-h-[48px] px-5 py-2.5 rounded-xl bg-badge-green-bg hover:bg-primary/20 border border-primary/25 text-primary text-label-lg font-bold transition-colors"
             >
               <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
                 headset_mic

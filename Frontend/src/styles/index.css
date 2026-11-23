@@ -3,9 +3,7 @@
 @tailwind utilities;
 
 /* ==========================================================================
-   ByteCraft Design Tokens — Light & Dark Modes
-   Base palette derived from docs/stitch/bytecraft_studio_engine/DESIGN.md
-   and docs/frontend-contract.md (section 4).
+   ByteCraft Design Tokens — Fresh White + Mint Light Theme & Dark Fallback
    RGB triplets enable full Tailwind opacity modifier support (e.g. bg-primary/10).
    ========================================================================== */
 
@@ -18,84 +16,156 @@
   --bc-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* Line heights (LTR / English base) */
-  --bc-lh-display-lg: 4rem;          /* 64px */
+  --bc-lh-display-lg: 4rem;           /* 64px */
   --bc-lh-display-lg-mobile: 2.75rem; /* 44px */
-  --bc-lh-headline-xl: 3rem;         /* 48px */
+  --bc-lh-headline-xl: 3rem;          /* 48px */
   --bc-lh-headline-xl-mobile: 2.25rem;/* 36px */
-  --bc-lh-headline-lg: 2.25rem;      /* 36px */
-  --bc-lh-headline-md: 1.875rem;     /* 30px */
-  --bc-lh-body-lg: 1.75rem;          /* 28px */
-  --bc-lh-body-md: 1.5rem;           /* 24px */
-  --bc-lh-body-sm: 1.25rem;          /* 20px */
+  --bc-lh-headline-lg: 2.25rem;       /* 36px */
+  --bc-lh-headline-md: 1.875rem;      /* 30px */
+  --bc-lh-body-lg: 1.75rem;           /* 28px */
+  --bc-lh-body-md: 1.5rem;            /* 24px */
+  --bc-lh-body-sm: 1.25rem;           /* 20px */
 
-  /* Light Mode Surfaces & Borders (DESIGN.md Light Mode) */
-  --bc-background: 255 255 255;              /* #FFFFFF */
-  --bc-on-background: 10 10 10;              /* #0A0A0A */
-  --bc-surface: 255 255 255;                 /* #FFFFFF */
-  --bc-surface-dim: 248 249 249;             /* #F8F9F9 */
+  /* Light Mode Surfaces, Section Bands, Cards & Cool Slate Borders */
+  --bc-background: 255 255 255;              /* #FFFFFF - Page canvas */
+  --bc-section-band: 246 251 248;            /* #F6FBF8 - Alternate section band & footer */
+  --bc-on-background: 15 23 42;              /* #0F172A - Primary slate text */
+  --bc-surface: 255 255 255;                 /* #FFFFFF - Pure white surface (Navbar, Modals, Controls) */
+  --bc-surface-dim: 241 245 249;             /* #F1F5F9 - Cool dimmed surface */
   --bc-surface-bright: 255 255 255;          /* #FFFFFF */
-  --bc-surface-variant: 226 229 228;         /* #E2E5E4 */
+  --bc-surface-variant: 226 232 240;         /* #E2E8F0 */
   --bc-surface-tint: 4 120 87;               /* #047857 */
 
-  --bc-surface-container-lowest: 255 255 255;/* #FFFFFF */
-  --bc-surface-container-low: 245 246 246;   /* #F5F6F6 */
-  --bc-surface-container: 235 236 236;       /* #EBECEC */
-  --bc-surface-container-high: 226 229 228;  /* #E2E5E4 */
-  --bc-surface-container-highest: 215 220 218;/* #D7DCDA */
+  --bc-surface-container-lowest: 255 255 255;/* #FFFFFF - Pure white page/inner surface */
+  --bc-surface-container-low: 246 251 248;   /* #F6FBF8 - Footer / sidebar / section band */
+  --bc-surface-container: 248 252 250;       /* #F8FCFA - Card surface */
+  --bc-surface-container-high: 241 245 249;  /* #F1F5F9 - Table header / neutral chip / control hover */
+  --bc-surface-container-highest: 226 232 240;/* #E2E8F0 - Skeleton / track */
 
-  --bc-on-surface: 10 10 10;                 /* #0A0A0A */
-  --bc-on-surface-variant: 82 90 87;         /* #525A57 (AA > 6:1) */
-  --bc-inverse-surface: 20 20 20;            /* #141414 */
-  --bc-inverse-on-surface: 250 250 250;      /* #FAFAFA */
-  --bc-outline: 102 111 108;                 /* #666F6C (AA > 4.6:1) */
-  --bc-outline-variant: 216 221 219;         /* #D8DDDB */
+  /* Navbar Controls */
+  --bc-nav-pill: 241 245 249;                /* #F1F5F9 - Desktop nav pill */
+  --bc-nav-active-bg: 230 250 241;           /* #E6FAF1 - Active nav item bg */
 
-  /* Light Mode Brand Accents (AA-compliant emerald on light surfaces) */
-  --bc-primary: 4 120 87;                    /* #047857 */
+  /* Cards (Clean Mint-White + Cool Slate/Mint Shadow) */
+  --bc-card: 248 252 250;                    /* #F8FCFA - Default card bg */
+  --bc-card-hover: 255 255 255;              /* #FFFFFF - Hover card bg */
+  --bc-card-border: 226 238 232;             /* #E2EEE8 - Default card border */
+  --bc-card-hover-border: 191 235 213;       /* #BFEBD5 - Hover card border */
+  --bc-card-shadow: 0 1px 2px rgba(15, 23, 42, 0.05), 0 10px 30px -12px rgba(15, 23, 42, 0.10);
+  --bc-card-hover-shadow: 0 16px 40px -14px rgba(16, 185, 129, 0.25);
+
+  /* Cool Slate Typography & Borders */
+  --bc-on-surface: 15 23 42;                 /* #0F172A - Primary text (>= 17:1 on white) */
+  --bc-on-surface-variant: 71 85 105;        /* #475569 - Secondary text (>= 7.3:1) */
+  --bc-muted: 100 116 139;                   /* #64748B - Muted text (>= 4.55:1 on white & mint-white) */
+  --bc-inverse-surface: 15 23 42;            /* #0F172A */
+  --bc-inverse-on-surface: 248 250 252;      /* #F8FAFC */
+  --bc-outline: 100 116 139;                 /* #64748B - Strong control border (>= 4.5:1) */
+  --bc-outline-variant: 226 232 240;         /* #E2E8F0 - Hairline borders (Navbar, Footer, Dividers) */
+
+  /* Inputs */
+  --bc-input-bg: 255 255 255;                /* #FFFFFF */
+  --bc-input-border: 203 213 225;            /* #CBD5E1 */
+  --bc-input-focus: 16 185 129;              /* #10B981 */
+  --bc-placeholder: 148 163 184;             /* #94A3B8 */
+
+  /* Modal / Drawer Overlay */
+  --bc-overlay: rgba(15, 23, 42, 0.45);
+
+  /* Soft Hero Light Wash (Radial #DDF9EC top-end, Radial #E3EEFF top-start) */
+  --bc-hero-wash-end: #DDF9EC;
+  --bc-hero-wash-start: #E3EEFF;
+
+  /* Brand & Readable Accents */
+  --bc-primary: 4 120 87;                    /* #047857 - Green text, links, active states, charts */
   --bc-on-primary: 255 255 255;              /* #FFFFFF */
-  --bc-primary-container: 5 150 105;         /* #059669 */
+  --bc-primary-container: 6 95 70;           /* #065F46 */
   --bc-on-primary-container: 255 255 255;    /* #FFFFFF */
   --bc-inverse-primary: 78 222 163;          /* #4EDEA3 */
-  --bc-primary-fixed: 111 251 190;           /* #6FFBBE */
-  --bc-primary-fixed-dim: 78 222 163;        /* #4EDEA3 */
-  --bc-on-primary-fixed: 0 33 19;
-  --bc-on-primary-fixed-variant: 0 82 54;
+  --bc-primary-fixed: 225 248 238;           /* #E1F8EE */
+  --bc-primary-fixed-dim: 4 120 87;          /* #047857 */
+  --bc-on-primary-fixed: 4 120 87;           /* #047857 */
+  --bc-on-primary-fixed-variant: 4 120 87;   /* #047857 */
 
-  --bc-secondary: 6 95 70;                   /* #065F46 */
+  /* Soft Green Badges / Chips */
+  --bc-badge-green-bg: 225 248 238;          /* #E1F8EE */
+  --bc-badge-green-text: 4 120 87;           /* #047857 */
+
+  --bc-secondary: 3 105 161;                 /* #0369A1 - Sky 700 */
   --bc-on-secondary: 255 255 255;
-  --bc-secondary-container: 16 185 129;      /* #10B981 */
-  --bc-on-secondary-container: 0 49 33;
-  --bc-secondary-fixed: 128 249 200;
-  --bc-secondary-fixed-dim: 98 220 173;
-  --bc-on-secondary-fixed: 0 33 21;
-  --bc-on-secondary-fixed-variant: 0 81 58;
+  --bc-secondary-container: 14 165 233;      /* #0EA5E9 */
+  --bc-on-secondary-container: 3 105 161;
+  --bc-secondary-fixed: 224 242 254;         /* #E0F2FE */
+  --bc-secondary-fixed-dim: 3 105 161;
+  --bc-on-secondary-fixed: 3 105 161;
+  --bc-on-secondary-fixed-variant: 3 105 161;
 
-  --bc-tertiary: 15 118 110;                 /* #0F766E */
+  --bc-tertiary: 109 40 217;                 /* #6D28D9 - Violet 700 */
   --bc-on-tertiary: 255 255 255;
-  --bc-tertiary-container: 20 184 166;
-  --bc-on-tertiary-container: 0 66 44;
-  --bc-tertiary-fixed: 133 248 196;
-  --bc-tertiary-fixed-dim: 104 219 169;
-  --bc-on-tertiary-fixed: 0 33 20;
-  --bc-on-tertiary-fixed-variant: 0 81 55;
+  --bc-tertiary-container: 124 58 237;       /* #7C3AED */
+  --bc-on-tertiary-container: 255 255 255;
+  --bc-tertiary-fixed: 238 230 255;          /* #EEE6FF */
+  --bc-tertiary-fixed-dim: 109 40 217;
+  --bc-on-tertiary-fixed: 109 40 217;
+  --bc-on-tertiary-fixed-variant: 109 40 217;
 
-  /* Semantic Status (Light) */
-  --bc-error: 220 38 38;                     /* #DC2626 */
+  /* 6 Clean Pastel Icon Chip & Badge Pairs + Danger */
+  --bc-chip-mint-bg: 225 248 238;            /* #E1F8EE */
+  --bc-chip-mint-fg: 4 120 87;               /* #047857 */
+  --bc-chip-mint-border: 191 235 213;        /* #BFEBD5 */
+
+  --bc-chip-violet-bg: 238 230 255;          /* #EEE6FF */
+  --bc-chip-violet-fg: 109 40 217;           /* #6D28D9 */
+  --bc-chip-violet-border: 221 214 254;      /* #DDD6FE */
+
+  --bc-chip-sky-bg: 224 242 254;             /* #E0F2FE */
+  --bc-chip-sky-fg: 3 105 161;               /* #0369A1 */
+  --bc-chip-sky-border: 186 230 253;         /* #BAE6FD */
+
+  --bc-chip-amber-bg: 254 243 199;           /* #FEF3C7 */
+  --bc-chip-amber-fg: 180 83 9;              /* #B45309 */
+  --bc-chip-amber-border: 253 230 138;       /* #FDE68A */
+
+  --bc-chip-rose-bg: 255 228 230;            /* #FFE4E6 */
+  --bc-chip-rose-fg: 190 18 60;              /* #BE123C */
+  --bc-chip-rose-border: 254 205 211;        /* #FECDD3 */
+
+  --bc-chip-blue-bg: 224 234 255;            /* #E0EAFF */
+  --bc-chip-blue-fg: 29 78 216;              /* #1D4ED8 */
+  --bc-chip-blue-border: 191 219 254;        /* #BFDBFE */
+
+  --bc-chip-danger-bg: 254 226 226;          /* #FEE2E2 */
+  --bc-chip-danger-fg: 185 28 28;            /* #B91C1C */
+  --bc-chip-danger-border: 254 202 202;      /* #FECACA */
+
+  /* Semantic Status & Stars (Light) */
+  --bc-error: 185 28 28;                     /* #B91C1C - Danger */
   --bc-on-error: 255 255 255;
   --bc-error-container: 254 226 226;         /* #FEE2E2 */
-  --bc-on-error-container: 153 27 27;        /* #991B1B */
-  --bc-success: 4 120 87;                    /* #047857 */
-  --bc-warning: 180 83 9;                    /* #B45309 */
-  --bc-info: 3 105 161;                      /* #0369A1 */
+  --bc-on-error-container: 185 28 28;        /* #B91C1C */
+  --bc-success: 4 120 87;                    /* #047857 - Success */
+  --bc-warning: 180 83 9;                    /* #B45309 - Warning */
+  --bc-info: 29 78 216;                      /* #1D4ED8 - Info */
+  --bc-star: 245 158 11;                     /* #F59E0B - Stars */
 
-  /* Owner Decision: Filled Primary Button Gradient (shared across light & dark) */
+  /* Filled Primary Button Gradient (shared across light & dark) */
   --bc-btn-gradient: linear-gradient(90deg, #52E982 0%, #19ECB5 100%);
   --bc-btn-gradient-text: #0A0A0A;
-  --bc-btn-glow: 0 0 24px -4px rgba(25, 236, 181, 0.35);
+  --bc-btn-glow: 0 10px 24px -8px rgba(25, 236, 181, 0.45);
+
+  /* Skeleton Shimmer */
+  --bc-skeleton-base: #E2E8F0;
+  --bc-skeleton-highlight: #F1F5F9;
 
   /* Scrollbars */
-  --bc-scrollbar-track: #F1F3F2;
-  --bc-scrollbar-thumb: #9AA39F;
+  --bc-scrollbar-track: #F6FBF8;
+  --bc-scrollbar-thumb: #64748B;
+
+  /* Reusable inside-radius scrollbar & select panel motion tokens */
+  --bc-scroll-thumb: rgb(var(--bc-outline) / 0.78);
+  --bc-scroll-thumb-hover: rgb(var(--bc-on-surface-variant));
+  --bc-duration-base: 300ms;
+  --bc-ease-base: cubic-bezier(0.4, 0, 0.2, 1);
 
   accent-color: rgb(var(--bc-primary));
   scrollbar-color: var(--bc-scrollbar-thumb) var(--bc-scrollbar-track);
@@ -104,8 +174,9 @@
 :root.dark {
   color-scheme: dark;
 
-  /* Dark Mode Surfaces & Borders (DESIGN.md Dark Mode Default) */
+  /* Dark Mode Surfaces & Borders */
   --bc-background: 10 10 10;                 /* #0A0A0A */
+  --bc-section-band: 14 16 15;               /* #0E100F */
   --bc-on-background: 250 250 250;           /* #FAFAFA */
   --bc-surface: 14 14 14;                    /* #0E0E0E */
   --bc-surface-dim: 10 10 10;                /* #0A0A0A */
@@ -119,12 +190,36 @@
   --bc-surface-container-high: 35 39 37;     /* #232725 */
   --bc-surface-container-highest: 45 50 48;  /* #2D3230 */
 
+  --bc-nav-pill: 20 20 20;                   /* #141414 */
+  --bc-nav-active-bg: 6 78 59;               /* #064E3B */
+
+  --bc-card: 20 20 20;                       /* #141414 */
+  --bc-card-hover: 27 30 29;                 /* #1B1E1D */
+  --bc-card-border: 38 42 40;                /* #262A28 */
+  --bc-card-hover-border: 78 222 163;        /* #4EDEA3 */
+  --bc-card-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.5);
+  --bc-card-hover-shadow: 0 8px 28px -4px rgba(0, 0, 0, 0.65);
+
   --bc-on-surface: 250 250 250;              /* #FAFAFA */
   --bc-on-surface-variant: 154 163 159;      /* #9AA39F */
+  --bc-muted: 124 136 130;                   /* #7C8882 */
   --bc-inverse-surface: 229 226 225;         /* #E5E2E1 */
   --bc-inverse-on-surface: 27 30 29;         /* #1B1E1D */
-  --bc-outline: 124 136 130;                 /* #7C8882 (AA-legible muted/placeholder) */
+  --bc-outline: 124 136 130;                 /* #7C8882 */
   --bc-outline-variant: 38 42 40;            /* #262A28 */
+
+  /* Inputs (Dark) */
+  --bc-input-bg: 20 20 20;                   /* #141414 */
+  --bc-input-border: 38 42 40;               /* #262A28 */
+  --bc-input-focus: 16 185 129;              /* #10B981 */
+  --bc-placeholder: 124 136 130;             /* #7C8882 */
+
+  /* Modal / Drawer Overlay (Dark) */
+  --bc-overlay: rgba(0, 0, 0, 0.72);
+
+  /* Hero Wash (Dark) */
+  --bc-hero-wash-end: rgba(16, 185, 129, 0.14);
+  --bc-hero-wash-start: rgba(56, 189, 248, 0.10);
 
   /* Dark Mode Brand Accents */
   --bc-primary: 78 222 163;                  /* #4EDEA3 */
@@ -137,23 +232,55 @@
   --bc-on-primary-fixed: 0 33 19;
   --bc-on-primary-fixed-variant: 0 82 54;
 
-  --bc-secondary: 98 220 173;                /* #62DCAD */
-  --bc-on-secondary: 0 56 39;
-  --bc-secondary-container: 24 164 121;      /* #18A479 */
-  --bc-on-secondary-container: 0 49 33;
-  --bc-secondary-fixed: 128 249 200;
-  --bc-secondary-fixed-dim: 98 220 173;
-  --bc-on-secondary-fixed: 0 33 21;
-  --bc-on-secondary-fixed-variant: 0 81 58;
+  --bc-badge-green-bg: 6 78 59;              /* #064E3B */
+  --bc-badge-green-text: 110 231 183;        /* #6EE7B7 */
 
-  --bc-tertiary: 104 219 169;                /* #68DBA9 */
-  --bc-on-tertiary: 0 56 37;
-  --bc-tertiary-container: 62 182 134;
-  --bc-on-tertiary-container: 0 66 44;
-  --bc-tertiary-fixed: 133 248 196;
-  --bc-tertiary-fixed-dim: 104 219 169;
-  --bc-on-tertiary-fixed: 0 33 20;
-  --bc-on-tertiary-fixed-variant: 0 81 55;
+  --bc-secondary: 56 189 248;                /* #38BDF8 */
+  --bc-on-secondary: 12 74 110;
+  --bc-secondary-container: 14 165 233;      /* #0EA5E9 */
+  --bc-on-secondary-container: 12 74 110;
+  --bc-secondary-fixed: 125 211 252;
+  --bc-secondary-fixed-dim: 56 189 248;
+  --bc-on-secondary-fixed: 8 47 73;
+  --bc-on-secondary-fixed-variant: 12 74 110;
+
+  --bc-tertiary: 196 181 253;                /* #C4B5FD */
+  --bc-on-tertiary: 46 16 101;
+  --bc-tertiary-container: 139 92 246;
+  --bc-on-tertiary-container: 255 255 255;
+  --bc-tertiary-fixed: 221 214 254;
+  --bc-tertiary-fixed-dim: 196 181 253;
+  --bc-on-tertiary-fixed: 46 16 101;
+  --bc-on-tertiary-fixed-variant: 91 33 182;
+
+  /* 6 Chip Pairs + Danger (Dark) */
+  --bc-chip-mint-bg: 6 78 59;                /* #064E3B */
+  --bc-chip-mint-fg: 110 231 183;            /* #6EE7B7 */
+  --bc-chip-mint-border: 16 185 129;         /* #10B981 */
+
+  --bc-chip-violet-bg: 59 7 100;             /* #3B0764 */
+  --bc-chip-violet-fg: 196 181 253;          /* #C4B5FD */
+  --bc-chip-violet-border: 124 58 237;       /* #7C3AED */
+
+  --bc-chip-sky-bg: 12 74 110;               /* #0C4A6E */
+  --bc-chip-sky-fg: 125 211 252;             /* #7DD3FC */
+  --bc-chip-sky-border: 2 132 199;           /* #0284C7 */
+
+  --bc-chip-amber-bg: 69 26 3;               /* #451A03 */
+  --bc-chip-amber-fg: 251 191 36;            /* #FBBF24 */
+  --bc-chip-amber-border: 180 83 9;          /* #B45309 */
+
+  --bc-chip-rose-bg: 76 5 25;                /* #4C0519 */
+  --bc-chip-rose-fg: 253 164 175;            /* #FDA4AF */
+  --bc-chip-rose-border: 190 18 60;          /* #BE123C */
+
+  --bc-chip-blue-bg: 23 37 84;               /* #172554 */
+  --bc-chip-blue-fg: 147 197 253;            /* #93C5FD */
+  --bc-chip-blue-border: 37 99 235;          /* #2563EB */
+
+  --bc-chip-danger-bg: 127 29 29;            /* #7F1D1D */
+  --bc-chip-danger-fg: 252 165 165;          /* #FCA5A5 */
+  --bc-chip-danger-border: 220 38 38;        /* #DC2626 */
 
   /* Semantic Status (Dark) */
   --bc-error: 248 113 113;                   /* #F87171 */
@@ -163,10 +290,17 @@
   --bc-success: 78 222 163;                  /* #4EDEA3 */
   --bc-warning: 251 191 36;                  /* #FBBF24 */
   --bc-info: 56 189 248;                     /* #38BDF8 */
+  --bc-star: 245 158 11;                     /* #F59E0B */
+
+  /* Skeleton Shimmer (Dark) */
+  --bc-skeleton-base: #232725;
+  --bc-skeleton-highlight: #2D3230;
 
   /* Scrollbars */
   --bc-scrollbar-track: #141414;
   --bc-scrollbar-thumb: #3C4440;
+  --bc-scroll-thumb: rgb(var(--bc-outline) / 0.75);
+  --bc-scroll-thumb-hover: rgb(var(--bc-on-surface-variant));
 }
 
 /* Language-driven font & line-height switch (DESIGN.md: +4px line-height in Arabic) */
@@ -210,13 +344,13 @@ html[lang='en'] {
   }
 
   ::selection {
-    background-color: rgb(var(--bc-primary) / 0.25);
-    color: rgb(var(--bc-on-surface));
+    background-color: rgb(var(--bc-badge-green-bg));
+    color: rgb(var(--bc-badge-green-text));
   }
 
   /* High-contrast keyboard focus ring across all interactive elements */
   :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-    outline: 2px solid rgb(var(--bc-primary));
+    outline: 2px solid rgb(var(--bc-input-focus));
     outline-offset: 2px;
   }
 
@@ -228,13 +362,232 @@ html[lang='en'] {
   /* Ensure native select dropdown options respect theme */
   select option,
   select optgroup {
-    background-color: rgb(var(--bc-surface-container-low));
+    background-color: rgb(var(--bc-input-bg));
     color: rgb(var(--bc-on-surface));
+  }
+}
+
+@keyframes bc-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@layer components {
+  /* Soft Hero Light Wash: radial #DDF9EC top-end + radial #E3EEFF top-start fading to page color */
+  .bc-hero-wash {
+    background-color: rgb(var(--bc-background));
+    background-image:
+      radial-gradient(ellipse 52% 62% at 92% 0%, var(--bc-hero-wash-end) 0%, transparent 72%),
+      radial-gradient(ellipse 52% 62% at 8% 0%, var(--bc-hero-wash-start) 0%, transparent 72%);
+  }
+
+  html[dir='rtl'] .bc-hero-wash {
+    background-image:
+      radial-gradient(ellipse 52% 62% at 8% 0%, var(--bc-hero-wash-end) 0%, transparent 72%),
+      radial-gradient(ellipse 52% 62% at 92% 0%, var(--bc-hero-wash-start) 0%, transparent 72%);
+  }
+
+  /* Non-clickable Mint-White Card (#F8FCFA + 1px #E2EEE8 + soft slate shadow) */
+  .bc-card {
+    background-color: rgb(var(--bc-card));
+    border: 1px solid rgb(var(--bc-card-border));
+    box-shadow: var(--bc-card-shadow);
+  }
+
+  /* Clickable Card with Hover (#FFFFFF + translateY(-2px) + mint shadow + #BFEBD5 border) */
+  .bc-card-hover {
+    background-color: rgb(var(--bc-card));
+    border: 1px solid rgb(var(--bc-card-border));
+    box-shadow: var(--bc-card-shadow);
+    transition:
+      background-color 200ms ease,
+      border-color 200ms ease,
+      box-shadow 200ms ease,
+      transform 200ms ease;
+  }
+
+  .bc-card-hover:hover {
+    background-color: rgb(var(--bc-card-hover));
+    border-color: rgb(var(--bc-card-hover-border));
+    box-shadow: var(--bc-card-hover-shadow);
+    transform: translateY(-2px);
+  }
+
+  /* Reusable thin, inside-radius themed scrollbar */
+  .bc-scroll {
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--bc-scroll-thumb) transparent;
+  }
+
+  .bc-scroll:hover {
+    scrollbar-color: var(--bc-scroll-thumb-hover) transparent;
+  }
+
+  /* Custom Select open/close motion (300ms shared ease) */
+  .bc-select-panel {
+    --bc-select-slide: -4px;
+    opacity: 0;
+    transform: translateY(var(--bc-select-slide)) scale(0.98);
+    transform-origin: top center;
+    transition:
+      opacity var(--bc-duration-base) var(--bc-ease-base),
+      transform var(--bc-duration-base) var(--bc-ease-base);
+    will-change: opacity, transform;
+  }
+
+  .bc-select-panel[data-side='top'] {
+    --bc-select-slide: 4px;
+    transform-origin: bottom center;
+  }
+
+  .bc-select-panel[data-state='open'] {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .bc-select-backdrop {
+    opacity: 0;
+    transition: opacity var(--bc-duration-base) var(--bc-ease-base);
+  }
+
+  .bc-select-backdrop[data-state='open'] {
+    opacity: 1;
+  }
+
+  .bc-select-sheet {
+    max-height: 60vh;
+    max-height: 60dvh;
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+    transform-origin: bottom center;
+    transition:
+      opacity var(--bc-duration-base) var(--bc-ease-base),
+      transform var(--bc-duration-base) var(--bc-ease-base);
+    will-change: opacity, transform;
+  }
+
+  .bc-select-sheet[data-state='open'] {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  /* 6 Clean Pastel Icon Chips (AA contrast icon/text on bright pastel surface) */
+  .bc-chip-mint {
+    background-color: rgb(var(--bc-chip-mint-bg));
+    color: rgb(var(--bc-chip-mint-fg));
+    border-color: rgb(var(--bc-chip-mint-border));
+  }
+
+  .bc-chip-violet {
+    background-color: rgb(var(--bc-chip-violet-bg));
+    color: rgb(var(--bc-chip-violet-fg));
+    border-color: rgb(var(--bc-chip-violet-border));
+  }
+
+  .bc-chip-sky {
+    background-color: rgb(var(--bc-chip-sky-bg));
+    color: rgb(var(--bc-chip-sky-fg));
+    border-color: rgb(var(--bc-chip-sky-border));
+  }
+
+  .bc-chip-amber {
+    background-color: rgb(var(--bc-chip-amber-bg));
+    color: rgb(var(--bc-chip-amber-fg));
+    border-color: rgb(var(--bc-chip-amber-border));
+  }
+
+  .bc-chip-rose {
+    background-color: rgb(var(--bc-chip-rose-bg));
+    color: rgb(var(--bc-chip-rose-fg));
+    border-color: rgb(var(--bc-chip-rose-border));
+  }
+
+  .bc-chip-blue {
+    background-color: rgb(var(--bc-chip-blue-bg));
+    color: rgb(var(--bc-chip-blue-fg));
+    border-color: rgb(var(--bc-chip-blue-border));
+  }
+
+  .bc-chip-danger {
+    background-color: rgb(var(--bc-chip-danger-bg));
+    color: rgb(var(--bc-chip-danger-fg));
+    border-color: rgb(var(--bc-chip-danger-border));
+  }
+
+  /* Home Hero Code Window — single intentional dark contrast element (#0F172A) */
+  .bc-code-window {
+    color-scheme: only dark;
+    background-color: #0F172A;
+    border-color: #1E293B;
+    color: #F8FAFC;
+    box-shadow: 0 24px 50px -16px rgba(15, 23, 42, 0.35);
+  }
+
+  .bc-code-window-bar {
+    background-color: #1E293B;
+    border-color: #334155;
+  }
+
+  .bc-code-window-body {
+    background-color: #0B1120;
+    border-color: #1E293B;
+  }
+
+  .bc-code-dot-red { background-color: #F87171; }
+  .bc-code-dot-yellow { background-color: #FBBF24; }
+  .bc-code-dot-green { background-color: #4EDEA3; }
+  .bc-code-muted { color: #94A3B8; }
+  .bc-code-mint { color: #4EDEA3; }
+  .bc-code-teal { color: #62DCAD; }
+  .bc-code-sky { color: #38BDF8; }
+  .bc-code-amber { color: #FBBF24; }
+  .bc-code-light { color: #F8FAFC; }
+
+  /* Skeleton Shimmer */
+  .bc-skeleton {
+    background-color: var(--bc-skeleton-base);
+    background-image: linear-gradient(
+      90deg,
+      var(--bc-skeleton-base) 0%,
+      var(--bc-skeleton-highlight) 50%,
+      var(--bc-skeleton-base) 100%
+    );
+    background-size: 200% 100%;
+    animation: bc-shimmer 1.6s ease-in-out infinite;
   }
 }
 
 /* Legacy scrollbar fallback for browsers without scrollbar-color support */
 @supports not (scrollbar-color: auto) {
+  .bc-scroll {
+    scrollbar-width: auto;
+  }
+
+  .bc-scroll::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .bc-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .bc-scroll::-webkit-scrollbar-thumb {
+    background: var(--bc-scroll-thumb);
+    border-radius: 9999px;
+  }
+
+  .bc-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--bc-scroll-thumb-hover);
+  }
+
   ::-webkit-scrollbar {
     width: 12px;
     height: 12px;
@@ -283,6 +636,7 @@ html[lang='en'] {
 .btn-primary-gradient {
   background-image: var(--bc-btn-gradient);
   color: var(--bc-btn-gradient-text);
+  box-shadow: var(--bc-btn-glow);
   transition: box-shadow 180ms ease, transform 180ms ease, filter 180ms ease;
 }
 
@@ -294,6 +648,18 @@ html[lang='en'] {
 
 .btn-primary-gradient:active:not(:disabled) {
   transform: scale(0.99);
+}
+
+/* Forced Colors Mode accessibility fallback */
+@media (forced-colors: active) {
+  .btn-primary-gradient {
+    border: 1px solid ButtonText;
+  }
+
+  .bc-card,
+  .bc-card-hover {
+    border: 1px solid CanvasText;
+  }
 }
 
 /* ==========================================================================
@@ -315,7 +681,7 @@ dialog.bc-dialog:modal {
 }
 
 dialog.bc-dialog::backdrop {
-  background: rgba(0, 0, 0, 0.72);
+  background: var(--bc-overlay);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   overflow: hidden;
@@ -452,6 +818,11 @@ details.bc-accordion-item:not([open])::details-content {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .bc-skeleton {
+    animation: none;
+    background-image: none;
   }
 
   *,

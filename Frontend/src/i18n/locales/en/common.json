@@ -125,7 +125,7 @@
       "INVALID_CURRENT_PASSWORD": "Your current password is incorrect.",
       "NO_FILES_PROVIDED": "No files were uploaded.",
       "INVALID_FILE_TYPE": "Unsupported file type.",
-      "FILE_TOO_LARGE": "File exceeds the maximum allowed size (5 MB).",
+      "FILE_TOO_LARGE": "File exceeds the maximum allowed size (4 MB).",
       "PROJECT_NOT_AVAILABLE": "This project is currently not available for purchase.",
       "PACKAGE_NOT_ACTIVE": "The selected package is no longer active.",
       "INVALID_COUPON": "Invalid coupon code.",
@@ -243,27 +243,11 @@
     "removeTag": "Remove {{tag}}",
     "count": "{{count}} tags"
   },
+  "select": {
+    "empty": "No options",
+    "choose": "Select an option"
+  },
   "titles": {
-    "home": "Home",
-    "projects": "Ready-Made Projects",
-    "projectDetails": "Project Details",
-    "pricing": "Pricing & Services",
-    "about": "About ByteCraft",
-    "contact": "Start a Project",
-    "checkout": "Checkout",
-    "orderTracking": "Order Tracking",
-    "paymentResult": "Payment Result",
-    "notFound": "Page Not Found",
-    "ownerLogin": "Owner Sign In",
-    "ownerDashboard": "Dashboard",
-    "ownerProjects": "Manage Projects",
-    "ownerOrders": "Manage Orders",
-    "ownerInquiries": "Manage Inquiries",
-    "ownerReviews": "Manage Reviews",
-    "ownerCoupons": "Manage Coupons",
-    "ownerCategories": "Manage Categories",
-    "ownerServicePlans": "Manage Service Plans",
-    "ownerSettings": "Platform Settings",
-    "uiShowcase": "UI Primitives (Dev)"
+    "ownerDashboard": "Dashboard"
   }
 }

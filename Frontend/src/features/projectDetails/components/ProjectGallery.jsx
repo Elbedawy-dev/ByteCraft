@@ -83,14 +83,14 @@ export function ProjectGallery({ project, onOpenLiveDemo }) {
   return (
     <section className="flex flex-col gap-3 sm:gap-4" aria-label={title}>
       {/* Primary 16:9 Showcase Container */}
-      <div className="relative rounded-xl overflow-hidden bg-surface-container-low border border-outline-variant/70 shadow-xl group">
-        <div className="relative aspect-video w-full bg-surface-dim overflow-hidden">
+      <div className="relative rounded-xl overflow-hidden bg-card border border-card-border shadow-card group">
+        <div className="relative aspect-video w-full bg-surface-container-high overflow-hidden">
           {!isCurrentBroken ? (
             <button
               type="button"
               onClick={() => setLightboxOpen(true)}
               aria-label={t('gallery.openLightbox')}
-              className="block w-full h-full relative text-start cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
+              className="block w-full h-full relative text-start cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-input-focus"
             >
               <img
                 src={currentImage.url}
@@ -99,12 +99,8 @@ export function ProjectGallery({ project, onOpenLiveDemo }) {
                 onError={() => markBroken(currentImage.url)}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.015]"
               />
-              <span
-                className="absolute inset-0 bg-gradient-to-t from-surface-container-lowest/80 via-transparent to-black/20 pointer-events-none"
-                aria-hidden="true"
-              />
               {/* Subtle zoom hint badge */}
-              <span className="absolute bottom-2.5 sm:bottom-3 start-2.5 sm:start-3 inline-flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 rounded-lg bg-surface-container-low/90 backdrop-blur-md border border-outline-variant/60 text-xs font-medium text-on-surface shadow-sm transition-colors group-hover:border-primary/50">
+              <span className="absolute bottom-2.5 sm:bottom-3 start-2.5 sm:start-3 inline-flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 rounded-lg bg-surface/95 backdrop-blur-md border border-card-border text-xs font-medium text-on-surface shadow-sm transition-colors group-hover:border-primary/50">
                 <span className="material-symbols-outlined text-[16px] text-primary" aria-hidden="true">
                   zoom_in
                 </span>
@@ -117,11 +113,11 @@ export function ProjectGallery({ project, onOpenLiveDemo }) {
               </span>
             </button>
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-surface-container via-surface-container-high to-surface-container-highest text-on-surface-variant p-6 text-center">
-              <span className="material-symbols-outlined text-[48px] text-primary/50 mb-2" aria-hidden="true">
+            <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-card via-surface-container-high to-surface-container-highest text-on-surface-variant p-6 text-center">
+              <span className="material-symbols-outlined text-[48px] text-primary/60 mb-2" aria-hidden="true">
                 code_blocks
               </span>
-              <span className="text-xs font-mono opacity-80">{t('gallery.placeholder')}</span>
+              <span className="text-xs font-mono text-on-surface-variant">{t('gallery.placeholder')}</span>
             </div>
           )}
 
@@ -129,7 +125,7 @@ export function ProjectGallery({ project, onOpenLiveDemo }) {
           {(hasPreview || project?.isFeatured) && (
             <div className="absolute top-2.5 sm:top-3 start-2.5 sm:start-3 end-2.5 sm:end-3 flex flex-wrap items-center gap-1.5 sm:gap-2 pointer-events-none z-10">
               {hasPreview && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-surface-dim/90 backdrop-blur-md border border-outline-variant/50 text-primary font-label-md text-[11px] sm:text-xs shadow-md">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-surface/95 backdrop-blur-md border border-card-border text-primary font-label-md text-[11px] sm:text-xs shadow-sm">
                   <span className="relative flex h-2 w-2" aria-hidden="true">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
@@ -138,8 +134,8 @@ export function ProjectGallery({ project, onOpenLiveDemo }) {
                 </span>
               )}
               {project?.isFeatured && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-surface-container-high/90 backdrop-blur-md border border-outline-variant/50 text-on-surface font-label-md text-[11px] sm:text-xs shadow-md">
-                  <span className="material-symbols-outlined text-[14px] text-amber-400" aria-hidden="true">
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-surface/95 backdrop-blur-md border border-card-border text-on-surface font-label-md text-[11px] sm:text-xs shadow-sm">
+                  <span className="material-symbols-outlined text-[14px] text-star" aria-hidden="true">
                     workspace_premium
                   </span>
                   <span>{t('badges.featured')}</span>
@@ -153,7 +149,7 @@ export function ProjectGallery({ project, onOpenLiveDemo }) {
             <button
               type="button"
               onClick={onOpenLiveDemo}
-              className="absolute bottom-2.5 sm:bottom-3 end-2.5 sm:end-3 z-20 inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 min-h-[38px] sm:min-h-[40px] rounded-lg bg-surface-container-highest/95 hover:bg-surface-container-high text-primary font-label-md text-xs border border-outline-variant/60 hover:border-primary/50 backdrop-blur-md transition-all shadow-md"
+              className="absolute bottom-2.5 sm:bottom-3 end-2.5 sm:end-3 z-20 inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 min-h-[38px] sm:min-h-[40px] rounded-lg bg-surface/95 hover:bg-card-hover text-primary font-label-md text-xs border border-card-border hover:border-primary/50 backdrop-blur-md transition-all shadow-sm"
             >
               <span className="material-symbols-outlined text-[16px]" aria-hidden="true">
                 {project?.preview?.mode === 'external' ? 'open_in_new' : 'desktop_windows'}

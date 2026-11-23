@@ -124,7 +124,7 @@ export default function OwnerInquiriesPage() {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <header className="relative overflow-hidden rounded-2xl border border-outline-variant bg-surface-container-low p-5 sm:p-6">
+      <header className="relative overflow-hidden rounded-2xl border border-card-border bg-card shadow-card p-5 sm:p-6">
         <div
           className="pointer-events-none absolute -top-20 -end-20 w-64 h-64 rounded-full bg-primary/10 blur-3xl"
           aria-hidden="true"
@@ -169,7 +169,6 @@ export default function OwnerInquiriesPage() {
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               placeholder={t('ownerInquiries:filters.searchPlaceholder')}
-              className="placeholder:text-outline"
               iconLeading={<span className="material-symbols-outlined text-[20px]">search</span>}
             />
           </div>
@@ -292,7 +291,7 @@ export default function OwnerInquiriesPage() {
       ) : (
         <div className={clsx('space-y-4 transition-opacity', isFetching && 'opacity-70')}>
           {/* Desktop Table */}
-          <div className="hidden md:block rounded-xl border border-outline-variant bg-surface-container overflow-hidden">
+          <div className="hidden md:block rounded-xl border border-card-border bg-card shadow-card overflow-hidden">
             <div
               tabIndex={0}
               role="region"
@@ -301,7 +300,7 @@ export default function OwnerInquiriesPage() {
             >
               <table className="w-full text-start border-collapse text-sm">
                 <thead>
-                  <tr className="border-b border-outline-variant bg-surface-container-low/80 text-on-surface-variant text-xs font-semibold">
+                  <tr className="border-b border-card-border bg-surface-container-high text-on-surface-variant text-xs font-semibold">
                     <th scope="col" className="py-3.5 px-4 text-start whitespace-nowrap">
                       {t('ownerInquiries:table.sender')}
                     </th>
@@ -322,7 +321,7 @@ export default function OwnerInquiriesPage() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-outline-variant/60">
+                <tbody className="divide-y divide-card-border">
                   {inquiries.map((inq) => {
                     const id = inq._id || inq.id;
                     const isUnread = inq.status === 'new';
@@ -344,8 +343,8 @@ export default function OwnerInquiriesPage() {
                         className={clsx(
                           'transition-colors cursor-pointer group',
                           isUnread
-                            ? 'bg-primary/[0.06] hover:bg-primary/[0.11]'
-                            : 'hover:bg-surface-container-high/50'
+                            ? 'bg-badge-green-bg/60 hover:bg-badge-green-bg'
+                            : 'even:bg-surface-container-high/40 hover:bg-card-hover'
                         )}
                       >
                         <td
@@ -458,7 +457,7 @@ export default function OwnerInquiriesPage() {
                                 href={waUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="w-9 h-9 rounded-lg bg-surface-container-high text-primary hover:bg-primary hover:text-[#0A0A0A] flex items-center justify-center transition-colors"
+                                className="w-9 h-9 rounded-lg bg-surface-container-high text-primary hover:bg-badge-green-bg hover:text-badge-green-text flex items-center justify-center transition-colors"
                                 title={t('ownerInquiries:table.replyWhatsApp')}
                                 aria-label={t('ownerInquiries:table.replyWhatsApp')}
                               >
@@ -525,10 +524,10 @@ export default function OwnerInquiriesPage() {
                 <article
                   key={id}
                   className={clsx(
-                    'rounded-xl border p-4 space-y-3 transition-colors',
+                    'rounded-xl border p-4 space-y-3 transition-colors shadow-card',
                     isUnread
-                      ? 'bg-primary/[0.06] border-primary/50 border-s-4'
-                      : 'bg-surface-container border-outline-variant'
+                      ? 'bg-card border-primary/50 border-s-4'
+                      : 'bg-card border-card-border'
                   )}
                 >
                   <div className="flex items-start justify-between gap-2">

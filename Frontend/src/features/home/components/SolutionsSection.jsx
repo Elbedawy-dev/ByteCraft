@@ -9,22 +9,25 @@ const SOLUTION_ITEMS = [
     key: 'lms',
     icon: 'school',
     to: ROUTES.PROJECTS,
-    accentText: 'text-primary',
-    ctaHover: 'group-hover:text-secondary',
+    accentText: 'text-chip-mint-fg',
+    chipClass: 'bc-chip-mint',
+    ctaHover: 'group-hover:text-chip-sky-fg',
   },
   {
     key: 'ecommerce',
     icon: 'shopping_cart_checkout',
     to: ROUTES.PROJECTS,
-    accentText: 'text-secondary',
-    ctaHover: 'group-hover:text-primary',
+    accentText: 'text-chip-sky-fg',
+    chipClass: 'bc-chip-sky',
+    ctaHover: 'group-hover:text-chip-mint-fg',
   },
   {
     key: 'custom',
     icon: 'code_blocks',
     to: ROUTES.CONTACT,
-    accentText: 'text-tertiary',
-    ctaHover: 'group-hover:text-primary',
+    accentText: 'text-chip-violet-fg',
+    chipClass: 'bc-chip-violet',
+    ctaHover: 'group-hover:text-chip-mint-fg',
   },
 ];
 
@@ -70,13 +73,13 @@ export function SolutionsSection() {
           return (
             <article
               key={item.key}
-              className={`group relative rounded-2xl bg-surface-container border border-outline-variant p-6 shadow-md hover:bg-surface-container-high hover:border-primary/35 transition-all duration-200 flex flex-col justify-between ${
+              className={`group relative rounded-2xl bg-card border border-card-border p-6 shadow-card hover:bg-card-hover hover:border-card-hover-border hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between ${
                 idx === 2 ? 'md:col-span-2 lg:col-span-1' : ''
               }`}
             >
               <div>
                 <div
-                  className={`w-14 h-14 rounded-xl bg-surface-container-highest border border-outline-variant/60 flex items-center justify-center ${item.accentText} mb-6 group-hover:scale-105 transition-transform duration-200 shadow-sm`}
+                  className={`w-14 h-14 rounded-xl border flex items-center justify-center ${item.chipClass} mb-6 group-hover:scale-105 transition-transform duration-200 shadow-sm`}
                 >
                   <span className="material-symbols-outlined text-[32px]" aria-hidden="true">
                     {item.icon}

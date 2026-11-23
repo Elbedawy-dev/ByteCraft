@@ -1,5 +1,4 @@
 {
-  "pageTitle": "Manage Projects — ByteCraft",
   "heading": "Software Projects",
   "subtitle": "Manage ready-made MERN platforms, licensing packages, screenshots, and private delivery repos.",
   "totalBadge": "{{count}} projects",
@@ -123,7 +122,7 @@
       "heading": "Screenshots & Media Gallery",
       "countLabel": "{{count}} uploaded (up to 10 per batch)",
       "dropzoneTitle": "Drag & drop screenshots or click to browse",
-      "dropzoneHint": "PNG, JPG, WebP up to 5 MB per file",
+      "dropzoneHint": "PNG, JPG, WebP up to 4 MB per file",
       "uploadingProgress": "Uploading images... {{percent}}%",
       "primaryCoverBadge": "Primary Cover",
       "galleryItemLabel": "Gallery #{{index}}",
@@ -136,7 +135,7 @@
       "reorderAnnouncement": "Gallery order updated ({{count}} items).",
       "validation": {
         "invalidType": "Unsupported file type for \"{{name}}\". Only JPEG, PNG, and WebP are allowed.",
-        "tooLarge": "\"{{name}}\" exceeds the 5 MB file size limit.",
+        "tooLarge": "\"{{name}}\" exceeds the 4 MB file size limit.",
         "thumbnailRequired": "A primary cover image is required."
       }
     },

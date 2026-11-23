@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import { getApiErrorMessage } from '@/api/client';
 import { useOwnerCategories, useUpdateOwnerCategory } from '@/api/owner/categories';
-import { useLang, useToast } from '@/app/providers';
+import { useToast } from '@/app/providers';
 import { formatNumber } from '@/lib/format';
 import { useNoIndexMeta } from '@/features/ownerAuth';
 import { Badge, Button, Card, Input, Select, Skeleton, Switch } from '@/components/ui';
@@ -13,7 +13,6 @@ import { DeleteCategoryDialog } from '@/features/ownerCategories/DeleteCategoryD
 
 export default function OwnerCategoriesPage() {
   const { t } = useTranslation(['ownerCategories', 'common']);
-  const { lang } = useLang();
   const toast = useToast();
 
   useNoIndexMeta();
@@ -23,10 +22,6 @@ export default function OwnerCategoriesPage() {
   const [formModalState, setFormModalState] = useState({ open: false, category: null });
   const [deletingCategory, setDeletingCategory] = useState(null);
   const [togglingId, setTogglingId] = useState(null);
-
-  useEffect(() => {
-    document.title = t('ownerCategories:pageTitle');
-  }, [t, lang]);
 
   const { data: categories = [], isLoading, isFetching, isError, error, refetch } =
     useOwnerCategories();
@@ -219,7 +214,7 @@ export default function OwnerCategoriesPage() {
                   {t('ownerCategories:table.caption')}
                 </caption>
                 <thead>
-                  <tr className="border-b border-outline-variant bg-surface-container-low/80 text-on-surface-variant text-xs font-semibold">
+                  <tr className="border-b border-card-border bg-surface-container-high text-on-surface-variant text-xs font-semibold">
                     <th scope="col" className="py-3.5 px-4 text-start">
                       {t('ownerCategories:table.nameAr')}
                     </th>
@@ -240,11 +235,11 @@ export default function OwnerCategoriesPage() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-outline-variant/60">
+                <tbody className="divide-y divide-card-border">
                   {filteredCategories.map((cat) => (
                     <tr
                       key={cat.id}
-                      className="hover:bg-surface-container-high/40 transition-colors"
+                      className="even:bg-surface-container-high/40 hover:bg-card-hover transition-colors"
                     >
                       <th scope="row" className="py-3.5 px-4 text-start font-semibold text-on-surface">
                         {cat.name?.ar}

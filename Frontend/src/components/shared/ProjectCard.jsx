@@ -58,14 +58,14 @@ export function ProjectCard({
   return (
     <article
       className={clsx(
-        'group flex flex-col bg-surface-container rounded-2xl border border-outline-variant/80 overflow-hidden shadow-md hover:shadow-xl hover:border-primary/40 transition-all duration-300 hover:-translate-y-1',
+        'group flex flex-col bg-card rounded-2xl border border-card-border overflow-hidden shadow-card hover:bg-card-hover hover:shadow-card-hover hover:border-card-hover-border transition-all duration-200 hover:-translate-y-0.5',
         className
       )}
     >
       {/* Thumbnail Aspect Video Container */}
       <Link
         to={`/projects/${project.slug}`}
-        className="relative w-full aspect-video bg-surface-container-low overflow-hidden block select-none"
+        className="relative w-full aspect-video bg-surface-container-high overflow-hidden block select-none border-b border-card-border"
         tabIndex={-1}
         aria-hidden="true"
       >
@@ -78,20 +78,18 @@ export function ProjectCard({
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-surface-container via-surface-container-high to-surface-container-highest text-on-surface-variant">
-            <span className="material-symbols-outlined text-[44px] text-primary/40 mb-1">
+          <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-card via-surface-container-high to-surface-container-highest text-on-surface-variant">
+            <span className="material-symbols-outlined text-[44px] text-primary mb-1" aria-hidden="true">
               code_blocks
             </span>
-            <span className="text-xs font-mono opacity-60">ByteCraft Engine</span>
+            <span className="text-xs font-mono text-on-surface-variant">ByteCraft Engine</span>
           </div>
         )}
-
-        <div className="absolute inset-0 bg-gradient-to-t from-surface-container via-transparent to-black/20 pointer-events-none" />
 
         {/* Category Badge */}
         {categoryName && (
           <div className="absolute top-3 end-3 z-10">
-            <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-surface/90 text-primary backdrop-blur-md border border-outline-variant/40 shadow-sm">
+            <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-badge-green-bg/95 text-badge-green-text backdrop-blur-md border border-primary/25 shadow-sm">
               {categoryName}
             </span>
           </div>
@@ -99,7 +97,7 @@ export function ProjectCard({
 
         {/* Version or Ready Tag */}
         <div className="absolute bottom-3 start-3 z-10">
-          <span className="px-2 py-0.5 rounded-md text-[11px] font-mono bg-surface/85 backdrop-blur-md text-on-surface-variant border border-outline-variant/30 flex items-center gap-1">
+          <span className="px-2 py-0.5 rounded-md text-[11px] font-mono bg-surface/95 backdrop-blur-md text-on-surface border border-card-border shadow-sm flex items-center gap-1">
             <span className="material-symbols-outlined text-primary text-[13px]">bolt</span>
             <span>Production Ready</span>
           </span>

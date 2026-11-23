@@ -1,7 +1,4 @@
 {
-  "meta": {
-    "title": "Pricing & Services | ByteCraft"
-  },
   "hero": {
     "badge": "MERN STACK PRICING ARCHITECTURE",
     "title": "Pricing Plans & Engineering Services",
@@ -17,7 +14,7 @@
       "icon": "code_blocks",
       "accent": "primary",
       "title": "Full Source Code Ownership",
-      "description": "100% codebase ownership with zero recurring vendor lock-in"
+      "description": "Full codebase ownership with zero recurring vendor lock-in"
     },
     {
       "id": "fast-deploy",
@@ -111,13 +108,6 @@
     "eyebrow": "FEATURE MATRIX",
     "title": "Every plan includes these engineering baselines by default:",
     "description": "Hardened input validation, SSL-ready deployment, encrypted sessions, and fast React hydration with full bilingual RTL/LTR support.",
-    "lighthouseLabel": "Google Lighthouse Benchmark",
-    "lighthouseScore": "98 / 100",
-    "metrics": [
-      { "label": "Performance", "value": "99" },
-      { "label": "Security", "value": "100" },
-      { "label": "SEO", "value": "98" }
-    ],
     "tableTitle": "Side-by-Side Plan Comparison",
     "tableSubtitle": "Compare starting investments, estimated delivery timelines, and included features across active plans.",
     "tableCaption": "Service plans comparison matrix",
@@ -128,7 +118,7 @@
       "delivery": "Estimated Delivery",
       "deliveryValue": "{{count}} days",
       "sourceCode": "Full Source Code Ownership",
-      "sourceCodeValue": "100%",
+      "sourceCodeValue": "Included",
       "guarantee": "Post-Delivery Guarantee",
       "guaranteeDays": "{{count}} days",
       "responsive": "Bilingual RTL/LTR & Dark/Light Mode",
@@ -161,7 +151,7 @@
       {
         "id": "source-code",
         "question": "Do I receive the complete source code?",
-        "answer": "Yes, you own 100% of the codebase. Everything is delivered via a private Git repository containing the full Frontend, Backend, database schemas, and setup documentation with zero proprietary lock-in."
+        "answer": "Yes, you own the complete codebase. Everything is delivered via a private Git repository containing the full Frontend, Backend, database schemas, and setup documentation with zero proprietary lock-in."
       },
       {
         "id": "delivery-time",

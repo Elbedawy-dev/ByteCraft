@@ -10,10 +10,12 @@ const { ERROR_CODES } = require('../config/constants');
  *    (5 attempts per 15 minutes per IP address).
  * 3. Standard Envelope: If a limit is exceeded, responds with the unified error format
  *    instead of express-rate-limit's default plain text.
+ * 4. Real Client IP Extraction: Correctly extracts the client IP address according to Express
+ *    `trust proxy` settings, supporting multi-hop proxy chains (e.g. Browser -> Vercel FE -> Vercel BE).
  */
 
-// Helper to allow isolated IP keys strictly on the local test server (PORT 5001, non-production)
-function testAwareKeyGenerator(req) {
+// Helper to determine the real client IP
+function getClientIp(req) {
   if (
     process.env.NODE_ENV !== 'production' &&
     String(process.env.PORT) === '5001' &&
@@ -21,7 +23,11 @@ function testAwareKeyGenerator(req) {
   ) {
     return String(req.headers['x-test-ip']);
   }
-  return ipKeyGenerator(req.ip);
+  return req.ip || req.socket?.remoteAddress || '127.0.0.1';
+}
+
+function clientIpKeyGenerator(req) {
+  return ipKeyGenerator(getClientIp(req));
 }
 
 // Helper to create uniform rate-limit responses
@@ -44,7 +50,8 @@ const globalLimiter = rateLimit({
   limit: 200,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
-  keyGenerator: testAwareKeyGenerator,
+  keyGenerator: clientIpKeyGenerator,
+  validate: { trustProxy: false },
   handler: createRateLimitHandler('Too many requests from this IP, please try again after 15 minutes.'),
 });
 
@@ -55,6 +62,8 @@ const loginLimiter = rateLimit({
   standardHeaders: 'draft-7',
   legacyHeaders: false,
   skipSuccessfulRequests: true, // Only failed/repeated attempts count towards lockout
+  keyGenerator: clientIpKeyGenerator,
+  validate: { trustProxy: false },
   handler: createRateLimitHandler('Too many login attempts. Please try again after 15 minutes.'),
 });
 
@@ -64,6 +73,8 @@ const previewViewLimiter = rateLimit({
   limit: 60,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
+  keyGenerator: clientIpKeyGenerator,
+  validate: { trustProxy: false },
   handler: createRateLimitHandler('Too many preview view requests from this IP.'),
 });
 
@@ -73,6 +84,8 @@ const couponValidateLimiter = rateLimit({
   limit: 30,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
+  keyGenerator: clientIpKeyGenerator,
+  validate: { trustProxy: false },
   handler: createRateLimitHandler('Too many coupon validation attempts. Please try again after 15 minutes.'),
 });
 
@@ -82,6 +95,8 @@ const orderCreateLimiter = rateLimit({
   limit: 15,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
+  keyGenerator: clientIpKeyGenerator,
+  validate: { trustProxy: false },
   handler: createRateLimitHandler('Too many order creation attempts from this IP. Please try again after an hour.'),
 });
 
@@ -91,6 +106,8 @@ const proofUploadLimiter = rateLimit({
   limit: 10,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
+  keyGenerator: clientIpKeyGenerator,
+  validate: { trustProxy: false },
   handler: createRateLimitHandler('Too many payment proof upload attempts from this IP.'),
 });
 
@@ -100,7 +117,8 @@ const inquiryLimiter = rateLimit({
   limit: 5,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
-  keyGenerator: testAwareKeyGenerator,
+  keyGenerator: clientIpKeyGenerator,
+  validate: { trustProxy: false },
   handler: createRateLimitHandler('Too many contact inquiries from this IP. Please try again after 15 minutes.'),
 });
 
@@ -110,6 +128,8 @@ const reviewLimiter = rateLimit({
   limit: 10,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
+  keyGenerator: clientIpKeyGenerator,
+  validate: { trustProxy: false },
   handler: createRateLimitHandler('Too many review submissions from this IP.'),
 });
 
@@ -120,7 +140,8 @@ const tokenGuessLimiter = rateLimit({
   standardHeaders: 'draft-7',
   legacyHeaders: false,
   skipSuccessfulRequests: true, // Legitimate requests with valid tokens do not count towards lockout
-  keyGenerator: testAwareKeyGenerator,
+  keyGenerator: clientIpKeyGenerator,
+  validate: { trustProxy: false },
   handler: createRateLimitHandler('Too many access attempts. Please try again after 15 minutes.'),
 });
 

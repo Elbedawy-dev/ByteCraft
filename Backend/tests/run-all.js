@@ -22,6 +22,7 @@ const TEST_SUITES = [
   { name: 'Phase 6: Reviews, Inquiries & Aggregations', file: 'phase6.test.js' },
   { name: 'Phase 7: Hardening, Allow-lists & Privacy Protections', file: 'phase7.test.js' },
   { name: 'Phase 8: Public Projects Computed Fields & Extended Inquiries', file: 'phase8.test.js' },
+  { name: 'Phase 9: Vercel Serverless, Cron & Hops Proxy Verification', file: 'vercel-serverless.test.js' },
 ];
 
 async function isServerRunning() {

@@ -14,7 +14,7 @@ export function CustomSolutionBanner() {
 
   return (
     <section className="mb-12 sm:mb-14">
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-surface-container to-surface-container-high border border-outline-variant p-6 sm:p-8 lg:p-10 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl bg-card border border-card-border p-6 sm:p-8 lg:p-10 shadow-card">
         <div
           className="absolute -end-16 -top-16 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none"
           aria-hidden="true"
@@ -23,7 +23,7 @@ export function CustomSolutionBanner() {
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* Start 8 Cols: Custom Engineering Pitch */}
           <div className="lg:col-span-8 space-y-5">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant/60 text-secondary font-code text-label-code">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-badge-green-bg border border-primary/25 text-badge-green-text font-code text-label-code">
               <span className="material-symbols-outlined text-[16px]" aria-hidden="true">
                 tune
               </span>
@@ -62,7 +62,7 @@ export function CustomSolutionBanner() {
 
           {/* End 4 Cols: Consultant Card + CTA */}
           <div className="lg:col-span-4">
-            <div className="p-5 sm:p-6 rounded-xl bg-surface-container-low border border-outline-variant/70 shadow-sm space-y-4">
+            <div className="p-5 sm:p-6 rounded-xl bg-surface border border-card-border shadow-sm space-y-4">
               <div className="flex items-center gap-3">
                 <OwnerAvatar
                   initials={tAbout('owner.initials', { defaultValue: 'BC' })}

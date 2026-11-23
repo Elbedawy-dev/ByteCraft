@@ -9,9 +9,9 @@ import { contactPath } from '@/config/routes';
 import { Button } from '@/components/ui/Button';
 
 const ACCENT_CLASSES = {
-  primary: 'text-primary',
-  secondary: 'text-secondary',
-  tertiary: 'text-tertiary',
+  primary: 'text-chip-mint-fg',
+  secondary: 'text-chip-sky-fg',
+  tertiary: 'text-chip-violet-fg',
 };
 
 export function ServicePlanCard({ plan, accent = 'primary' }) {
@@ -33,10 +33,10 @@ export function ServicePlanCard({ plan, accent = 'primary' }) {
   return (
     <article
       className={clsx(
-        'relative rounded-xl p-6 sm:p-7 flex flex-col justify-between transition-all duration-200 hover:-translate-y-1',
+        'relative rounded-xl p-6 sm:p-7 flex flex-col justify-between bg-card shadow-card transition-all duration-200 hover:bg-card-hover hover:shadow-card-hover hover:-translate-y-0.5',
         isPopular
-          ? 'bg-surface-container border border-primary/50 shadow-primary-glow'
-          : 'bg-surface-container-low border border-outline-variant/80 hover:border-outline shadow-md'
+          ? 'border border-primary/60 ring-1 ring-primary/20 hover:border-primary'
+          : 'border border-card-border hover:border-card-hover-border'
       )}
     >
       {/* Floating Popular Badge */}
@@ -63,7 +63,7 @@ export function ServicePlanCard({ plan, accent = 'primary' }) {
             {planName}
           </h3>
 
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-high border border-outline-variant/60 font-code text-label-code text-on-surface-variant shrink-0">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface border border-card-border font-code text-label-code text-on-surface-variant shrink-0">
             <span className="material-symbols-outlined text-[14px]" aria-hidden="true">
               schedule
             </span>

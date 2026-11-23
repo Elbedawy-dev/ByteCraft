@@ -36,7 +36,7 @@ export function useLang() {
 
 // 3. Theme Context & Hook
 const ThemeContext = createContext({
-  theme: 'dark',
+  theme: 'light',
   setTheme: () => {},
   toggleTheme: () => {},
 });
@@ -103,17 +103,17 @@ export function Providers({ children }) {
     document.documentElement.setAttribute('dir', dir);
   }, [lang, dir]);
 
-  // Theme state
+  // Theme state (Light mode is default; storage key bumped to bc_theme_v2)
   const [theme, setThemeState] = useState(() => {
-    const saved = localStorage.getItem('bc_theme');
+    const saved = localStorage.getItem('bc_theme_v2');
     if (saved === 'light' || saved === 'dark') return saved;
-    return 'dark'; // Dark mode default as per contract section 5
+    return 'light';
   });
 
   const setTheme = useCallback((newTheme) => {
-    const valid = newTheme === 'light' ? 'light' : 'dark';
+    const valid = newTheme === 'dark' ? 'dark' : 'light';
     setThemeState(valid);
-    localStorage.setItem('bc_theme', valid);
+    localStorage.setItem('bc_theme_v2', valid);
     if (valid === 'dark') {
       document.documentElement.classList.add('dark');
       document.documentElement.classList.remove('light');
@@ -121,9 +121,13 @@ export function Providers({ children }) {
       document.documentElement.classList.remove('dark');
       document.documentElement.classList.add('light');
     }
+    const metaScheme = document.querySelector('meta[name="color-scheme"]');
+    if (metaScheme) {
+      metaScheme.setAttribute('content', valid);
+    }
     const metaTheme = document.querySelector('meta[name="theme-color"]');
     if (metaTheme) {
-      metaTheme.setAttribute('content', valid === 'dark' ? '#0A0A0A' : '#FAFAF9');
+      metaTheme.setAttribute('content', valid === 'dark' ? '#0A0A0A' : '#FFFFFF');
     }
   }, []);
 
@@ -215,25 +219,25 @@ function ToastContainer() {
       {toasts.map((t) => (
         <div
           key={t.id}
-          className={`pointer-events-auto flex items-start gap-3 p-4 rounded-xl border shadow-lg transition-all animate-in fade-in slide-in-from-bottom-2 ${
+          className={`pointer-events-auto flex items-start gap-3 p-4 rounded-xl border shadow-card-hover transition-all animate-in fade-in slide-in-from-bottom-2 ${
             t.type === 'success'
-              ? 'bg-surface-container border-primary/30 text-on-surface'
+              ? 'bg-surface border-success/35 text-on-surface'
               : t.type === 'error'
-              ? 'bg-surface-container border-error/40 text-on-surface'
+              ? 'bg-surface border-error/40 text-on-surface'
               : t.type === 'warning'
-              ? 'bg-surface-container border-amber-500/40 text-on-surface'
-              : 'bg-surface-container border-outline-variant text-on-surface'
+              ? 'bg-surface border-warning/40 text-on-surface'
+              : 'bg-surface border-outline-variant text-on-surface'
           }`}
         >
           <span
             className={`material-symbols-outlined text-[20px] shrink-0 mt-0.5 ${
               t.type === 'success'
-                ? 'text-primary'
+                ? 'text-success'
                 : t.type === 'error'
                 ? 'text-error'
                 : t.type === 'warning'
-                ? 'text-amber-400'
-                : 'text-primary'
+                ? 'text-warning'
+                : 'text-info'
             }`}
           >
             {t.type === 'success'

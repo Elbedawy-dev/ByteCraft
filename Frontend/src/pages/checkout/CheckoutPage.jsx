@@ -33,16 +33,13 @@ const COUPON_ERROR_CODES = new Set([
   'COUPON_NOT_APPLICABLE',
 ]);
 
-// Ambient glow kept clipped within container so mobile widths (360px/375px) never overflow
+// Soft light wash kept clipped within container so mobile widths never overflow
 function AmbientGlow() {
   return (
     <div
-      className="absolute inset-0 overflow-hidden pointer-events-none -z-10"
+      className="absolute inset-x-0 top-0 h-[420px] bc-hero-wash pointer-events-none -z-10"
       aria-hidden="true"
-    >
-      <div className="absolute -top-12 end-1/4 w-96 h-96 bg-primary-container/10 rounded-full blur-3xl" />
-      <div className="absolute top-1/3 start-4 w-72 h-72 bg-secondary-container/10 rounded-full blur-3xl" />
-    </div>
+    />
   );
 }
 
@@ -120,16 +117,6 @@ export default function CheckoutPage() {
       PAYMENT_METHOD_ORDER.filter((key) => Boolean(meta?.paymentMethods?.[key]?.enabled)),
     [meta?.paymentMethods]
   );
-
-  // Set page document title
-  useEffect(() => {
-    const brandName = t('common:brand.name');
-    const pageTitle = t('common:titles.checkout');
-    const projectTitle = project ? localized(project.title, lang) : '';
-    document.title = projectTitle
-      ? `${pageTitle} — ${projectTitle} | ${brandName}`
-      : `${pageTitle} | ${brandName}`;
-  }, [t, project, lang]);
 
   // Reset coupon & banner errors if URL target project/package changes
   useEffect(() => {
@@ -456,7 +443,7 @@ export default function CheckoutPage() {
 
       {/* Page Header */}
       <header className="flex flex-col gap-2 mb-8">
-        <div className="inline-flex items-center gap-2 self-start px-3 py-1 rounded-full bg-surface-container-high border border-outline-variant/60 text-primary text-xs font-semibold">
+        <div className="inline-flex items-center gap-2 self-start px-3 py-1 rounded-full bg-badge-green-bg border border-primary/25 text-badge-green-text text-xs font-semibold">
           <span className="w-2 h-2 rounded-full bg-primary animate-pulse shrink-0" aria-hidden="true" />
           <span>{t('checkout:badge')}</span>
         </div>
@@ -472,8 +459,8 @@ export default function CheckoutPage() {
 
       {/* Mobile Collapsible Order Summary (Top of 1-column mobile flow) */}
       <div className="lg:hidden mb-6">
-        <details className="bc-accordion-item group bg-surface-container-low border border-outline-variant rounded-xl overflow-hidden shadow-sm">
-          <summary className="flex items-center justify-between gap-3 p-4 cursor-pointer select-none min-h-[56px] hover:bg-surface-container transition-colors">
+        <details className="bc-accordion-item group bg-card border border-card-border rounded-xl overflow-hidden shadow-card">
+          <summary className="flex items-center justify-between gap-3 p-4 cursor-pointer select-none min-h-[56px] hover:bg-card-hover transition-colors">
             <div className="flex items-center gap-2.5 min-w-0">
               <span className="material-symbols-outlined text-primary text-[20px] shrink-0" aria-hidden="true">
                 shopping_bag
@@ -597,7 +584,7 @@ export default function CheckoutPage() {
           aria-label={t('checkout:aria.orderSummaryRegion')}
           className="hidden lg:flex lg:col-span-5 flex-col gap-4 lg:sticky lg:top-24"
         >
-          <div className="bg-surface-container-low border border-outline-variant rounded-xl p-6 shadow-md flex flex-col gap-5">
+          <div className="bg-card border border-card-border rounded-xl p-6 shadow-card flex flex-col gap-5">
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2.5 min-w-0">
                 <span className="material-symbols-outlined text-primary text-[22px] shrink-0" aria-hidden="true">
@@ -632,7 +619,7 @@ export default function CheckoutPage() {
       </div>
 
       {/* Mobile Sticky Bottom Total + Submit Bar */}
-      <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-surface/95 backdrop-blur-xl border-t border-outline-variant px-4 py-3 shadow-[0_-8px_24px_rgba(0,0,0,0.35)]">
+      <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-surface/95 backdrop-blur-xl border-t border-outline-variant px-4 py-3 shadow-sticky-bar">
         <div className="max-w-[1280px] mx-auto flex items-center justify-between gap-3">
           <div className="flex flex-col min-w-0">
             <span className="text-[11px] text-on-surface-variant truncate">

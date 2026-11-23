@@ -10,7 +10,7 @@ const asyncHandler = require('../utils/asyncHandler');
  *    - Active categories for navigation and filter chips
  *    - Enabled payment methods (sanitized: WITHOUT private wallet numbers or IPAs)
  *    - Guarantee days
- *    - Public studio contact details and social links
+ *    - Public studio contact details and social links (empty values returned as empty strings)
  * 2. Privacy & Security: Sensitive owner payout destinations are never sent here.
  */
 
@@ -40,12 +40,29 @@ const getMeta = asyncHandler(async (req, res) => {
     },
   };
 
+  // Ensure contact values are clean strings (empty strings when unset so Frontend hides them)
+  const contact = {
+    email: settings.contact?.email || '',
+    whatsapp: settings.contact?.whatsapp || '',
+    phone: settings.contact?.phone || '',
+    location: {
+      ar: settings.contact?.location?.ar || '',
+      en: settings.contact?.location?.en || '',
+    },
+    socials: {
+      github: settings.contact?.socials?.github || '',
+      linkedin: settings.contact?.socials?.linkedin || '',
+      twitter: settings.contact?.socials?.twitter || '',
+      facebook: settings.contact?.socials?.facebook || '',
+    },
+  };
+
   res.status(200).json({
     success: true,
     data: {
       siteName: settings.siteName,
       guaranteeDays: settings.guaranteeDays,
-      contact: settings.contact,
+      contact,
       categories,
       paymentMethods,
     },

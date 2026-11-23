@@ -359,8 +359,8 @@ export function ProjectFormModal({ isOpen, onClose, projectId = null }) {
                   className={clsx(
                     'px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors inline-flex items-center gap-1.5 min-h-[36px]',
                     active
-                      ? 'bg-primary text-[#0A0A0A] font-semibold shadow-sm'
-                      : 'bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
+                      ? 'bg-primary text-on-primary font-semibold shadow-sm'
+                      : 'bg-surface border border-card-border text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
                   )}
                 >
                   <span>{t(`modal.sections.${secId}`)}</span>
@@ -368,7 +368,7 @@ export function ProjectFormModal({ isOpen, onClose, projectId = null }) {
                     <span
                       className={clsx(
                         'w-2 h-2 rounded-full',
-                        active ? 'bg-[#0A0A0A]' : 'bg-error'
+                        active ? 'bg-on-primary' : 'bg-error'
                       )}
                       aria-hidden="true"
                     />
@@ -385,7 +385,7 @@ export function ProjectFormModal({ isOpen, onClose, projectId = null }) {
             {showUnsavedGuard && (
               <div
                 role="alert"
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs sm:text-sm"
+                className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-xl bg-warning/10 border border-warning/30 text-xs sm:text-sm"
               >
                 <span className="text-on-surface font-medium">{t('modal.unsaved.banner')}</span>
                 <div className="flex items-center gap-2 shrink-0 justify-end">
@@ -1062,8 +1062,8 @@ export function ProjectFormModal({ isOpen, onClose, projectId = null }) {
               <h3 className="text-sm font-semibold text-on-surface">{t('modal.repo.heading')}</h3>
 
               {/* Explicit Private / Never Public Security Banner */}
-              <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-start gap-3">
-                <span className="material-symbols-outlined text-amber-400 text-[20px] shrink-0 mt-0.5">
+              <div className="p-3.5 rounded-xl bg-warning/10 border border-warning/25 flex items-start gap-3">
+                <span className="material-symbols-outlined text-warning text-[20px] shrink-0 mt-0.5">
                   lock
                 </span>
                 <div className="text-xs space-y-0.5">

@@ -167,15 +167,55 @@ import { HoneypotField } from '@/components/ui';
 
 ---
 
-## 6. UI Primitives & Design Tokens
+## 6. UI Primitives & Design Tokens (Light-First Theme)
+
+### Theme & Storage Key:
+- **Default Theme**: Light (`light`). Persisted in `localStorage` under `bc_theme_v2` (bumped so users who previously had `dark` saved start in the new light theme). Dark mode remains functional via the theme toggle (`html.dark`).
+
+### Light Theme Palette (`src/styles/index.css` & `tailwind.config.js` — White + Mint):
+- **Page / Canvas Background** (`bg-background` / `bg-surface`): `#FFFFFF`
+- **Alternate Section Band & Footer** (`bg-section-band`): `#F6FBF8`
+- **Cards (Mint-White)** (`bg-card` / `bg-surface-container`): `#F8FCFA`
+  - **Card Border** (`border-card-border`): `#E2EEE8` (1px solid)
+  - **Card Default Shadow** (`shadow-card`): `0 1px 2px rgba(15,23,42,.05), 0 10px 30px -12px rgba(15,23,42,.10)`
+  - **Clickable Card Hover**: background `#FFFFFF` (`bg-card-hover`), border `#BFEBD5` (`border-card-hover-border`), `translateY(-2px)`, hover shadow `0 16px 40px -14px rgba(16,185,129,.25)` (`shadow-card-hover`).
+- **Typography & Borders (Cool Slate)**:
+  - Primary (`text-on-surface`): `#0F172A`
+  - Secondary (`text-on-surface-variant`): `#475569`
+  - Muted (`text-muted`): `#64748B`
+  - Borders (`border-outline-variant`): `#E2E8F0`
+  - All three text tokens achieve ≥ 4.5:1 contrast on `#FFFFFF`, `#F8FCFA`, and `#F6FBF8`.
+- **Inputs (`Input`, `Select`, `Textarea`, `TagInput`)**:
+  - Background (`bg-input`): `#FFFFFF`
+  - Border (`border-input-border`): `#CBD5E1`
+  - Focus Ring (`focus:ring-input-focus`): 2px `#10B981`
+  - Placeholder (`placeholder:text-placeholder`): `#94A3B8`
+- **Navbar, Footer, Hero & Overlays**:
+  - Navbar: white 90% (`bg-surface/90`) with backdrop blur + bottom border `#E2E8F0`; nav pill `#F1F5F9` (`bg-nav-pill`) with active item `#E6FAF1` (`bg-nav-active-bg`) and text `#047857`; language/theme toggle buttons are white (`#FFFFFF`) with `#E2E8F0` border and `#F1F5F9` hover.
+  - Footer: `#F6FBF8` (`bg-section-band`) with top border `#E2E8F0`.
+  - Hero headers (`.bc-hero-wash`): soft radial `#DDF9EC` at top end + radial `#E3EEFF` at top start fading to `#FFFFFF`.
+  - Modals / Drawers: white panels (`#FFFFFF`) over overlay `rgba(15,23,42,.45)` (`bg-overlay`).
+- **Brand, Icon Chips & Statuses**:
+  - Filled Button Gradient (`btn-primary-gradient`): `linear-gradient(90deg, #52E982 0%, #19ECB5 100%)` with text `#0A0A0A` and glow `0 10px 24px -8px rgba(25,236,181,.45)`.
+  - Readable Green Text / Links / Icons / Active Nav / Charts (`text-primary`): `#047857` (≥ 5:1 contrast).
+  - Clean Pastel Icon Chips & Badges (6 pairs, all ≥ 4.5:1):
+    - Mint (`.bc-chip-mint`): `#E1F8EE` / `#047857`
+    - Violet (`.bc-chip-violet`): `#EEE6FF` / `#6D28D9`
+    - Sky (`.bc-chip-sky`): `#E0F2FE` / `#0369A1`
+    - Amber (`.bc-chip-amber`): `#FEF3C7` / `#B45309`
+    - Rose (`.bc-chip-rose`): `#FFE4E6` / `#BE123C`
+    - Blue (`.bc-chip-blue`): `#E0EAFF` / `#1D4ED8`
+  - Stars (`text-star`): `#F59E0B`
+  - Semantic Statuses: success `#047857`, warning `#B45309`, danger `#B91C1C`, info `#1D4ED8`
+  - **Intentional Dark Contrast Element**: Only the decorative code/terminal window in the Home hero (`#0F172A`, `.bc-code-window`) remains dark.
 
 ### Buttons (`@/components/ui/Button`):
 - **Variants**:
-  - `primary-gradient`: Owner-overridden `#52E982 → #19ECB5`, text `#0A0A0A` (never white), cyan-mint glow on hover/focus (`btn-primary-gradient`).
-  - `outline`: Emerald border with transparent background.
-  - `ghost`: Subtle hover surface.
-  - `secondary`: Surface container high.
-  - `danger`: Red error surface.
+  - `primary-gradient`: `#52E982 → #19ECB5`, text `#0A0A0A` (never white), glow `0 10px 24px -8px rgba(25,236,181,.45)` (`btn-primary-gradient`).
+  - `outline`: `#047857` border and text with soft mint hover tint.
+  - `ghost`: Subtle `#F1F5F9` hover surface.
+  - `secondary`: Clean white surface (`#FFFFFF`) with `#CBD5E1` border and `#F1F5F9` hover.
+  - `danger`: `#B91C1C` background with white text (`#FFFFFF`).
 - **Sizes**: `sm` (40px), `md` (48px - default), `lg` (56px), `icon`, `icon-sm`.
 
 ### Form Layout Rules:
@@ -188,4 +228,4 @@ import { HoneypotField } from '@/components/ui';
 - Select: styled native `<select>` with `appearance-none` and custom chevron on the `end` side (`pe-10`).
 
 ### Interactive Showcase:
-Browse `http://localhost:5173/__ui` in your local development environment to visually inspect all 23 primitives and 10 shared components across all states (default, hover, focus, error, disabled, loading) in dark and light modes.
+Browse `http://localhost:5173/__ui` in your local development environment to visually inspect all 23 primitives and 10 shared components across all states (default, hover, focus, error, disabled, loading) in light and dark modes.

@@ -26,7 +26,7 @@ export function DashboardKpiGrid({ totals = {} }) {
       hint: t('kpis.revenue.hint'),
       icon: 'account_balance_wallet',
       highlight: true,
-      iconClasses: 'bg-primary/15 text-primary',
+      iconClasses: 'bc-chip-mint border',
       to: `${ROUTES.OWNER_ORDERS}?status=paid`,
     },
     {
@@ -35,7 +35,7 @@ export function DashboardKpiGrid({ totals = {} }) {
       value: formatNumber(ordersCount),
       hint: t('kpis.ordersCount.hint'),
       icon: 'shopping_bag',
-      iconClasses: 'bg-surface-container-high text-on-surface',
+      iconClasses: 'bc-chip-blue border',
       to: ROUTES.OWNER_ORDERS,
     },
     {
@@ -44,7 +44,7 @@ export function DashboardKpiGrid({ totals = {} }) {
       value: formatNumber(paidOrders),
       hint: t('kpis.paidOrders.hint'),
       icon: 'verified',
-      iconClasses: 'bg-emerald-500/15 text-emerald-400',
+      iconClasses: 'bc-chip-sky border',
       to: `${ROUTES.OWNER_ORDERS}?status=paid`,
     },
     {
@@ -58,10 +58,7 @@ export function DashboardKpiGrid({ totals = {} }) {
       icon: 'receipt_long',
       alert: pendingProofs > 0,
       alertTone: 'warning',
-      iconClasses:
-        pendingProofs > 0
-          ? 'bg-warning/15 text-warning'
-          : 'bg-surface-container-high text-on-surface-variant',
+      iconClasses: 'bc-chip-amber border',
       to: `${ROUTES.OWNER_ORDERS}?status=awaiting_review`,
     },
     {
@@ -75,10 +72,7 @@ export function DashboardKpiGrid({ totals = {} }) {
       icon: 'mark_chat_unread',
       alert: newInquiries > 0,
       alertTone: 'primary',
-      iconClasses:
-        newInquiries > 0
-          ? 'bg-primary/15 text-primary'
-          : 'bg-surface-container-high text-on-surface-variant',
+      iconClasses: 'bc-chip-rose border',
       to: `${ROUTES.OWNER_INQUIRIES}?status=new`,
     },
     {
@@ -87,7 +81,7 @@ export function DashboardKpiGrid({ totals = {} }) {
       value: formatNumber(publishedProjects),
       hint: t('kpis.publishedProjects.hint'),
       icon: 'folder_code',
-      iconClasses: 'bg-primary/10 text-primary',
+      iconClasses: 'bc-chip-violet border',
       to: ROUTES.OWNER_PROJECTS,
     },
   ];
@@ -102,10 +96,10 @@ export function DashboardKpiGrid({ totals = {} }) {
           key={card.key}
           to={card.to}
           className={clsx(
-            'group relative rounded-xl border p-5 flex flex-col justify-between gap-4 transition-all duration-150',
+            'group relative rounded-xl border p-5 flex flex-col justify-between gap-4 bg-card shadow-card transition-all duration-200 hover:bg-card-hover hover:shadow-card-hover hover:-translate-y-0.5',
             card.highlight
-              ? 'bg-surface-container border-primary/30 hover:border-primary/60'
-              : 'bg-surface-container-low border-outline-variant hover:bg-surface-container hover:border-outline'
+              ? 'border-primary/40 hover:border-primary'
+              : 'border-card-border hover:border-card-hover-border'
           )}
         >
           <div className="flex items-start justify-between gap-3">

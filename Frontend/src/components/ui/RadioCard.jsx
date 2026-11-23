@@ -26,10 +26,10 @@ export const RadioCard = forwardRef(function RadioCard(
       htmlFor={inputId}
       className={clsx(
         'relative flex flex-col p-4 sm:p-5 rounded-xl border transition-all duration-150 cursor-pointer select-none',
-        'focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-surface',
+        'focus-within:ring-2 focus-within:ring-input-focus focus-within:ring-offset-2 focus-within:ring-offset-surface',
         checked
-          ? 'bg-surface-container border-primary shadow-sm'
-          : 'bg-surface-container-low border-outline-variant hover:border-outline hover:bg-surface-container',
+          ? 'bg-card-hover border-primary ring-1 ring-primary/30 shadow-card'
+          : 'bg-card border-card-border shadow-card hover:border-card-hover-border hover:bg-card-hover',
         disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
         className
       )}

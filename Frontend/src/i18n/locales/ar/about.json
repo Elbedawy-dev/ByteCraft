@@ -1,7 +1,4 @@
 {
-  "meta": {
-    "title": "عن بايت كرافت | بايت كرافت"
-  },
   "hero": {
     "eyebrow": "هندسة برمجية متقدمة • بايت كرافت",
     "titleBefore": "نصنع حلول ويب ذكية وسريعة ",
@@ -49,8 +46,8 @@
     "photoAlt": "صورة مؤسس ومهندس المعمارية البرمجية في بايت كرافت",
     "role": "Lead Fullstack Architect & Founder",
     "availabilityBadge": "متاح للاستشارات التقنية",
-    "experience": "أكثر من 7 سنوات خبرة برمجية",
-    "bio": "متخصص في هندسة تطبيقات الويب المركبة، تصميم وبناء قواعد البيانات ذات الكثافة العالية، وإدارة مسارات النشر السحابي الآلي. قاد وأشرف على تنفيذ أكثر من 45 مشروعاً برمجياً ناجحاً داخل مصر وبمنطقة الخليج العربي.",
+    "experience": "هندسة معمارية برمجية وتطوير إنتاجي",
+    "bio": "متخصص في هندسة تطبيقات الويب المركبة، تصميم وبناء قواعد البيانات ذات الكثافة العالية، وإدارة مسارات النشر السحابي الآلي. أشرف على تنفيذ وتطوير مشاريع برمجية ناجحة داخل مصر وبمنطقة الخليج العربي.",
     "tags": [
       "Fullstack Arch",
       "System Design",
@@ -70,44 +67,6 @@
       "phone": "اتصال هاتفي"
     }
   },
-  "stats": [
-    {
-      "id": "shipments",
-      "icon": "deployed_code",
-      "codeLabel": "Shipments",
-      "value": "+45",
-      "title": "مشروع ناجح تم تسليمه",
-      "description": "منصات تعليمية، لوحات تحكم، وأنظمة دفع مكتملة",
-      "accent": "primary"
-    },
-    {
-      "id": "satisfaction",
-      "icon": "sentiment_very_satisfied",
-      "codeLabel": "Satisfaction",
-      "value": "99.8%",
-      "title": "رضا وثقة العملاء",
-      "description": "شراكات عمل ممتدة وتكرار طلب الخدمات",
-      "accent": "secondary"
-    },
-    {
-      "id": "latency",
-      "icon": "bolt",
-      "codeLabel": "Latency",
-      "value": "100ms",
-      "title": "متوسط سرعة استجابة الـ API",
-      "description": "استعلامات محسنة وكاشينغ ذكي عبر Redis",
-      "accent": "tertiary"
-    },
-    {
-      "id": "uptime",
-      "icon": "support_agent",
-      "codeLabel": "Uptime",
-      "value": "24/7",
-      "title": "جاهزية الدعم الفني",
-      "description": "مراقبة مستمرة واستجابة فورية للحالات الطارئة",
-      "accent": "primary"
-    }
-  ],
   "skills": {
     "eyebrow": "الترسانة البرمجية",
     "title": "المهارات والتقنيات الأساسية",
@@ -119,7 +78,7 @@
         "accent": "primary",
         "title": "واجهات المستخدم",
         "subtitle": "Frontend Architecture",
-        "footer": "Core: 100% Responsive & Arabic RTL",
+        "footer": "الأساس: تجاوب كامل ودعم العربية RTL",
         "items": [
           { "name": "React.js", "tag": "v18+ Hooks", "accent": "primary" },
           { "name": "Next.js", "tag": "SSR & App Router", "accent": "neutral" },

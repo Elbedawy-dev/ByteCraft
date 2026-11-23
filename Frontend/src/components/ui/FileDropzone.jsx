@@ -5,7 +5,7 @@ import { formatFileSize } from '../../lib/format';
 export function FileDropzone({
   onFilesSelected,
   accept = '*/*',
-  maxSize, // in bytes
+  maxSize = 4 * 1024 * 1024, // 4 MB default
   multiple = false,
   disabled = false,
   label = 'Drag & drop files here, or click to browse',
@@ -69,8 +69,8 @@ export function FileDropzone({
         className={clsx(
           'relative flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-xl transition-all duration-150 text-center cursor-pointer select-none',
           isDragOver
-            ? 'border-primary bg-primary/5'
-            : 'border-outline-variant hover:border-outline bg-surface-container-low hover:bg-surface-container',
+            ? 'border-primary bg-chip-mint-bg/60'
+            : 'border-input-border hover:border-primary/60 bg-input hover:bg-card',
           disabled && 'opacity-50 cursor-not-allowed pointer-events-none'
         )}
       >
@@ -84,7 +84,7 @@ export function FileDropzone({
           className="sr-only"
         />
 
-        <div className="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-primary mb-3">
+        <div className="w-12 h-12 rounded-full bc-chip-mint border flex items-center justify-center mb-3">
           <span className="material-symbols-outlined text-[24px]">
             cloud_upload
           </span>

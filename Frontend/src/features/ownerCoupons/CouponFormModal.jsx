@@ -178,7 +178,7 @@ export function CouponFormModal({ isOpen, coupon = null, onClose }) {
               dir="ltr"
               autoComplete="off"
               placeholder={t('ownerCoupons:modal.fields.codePlaceholder')}
-              className="font-mono uppercase tracking-wider placeholder:text-outline"
+              className="font-mono uppercase tracking-wider"
               disabled={isSubmitting}
               {...codeReg}
               onChange={(e) => {
@@ -227,7 +227,7 @@ export function CouponFormModal({ isOpen, coupon = null, onClose }) {
                   ? t('ownerCoupons:modal.fields.valueFixedPlaceholder')
                   : t('ownerCoupons:modal.fields.valuePercentPlaceholder')
               }
-              className="font-mono placeholder:text-outline"
+              className="font-mono"
               disabled={isSubmitting}
               iconTrailing={
                 <span className="text-xs font-semibold text-primary">
@@ -251,7 +251,7 @@ export function CouponFormModal({ isOpen, coupon = null, onClose }) {
               min="1"
               step="1"
               placeholder={t('ownerCoupons:modal.fields.maxUsesPlaceholder')}
-              className="font-mono placeholder:text-outline"
+              className="font-mono"
               disabled={isSubmitting}
               {...register('maxUses')}
             />
@@ -334,11 +334,11 @@ export function CouponFormModal({ isOpen, coupon = null, onClose }) {
               value={projectSearch}
               onChange={(e) => setProjectSearch(e.target.value)}
               placeholder={t('ownerCoupons:modal.fields.searchProjectsPlaceholder')}
-              className="h-10 text-xs placeholder:text-outline"
+              className="h-10 text-xs"
               iconLeading={<span className="material-symbols-outlined text-[18px]">search</span>}
             />
 
-            <div className="max-h-48 overflow-y-auto space-y-1 pe-1">
+            <div className="max-h-48 bc-scroll space-y-1 pe-1">
               {loadingProjects ? (
                 <div className="space-y-2 p-2">
                   <Skeleton className="h-8 w-full rounded-lg" />

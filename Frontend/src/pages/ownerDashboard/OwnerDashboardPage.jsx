@@ -10,12 +10,22 @@ import { OwnerPageHeader, useOwner } from '../../components/layout/OwnerLayout';
 import {
   DashboardKpiGrid,
   DashboardSkeleton,
-  OrdersStatusChart,
   RecentInquiriesCard,
   RecentOrdersCard,
-  RevenueTrendChart,
   TopProjectsCard,
 } from '../../features/ownerDashboard';
+
+const RevenueTrendChart = React.lazy(() =>
+  import('../../features/ownerDashboard/RevenueTrendChart').then((m) => ({
+    default: m.RevenueTrendChart,
+  }))
+);
+
+const OrdersStatusChart = React.lazy(() =>
+  import('../../features/ownerDashboard/OrdersStatusChart').then((m) => ({
+    default: m.OrdersStatusChart,
+  }))
+);
 
 export default function OwnerDashboardPage() {
   const { t } = useTranslation(['ownerDashboard', 'owner']);
@@ -194,14 +204,23 @@ export default function OwnerDashboardPage() {
           <DashboardKpiGrid totals={totals} />
 
           {/* Charts Row: 12-Month Revenue (2 cols) + Orders by Status (1 col) */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-            <div className="lg:col-span-2">
-              <RevenueTrendChart revenueByMonth={data?.revenueByMonth || []} />
+          <React.Suspense
+            fallback={
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                <div className="lg:col-span-2 h-72 rounded-xl bg-surface-container animate-pulse" />
+                <div className="h-72 rounded-xl bg-surface-container animate-pulse" />
+              </div>
+            }
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+              <div className="lg:col-span-2">
+                <RevenueTrendChart revenueByMonth={data?.revenueByMonth || []} />
+              </div>
+              <div>
+                <OrdersStatusChart ordersByStatus={data?.ordersByStatus || []} />
+              </div>
             </div>
-            <div>
-              <OrdersStatusChart ordersByStatus={data?.ordersByStatus || []} />
-            </div>
-          </div>
+          </React.Suspense>
 
           {/* Top Projects */}
           <TopProjectsCard topProjects={data?.topProjects || []} />

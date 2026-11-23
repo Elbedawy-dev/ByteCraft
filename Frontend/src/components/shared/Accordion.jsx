@@ -19,7 +19,7 @@ export function Accordion({
   };
 
   return (
-    <div className={clsx('divide-y divide-outline-variant/60 rounded-xl border border-outline-variant bg-surface-container overflow-hidden', className)}>
+    <div className={clsx('divide-y divide-card-border rounded-xl border border-card-border bg-card shadow-card overflow-hidden', className)}>
       {items.map((item) => {
         const isOpen = openIds.includes(item.id);
 

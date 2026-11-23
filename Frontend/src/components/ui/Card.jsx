@@ -20,13 +20,13 @@ export const Card = forwardRef(function Card(
   }[padding];
 
   const variantStyles = {
-    default: 'bg-surface-container border border-outline-variant rounded-xl',
-    flat: 'bg-surface-container-low border border-outline-variant/60 rounded-xl',
+    default: 'bg-card border border-card-border shadow-card rounded-xl',
+    flat: 'bg-card border border-card-border shadow-card rounded-xl',
     interactive:
-      'bg-surface-container border border-outline-variant rounded-xl transition-all duration-200 hover:border-primary/40 hover:shadow-[0_4px_24px_-4px_rgba(0,0,0,0.4)] hover:-translate-y-0.5 cursor-pointer',
+      'bg-card border border-card-border shadow-card rounded-xl transition-all duration-200 hover:bg-card-hover hover:border-card-hover-border hover:shadow-card-hover hover:-translate-y-0.5 cursor-pointer',
     glass:
-      'bg-surface-container/70 backdrop-blur-md border border-outline-variant/80 rounded-xl shadow-lg',
-  }[variant] || 'bg-surface-container border border-outline-variant rounded-xl';
+      'bg-card/90 backdrop-blur-md border border-card-border shadow-card rounded-xl',
+  }[variant] || 'bg-card border border-card-border shadow-card rounded-xl';
 
   return (
     <Component

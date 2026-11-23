@@ -158,7 +158,7 @@ export function CategoryFormModal({ isOpen, onClose, category = null }) {
           {showUnsavedGuard && (
             <div
               role="alert"
-              className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs sm:text-sm"
+              className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-xl bg-warning/10 border border-warning/30 text-xs sm:text-sm"
             >
               <span className="text-on-surface font-medium">{t('unsaved.banner')}</span>
               <div className="flex items-center gap-2 shrink-0 justify-end">

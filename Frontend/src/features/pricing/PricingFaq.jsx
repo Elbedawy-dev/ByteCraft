@@ -30,7 +30,7 @@ export function PricingFaq() {
         {items.map((item) => (
           <details
             key={item.id}
-            className="bc-accordion-item group rounded-xl bg-surface-container-low border border-outline-variant/70 overflow-hidden transition-colors hover:border-outline shadow-sm"
+            className="bc-accordion-item group rounded-xl bg-card border border-card-border overflow-hidden transition-colors hover:bg-card-hover hover:border-card-hover-border shadow-card"
           >
             <summary className="w-full min-h-[56px] px-5 sm:px-6 py-4 flex items-center justify-between gap-4 text-start cursor-pointer select-none text-on-surface hover:text-primary transition-colors font-semibold text-body-md sm:text-body-lg">
               <span>{item.question}</span>
@@ -42,7 +42,7 @@ export function PricingFaq() {
               </span>
             </summary>
 
-            <div className="px-5 sm:px-6 pb-5 pt-3 border-t border-outline-variant/40 text-body-md text-on-surface-variant leading-relaxed">
+            <div className="px-5 sm:px-6 pb-5 pt-3 border-t border-card-border text-body-md text-on-surface-variant leading-relaxed">
               {item.answer}
             </div>
           </details>

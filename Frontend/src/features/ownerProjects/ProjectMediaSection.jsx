@@ -8,7 +8,7 @@ import { formatNumber } from '@/lib/format';
 import { Badge, Button } from '@/components/ui';
 
 const ALLOWED_IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
-const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5 MB
+const MAX_IMAGE_BYTES = 4 * 1024 * 1024; // 4 MB
 
 export function ProjectMediaSection({
   thumbnail,
@@ -195,10 +195,10 @@ export function ProjectMediaSection({
         className={clsx(
           'rounded-2xl p-6 flex flex-col items-center justify-center gap-2 border-2 border-dashed transition-all cursor-pointer select-none text-center',
           isDragOver
-            ? 'border-primary bg-primary/5'
+            ? 'border-primary bg-chip-mint-bg/60'
             : errorMessage
-              ? 'border-error/70 bg-surface-container-lowest/80 hover:border-error'
-              : 'border-outline-variant bg-surface-container-lowest/80 hover:border-primary/70 hover:bg-surface-container-lowest',
+              ? 'border-error/70 bg-input hover:border-error'
+              : 'border-input-border bg-input hover:border-primary/60 hover:bg-card',
           uploadMutation.isPending && 'opacity-65 cursor-wait'
         )}
       >
@@ -212,7 +212,7 @@ export function ProjectMediaSection({
           className="sr-only"
         />
 
-        <div className="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary">
+        <div className="w-12 h-12 rounded-full bc-chip-mint border flex items-center justify-center">
           <span className="material-symbols-outlined text-[26px]">cloud_upload</span>
         </div>
 
@@ -299,7 +299,7 @@ export function ProjectMediaSection({
                   />
 
                   {item.isCover && (
-                    <span className="absolute top-2 start-2 bg-primary text-[#0A0A0A] text-[11px] px-2.5 py-0.5 rounded-full font-semibold shadow-sm inline-flex items-center gap-1">
+                    <span className="absolute top-2 start-2 bg-primary text-on-primary text-[11px] px-2.5 py-0.5 rounded-full font-semibold shadow-sm inline-flex items-center gap-1">
                       <span className="material-symbols-outlined material-symbols-filled text-[14px]">
                         star
                       </span>
@@ -312,7 +312,7 @@ export function ProjectMediaSection({
                     onClick={() => setPreviewImage(item)}
                     aria-label={t('modal.media.zoomImage')}
                     title={t('modal.media.zoomImage')}
-                    className="absolute top-2 end-2 w-8 h-8 rounded-lg bg-black/60 text-white hover:bg-black/80 flex items-center justify-center transition-colors"
+                    className="absolute top-2 end-2 w-8 h-8 rounded-lg bg-surface/90 text-on-surface border border-card-border hover:bg-surface flex items-center justify-center transition-colors shadow-sm"
                   >
                     <span className="material-symbols-outlined text-[16px]">fullscreen</span>
                   </button>
@@ -326,7 +326,7 @@ export function ProjectMediaSection({
                         <button
                           type="button"
                           onClick={() => handleSetAsCover(item.galleryIndex)}
-                          className="px-2 py-1.5 rounded-lg bg-surface-container text-primary hover:bg-primary hover:text-[#0A0A0A] font-medium transition-colors truncate"
+                          className="px-2 py-1.5 rounded-lg bg-surface border border-card-border text-primary hover:bg-primary hover:text-on-primary font-medium transition-colors truncate"
                           title={t('modal.media.setAsCover')}
                         >
                           {t('modal.media.setAsCover')}
@@ -386,14 +386,14 @@ export function ProjectMediaSection({
       {/* Lightbox Quick Preview */}
       {previewImage && (
         <div
-          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-overlay backdrop-blur-sm flex items-center justify-center p-4"
           onClick={() => setPreviewImage(null)}
         >
           <div
-            className="relative max-w-4xl w-full bg-surface-container rounded-2xl overflow-hidden border border-outline-variant shadow-2xl"
+            className="relative max-w-4xl w-full bg-surface rounded-2xl overflow-hidden border border-outline-variant shadow-card-hover"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between p-3 border-b border-outline-variant">
+            <div className="flex items-center justify-between p-3 border-b border-outline-variant bg-card">
               <span className="text-xs font-mono text-on-surface-variant truncate">
                 <bdi dir="ltr">{previewImage.publicId}</bdi>
               </span>
@@ -401,12 +401,12 @@ export function ProjectMediaSection({
                 type="button"
                 onClick={() => setPreviewImage(null)}
                 aria-label={t('modal.closeLabel')}
-                className="w-9 h-9 rounded-lg bg-surface-container-high text-on-surface flex items-center justify-center"
+                className="w-9 h-9 rounded-lg bg-surface border border-card-border text-on-surface flex items-center justify-center"
               >
                 <span className="material-symbols-outlined text-[18px]">close</span>
               </button>
             </div>
-            <div className="p-2 bg-black/50 flex items-center justify-center">
+            <div className="p-2 bg-surface-dim flex items-center justify-center">
               <img
                 src={previewImage.url}
                 alt={previewImage.publicId}

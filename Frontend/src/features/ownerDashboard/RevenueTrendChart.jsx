@@ -69,7 +69,7 @@ function CustomRevenueTooltip({ active, payload, lang, dir, t }) {
   return (
     <div
       dir={dir}
-      className="rounded-xl border border-outline-variant bg-surface-container px-3.5 py-2.5 shadow-xl text-xs min-w-[160px]"
+      className="rounded-xl border border-outline-variant bg-surface px-3.5 py-2.5 shadow-card-hover text-xs min-w-[160px]"
     >
       <div className="font-semibold text-on-surface mb-1.5">
         {point.fullLabel}
@@ -115,8 +115,8 @@ export function RevenueTrendChart({ revenueByMonth = [] }) {
       }
     : {
         stroke: '#047857',
-        grid: '#D8DDDB',
-        tick: '#525A57',
+        grid: '#E2E8F0',
+        tick: '#475569',
       };
 
   const formatCompactEgp = (val) => {

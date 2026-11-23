@@ -9,9 +9,9 @@ import { ROUTES } from '@/config/routes';
 import { OwnerAvatar } from './OwnerAvatar';
 
 const ACCENT_ICON_TEXT = {
-  primary: 'text-primary',
-  secondary: 'text-secondary',
-  tertiary: 'text-tertiary',
+  primary: 'text-chip-mint-fg',
+  secondary: 'text-chip-sky-fg',
+  tertiary: 'text-chip-violet-fg',
 };
 
 function sanitizeExternalUrl(url) {
@@ -124,21 +124,11 @@ export function AboutHero() {
   const ownerTags = Array.isArray(rawOwnerTags) ? rawOwnerTags : [];
 
   return (
-    <div className="relative w-full overflow-hidden">
-      {/* Top Ambient Glow Aura */}
-      <div
-        className="absolute -top-32 start-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[128px] pointer-events-none"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute top-1/2 end-10 w-80 h-80 bg-secondary/10 rounded-full blur-[110px] pointer-events-none"
-        aria-hidden="true"
-      />
-
+    <div className="relative w-full overflow-hidden bc-hero-wash">
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative z-10">
         {/* Eyebrow Pill + Hairline */}
         <div className="flex items-center gap-3 mb-5">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface-container border border-outline-variant/60 text-primary font-code text-label-code shadow-sm">
+          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface border border-card-border text-primary font-code text-label-code shadow-card">
             <span className="relative flex h-2 w-2" aria-hidden="true">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
@@ -165,7 +155,7 @@ export function AboutHero() {
           {/* Start Column: Story, Mission & Methodology */}
           <div className="lg:col-span-7 space-y-6">
             {/* Card: Who We Are */}
-            <article className="bg-surface-container-low border border-outline-variant/70 rounded-xl p-6 sm:p-7 shadow-lg relative overflow-hidden">
+            <article className="bg-card border border-card-border rounded-xl p-6 sm:p-7 shadow-card relative overflow-hidden">
               <div
                 className="absolute top-0 start-0 w-1.5 h-full bg-primary"
                 aria-hidden="true"
@@ -188,7 +178,7 @@ export function AboutHero() {
             </article>
 
             {/* Card: Technical Mission */}
-            <article className="bg-surface-container-low border border-outline-variant/70 rounded-xl p-6 sm:p-7 shadow-lg relative overflow-hidden">
+            <article className="bg-card border border-card-border rounded-xl p-6 sm:p-7 shadow-card relative overflow-hidden">
               <div
                 className="absolute top-0 start-0 w-1.5 h-full bg-secondary"
                 aria-hidden="true"
@@ -207,7 +197,7 @@ export function AboutHero() {
             </article>
 
             {/* Card: Methodology & Values */}
-            <article className="bg-surface-container-low border border-outline-variant/70 rounded-xl p-6 sm:p-7 shadow-lg">
+            <article className="bg-card border border-card-border rounded-xl p-6 sm:p-7 shadow-card">
               <h2 className="text-headline-md font-bold text-on-surface mb-5 flex items-center gap-2.5">
                 <span className="material-symbols-outlined text-tertiary text-[24px]" aria-hidden="true">
                   verified
@@ -218,7 +208,7 @@ export function AboutHero() {
                 {methodologyItems.map((item, idx) => (
                   <div
                     key={idx}
-                    className="p-4 rounded-lg bg-surface-container border border-outline-variant/40"
+                    className="p-4 rounded-lg bg-surface border border-card-border"
                   >
                     <span
                       className={clsx(
@@ -243,9 +233,9 @@ export function AboutHero() {
 
           {/* End Column: Founder Profile Card */}
           <aside className="lg:col-span-5">
-            <div className="group relative bg-surface-container-low border border-outline-variant/80 rounded-xl p-4 sm:p-5 shadow-xl transition-all duration-300 hover:border-primary/40 hover:shadow-primary-glow">
+            <div className="group relative bg-card border border-card-border rounded-xl p-4 sm:p-5 shadow-card transition-all duration-200 hover:bg-card-hover hover:border-card-hover-border hover:shadow-card-hover hover:-translate-y-0.5">
               {/* Square Portrait Frame */}
-              <div className="relative aspect-square w-full rounded-lg overflow-hidden bg-surface-container border border-outline-variant/50">
+              <div className="relative aspect-square w-full rounded-lg overflow-hidden bg-surface border border-card-border">
                 <OwnerAvatar
                   initials={t('owner.initials')}
                   alt={t('owner.photoAlt')}
@@ -253,14 +243,8 @@ export function AboutHero() {
                   badgeOffset
                 />
 
-                {/* Bottom Gradient Vignette */}
-                <div
-                  className="absolute inset-0 bg-gradient-to-t from-surface-container-lowest/90 via-transparent to-transparent pointer-events-none"
-                  aria-hidden="true"
-                />
-
                 {/* Floating Availability Pill */}
-                <div className="absolute top-3 start-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md border border-outline-variant/60 shadow-md">
+                <div className="absolute top-3 start-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface/95 backdrop-blur-md border border-card-border shadow-sm">
                   <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse shrink-0" aria-hidden="true" />
                   <span className="text-label-md text-primary font-semibold">
                     {t('owner.availabilityBadge')}
@@ -268,7 +252,7 @@ export function AboutHero() {
                 </div>
 
                 {/* Overlay Nameplate */}
-                <div className="absolute bottom-3 inset-x-3 p-3.5 rounded-lg bg-surface-container-lowest/90 backdrop-blur-md border border-outline-variant/60">
+                <div className="absolute bottom-3 inset-x-3 p-3.5 rounded-lg bg-surface/95 backdrop-blur-md border border-card-border shadow-sm">
                   <h2 className="text-headline-md font-bold text-on-surface leading-snug">
                     {t('owner.name')}
                   </h2>
@@ -300,7 +284,7 @@ export function AboutHero() {
                       <span
                         key={idx}
                         className={clsx(
-                          'px-2.5 py-1 rounded-full bg-surface-container border border-outline-variant/50 font-code text-label-code',
+                          'px-2.5 py-1 rounded-full bg-surface border border-card-border font-code text-label-code',
                           idx === 1
                             ? 'text-secondary'
                             : idx === 2
@@ -316,7 +300,7 @@ export function AboutHero() {
 
                 {/* Contact & Social Channels from useMeta().contact */}
                 {channels.length > 0 && (
-                  <div className="pt-2 border-t border-outline-variant/40">
+                  <div className="pt-2 border-t border-card-border">
                     <div className="text-label-md text-on-surface-variant mb-2">
                       {t('owner.contactChannelsLabel')}
                     </div>
@@ -328,7 +312,7 @@ export function AboutHero() {
                           target={ch.external ? '_blank' : undefined}
                           rel={ch.external ? 'noopener noreferrer' : undefined}
                           aria-label={ch.label}
-                          className="w-11 h-11 rounded-xl bg-surface-container border border-outline-variant/60 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/60 transition-colors"
+                          className="w-11 h-11 rounded-xl bg-surface border border-card-border flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/60 transition-colors"
                         >
                           <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
                             {ch.icon}

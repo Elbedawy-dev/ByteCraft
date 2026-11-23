@@ -61,7 +61,7 @@ export function Modal({
     >
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity"
         onClick={closeOnBackdrop ? onClose : undefined}
         aria-hidden="true"
       />
@@ -70,7 +70,7 @@ export function Modal({
       <div
         ref={dialogRef}
         className={clsx(
-          'relative w-full bg-surface-container border border-outline-variant rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col max-h-[92vh] sm:max-h-[85vh] z-10 overflow-hidden',
+          'relative w-full bg-surface border border-outline-variant rounded-t-2xl sm:rounded-2xl shadow-card-hover flex flex-col max-h-[92vh] sm:max-h-[85vh] z-10 overflow-hidden',
           sizeClasses,
           className
         )}
@@ -104,7 +104,7 @@ export function Modal({
         )}
 
         {/* Body */}
-        <div className="p-4 sm:p-6 overflow-y-auto flex-1">{children}</div>
+        <div className="p-4 sm:p-6 bc-scroll flex-1">{children}</div>
 
         {/* Footer */}
         {footer && (

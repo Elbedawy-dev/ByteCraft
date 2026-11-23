@@ -19,7 +19,7 @@ export const INQUIRY_BUDGET_RANGES = [
 export const INQUIRY_TIMELINES = ['urgent', 'standard', 'flexible'];
 
 export const MAX_INQUIRY_FILES = 3;
-export const MAX_INQUIRY_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+export const MAX_INQUIRY_FILE_SIZE = 4 * 1024 * 1024; // 4 MB
 export const ALLOWED_INQUIRY_MIMES = [
   'image/jpeg',
   'image/png',

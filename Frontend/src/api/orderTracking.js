@@ -18,7 +18,7 @@ export const ALLOWED_PROOF_MIMES = [
   'image/webp',
   'application/pdf',
 ];
-export const MAX_PROOF_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+export const MAX_PROOF_FILE_SIZE = 4 * 1024 * 1024; // 4 MB
 
 export const orderTrackingKeys = {
   all: ['orderTracking'],

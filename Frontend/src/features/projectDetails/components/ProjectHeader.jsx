@@ -37,13 +37,13 @@ export function ProjectHeader({ project, selectedPackage, guaranteeDays = 30 }) 
             {categoryName && (
               <Link
                 to={`${ROUTES.PROJECTS}?category=${encodeURIComponent(categoryKey || '')}`}
-                className="px-3 py-1 rounded-full bg-surface-container border border-outline-variant/60 text-primary font-semibold text-xs sm:text-sm hover:border-primary/40 transition-colors"
+                className="px-3 py-1 rounded-full bg-badge-green-bg border border-primary/25 text-badge-green-text font-semibold text-xs sm:text-sm hover:border-primary/50 transition-colors"
               >
                 {categoryName}
               </Link>
             )}
             {categoryKey && (
-              <span className="px-3 py-1 rounded-full bg-surface-container border border-outline-variant/40 text-on-surface-variant font-label-code text-xs">
+              <span className="px-3 py-1 rounded-full bg-card border border-card-border text-on-surface-variant font-label-code text-xs">
                 <bdi dir="ltr">{categoryKey}</bdi>
               </span>
             )}
@@ -51,7 +51,7 @@ export function ProjectHeader({ project, selectedPackage, guaranteeDays = 30 }) 
 
           <a
             href="#reviews"
-            className="inline-flex items-center gap-2 bg-surface-container-low border border-outline-variant/60 hover:border-primary/40 px-3 py-1.5 rounded-xl transition-colors"
+            className="inline-flex items-center gap-2 bg-card border border-card-border shadow-card hover:bg-card-hover hover:border-card-hover-border px-3 py-1.5 rounded-xl transition-colors"
           >
             <Rating rating={avgRating} showCount={false} size="sm" />
             {reviewsCount > 0 ? (
@@ -84,8 +84,8 @@ export function ProjectHeader({ project, selectedPackage, guaranteeDays = 30 }) 
 
       {/* 4 Real Data Highlight Tiles (matching Stitch bytecraft_3 4-card strip) */}
       <section className="grid grid-cols-2 sm:grid-cols-4 gap-3" aria-label={t('sections.overviewTitle')}>
-        <div className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/60 flex flex-col gap-1">
-          <span className="material-symbols-outlined text-primary text-[26px]" aria-hidden="true">
+        <div className="p-4 rounded-xl bg-card border border-card-border shadow-card flex flex-col gap-1">
+          <span className="material-symbols-outlined text-chip-mint-fg text-[26px]" aria-hidden="true">
             {purchasesCount > 0 ? 'shopping_bag' : 'visibility'}
           </span>
           <span className="text-lg sm:text-headline-md text-on-surface font-bold font-mono">
@@ -96,8 +96,8 @@ export function ProjectHeader({ project, selectedPackage, guaranteeDays = 30 }) 
           </span>
         </div>
 
-        <div className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/60 flex flex-col gap-1">
-          <span className="material-symbols-outlined text-secondary text-[26px]" aria-hidden="true">
+        <div className="p-4 rounded-xl bg-card border border-card-border shadow-card flex flex-col gap-1">
+          <span className="material-symbols-outlined text-chip-sky-fg text-[26px]" aria-hidden="true">
             verified_user
           </span>
           <span className="text-lg sm:text-headline-md text-on-surface font-bold">
@@ -108,8 +108,8 @@ export function ProjectHeader({ project, selectedPackage, guaranteeDays = 30 }) 
           </span>
         </div>
 
-        <div className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/60 flex flex-col gap-1">
-          <span className="material-symbols-outlined text-tertiary text-[26px]" aria-hidden="true">
+        <div className="p-4 rounded-xl bg-card border border-card-border shadow-card flex flex-col gap-1">
+          <span className="material-symbols-outlined text-chip-violet-fg text-[26px]" aria-hidden="true">
             workspace_premium
           </span>
           <span className="text-sm sm:text-base text-on-surface font-bold leading-snug line-clamp-2">
@@ -120,8 +120,8 @@ export function ProjectHeader({ project, selectedPackage, guaranteeDays = 30 }) 
           </span>
         </div>
 
-        <div className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/60 flex flex-col gap-1">
-          <span className="material-symbols-outlined text-primary-fixed-dim text-[26px]" aria-hidden="true">
+        <div className="p-4 rounded-xl bg-card border border-card-border shadow-card flex flex-col gap-1">
+          <span className="material-symbols-outlined text-chip-amber-fg text-[26px]" aria-hidden="true">
             layers
           </span>
           <span className="text-lg sm:text-headline-md text-on-surface font-bold">
@@ -135,9 +135,9 @@ export function ProjectHeader({ project, selectedPackage, guaranteeDays = 30 }) 
 
       {/* Project Description Card */}
       {description && (
-        <section className="p-5 sm:p-6 rounded-xl bg-surface-container-low border border-outline-variant/60 space-y-3">
+        <section className="p-5 sm:p-6 rounded-xl bg-card border border-card-border shadow-card space-y-3">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-badge-green-bg text-primary border border-primary/20 flex items-center justify-center shrink-0">
               <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
                 description
               </span>

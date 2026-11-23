@@ -8,6 +8,7 @@ const { DEFAULT_GUARANTEE_DAYS } = require('../config/constants');
  * 
  * WHY:
  * Initializes the singleton site settings document with safe defaults:
+ * - Real owner contact data
  * - Guarantee days = 30
  * - All payment methods initially DISABLED until the owner explicitly configures and enables them.
  * 
@@ -34,16 +35,16 @@ async function seedSettings() {
         siteName: 'ByteCraft',
         guaranteeDays: DEFAULT_GUARANTEE_DAYS,
         contact: {
-          email: 'contact@bytecraft.dev',
-          whatsapp: '+201000000000',
-          phone: '+201000000000',
+          email: 'moaazelbedawy@gmail.com',
+          whatsapp: '201095731606',
+          phone: '+201095731606',
           location: {
-            ar: 'القاهرة، مصر',
-            en: 'Cairo, Egypt',
+            ar: '',
+            en: '',
           },
           socials: {
-            github: 'https://github.com',
-            linkedin: 'https://linkedin.com',
+            github: 'https://github.com/Elbedawy-dev',
+            linkedin: 'https://www.linkedin.com/in/moaaz-elbedawy',
             twitter: '',
             facebook: '',
           },
@@ -77,6 +78,7 @@ async function seedSettings() {
       });
 
       console.log('✅ Settings singleton created successfully with all payment gateways disabled by default.');
+      console.log('⚠️ Reminder: Please confirm your GitHub profile URL (set to https://github.com/Elbedawy-dev).');
     }
   } catch (error) {
     console.error('❌ Error while seeding settings:', error.message);
@@ -87,4 +89,8 @@ async function seedSettings() {
   }
 }
 
-seedSettings();
+if (require.main === module) {
+  seedSettings();
+}
+
+module.exports = seedSettings;

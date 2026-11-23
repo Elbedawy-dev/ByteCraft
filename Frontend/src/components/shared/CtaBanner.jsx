@@ -14,16 +14,16 @@ export function CtaBanner({
 }) {
   return (
     <section className={clsx('relative w-full max-w-7xl mx-auto py-8 sm:py-12', className)}>
-      <div className="relative rounded-3xl bg-gradient-to-r from-surface-container via-surface-container-high to-surface-container border border-outline-variant p-6 sm:p-10 lg:p-14 overflow-hidden shadow-2xl flex flex-col items-center text-center">
+      <div className="relative rounded-3xl bg-card border border-card-border p-6 sm:p-10 lg:p-14 overflow-hidden shadow-card flex flex-col items-center text-center">
         {/* Mint Ambient Accent Glow */}
         <div
-          className="absolute -top-24 left-1/2 -translate-x-1/2 w-80 h-80 bg-primary/20 rounded-full blur-[100px] pointer-events-none"
+          className="absolute -top-24 left-1/2 -translate-x-1/2 w-80 h-80 bg-primary/10 rounded-full blur-[100px] pointer-events-none"
           aria-hidden="true"
         />
 
         <div className="relative z-10 max-w-2xl flex flex-col items-center gap-4 sm:gap-6">
           {icon && (
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-surface-container-highest flex items-center justify-center text-primary shadow-md border border-outline-variant/60">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-badge-green-bg flex items-center justify-center text-primary shadow-sm border border-primary/20">
               <span className="material-symbols-outlined text-[32px] sm:text-[36px]">
                 {icon}
               </span>

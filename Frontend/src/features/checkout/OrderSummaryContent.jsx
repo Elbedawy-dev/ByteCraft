@@ -70,8 +70,8 @@ export function OrderSummaryContent({
   return (
     <div className="flex flex-col gap-5">
       {/* Project Mini Preview Card */}
-      <div className="bg-surface-container-lowest border border-outline-variant/70 rounded-xl p-3.5 sm:p-4 flex flex-col gap-3">
-        <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-surface-container border border-outline-variant/40">
+      <div className="bg-surface border border-card-border rounded-xl p-3.5 sm:p-4 flex flex-col gap-3">
+        <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-surface-container-high border border-card-border">
           {thumbnailUrl && !imgFailed ? (
             <img
               src={thumbnailUrl}
@@ -81,32 +81,26 @@ export function OrderSummaryContent({
               className="w-full h-full object-cover"
             />
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-surface-container to-surface-container-high text-primary/70">
+            <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-card to-surface-container-high text-primary/70">
               <span className="material-symbols-outlined text-[40px]" aria-hidden="true">
                 deployed_code
               </span>
             </div>
           )}
 
-          <div
-            className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"
-            aria-hidden="true"
-          />
-
           {categoryName && (
-            <span className="absolute top-2.5 start-2.5 bg-surface-container-highest/90 backdrop-blur-md text-primary text-[11px] font-semibold px-2.5 py-1 rounded-md border border-outline-variant/60 max-w-[85%] truncate">
+            <span className="absolute top-2.5 start-2.5 bg-badge-green-bg/95 backdrop-blur-md text-badge-green-text text-[11px] font-semibold px-2.5 py-1 rounded-md border border-primary/25 shadow-sm max-w-[85%] truncate">
               {categoryName}
             </span>
           )}
-
-          <p className="absolute bottom-2.5 inset-x-3 text-sm sm:text-base font-bold text-white drop-shadow line-clamp-1">
-            {title}
-          </p>
         </div>
 
         <div className="flex items-start justify-between gap-3 pt-0.5">
           <div className="flex flex-col min-w-0">
-            <span className="text-sm font-semibold text-on-surface truncate">
+            <span className="text-sm sm:text-base font-bold text-on-surface line-clamp-1">
+              {title}
+            </span>
+            <span className="text-xs sm:text-sm font-semibold text-primary truncate mt-0.5">
               {packageName}
             </span>
             <span className="text-xs text-on-surface-variant mt-0.5">
@@ -126,7 +120,7 @@ export function OrderSummaryContent({
                 : formatMoney(selectedPackage?.price ?? 0, lang)}
             </span>
             {hasCompareAt && (
-              <span className="text-xs text-outline line-through mt-0.5">
+              <span className="text-xs text-on-surface-variant line-through mt-0.5">
                 {formatMoney(selectedPackage.compareAtPrice, lang)}
               </span>
             )}
@@ -210,7 +204,7 @@ export function OrderSummaryContent({
                 placeholder={t('coupon.placeholder')}
                 error={Boolean(couponError)}
                 aria-describedby={couponError ? couponMsgId : undefined}
-                className="uppercase font-code tracking-wider placeholder:normal-case placeholder:tracking-normal placeholder:text-outline text-start"
+                className="uppercase font-code tracking-wider placeholder:normal-case placeholder:tracking-normal text-start"
               />
             </div>
             <Button
@@ -283,9 +277,9 @@ export function OrderSummaryContent({
       </div>
 
       {/* Pre-sale Direct Engineer Support Box */}
-      <div className="bg-surface-container-lowest border border-outline-variant/70 rounded-xl p-3.5 flex items-center justify-between gap-3">
+      <div className="bg-surface border border-card-border rounded-xl p-3.5 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+          <div className="w-10 h-10 rounded-full bg-badge-green-bg border border-primary/20 flex items-center justify-center text-primary shrink-0">
             <span className="material-symbols-outlined text-[22px]" aria-hidden="true">
               support_agent
             </span>

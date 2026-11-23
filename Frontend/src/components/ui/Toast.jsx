@@ -16,24 +16,24 @@ export function ToastItem({
   };
 
   const styleMap = {
-    success: 'bg-surface-container border-primary/30 text-on-surface',
-    error: 'bg-surface-container border-error/40 text-on-surface',
-    warning: 'bg-surface-container border-amber-500/40 text-on-surface',
-    info: 'bg-surface-container border-outline-variant text-on-surface',
+    success: 'bg-surface border-success/35 text-on-surface',
+    error: 'bg-surface border-error/40 text-on-surface',
+    warning: 'bg-surface border-warning/40 text-on-surface',
+    info: 'bg-surface border-info/35 text-on-surface',
   };
 
   const iconColor = {
-    success: 'text-primary',
+    success: 'text-success',
     error: 'text-error',
-    warning: 'text-amber-400',
-    info: 'text-primary',
+    warning: 'text-warning',
+    info: 'text-info',
   };
 
   return (
     <div
       role="alert"
       className={clsx(
-        'flex items-start gap-3 p-4 rounded-xl border shadow-lg transition-all',
+        'flex items-start gap-3 p-4 rounded-xl border shadow-card-hover transition-all',
         styleMap[type] || styleMap.info,
         className
       )}

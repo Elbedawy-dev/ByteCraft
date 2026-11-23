@@ -74,10 +74,18 @@ export function AccessibleDialog({
     };
 
     const handlePointerDown = (event) => {
+      if (event.target instanceof Element && event.target.closest('[data-bc-select-portal]')) {
+        pressedOutsideRef.current = false;
+        return;
+      }
       pressedOutsideRef.current = isOutsidePanel(event);
     };
 
     const handlePointerUp = (event) => {
+      if (event.target instanceof Element && event.target.closest('[data-bc-select-portal]')) {
+        pressedOutsideRef.current = false;
+        return;
+      }
       if (pressedOutsideRef.current && isOutsidePanel(event)) {
         dialog.close();
       }
@@ -110,8 +118,8 @@ export function AccessibleDialog({
         ref={panelRef}
         className={clsx(
           isSheet
-            ? 'bc-drawer-panel w-full max-w-2xl bg-surface-container border-t border-outline-variant rounded-t-2xl shadow-2xl flex flex-col max-h-[88dvh] overflow-hidden'
-            : 'bc-modal-panel relative w-full bg-surface-container border border-outline-variant rounded-2xl shadow-2xl flex flex-col overflow-hidden',
+            ? 'bc-drawer-panel w-full max-w-2xl bg-surface border-t border-outline-variant rounded-t-2xl shadow-card-hover flex flex-col max-h-[88dvh] overflow-hidden'
+            : 'bc-modal-panel relative w-full bg-surface border border-outline-variant rounded-2xl shadow-card-hover flex flex-col overflow-hidden',
           panelClassName
         )}
       >

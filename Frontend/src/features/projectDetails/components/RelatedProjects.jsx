@@ -31,11 +31,11 @@ function RelatedProjectCard({ project }) {
   }
 
   return (
-    <article className="rounded-xl bg-surface-container-low border border-outline-variant/80 shadow-md overflow-hidden group hover:-translate-y-1 hover:border-primary/40 transition-all duration-200 flex flex-col justify-between">
+    <article className="rounded-xl bg-card border border-card-border shadow-card overflow-hidden group hover:bg-card-hover hover:-translate-y-0.5 hover:border-card-hover-border hover:shadow-card-hover transition-all duration-200 flex flex-col justify-between">
       <div className="flex flex-col">
         <Link
           to={projectDetailsPath(project.slug)}
-          className="aspect-video w-full overflow-hidden bg-surface-dim relative block"
+          className="aspect-video w-full overflow-hidden bg-surface-container-high relative block border-b border-card-border"
           tabIndex={-1}
           aria-hidden="true"
         >
@@ -48,16 +48,16 @@ function RelatedProjectCard({ project }) {
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-surface-container via-surface-container-high to-surface-container-highest text-on-surface-variant">
-              <span className="material-symbols-outlined text-[40px] text-primary/40 mb-1" aria-hidden="true">
+            <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-card via-surface-container-high to-surface-container-highest text-on-surface-variant">
+              <span className="material-symbols-outlined text-[40px] text-primary/60 mb-1" aria-hidden="true">
                 code_blocks
               </span>
-              <span className="text-[11px] font-mono opacity-60">ByteCraft</span>
+              <span className="text-[11px] font-mono text-on-surface-variant">ByteCraft</span>
             </div>
           )}
 
           {categoryName && (
-            <span className="absolute top-3 start-3 px-2.5 py-1 rounded-full bg-surface-dim/85 backdrop-blur-md border border-outline-variant/50 text-primary font-label-md text-xs">
+            <span className="absolute top-3 start-3 px-2.5 py-1 rounded-full bg-badge-green-bg/95 backdrop-blur-md border border-primary/25 text-badge-green-text font-label-md text-xs font-semibold">
               {categoryName}
             </span>
           )}

@@ -36,8 +36,8 @@ export function OrderStatusTimeline({ order }) {
       icon: 'report',
     },
     expired: {
-      wrapper: 'bg-amber-500/10 border-amber-500/30',
-      iconBg: 'bg-amber-500/15 text-amber-400',
+      wrapper: 'bg-chip-amber-bg/70 border-chip-amber-border',
+      iconBg: 'bc-chip-amber border',
       icon: 'schedule',
     },
     cancelled: {
@@ -149,10 +149,10 @@ export function OrderStatusTimeline({ order }) {
                 isRejectedStep
                   ? 'bg-error/5 border-error/40'
                   : isCompleted
-                    ? 'bg-primary/5 border-primary/35'
+                    ? 'bg-badge-green-bg/60 border-primary/35'
                     : isCurrent
-                      ? 'bg-surface-container border-primary shadow-sm'
-                      : 'bg-surface-container/50 border-outline-variant/60 opacity-75'
+                      ? 'bg-surface border-primary shadow-sm'
+                      : 'bg-surface/70 border-card-border opacity-80'
               )}
             >
               <div className="flex items-center justify-between gap-2">

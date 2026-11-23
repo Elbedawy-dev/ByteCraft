@@ -125,7 +125,7 @@
       "INVALID_CURRENT_PASSWORD": "كلمة المرور الحالية غير صحيحة.",
       "NO_FILES_PROVIDED": "لم يتم إرفاق أي ملفات.",
       "INVALID_FILE_TYPE": "نوع الملف غير مدعوم.",
-      "FILE_TOO_LARGE": "حجم الملف يتجاوز الحد الأقصى المسموح به (5 ميجابايت).",
+      "FILE_TOO_LARGE": "حجم الملف يتجاوز الحد الأقصى المسموح به (4 ميجابايت).",
       "PROJECT_NOT_AVAILABLE": "هذا المشروع غير متاح للشراء حالياً.",
       "PACKAGE_NOT_ACTIVE": "الباقة المختارة غير مفعلة حالياً.",
       "INVALID_COUPON": "كود الكوبون غير صحيح.",
@@ -243,27 +243,11 @@
     "removeTag": "إزالة {{tag}}",
     "count": "{{count}} وسوم"
   },
+  "select": {
+    "empty": "لا توجد خيارات",
+    "choose": "اختر خياراً"
+  },
   "titles": {
-    "home": "الرئيسية",
-    "projects": "المشاريع الجاهزة",
-    "projectDetails": "تفاصيل المشروع",
-    "pricing": "الخدمات والأسعار",
-    "about": "عن بايت كرافت",
-    "contact": "ابدأ مشروعك",
-    "checkout": "إتمام الطلب",
-    "orderTracking": "متابعة الطلب",
-    "paymentResult": "نتيجة الدفع",
-    "notFound": "الصفحة غير موجودة",
-    "ownerLogin": "دخول الإدارة",
-    "ownerDashboard": "لوحة التحكم",
-    "ownerProjects": "إدارة المشاريع",
-    "ownerOrders": "إدارة الطلبات",
-    "ownerInquiries": "إدارة الاستفسارات",
-    "ownerReviews": "إدارة التقييمات",
-    "ownerCoupons": "إدارة الكوبونات",
-    "ownerCategories": "إدارة التصنيفات",
-    "ownerServicePlans": "إدارة خطط الخدمات",
-    "ownerSettings": "إعدادات المنصة",
-    "uiShowcase": "مكتبة المكونات (تطوير)"
+    "ownerDashboard": "لوحة التحكم"
   }
 }

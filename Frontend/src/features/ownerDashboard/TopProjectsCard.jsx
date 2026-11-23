@@ -51,7 +51,7 @@ export function TopProjectsCard({ topProjects = [] }) {
 
         <Link
           to={ROUTES.OWNER_PROJECTS}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] rounded-lg bg-surface-container border border-outline-variant/70 text-xs font-semibold text-primary hover:bg-surface-container-high transition-colors"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] rounded-lg bg-surface border border-card-border text-xs font-semibold text-primary hover:bg-card-hover hover:border-card-hover-border transition-colors"
         >
           <span>{t('topProjects.manageAll')}</span>
           <span className="material-symbols-outlined text-[15px] rtl:-scale-x-100">
@@ -80,7 +80,7 @@ export function TopProjectsCard({ topProjects = [] }) {
               <Link
                 key={project._id || project.id || project.slug || idx}
                 to={ROUTES.OWNER_PROJECTS}
-                className="group rounded-xl bg-surface-container border border-outline-variant/80 hover:border-primary/40 p-3.5 flex flex-col justify-between gap-3 transition-colors"
+                className="group rounded-xl bg-surface border border-card-border shadow-sm hover:bg-card-hover hover:border-card-hover-border hover:shadow-card-hover hover:-translate-y-0.5 p-3.5 flex flex-col justify-between gap-3 transition-all duration-200"
               >
                 <div className="flex items-start gap-3">
                   <ProjectThumbnail thumbnail={project.thumbnail} alt={title} />

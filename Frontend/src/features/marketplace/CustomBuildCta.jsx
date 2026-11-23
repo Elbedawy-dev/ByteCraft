@@ -10,7 +10,7 @@ export function CustomBuildCta() {
   return (
     <section
       aria-labelledby="custom-build-cta-heading"
-      className="bg-surface-container-low border border-outline-variant/70 rounded-2xl p-space-md sm:p-space-lg lg:p-space-xl relative overflow-x-clip overflow-y-hidden shadow-lg"
+      className="bg-card border border-card-border rounded-2xl p-space-md sm:p-space-lg lg:p-space-xl relative overflow-x-clip overflow-y-hidden shadow-card"
     >
       {/* Subtle Ambient Glow */}
       <div
@@ -21,7 +21,7 @@ export function CustomBuildCta() {
       <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-space-lg">
         <div className="flex items-start gap-space-md max-w-2xl min-w-0">
           <div
-            className="w-12 h-12 rounded-xl bg-surface-container border border-outline-variant/60 shrink-0 flex items-center justify-center text-primary"
+            className="w-12 h-12 rounded-xl bg-badge-green-bg border border-primary/20 shrink-0 flex items-center justify-center text-primary"
             aria-hidden="true"
           >
             <span className="material-symbols-outlined text-[28px]">design_services</span>

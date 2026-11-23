@@ -11,11 +11,11 @@ export function Table({
   className = '',
 }) {
   return (
-    <div className={clsx('w-full overflow-hidden rounded-xl border border-outline-variant bg-surface-container', className)}>
+    <div className={clsx('w-full overflow-hidden rounded-xl border border-card-border bg-card shadow-card', className)}>
       <div className="w-full overflow-x-auto">
         <table className="w-full text-start border-collapse text-sm">
           <thead>
-            <tr className="border-b border-outline-variant bg-surface-container-low/60 text-on-surface-variant font-medium text-xs">
+            <tr className="border-b border-card-border bg-surface-container-high text-on-surface-variant font-medium text-xs">
               {columns.map((col) => (
                 <th
                   key={col.key}
@@ -29,7 +29,7 @@ export function Table({
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-outline-variant/60">
+          <tbody className="divide-y divide-card-border">
             {loading ? (
               Array.from({ length: 4 }).map((_, rIdx) => (
                 <tr key={`loading-${rIdx}`} className="animate-pulse">
@@ -53,7 +53,7 @@ export function Table({
               data.map((row, rowIdx) => (
                 <tr
                   key={row[keyField] ?? rowIdx}
-                  className="hover:bg-surface-container-high/50 transition-colors"
+                  className="even:bg-surface-container-high/40 hover:bg-card-hover transition-colors"
                 >
                   {columns.map((col) => (
                     <td

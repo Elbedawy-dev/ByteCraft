@@ -18,7 +18,7 @@ export function Rating({
 
   return (
     <div className={clsx('inline-flex items-center gap-1.5 select-none', className)}>
-      <div className="flex items-center text-amber-400">
+      <div className="flex items-center text-star" aria-hidden="true">
         {stars.map((star) => {
           const diff = numericRating - (star - 1);
           let iconName = 'star';
@@ -34,10 +34,11 @@ export function Rating({
           return (
             <span
               key={star}
+              aria-hidden="true"
               className={clsx(
                 'material-symbols-outlined',
                 sizeClasses,
-                isFilled ? 'text-amber-400 fill-current' : 'text-outline-variant/60'
+                isFilled ? 'text-star fill-current' : 'text-input-border'
               )}
               style={isFilled ? { fontVariationSettings: "'FILL' 1" } : undefined}
             >

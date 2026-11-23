@@ -144,10 +144,10 @@ async function runTests() {
       assert(json.error.code === 'INVALID_FILE_TYPE', `Expected INVALID_FILE_TYPE, got ${json.error.code}`);
     });
 
-    await test('POST /api/owner/uploads/images with file > 5MB is rejected with 400 FILE_TOO_LARGE', async () => {
+    await test('POST /api/owner/uploads/images with file > 4MB is rejected with 400 FILE_TOO_LARGE', async () => {
       const form = new FormData();
-      // 5.5 MB dummy buffer
-      const largeBuffer = Buffer.alloc(5.5 * 1024 * 1024);
+      // 4.5 MB dummy buffer
+      const largeBuffer = Buffer.alloc(4.5 * 1024 * 1024);
       form.append('images', new Blob([largeBuffer], { type: 'image/png' }), 'huge.png');
 
       const res = await fetch(`${BASE_URL}/owner/uploads/images`, {

@@ -41,7 +41,7 @@ export function Tooltip({
         <div
           role="tooltip"
           className={clsx(
-            'absolute z-50 px-2.5 py-1 text-xs font-medium text-on-surface bg-surface-container-highest border border-outline-variant rounded-md shadow-md whitespace-nowrap pointer-events-none animate-in fade-in zoom-in-95 duration-100',
+            'absolute z-50 px-2.5 py-1 text-xs font-medium text-on-surface bg-surface border border-outline-variant rounded-md shadow-card-hover whitespace-nowrap pointer-events-none animate-in fade-in zoom-in-95 duration-100',
             positionStyles,
             className
           )}

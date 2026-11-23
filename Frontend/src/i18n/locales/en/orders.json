@@ -1,7 +1,5 @@
 {
   "tracking": {
-    "pageTitle": "Order {{orderNumber}} | ByteCraft",
-    "defaultPageTitle": "Order Tracking | ByteCraft",
     "breadcrumbs": {
       "home": "Home",
       "projects": "Projects",
@@ -107,14 +105,14 @@
         "uploadTitle": "Upload Payment Receipt",
         "uploadRetryTitle": "Re-upload Payment Receipt",
         "dropLabel": "Drag & drop receipt image or PDF here, or click to browse",
-        "dropHint": "Supports JPEG, PNG, WebP, PDF up to 5 MB",
+        "dropHint": "Supports JPEG, PNG, WebP, PDF up to 4 MB",
         "referenceInputLabel": "Transfer Reference or Sender Note (Optional)",
         "referenceInputPlaceholder": "e.g. VF-TXN-987654 or last 4 wallet digits",
         "submitProof": "Submit Payment Proof",
         "submittingProof": "Uploading proof...",
         "proofRequired": "Please attach your receipt image or PDF first.",
         "invalidFileType": "Unsupported file type. Allowed formats: JPEG, PNG, WebP, PDF.",
-        "fileTooLarge": "File exceeds the 5 MB size limit.",
+        "fileTooLarge": "File exceeds the 4 MB size limit.",
         "uploadSuccess": "Payment proof uploaded! Your order is now awaiting review."
       },
       "fawry": {
@@ -201,7 +199,6 @@
     }
   },
   "paymentResult": {
-    "pageTitle": "Payment Result | ByteCraft",
     "eyebrow": "PAYMOB GATEWAY VERIFICATION",
     "orderNumberLabel": "Order Number:",
     "transactionIdLabel": "Transaction ID:",

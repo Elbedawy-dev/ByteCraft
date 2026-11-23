@@ -137,7 +137,7 @@
     "sslSubtitle": "End-to-end encrypted checkout",
     "guaranteeTitle": "{{days}}-Day Code Guarantee",
     "guaranteeSubtitle": "Comprehensive bug-fix coverage",
-    "cleanCodeTitle": "100% Production Source Code",
+    "cleanCodeTitle": "Full Production Source Code",
     "cleanCodeSubtitle": "Documented MERN architecture"
   },
   "errors": {

@@ -9,6 +9,7 @@ const { AUTH_COOKIE_NAME } = require('../config/constants');
  * WHY:
  * Handles HTTP cookie management, response formats, and delegates business logic
  * (credential checking, token generation, password hashing) to AuthService.
+ * If COOKIE_SAMESITE is 'none', forces secure: true so modern browsers do not reject it.
  */
 
 // Helper to determine cookie max-age in milliseconds (defaults to 7 days)
@@ -33,6 +34,10 @@ function getCookieMaxAge() {
   }
 }
 
+function resolveCookieSecurity() {
+  return env.NODE_ENV === 'production' || env.COOKIE_SAMESITE === 'none';
+}
+
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const result = await authService.login(email, password);
@@ -40,8 +45,8 @@ const login = asyncHandler(async (req, res) => {
   // Set the JWT inside an HTTP-only secure cookie
   res.cookie(AUTH_COOKIE_NAME, result.token, {
     httpOnly: true, // Prevents JavaScript (XSS) from reading the token
-    secure: env.NODE_ENV === 'production', // Only transmitted over HTTPS in production
-    sameSite: env.COOKIE_SAMESITE, // CSRF protection policy ('lax' or 'none' for cross-domain)
+    secure: resolveCookieSecurity(), // Secure in production or when SameSite=None
+    sameSite: env.COOKIE_SAMESITE, // CSRF protection policy ('lax', 'none', or 'strict')
     maxAge: getCookieMaxAge(),
   });
 
@@ -58,7 +63,7 @@ const logout = asyncHandler(async (req, res) => {
   // Clear the authentication cookie
   res.clearCookie(AUTH_COOKIE_NAME, {
     httpOnly: true,
-    secure: env.NODE_ENV === 'production',
+    secure: resolveCookieSecurity(),
     sameSite: env.COOKIE_SAMESITE,
   });
 
