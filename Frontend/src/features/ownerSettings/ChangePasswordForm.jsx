@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
+import { AnimatePresence, m } from 'framer-motion';
 import {
   ApiError,
   applyApiErrorsToForm,
@@ -10,6 +11,7 @@ import {
 } from '../../api/client';
 import { useChangeOwnerPassword } from '../../api/owner/auth';
 import { useToast } from '../../app/providers';
+import { MOTION_TRANSITION } from '../../lib/motion';
 import { Button, Card, FormField, Input } from '../../components/ui';
 import { createChangePasswordSchema } from './settingsSchema';
 
@@ -39,11 +41,20 @@ const PasswordInput = forwardRef(function PasswordInput(
         disabled={disabled}
         aria-pressed={showPassword}
         aria-label={toggleLabel}
-        className="absolute end-1 top-1/2 -translate-y-1/2 h-10 w-10 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/70 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        className="absolute end-1 top-1/2 -translate-y-1/2 h-10 w-10 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/70 transition-colors duration-300 ease-nexus focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       >
-        <span className="material-symbols-outlined text-[18px]">
-          {showPassword ? 'visibility_off' : 'visibility'}
-        </span>
+        <AnimatePresence mode="wait" initial={false}>
+          <m.span
+            key={showPassword ? 'hide' : 'show'}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={MOTION_TRANSITION}
+            className="material-symbols-outlined text-[18px] block"
+          >
+            {showPassword ? 'visibility_off' : 'visibility'}
+          </m.span>
+        </AnimatePresence>
       </button>
     </div>
   );

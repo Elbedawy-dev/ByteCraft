@@ -2,7 +2,7 @@ import { ROUTES } from './routes';
 
 /**
  * Owner sidebar navigation items covering every owner route in contract section 3.
- * Icons are Material Symbols Outlined names.
+ * Icons are Material Symbols Rounded names.
  */
 export const OWNER_NAV_ITEMS = [
   {
@@ -16,7 +16,7 @@ export const OWNER_NAV_ITEMS = [
     key: 'projects',
     labelKey: 'ownerNav.projects',
     to: ROUTES.OWNER_PROJECTS,
-    icon: 'folder_code',
+    icon: 'deployed_code',
   },
   {
     key: 'orders',
@@ -53,6 +53,18 @@ export const OWNER_NAV_ITEMS = [
     labelKey: 'ownerNav.servicePlans',
     to: ROUTES.OWNER_SERVICE_PLANS,
     icon: 'design_services',
+  },
+  {
+    key: 'users',
+    labelKey: 'ownerNav.users',
+    to: ROUTES.OWNER_USERS,
+    icon: 'group',
+  },
+  {
+    key: 'admins',
+    labelKey: 'ownerNav.admins',
+    to: ROUTES.OWNER_ADMINS,
+    icon: 'admin_panel_settings',
   },
   {
     key: 'settings',

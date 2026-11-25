@@ -13,6 +13,7 @@ const { connectDB, disconnectDB } = require('./config/db');
  */
 
 const orderService = require('./services/order.service');
+const Settings = require('./models/Settings');
 
 let server;
 
@@ -20,9 +21,19 @@ async function startServer() {
   // 1. Establish database connection before accepting incoming traffic
   await connectDB();
 
+  let siteName = 'Nexus';
+  try {
+    const settings = await Settings.findOne({ key: 'main' }).select('siteName').lean();
+    if (settings?.siteName && settings.siteName.trim()) {
+      siteName = settings.siteName.trim();
+    }
+  } catch {
+    // Keep default brand name if settings lookup fails
+  }
+
   // 2. Start HTTP server
   server = app.listen(env.PORT, () => {
-    console.log(`ByteCraft Server running in [${env.NODE_ENV}] mode on http://localhost:${env.PORT}`);
+    console.log(`${siteName} Server running in [${env.NODE_ENV}] mode on http://localhost:${env.PORT}`);
     console.log(`Health Check: http://localhost:${env.PORT}/api/health\n`);
   });
 

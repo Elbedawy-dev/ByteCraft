@@ -85,11 +85,11 @@ export function ProofDropzone({ file, onChange, disabled = false }) {
             validateAndSelect(e.dataTransfer?.files?.[0]);
           }}
           className={clsx(
-            'relative flex flex-col items-center justify-center p-6 rounded-xl border-2 border-dashed text-center transition-all select-none',
-            'focus-within:ring-2 focus-within:ring-input-focus focus-within:border-input-focus',
+            'relative flex flex-col items-center justify-center p-6 rounded-xl border-2 border-dashed text-center transition-all duration-300 ease-nexus select-none',
+            'focus-within:ring-2 focus-within:ring-primary focus-within:border-primary',
             isDragOver
-              ? 'border-primary bg-chip-mint-bg/60'
-              : 'border-input-border bg-input hover:border-primary/60 hover:bg-card',
+              ? 'border-primary bg-brand-soft/80'
+              : 'border-primary/35 bg-brand-soft/35 hover:border-primary hover:bg-brand-soft/60',
             disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
           )}
         >
@@ -107,8 +107,8 @@ export function ProofDropzone({ file, onChange, disabled = false }) {
             className="sr-only"
           />
 
-          <div className="w-12 h-12 rounded-full bg-badge-green-bg border border-primary/20 flex items-center justify-center text-primary mb-3">
-            <span className="material-symbols-outlined text-[24px]">
+          <div className="w-12 h-12 rounded-lg bg-brand-soft flex items-center justify-center mb-3">
+            <span className="material-symbols-rounded icon-gradient text-[24px]" aria-hidden="true">
               cloud_upload
             </span>
           </div>

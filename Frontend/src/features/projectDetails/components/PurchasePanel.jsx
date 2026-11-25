@@ -41,10 +41,10 @@ function PackageCardsList({ packages, selectedKey, onSelect, lang, t }) {
             aria-checked={isSelected}
             onClick={() => onSelect(pkg.key)}
             className={clsx(
-              'w-full text-start rounded-xl p-3.5 border transition-all duration-150 flex flex-col gap-2',
+              'w-full text-start rounded-xl p-4 border transition-all duration-300 ease-nexus flex flex-col gap-2',
               isSelected
-                ? 'bg-card-hover border-primary ring-1 ring-primary/40 shadow-sm'
-                : 'bg-surface border-card-border hover:border-card-hover-border hover:bg-card-hover'
+                ? 'bg-brand-soft/45 border-primary ring-2 ring-primary/25 shadow-sm'
+                : 'bg-card border-card-border hover:border-card-hover-border hover:bg-section-band/60'
             )}
           >
             <div className="flex items-start justify-between gap-2">
@@ -52,8 +52,8 @@ function PackageCardsList({ packages, selectedKey, onSelect, lang, t }) {
                 <span
                   aria-hidden="true"
                   className={clsx(
-                    'mt-0.5 w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors',
-                    isSelected ? 'border-primary bg-badge-green-bg' : 'border-outline'
+                    'mt-0.5 w-5 h-5 rounded-full border flex items-center justify-center shrink-0 transition-colors bg-input',
+                    isSelected ? 'border-primary' : 'border-control-border'
                   )}
                 >
                   {isSelected && <span className="w-2.5 h-2.5 rounded-full bg-primary" />}
@@ -63,7 +63,7 @@ function PackageCardsList({ packages, selectedKey, onSelect, lang, t }) {
                   <div className="flex flex-wrap items-center gap-1.5">
                     <span className="font-bold text-sm text-on-surface">{pkgName}</span>
                     {pkg.isPopular && (
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-badge-green-bg text-badge-green-text border border-primary/25">
+                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold btn-primary-gradient text-white">
                         {t('badges.popular')}
                       </span>
                     )}
@@ -77,11 +77,11 @@ function PackageCardsList({ packages, selectedKey, onSelect, lang, t }) {
                 </div>
                 {hasDiscount && (
                   <div className="flex items-center justify-end gap-1.5 mt-0.5">
-                    <span className="font-mono text-xs text-on-surface-variant line-through whitespace-nowrap">
+                    <span className="font-mono text-xs text-muted line-through whitespace-nowrap">
                       {formatMoney(pkg.compareAtPrice, lang)}
                     </span>
                     {discountPercent > 0 && (
-                      <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-badge-green-bg text-badge-green-text border border-primary/25 whitespace-nowrap">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-brand-soft text-brand-soft-text whitespace-nowrap">
                         -{discountPercent}%
                       </span>
                     )}
@@ -175,17 +175,17 @@ export function PurchasePanel({
     <>
       {/* Desktop Sticky Sidebar Purchase Panel (>= lg) */}
       <aside className="hidden lg:block lg:col-span-4 lg:sticky lg:top-24 space-y-4">
-        <div className="rounded-xl bg-card border border-card-border shadow-card p-6 space-y-5">
+        <div className="rounded-2xl bg-card border border-card-border shadow-card p-6 sm:p-7 space-y-5">
           {/* Top Badges */}
           {selectedPackage && (
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="px-3 py-1 rounded-full bg-badge-green-bg text-badge-green-text border border-primary/25 font-label-md text-xs font-bold">
+              <span className="px-3 py-1 rounded-full bg-brand-soft text-brand-soft-text border border-chip-mint-border text-xs font-bold">
                 {selectedPackage.licenseType === 'multi'
                   ? t('packages.multiLicense')
                   : t('packages.singleLicense')}
               </span>
-              <div className="flex items-center gap-1 text-on-surface-variant font-label-code text-xs">
-                <span className="material-symbols-outlined text-[16px] text-primary" aria-hidden="true">
+              <div className="flex items-center gap-1 text-muted font-mono text-xs">
+                <span className="material-symbols-rounded text-[16px] text-primary" aria-hidden="true">
                   sync
                 </span>
                 <span>{t('packages.supportBadge', { days: selectedPackage.supportDays ?? 30 })}</span>
@@ -197,7 +197,7 @@ export function PurchasePanel({
           {packages.length > 0 ? (
             <>
               <div className="space-y-2.5">
-                <span className="block text-xs font-medium text-on-surface-variant">
+                <span className="block text-xs font-semibold text-muted">
                   {t('packages.choosePackage')}
                 </span>
                 <PackageCardsList
@@ -209,9 +209,9 @@ export function PurchasePanel({
                 />
               </div>
 
-              {/* Active Price Summary Box */}
+              {/* Active Price Summary Soft Band */}
               {selectedPackage && (
-                <div className="p-4 rounded-xl bg-surface-container border border-outline-variant/50 flex items-baseline justify-between gap-3">
+                <div className="p-4 rounded-xl bg-section-band border border-card-border flex items-baseline justify-between gap-3">
                   <span className="font-bold text-sm text-on-surface">{selectedName}</span>
                   <PriceTag
                     piasters={selectedPackage.price}
@@ -231,21 +231,21 @@ export function PurchasePanel({
               )}
             </>
           ) : (
-            <div className="p-4 rounded-xl bg-surface-container text-sm text-on-surface-variant text-center">
+            <div className="p-4 rounded-xl bg-section-band text-sm text-muted text-center">
               {t('packages.unavailable')}
             </div>
           )}
 
-          {/* Primary Actions: Buy Now & Live Demo */}
+          {/* Primary Actions: Gradient "Buy" & Outline "Live demo" */}
           <div className="space-y-2.5 pt-1">
             <Link to={checkoutUrl} className="block w-full">
               <Button
                 variant="primary-gradient"
                 size="lg"
                 className="w-full"
-                iconLeading={
-                  <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
-                    shopping_cart_checkout
+                iconTrailing={
+                  <span className="material-symbols-rounded text-[20px] rtl:-scale-x-100" aria-hidden="true">
+                    arrow_forward
                   </span>
                 }
               >
@@ -255,12 +255,12 @@ export function PurchasePanel({
 
             {hasPreview && (
               <Button
-                variant="secondary"
+                variant="outline"
                 size="md"
                 onClick={onOpenLiveDemo}
                 className="w-full"
                 iconLeading={
-                  <span className="material-symbols-outlined text-primary text-[20px]" aria-hidden="true">
+                  <span className="material-symbols-rounded text-[19px]" aria-hidden="true">
                     {isExternalDemo ? 'open_in_new' : 'desktop_windows'}
                   </span>
                 }

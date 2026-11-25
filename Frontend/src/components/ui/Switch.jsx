@@ -35,7 +35,7 @@ export const Switch = forwardRef(function Switch(
             </span>
           )}
           {description && (
-            <span className="text-xs text-on-surface-variant mt-0.5">
+            <span className="text-xs text-muted mt-0.5">
               {description}
             </span>
           )}
@@ -55,19 +55,19 @@ export const Switch = forwardRef(function Switch(
           className="peer sr-only"
           {...props}
         />
-        {/* Track: 44px wide (w-11) x 24px high (h-6) */}
+        {/* Track: 44px wide x 24px high */}
         <div
           className={clsx(
-            'w-11 h-6 rounded-full bg-surface-container-highest transition-colors duration-200 border border-outline',
-            'peer-focus-visible:ring-2 peer-focus-visible:ring-input-focus peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-surface',
-            'peer-checked:bg-primary peer-checked:border-primary'
+            'w-11 h-6 rounded-full bg-section-band transition-[background-color,border-color,box-shadow] duration-300 ease-nexus border border-control-border',
+            'peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-background',
+            'peer-checked:bg-primary-gradient peer-checked:border-transparent'
           )}
         />
-        {/* Knob: 20px x 20px (w-5 h-5), positioned with 2px offset */}
+        {/* Knob: 20px x 20px */}
         <div
           className={clsx(
-            'absolute start-0.5 top-0.5 w-5 h-5 rounded-full bg-white border border-outline/60 transition-transform duration-200 shadow-sm pointer-events-none',
-            'peer-checked:translate-x-5 rtl:peer-checked:-translate-x-5 peer-checked:bg-on-primary peer-checked:border-transparent'
+            'absolute start-0.5 top-0.5 w-5 h-5 rounded-full bg-white border border-control-border/60 transition-transform duration-300 ease-nexus shadow-sm pointer-events-none',
+            'peer-checked:translate-x-5 rtl:peer-checked:-translate-x-5 peer-checked:border-transparent'
           )}
         />
       </div>

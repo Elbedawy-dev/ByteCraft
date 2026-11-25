@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
+import { m } from 'framer-motion';
 import { useLang } from '../../app/providers';
+import { BRAND } from '../../config/brand';
 import { localized } from '../../lib/localized';
+import { MOTION_TRANSITION } from '../../lib/motion';
+import { LogoMark } from './LogoMark';
 import { Rating } from './Rating';
 import { PriceTag } from './PriceTag';
 import { Button } from '../ui/Button';
+import { MotionImage } from '../ui/Motion';
 
 export function ProjectCard({
   project,
@@ -24,7 +29,6 @@ export function ProjectCard({
     ? (localized(project.category.name, lang) || project.category.name || project.category)
     : null;
 
-  // Determine cheapest active package or startingPrice
   let startingPiasters = project.startingPrice || 0;
   let cheapestPackageKey = 'standard';
 
@@ -37,7 +41,6 @@ export function ProjectCard({
     }
   }
 
-  // Rating from reviewsSummary or direct props
   const ratingVal =
     project.reviewsSummary?.averageRating ??
     project.reviewsSummary?.rating ??
@@ -49,67 +52,55 @@ export function ProjectCard({
     project.reviewsCount ??
     0;
 
-  // Tech stack items
   const techStack = Array.isArray(project.techStack) ? project.techStack.slice(0, 4) : [];
-
-  // Thumbnail URL
   const thumbnail = project.thumbnailUrl || project.images?.[0]?.url || project.thumbnail;
 
   return (
-    <article
+    <m.article
+      data-fm-hover="true"
+      whileHover={{ y: -4 }}
+      transition={MOTION_TRANSITION}
       className={clsx(
-        'group flex flex-col bg-card rounded-2xl border border-card-border overflow-hidden shadow-card hover:bg-card-hover hover:shadow-card-hover hover:border-card-hover-border transition-all duration-200 hover:-translate-y-0.5',
+        'group flex flex-col bc-card-hover rounded-xl overflow-hidden',
         className
       )}
     >
-      {/* Thumbnail Aspect Video Container */}
+      {/* Top 16:10 Image */}
       <Link
         to={`/projects/${project.slug}`}
-        className="relative w-full aspect-video bg-surface-container-high overflow-hidden block select-none border-b border-card-border"
+        className="relative w-full aspect-[16/10] bg-section-band overflow-hidden block select-none border-b border-card-border"
         tabIndex={-1}
         aria-hidden="true"
       >
         {thumbnail && !imgError ? (
-          <img
+          <MotionImage
             src={thumbnail}
             alt={title}
             loading="lazy"
             onError={() => setImgError(true)}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="w-full h-full object-cover transition-transform duration-300 ease-nexus group-hover:scale-105"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-card via-surface-container-high to-surface-container-highest text-on-surface-variant">
-            <span className="material-symbols-outlined text-[44px] text-primary mb-1" aria-hidden="true">
-              code_blocks
-            </span>
-            <span className="text-xs font-mono text-on-surface-variant">ByteCraft Engine</span>
+          <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-section-band via-brand-soft/60 to-section-band text-muted gap-2">
+            <LogoMark className="w-11 h-11 opacity-85" />
+            <span className="text-xs font-semibold tracking-wide text-muted">{BRAND.name}</span>
           </div>
         )}
 
-        {/* Category Badge */}
         {categoryName && (
-          <div className="absolute top-3 end-3 z-10">
-            <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-badge-green-bg/95 text-badge-green-text backdrop-blur-md border border-primary/25 shadow-sm">
+          <div className="absolute top-3.5 start-3.5 z-10">
+            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-brand-soft/95 text-brand-soft-text backdrop-blur-md border border-chip-mint-border shadow-sm">
               {categoryName}
             </span>
           </div>
         )}
-
-        {/* Version or Ready Tag */}
-        <div className="absolute bottom-3 start-3 z-10">
-          <span className="px-2 py-0.5 rounded-md text-[11px] font-mono bg-surface/95 backdrop-blur-md text-on-surface border border-card-border shadow-sm flex items-center gap-1">
-            <span className="material-symbols-outlined text-primary text-[13px]">bolt</span>
-            <span>Production Ready</span>
-          </span>
-        </div>
       </Link>
 
-      {/* Card Body */}
-      <div className="p-5 flex flex-col flex-1 justify-between gap-4">
+      {/* Card Body (24-28px rhythm) */}
+      <div className="p-6 flex flex-col flex-1 justify-between gap-5">
         <div>
-          {/* Title + Rating */}
           <div className="flex items-start justify-between gap-2 mb-2">
-            <h3 className="font-bold text-base sm:text-lg text-on-surface group-hover:text-primary transition-colors line-clamp-1">
+            <h3 className="font-bold text-lg text-on-surface group-hover:text-primary transition-colors duration-300 line-clamp-1">
               <Link to={`/projects/${project.slug}`}>
                 {title}
               </Link>
@@ -119,20 +110,18 @@ export function ProjectCard({
             )}
           </div>
 
-          {/* Tagline */}
           {tagline && (
-            <p className="text-xs sm:text-sm text-on-surface-variant line-clamp-2 mb-3 leading-relaxed">
+            <p className="text-sm text-on-surface-variant line-clamp-2 mb-4 leading-relaxed">
               {tagline}
             </p>
           )}
 
-          {/* Tech Stack Chips */}
           {techStack.length > 0 && (
             <div className="flex flex-wrap gap-1.5">
               {techStack.map((tech, idx) => (
                 <span
                   key={`${tech}-${idx}`}
-                  className="px-2 py-0.5 rounded-full text-[11px] font-mono bg-surface-container-high text-on-surface-variant border border-outline-variant/40"
+                  className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-brand-soft text-brand-soft-text"
                 >
                   {tech}
                 </span>
@@ -141,16 +130,16 @@ export function ProjectCard({
           )}
         </div>
 
-        {/* Footer: Price + Actions */}
-        <div className="pt-3 border-t border-outline-variant/60 space-y-3">
+        {/* Price + Actions */}
+        <div className="pt-4 border-t border-outline-variant space-y-3.5">
           <div className="flex items-baseline justify-between gap-2">
-            <span className="text-xs text-on-surface-variant">
+            <span className="text-xs font-medium text-muted">
               {t('actions.startingPrice', { defaultValue: 'Starting from:' })}
             </span>
             <PriceTag piasters={startingPiasters} size="md" />
           </div>
 
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2.5">
             {project.demoUrl ? (
               <a
                 href={project.demoUrl}
@@ -162,7 +151,7 @@ export function ProjectCard({
                   variant="secondary"
                   size="sm"
                   className="w-full text-xs"
-                  iconLeading={<span className="material-symbols-outlined text-[16px]">visibility</span>}
+                  iconLeading={<span className="material-symbols-rounded text-[16px]" aria-hidden="true">visibility</span>}
                 >
                   {t('actions.liveDemo', { defaultValue: 'Live Demo' })}
                 </Button>
@@ -173,7 +162,7 @@ export function ProjectCard({
                   variant="secondary"
                   size="sm"
                   className="w-full text-xs"
-                  iconLeading={<span className="material-symbols-outlined text-[16px]">visibility</span>}
+                  iconTrailing={<span className="material-symbols-rounded text-[16px] rtl:-scale-x-100" aria-hidden="true">arrow_forward</span>}
                 >
                   {t('actions.viewDetails', { defaultValue: 'Details' })}
                 </Button>
@@ -188,7 +177,7 @@ export function ProjectCard({
                 variant="primary-gradient"
                 size="sm"
                 className="w-full text-xs"
-                iconLeading={<span className="material-symbols-outlined text-[16px]">shopping_cart</span>}
+                iconTrailing={<span className="material-symbols-rounded text-[16px] rtl:-scale-x-100" aria-hidden="true">arrow_forward</span>}
               >
                 {t('actions.buy', { defaultValue: 'Buy now' })}
               </Button>
@@ -196,6 +185,6 @@ export function ProjectCard({
           </div>
         </div>
       </div>
-    </article>
+    </m.article>
   );
 }

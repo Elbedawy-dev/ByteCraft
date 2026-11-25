@@ -1,36 +1,54 @@
 const AppError = require('../utils/AppError');
+const env = require('../config/env');
 const { ERROR_CODES } = require('../config/constants');
 
 /**
- * Basic CSRF Hardening Middleware
- * 
- * WHY:
- * Because authentication relies on HTTP-only cookies, malicious third-party websites
- * could theoretically submit standard HTML forms (<form method="POST">) targeting the API.
- * Standard HTML forms can only produce `application/x-www-form-urlencoded`, `multipart/form-data`,
- * or `text/plain`. They CANNOT produce `application/json` without a browser CORS preflight check.
- * 
- * By restricting mutating requests (POST, PATCH, PUT, DELETE) with bodies to `application/json`
- * (or `multipart/form-data` for file uploads), we block cross-site form submission exploits.
+ * CSRF Hardening Middleware
+ *
+ * 1. Origin Validation: On mutating requests (`POST`, `PATCH`, `PUT`, `DELETE`),
+ *    if the `Origin` header is present, it must exactly match one of the configured
+ *    `CLIENT_URL` origins; otherwise returns `403 FORBIDDEN`.
+ * 2. Content-Type Enforcement: Mutating requests with a non-empty body must specify
+ *    `Content-Type: application/json` or `multipart/form-data`, otherwise `415 UNSUPPORTED_MEDIA_TYPE`.
  */
 
 const MUTATING_METHODS = new Set(['POST', 'PATCH', 'PUT', 'DELETE']);
+
+function getAllowedOrigins() {
+  return env.CLIENT_URL.split(',')
+    .map((url) => url.trim().replace(/\/+$/, ''))
+    .filter(Boolean);
+}
 
 function csrfProtection(req, res, next) {
   if (!MUTATING_METHODS.has(req.method)) {
     return next();
   }
 
+  // 1. Check Origin header when present
+  const originHeader = req.headers.origin;
+  if (originHeader !== undefined && String(originHeader).trim() !== '') {
+    const normalizedOrigin = String(originHeader).trim().replace(/\/+$/, '');
+    const allowedOrigins = getAllowedOrigins();
+    if (!allowedOrigins.includes(normalizedOrigin)) {
+      return next(
+        AppError.forbidden(
+          'Cross-origin request rejected: Origin is not allowed.',
+          ERROR_CODES.FORBIDDEN
+        )
+      );
+    }
+  }
+
+  // 2. Enforce JSON or multipart Content-Type when body is present
   const contentLength = req.headers['content-length'];
   const hasBody = contentLength !== undefined && contentLength !== '0';
   const isChunked = req.headers['transfer-encoding'] === 'chunked';
 
-  // Requests without a body (e.g. POST /logout, DELETE /item/1) are safe from body-based form submission attacks
   if (!hasBody && !isChunked) {
     return next();
   }
 
-  // Must be either JSON or multipart (for file uploads)
   const isJson = req.is('application/json');
   const isMultipart = req.is('multipart/form-data');
 

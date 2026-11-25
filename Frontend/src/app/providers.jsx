@@ -1,6 +1,10 @@
-import React, { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
+import { LazyMotion, MotionConfig, AnimatePresence, domAnimation, m } from 'framer-motion';
+import { STORAGE_KEYS } from '../lib/storage';
+import { AuthProvider } from '../features/auth/AuthProvider';
+import { MOTION_TRANSITION, getDirectionSign } from '../lib/motion';
 
 // 1. React Query Client
 export const queryClient = new QueryClient({
@@ -72,22 +76,53 @@ export function useToastManager() {
   return context;
 }
 
+function readInitialLang() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEYS.LANG);
+    return saved === 'en' ? 'en' : 'ar';
+  } catch {
+    return 'ar';
+  }
+}
+
+function readInitialTheme() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEYS.THEME);
+    if (saved === 'light' || saved === 'dark') return saved;
+    return 'light';
+  } catch {
+    return 'light';
+  }
+}
+
 // Main Providers component
+export function MotionProvider({ children }) {
+  return (
+    <MotionConfig reducedMotion="user" transition={MOTION_TRANSITION}>
+      <LazyMotion features={domAnimation} strict>
+        {children}
+      </LazyMotion>
+    </MotionConfig>
+  );
+}
+
 export function Providers({ children }) {
   const { i18n } = useTranslation();
+  const transitionTimerRef = useRef(null);
 
   // Lang state
-  const [lang, setLangState] = useState(() => {
-    const saved = localStorage.getItem('bc_lang');
-    return saved === 'en' ? 'en' : 'ar';
-  });
+  const [lang, setLangState] = useState(readInitialLang);
 
   const dir = lang === 'ar' ? 'rtl' : 'ltr';
 
   const setLang = useCallback((newLang) => {
     const valid = newLang === 'en' ? 'en' : 'ar';
     setLangState(valid);
-    localStorage.setItem('bc_lang', valid);
+    try {
+      localStorage.setItem(STORAGE_KEYS.LANG, valid);
+    } catch {
+      // Ignore storage write errors
+    }
     i18n.changeLanguage(valid);
     document.documentElement.setAttribute('lang', valid);
     document.documentElement.setAttribute('dir', valid === 'ar' ? 'rtl' : 'ltr');
@@ -98,36 +133,48 @@ export function Providers({ children }) {
   }, [lang, setLang]);
 
   useEffect(() => {
-    // Sync initial state to HTML element
     document.documentElement.setAttribute('lang', lang);
     document.documentElement.setAttribute('dir', dir);
   }, [lang, dir]);
 
-  // Theme state (Light mode is default; storage key bumped to bc_theme_v2)
-  const [theme, setThemeState] = useState(() => {
-    const saved = localStorage.getItem('bc_theme_v2');
-    if (saved === 'light' || saved === 'dark') return saved;
-    return 'light';
-  });
+  // Theme state (first visit is always Light; persisted in bc_theme_v3)
+  const [theme, setThemeState] = useState(readInitialTheme);
 
   const setTheme = useCallback((newTheme) => {
     const valid = newTheme === 'dark' ? 'dark' : 'light';
-    setThemeState(valid);
-    localStorage.setItem('bc_theme_v2', valid);
-    if (valid === 'dark') {
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
-    } else {
-      document.documentElement.classList.remove('dark');
-      document.documentElement.classList.add('light');
+    const root = document.documentElement;
+
+    root.classList.add('bc-theme-transition');
+    if (transitionTimerRef.current) {
+      window.clearTimeout(transitionTimerRef.current);
     }
+    transitionTimerRef.current = window.setTimeout(() => {
+      root.classList.remove('bc-theme-transition');
+      transitionTimerRef.current = null;
+    }, 340);
+
+    setThemeState(valid);
+    try {
+      localStorage.setItem(STORAGE_KEYS.THEME, valid);
+    } catch {
+      // Ignore storage write errors
+    }
+
+    if (valid === 'dark') {
+      root.classList.add('dark');
+      root.classList.remove('light');
+    } else {
+      root.classList.remove('dark');
+      root.classList.add('light');
+    }
+
     const metaScheme = document.querySelector('meta[name="color-scheme"]');
     if (metaScheme) {
       metaScheme.setAttribute('content', valid);
     }
     const metaTheme = document.querySelector('meta[name="theme-color"]');
     if (metaTheme) {
-      metaTheme.setAttribute('content', valid === 'dark' ? '#0A0A0A' : '#FFFFFF');
+      metaTheme.setAttribute('content', valid === 'dark' ? '#0B1020' : '#FFFFFF');
     }
   }, []);
 
@@ -136,14 +183,27 @@ export function Providers({ children }) {
   }, [theme, setTheme]);
 
   useEffect(() => {
+    const root = document.documentElement;
     if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
+      root.classList.add('dark');
+      root.classList.remove('light');
     } else {
-      document.documentElement.classList.remove('dark');
-      document.documentElement.classList.add('light');
+      root.classList.remove('dark');
+      root.classList.add('light');
+    }
+    const metaScheme = document.querySelector('meta[name="color-scheme"]');
+    if (metaScheme) {
+      metaScheme.setAttribute('content', theme);
     }
   }, [theme]);
+
+  useEffect(() => {
+    return () => {
+      if (transitionTimerRef.current) {
+        window.clearTimeout(transitionTimerRef.current);
+      }
+    };
+  }, []);
 
   // Toast state
   const [toasts, setToasts] = useState([]);
@@ -159,7 +219,7 @@ export function Providers({ children }) {
 
     const newToast = {
       id,
-      type: item.type || 'info', // 'success' | 'error' | 'warning' | 'info'
+      type: item.type || 'info',
       message: item.message,
       title: item.title,
       duration,
@@ -175,7 +235,6 @@ export function Providers({ children }) {
     return id;
   }, [removeToast]);
 
-  // Sugar methods on toast
   toastFn.success = useCallback((message, options = {}) => toastFn({ ...options, message, type: 'success' }), [toastFn]);
   toastFn.error = useCallback((message, options = {}) => toastFn({ ...options, message, type: 'error' }), [toastFn]);
   toastFn.warning = useCallback((message, options = {}) => toastFn({ ...options, message, type: 'warning' }), [toastFn]);
@@ -190,8 +249,12 @@ export function Providers({ children }) {
       <LangContext.Provider value={langValue}>
         <ThemeContext.Provider value={themeValue}>
           <ToastContext.Provider value={toastValue}>
-            {children}
-            <ToastContainer />
+            <AuthProvider>
+              <MotionProvider>
+                {children}
+                <ToastContainer />
+              </MotionProvider>
+            </AuthProvider>
           </ToastContext.Provider>
         </ThemeContext.Provider>
       </LangContext.Provider>
@@ -199,69 +262,73 @@ export function Providers({ children }) {
   );
 }
 
-// Inline Toast Container using Toast UI component
+// Inline Toast Container
 function ToastContainer() {
   const { toasts, removeToast } = useToastManager();
-  const { dir } = useLang();
-
-  if (toasts.length === 0) return null;
+  const { lang } = useLang();
+  const dir = lang === 'ar' ? 'rtl' : 'ltr';
+  const dirSign = getDirectionSign(dir);
 
   return (
     <div
-      className="fixed bottom-4 z-50 flex flex-col gap-2 max-w-sm w-full px-4 pointer-events-none"
-      style={{
-        [dir === 'rtl' ? 'left' : 'right']: '1rem',
-      }}
+      className="fixed bottom-4 end-4 z-50 flex flex-col gap-2.5 max-w-sm w-[calc(100vw-2rem)] sm:w-full pointer-events-none"
       role="region"
       aria-live="polite"
       aria-label="Notifications"
     >
-      {toasts.map((t) => (
-        <div
-          key={t.id}
-          className={`pointer-events-auto flex items-start gap-3 p-4 rounded-xl border shadow-card-hover transition-all animate-in fade-in slide-in-from-bottom-2 ${
-            t.type === 'success'
-              ? 'bg-surface border-success/35 text-on-surface'
-              : t.type === 'error'
-              ? 'bg-surface border-error/40 text-on-surface'
-              : t.type === 'warning'
-              ? 'bg-surface border-warning/40 text-on-surface'
-              : 'bg-surface border-outline-variant text-on-surface'
-          }`}
-        >
-          <span
-            className={`material-symbols-outlined text-[20px] shrink-0 mt-0.5 ${
+      <AnimatePresence initial={false}>
+        {toasts.map((t) => (
+          <m.div
+            key={t.id}
+            initial={{ opacity: 0, x: dirSign * 24 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: dirSign * 24 }}
+            transition={MOTION_TRANSITION}
+            className={`pointer-events-auto flex items-start gap-3 p-4 rounded-2xl border bg-card text-on-surface shadow-card-hover transition-colors duration-300 ease-nexus ${
               t.type === 'success'
-                ? 'text-success'
+                ? 'border-success/40'
                 : t.type === 'error'
-                ? 'text-error'
-                : t.type === 'warning'
-                ? 'text-warning'
-                : 'text-info'
+                  ? 'border-error/45'
+                  : t.type === 'warning'
+                    ? 'border-warning/45'
+                    : 'border-card-border'
             }`}
           >
-            {t.type === 'success'
-              ? 'check_circle'
-              : t.type === 'error'
-              ? 'error'
-              : t.type === 'warning'
-              ? 'warning'
-              : 'info'}
-          </span>
-          <div className="flex-1 min-w-0">
-            {t.title && <div className="font-semibold text-sm mb-0.5">{t.title}</div>}
-            <div className="text-sm text-on-surface-variant break-words">{t.message}</div>
-          </div>
-          <button
-            type="button"
-            onClick={() => removeToast(t.id)}
-            className="text-on-surface-variant hover:text-on-surface p-1 rounded-md transition-colors shrink-0"
-            aria-label="Close"
-          >
-            <span className="material-symbols-outlined text-[16px] block">close</span>
-          </button>
-        </div>
-      ))}
+            <span
+              className={`material-symbols-rounded text-[20px] shrink-0 mt-0.5 ${
+                t.type === 'success'
+                  ? 'text-success-text'
+                  : t.type === 'error'
+                    ? 'text-error'
+                    : t.type === 'warning'
+                      ? 'text-warning'
+                      : 'text-info'
+              }`}
+              aria-hidden="true"
+            >
+              {t.type === 'success'
+                ? 'check_circle'
+                : t.type === 'error'
+                  ? 'error'
+                  : t.type === 'warning'
+                    ? 'warning'
+                    : 'info'}
+            </span>
+            <div className="flex-1 min-w-0">
+              {t.title && <div className="font-semibold text-sm text-on-surface mb-0.5">{t.title}</div>}
+              <div className="text-sm text-on-surface-variant break-words">{t.message}</div>
+            </div>
+            <button
+              type="button"
+              onClick={() => removeToast(t.id)}
+              className="text-muted hover:text-on-surface hover:bg-section-band p-1.5 rounded-full transition-colors shrink-0"
+              aria-label="Close"
+            >
+              <span className="material-symbols-rounded text-[16px] block" aria-hidden="true">close</span>
+            </button>
+          </m.div>
+        ))}
+      </AnimatePresence>
     </div>
   );
 }

@@ -28,6 +28,20 @@ const getProjectReviewsQuerySchema = z.object({
   }),
 });
 
+const getLatestReviewsQuerySchema = z.object({
+  query: z.object({
+    limit: z.preprocess(
+      (val) => (val === '' || val === undefined || val === null ? undefined : val),
+      z.coerce
+        .number()
+        .int('Limit must be an integer')
+        .min(1, 'Limit must be at least 1')
+        .max(12, 'Limit cannot exceed 12')
+        .default(6)
+    ),
+  }),
+});
+
 const ownerReviewsQuerySchema = z.object({
   query: z.object({
     page: z.coerce.number().int().min(1).default(1),
@@ -58,9 +72,22 @@ const moderateReviewSchema = z.object({
   }),
 });
 
+const accountCreateReviewSchema = z.object({
+  params: z.object({
+    orderNumber: z.string().min(1, 'Order number is required'),
+  }),
+  body: z.object({
+    rating: z.coerce.number().int().min(1, 'Rating must be at least 1').max(5, 'Rating cannot exceed 5'),
+    comment: z.string().min(5, 'Review comment must be at least 5 characters').max(2000),
+    customerName: z.string().min(2, 'Customer name must be at least 2 characters').max(100).optional(),
+  }),
+});
+
 module.exports = {
   createReviewSchema,
+  accountCreateReviewSchema,
   getProjectReviewsQuerySchema,
+  getLatestReviewsQuerySchema,
   ownerReviewsQuerySchema,
   reviewIdParamSchema,
   moderateReviewSchema,

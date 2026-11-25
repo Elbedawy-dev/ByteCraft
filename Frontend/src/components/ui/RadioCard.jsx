@@ -25,11 +25,11 @@ export const RadioCard = forwardRef(function RadioCard(
     <label
       htmlFor={inputId}
       className={clsx(
-        'relative flex flex-col p-4 sm:p-5 rounded-xl border transition-all duration-150 cursor-pointer select-none',
-        'focus-within:ring-2 focus-within:ring-input-focus focus-within:ring-offset-2 focus-within:ring-offset-surface',
+        'relative flex flex-col p-4 sm:p-5 rounded-xl border transition-all duration-300 ease-nexus cursor-pointer select-none',
+        'focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background',
         checked
-          ? 'bg-card-hover border-primary ring-1 ring-primary/30 shadow-card'
-          : 'bg-card border-card-border shadow-card hover:border-card-hover-border hover:bg-card-hover',
+          ? 'bg-brand-soft/45 border-primary ring-2 ring-primary/25 shadow-card'
+          : 'bg-card border-card-border shadow-card hover:border-card-hover-border hover:bg-section-band/60',
         disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
         className
       )}
@@ -50,13 +50,13 @@ export const RadioCard = forwardRef(function RadioCard(
         <div className="flex items-start gap-3 flex-1 min-w-0">
           <div
             className={clsx(
-              'w-5 h-5 mt-0.5 rounded-full border transition-all duration-150 flex items-center justify-center shrink-0',
-              checked ? 'border-primary' : 'border-outline'
+              'w-5 h-5 mt-0.5 rounded-full border transition-colors duration-300 ease-nexus flex items-center justify-center shrink-0 bg-input',
+              checked ? 'border-primary' : 'border-control-border'
             )}
           >
             <div
               className={clsx(
-                'w-2.5 h-2.5 rounded-full bg-primary transition-transform',
+                'w-2.5 h-2.5 rounded-full bg-primary transition-[opacity,transform] duration-300 ease-nexus',
                 checked ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
               )}
             />
@@ -64,7 +64,7 @@ export const RadioCard = forwardRef(function RadioCard(
           <div className="flex-1 min-w-0">
             {header && (
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-semibold text-sm sm:text-base text-on-surface">
+                <span className="font-bold text-sm sm:text-base text-on-surface">
                   {header}
                 </span>
                 {badge}
@@ -79,7 +79,7 @@ export const RadioCard = forwardRef(function RadioCard(
           </div>
         </div>
         {price && (
-          <div className="shrink-0 text-end font-semibold text-sm sm:text-base text-primary">
+          <div className="shrink-0 text-end font-bold text-sm sm:text-base text-primary">
             {price}
           </div>
         )}

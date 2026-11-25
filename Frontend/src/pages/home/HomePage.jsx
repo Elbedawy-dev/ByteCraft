@@ -6,9 +6,10 @@ import { CtaBanner } from '@/components/shared';
 import {
   HeroSection,
   SolutionsSection,
+  AboutPreviewSection,
   FeaturedProjectsSection,
-  HowItWorksSection,
   PillarsSection,
+  TestimonialsSection,
 } from '@/features/home';
 
 export default function HomePage() {
@@ -23,18 +24,20 @@ export default function HomePage() {
     <div className="flex flex-col w-full text-on-surface">
       <HeroSection />
       <SolutionsSection />
+      <AboutPreviewSection />
       <FeaturedProjectsSection />
-      <HowItWorksSection />
       <PillarsSection />
+      <TestimonialsSection />
 
       <CtaBanner
-        icon="auto_awesome"
+        badge={t('cta.eyebrow')}
         title={t('cta.title')}
+        accent={t('cta.titleAccent')}
         description={t('cta.description')}
         primaryAction={{
           label: t('cta.primaryAction'),
           to: ROUTES.CONTACT,
-          icon: 'rocket_launch',
+          icon: 'arrow_forward',
         }}
         secondaryAction={
           whatsappHref
@@ -44,16 +47,15 @@ export default function HomePage() {
                 icon: 'chat',
               }
             : {
-                label: t('cta.secondaryActionContact'),
-                to: ROUTES.CONTACT,
-                icon: 'chat',
+                label: t('cta.secondaryActionProjects'),
+                to: ROUTES.PROJECTS,
+                icon: 'arrow_forward',
               }
         }
         features={[
           t('cta.features.noHiddenFees'),
           t('cta.features.freeConsultation'),
         ]}
-        className="px-4 sm:px-6 lg:px-8 pb-12 lg:pb-16"
       />
     </div>
   );

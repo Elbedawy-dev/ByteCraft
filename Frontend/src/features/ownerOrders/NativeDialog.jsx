@@ -1,20 +1,20 @@
-import React, { useEffect, useId, useRef } from 'react';
+import React, { useId } from 'react';
 import clsx from 'clsx';
+import { AnimatePresence, m } from 'framer-motion';
 import { Button } from '@/components/ui';
-
-function isOutsideRect(event, rect) {
-  return (
-    event.clientX < rect.left ||
-    event.clientX > rect.right ||
-    event.clientY < rect.top ||
-    event.clientY > rect.bottom
-  );
-}
+import { useLang } from '@/app/providers';
+import {
+  fade,
+  getDrawerVariants,
+  scaleIn,
+  sheetSlideUp,
+  useAnimatedNativeDialog,
+  useIsMobileViewport,
+} from '@/lib/motion';
 
 /**
  * Native <dialog> modal leveraging styles/index.css (.bc-dialog.bc-modal)
- * and modern-web-guidance `dialog` rules (top-layer, Esc handling, overscroll containment,
- * safe focus management, press+release outside check so text selection never dismisses).
+ * with 20px radius (rounded-2xl) and Nexus Light/Dark backdrop & card tokens.
  */
 export function OwnerModal({
   isOpen,
@@ -28,49 +28,21 @@ export function OwnerModal({
   preventClose = false,
   className = '',
 }) {
-  const dialogRef = useRef(null);
-  const panelRef = useRef(null);
-  const pressedOutsideRef = useRef(false);
   const titleId = useId();
   const descId = useId();
-
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-
-    if (isOpen) {
-      if (!dialog.open) {
-        dialog.showModal();
-      }
-    } else if (dialog.open) {
-      dialog.close();
-    }
-  }, [isOpen]);
-
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-
-    const handleCancel = (e) => {
-      e.preventDefault();
-      if (!preventClose) {
-        onClose?.();
-      }
-    };
-
-    const handleClose = () => {
-      dialog.returnValue = '';
-    };
-
-    dialog.addEventListener('cancel', handleCancel);
-    dialog.addEventListener('close', handleClose);
-    return () => {
-      dialog.removeEventListener('cancel', handleCancel);
-      dialog.removeEventListener('close', handleClose);
-    };
-  }, [onClose, preventClose]);
-
-  if (!isOpen) return null;
+  const isMobile = useIsMobileViewport();
+  const {
+    dialogRef,
+    panelRef,
+    handleExitComplete,
+    handlePointerDown,
+    handlePointerUp,
+  } = useAnimatedNativeDialog({
+    isOpen,
+    onClose,
+    preventClose,
+    closeOnBackdrop,
+  });
 
   const sizeClasses = {
     sm: 'max-w-md',
@@ -80,29 +52,7 @@ export function OwnerModal({
     full: 'max-w-6xl',
   }[size] || 'max-w-lg';
 
-  const handlePointerDown = (e) => {
-    if (e.target instanceof Element && e.target.closest('[data-bc-select-portal]')) {
-      pressedOutsideRef.current = false;
-      return;
-    }
-    if (!closeOnBackdrop || preventClose || !panelRef.current) {
-      pressedOutsideRef.current = false;
-      return;
-    }
-    pressedOutsideRef.current = isOutsideRect(e, panelRef.current.getBoundingClientRect());
-  };
-
-  const handlePointerUp = (e) => {
-    if (e.target instanceof Element && e.target.closest('[data-bc-select-portal]')) {
-      pressedOutsideRef.current = false;
-      return;
-    }
-    if (!closeOnBackdrop || preventClose || !panelRef.current) return;
-    if (pressedOutsideRef.current && isOutsideRect(e, panelRef.current.getBoundingClientRect())) {
-      onClose?.();
-    }
-    pressedOutsideRef.current = false;
-  };
+  const panelVariants = isMobile ? sheetSlideUp : scaleIn;
 
   return (
     <dialog
@@ -112,57 +62,74 @@ export function OwnerModal({
       className="bc-dialog bc-modal p-0 sm:p-4 items-end sm:items-center"
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
-      {...{ closedby: preventClose ? 'none' : closeOnBackdrop ? 'any' : 'closerequest' }}
     >
-      <div
-        ref={panelRef}
-        className={clsx(
-          'bc-modal-panel relative w-full bg-surface border border-outline-variant',
-          'rounded-t-2xl sm:rounded-2xl shadow-card-hover flex flex-col max-h-[94dvh] sm:max-h-[88dvh] overflow-hidden',
-          sizeClasses,
-          className
-        )}
-      >
-        <div className="h-1 w-full bg-primary-gradient shrink-0" aria-hidden="true" />
-
-        {(title || !preventClose) && (
-          <div className="flex items-start justify-between gap-4 p-4 sm:p-6 border-b border-outline-variant bg-card shrink-0">
-            <div className="min-w-0">
-              {title && (
-                <h2
-                  id={titleId}
-                  className="text-base sm:text-lg font-bold text-on-surface leading-snug"
-                >
-                  {title}
-                </h2>
+      <AnimatePresence onExitComplete={handleExitComplete}>
+        {isOpen && (
+          <>
+            <m.div
+              variants={fade}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              aria-hidden="true"
+              className="fixed inset-0 bg-overlay backdrop-blur-sm"
+            />
+            <m.div
+              ref={panelRef}
+              variants={panelVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className={clsx(
+                'bc-modal-panel relative z-10 w-full bg-card border border-card-border',
+                'rounded-t-2xl sm:rounded-2xl shadow-card-hover flex flex-col max-h-[94dvh] sm:max-h-[88dvh] overflow-hidden',
+                sizeClasses,
+                className
               )}
-              {description && (
-                <p id={descId} className="text-xs sm:text-sm text-on-surface-variant mt-1">
-                  {description}
-                </p>
+            >
+              <div className="h-1 w-full bg-primary-gradient shrink-0" aria-hidden="true" />
+
+              {(title || !preventClose) && (
+                <div className="flex items-start justify-between gap-4 p-4 sm:p-6 border-b border-card-border bg-card shrink-0">
+                  <div className="min-w-0">
+                    {title && (
+                      <h2
+                        id={titleId}
+                        className="text-base sm:text-lg font-extrabold text-on-surface leading-snug"
+                      >
+                        {title}
+                      </h2>
+                    )}
+                    {description && (
+                      <p id={descId} className="text-xs sm:text-sm text-on-surface-variant mt-1">
+                        {description}
+                      </p>
+                    )}
+                  </div>
+                  {!preventClose && onClose && (
+                    <button
+                      type="button"
+                      onClick={onClose}
+                      className="w-10 h-10 shrink-0 rounded-full bg-surface-soft border border-card-border text-on-surface-variant hover:text-primary hover:border-primary/40 flex items-center justify-center transition-colors"
+                      aria-label="Close"
+                    >
+                      <span className="material-symbols-rounded text-[20px]">close</span>
+                    </button>
+                  )}
+                </div>
               )}
-            </div>
-            {!preventClose && onClose && (
-              <button
-                type="button"
-                onClick={onClose}
-                className="w-10 h-10 shrink-0 rounded-xl bg-surface border border-card-border text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high flex items-center justify-center transition-colors"
-                aria-label="Close"
-              >
-                <span className="material-symbols-outlined text-[20px]">close</span>
-              </button>
-            )}
-          </div>
-        )}
 
-        <div className="p-4 sm:p-6 bc-scroll flex-1">{children}</div>
+              <div className="p-4 sm:p-6 bc-scroll flex-1">{children}</div>
 
-        {footer && (
-          <div className="p-4 sm:p-5 border-t border-outline-variant bg-card shrink-0 flex items-center justify-end gap-3 flex-wrap">
-            {footer}
-          </div>
+              {footer && (
+                <div className="p-4 sm:p-5 border-t border-card-border bg-card shrink-0 flex items-center justify-end gap-3 flex-wrap">
+                  {footer}
+                </div>
+              )}
+            </m.div>
+          </>
         )}
-      </div>
+      </AnimatePresence>
     </dialog>
   );
 }
@@ -182,76 +149,26 @@ export function OwnerDrawer({
   closeLabel = 'Close',
   className = '',
 }) {
-  const dialogRef = useRef(null);
-  const panelRef = useRef(null);
-  const pressedOutsideRef = useRef(false);
   const titleId = useId();
-
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-
-    if (isOpen) {
-      if (!dialog.open) {
-        dialog.showModal();
-      }
-    } else if (dialog.open) {
-      dialog.close();
-    }
-  }, [isOpen]);
-
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-
-    const handleCancel = (e) => {
-      e.preventDefault();
-      onClose?.();
-    };
-
-    const handleClose = () => {
-      dialog.returnValue = '';
-    };
-
-    dialog.addEventListener('cancel', handleCancel);
-    dialog.addEventListener('close', handleClose);
-    return () => {
-      dialog.removeEventListener('cancel', handleCancel);
-      dialog.removeEventListener('close', handleClose);
-    };
-  }, [onClose]);
-
-  if (!isOpen) return null;
+  const { lang } = useLang();
+  const dir = lang === 'ar' ? 'rtl' : 'ltr';
+  const drawerVariants = getDrawerVariants('end', dir);
+  const {
+    dialogRef,
+    panelRef,
+    handleExitComplete,
+    handlePointerDown,
+    handlePointerUp,
+  } = useAnimatedNativeDialog({
+    isOpen,
+    onClose,
+  });
 
   const widthClasses = {
     md: 'max-w-lg',
     lg: 'max-w-2xl',
     xl: 'max-w-3xl',
   }[size] || 'max-w-2xl';
-
-  const handlePointerDown = (e) => {
-    if (e.target instanceof Element && e.target.closest('[data-bc-select-portal]')) {
-      pressedOutsideRef.current = false;
-      return;
-    }
-    if (!panelRef.current) {
-      pressedOutsideRef.current = false;
-      return;
-    }
-    pressedOutsideRef.current = isOutsideRect(e, panelRef.current.getBoundingClientRect());
-  };
-
-  const handlePointerUp = (e) => {
-    if (e.target instanceof Element && e.target.closest('[data-bc-select-portal]')) {
-      pressedOutsideRef.current = false;
-      return;
-    }
-    if (!panelRef.current) return;
-    if (pressedOutsideRef.current && isOutsideRect(e, panelRef.current.getBoundingClientRect())) {
-      onClose?.();
-    }
-    pressedOutsideRef.current = false;
-  };
 
   return (
     <dialog
@@ -261,55 +178,71 @@ export function OwnerDrawer({
       className="bc-dialog bc-drawer"
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
-      {...{ closedby: 'any' }}
     >
-      <div
-        ref={panelRef}
-        className={clsx(
-          'bc-drawer-panel relative h-full w-full bg-surface border-s border-outline-variant shadow-card-hover flex flex-col overflow-hidden',
-          widthClasses,
-          className
-        )}
-      >
-        <div className="flex items-start justify-between gap-3 p-4 sm:p-5 border-b border-outline-variant bg-card shrink-0">
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2.5 flex-wrap">
-              {title && (
-                <h2 id={titleId} className="text-base sm:text-lg font-bold text-on-surface truncate">
-                  {title}
-                </h2>
+      <AnimatePresence onExitComplete={handleExitComplete}>
+        {isOpen && (
+          <>
+            <m.div
+              variants={fade}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              aria-hidden="true"
+              className="fixed inset-0 bg-overlay backdrop-blur-sm"
+            />
+            <m.div
+              ref={panelRef}
+              variants={drawerVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className={clsx(
+                'bc-drawer-panel relative z-10 h-full w-full bg-card border-s border-card-border rounded-s-2xl shadow-card-hover flex flex-col overflow-hidden',
+                widthClasses,
+                className
               )}
-              {headerBadge}
-            </div>
-            {subtitle && (
-              <div className="text-xs sm:text-sm text-on-surface-variant mt-1">{subtitle}</div>
-            )}
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="w-11 h-11 shrink-0 rounded-xl bg-surface border border-card-border text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high flex items-center justify-center transition-colors"
-            aria-label={closeLabel}
-          >
-            <span className="material-symbols-outlined text-[20px]">close</span>
-          </button>
-        </div>
+            >
+              <div className="flex items-start justify-between gap-3 p-4 sm:p-5 border-b border-card-border bg-card shrink-0">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2.5 flex-wrap">
+                    {title && (
+                      <h2 id={titleId} className="text-base sm:text-lg font-extrabold text-on-surface truncate">
+                        {title}
+                      </h2>
+                    )}
+                    {headerBadge}
+                  </div>
+                  {subtitle && (
+                    <div className="text-xs sm:text-sm text-on-surface-variant mt-1">{subtitle}</div>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="w-10 h-10 shrink-0 rounded-full bg-surface-soft border border-card-border text-on-surface-variant hover:text-primary hover:border-primary/40 flex items-center justify-center transition-colors"
+                  aria-label={closeLabel}
+                >
+                  <span className="material-symbols-rounded text-[20px]">close</span>
+                </button>
+              </div>
 
-        <div className="p-4 sm:p-6 bc-scroll flex-1">{children}</div>
+              <div className="p-4 sm:p-6 bc-scroll flex-1">{children}</div>
 
-        {footer && (
-          <div className="p-4 sm:p-5 border-t border-outline-variant bg-card shrink-0">
-            {footer}
-          </div>
+              {footer && (
+                <div className="p-4 sm:p-5 border-t border-card-border bg-card shrink-0">
+                  {footer}
+                </div>
+              )}
+            </m.div>
+          </>
         )}
-      </div>
+      </AnimatePresence>
     </dialog>
   );
 }
 
 /**
- * Confirmation dialog following modern-web-guidance `dialog` rule:
- * places initial autoFocus on the safe Cancel action in destructive confirmations.
+ * Confirmation dialog with safe initial autoFocus on Cancel for destructive confirmations.
  */
 export function OwnerConfirmDialog({
   isOpen,

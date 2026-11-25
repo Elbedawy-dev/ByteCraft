@@ -60,7 +60,7 @@
     "quickReply": "الرد السريع",
     "replyByEmail": "الرد بالبريد الإلكتروني",
     "replyByWhatsApp": "الرد عبر واتساب",
-    "whatsappPrefill": "مرحباً {{name}}، بخصوص استفسارك لدى ByteCraft: {{subject}}",
+    "whatsappPrefill": "مرحباً {{name}}، بخصوص استفسارك لدى Nexus: {{subject}}",
     "sections": {
       "contact": "بيانات التواصل",
       "scope": "تفاصيل المشروع المطلوب",

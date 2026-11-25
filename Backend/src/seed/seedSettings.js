@@ -32,7 +32,7 @@ async function seedSettings() {
 
       await Settings.create({
         key: 'main',
-        siteName: 'ByteCraft',
+        siteName: 'Nexus',
         guaranteeDays: DEFAULT_GUARANTEE_DAYS,
         contact: {
           email: 'moaazelbedawy@gmail.com',

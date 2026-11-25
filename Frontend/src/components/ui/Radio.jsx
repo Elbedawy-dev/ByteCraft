@@ -46,15 +46,15 @@ export const Radio = forwardRef(function Radio(
         />
         <div
           className={clsx(
-            'w-5 h-5 rounded-full border bg-input transition-all duration-150 flex items-center justify-center',
-            'peer-focus-visible:ring-2 peer-focus-visible:ring-input-focus peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-surface',
+            'w-5 h-5 rounded-full border bg-input transition-[border-color,box-shadow,background-color] duration-300 ease-nexus flex items-center justify-center',
+            'peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-background',
             error
-              ? 'border-error'
-              : 'border-outline peer-hover:border-primary',
+              ? 'border-danger'
+              : 'border-control-border peer-hover:border-primary',
             'peer-checked:border-primary'
           )}
         >
-          <div className="w-2.5 h-2.5 rounded-full bg-primary opacity-0 peer-checked:opacity-100 transition-opacity transform scale-75 peer-checked:scale-100" />
+          <div className="w-2.5 h-2.5 rounded-full bg-primary opacity-0 peer-checked:opacity-100 transition-[opacity,transform] duration-300 ease-nexus transform scale-75 peer-checked:scale-100" />
         </div>
       </div>
       {(label || description) && (
@@ -65,7 +65,7 @@ export const Radio = forwardRef(function Radio(
             </span>
           )}
           {description && (
-            <span className="text-xs text-on-surface-variant mt-0.5">
+            <span className="text-xs text-muted mt-0.5">
               {description}
             </span>
           )}

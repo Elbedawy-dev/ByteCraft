@@ -1,30 +1,36 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLang } from '@/app/providers';
+import { fade, slideFromEnd } from '@/lib/motion';
+import { Reveal } from '@/components/ui/Motion';
+import { HeroCubes, TwoToneText } from '@/components/shared';
 
 export function MarketplaceHeader() {
   const { t } = useTranslation('marketplace');
+  const { dir } = useLang();
 
   return (
-    <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg">
-      <div className="space-y-3 max-w-3xl min-w-0">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-high border border-outline-variant/60 text-primary font-label-code text-label-code max-w-full">
-          <span className="relative flex h-2 w-2 shrink-0" aria-hidden="true">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
-          </span>
+    <header className="grid grid-cols-1 lg:grid-cols-12 items-center gap-8">
+      <Reveal variants={fade} className="lg:col-span-8 space-y-3 min-w-0">
+        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-soft border border-chip-mint-border text-brand-soft-text text-xs font-semibold max-w-full">
+          <span className="w-2 h-2 rounded-full bg-primary shrink-0" aria-hidden="true" />
           <bdi dir="ltr" className="truncate">
             {t('header.eyebrow')}
           </bdi>
-        </div>
+        </span>
 
-        <h1 className="font-display-lg text-display-lg-mobile sm:text-headline-xl lg:text-display-lg text-on-surface tracking-tight">
-          {t('header.title')}
+        <h1 className="text-display-lg-mobile sm:text-headline-xl font-extrabold text-on-surface tracking-tight">
+          <TwoToneText text={t('header.title')} />
         </h1>
 
-        <p className="font-body-lg text-body-md sm:text-body-lg text-on-surface-variant max-w-2xl leading-relaxed">
+        <p className="text-body-md text-muted max-w-[580px]">
           {t('header.subtitle')}
         </p>
-      </div>
+      </Reveal>
+
+      <Reveal variants={slideFromEnd} custom={dir} className="hidden lg:flex lg:col-span-4 justify-end">
+        <HeroCubes className="w-56 xl:w-64 h-auto rtl:-scale-x-100 opacity-90 select-none pointer-events-none" />
+      </Reveal>
     </header>
   );
 }

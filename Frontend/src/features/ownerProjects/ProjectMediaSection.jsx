@@ -1,10 +1,12 @@
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
+import { AnimatePresence, m } from 'framer-motion';
 import { getApiErrorMessage } from '@/api/client';
 import { useDeleteOwnerUpload, useUploadOwnerImages } from '@/api/owner/uploads';
 import { useToast } from '@/app/providers';
 import { formatNumber } from '@/lib/format';
+import { fade, scaleIn } from '@/lib/motion';
 import { Badge, Button } from '@/components/ui';
 
 const ALLOWED_IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
@@ -234,7 +236,7 @@ export function ProjectMediaSection({
           </div>
           <div className="w-full h-2 rounded-full bg-surface-container-high overflow-hidden">
             <div
-              className="h-full bg-primary-gradient transition-all duration-150"
+              className="h-full bg-primary-gradient transition-[width] duration-300 ease-nexus"
               style={{ width: `${uploadProgress}%` }}
             />
           </div>
@@ -384,38 +386,48 @@ export function ProjectMediaSection({
       )}
 
       {/* Lightbox Quick Preview */}
-      {previewImage && (
-        <div
-          className="fixed inset-0 z-50 bg-overlay backdrop-blur-sm flex items-center justify-center p-4"
-          onClick={() => setPreviewImage(null)}
-        >
-          <div
-            className="relative max-w-4xl w-full bg-surface rounded-2xl overflow-hidden border border-outline-variant shadow-card-hover"
-            onClick={(e) => e.stopPropagation()}
+      <AnimatePresence>
+        {previewImage && (
+          <m.div
+            variants={fade}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="fixed inset-0 z-50 bg-overlay backdrop-blur-sm flex items-center justify-center p-4"
+            onClick={() => setPreviewImage(null)}
           >
-            <div className="flex items-center justify-between p-3 border-b border-outline-variant bg-card">
-              <span className="text-xs font-mono text-on-surface-variant truncate">
-                <bdi dir="ltr">{previewImage.publicId}</bdi>
-              </span>
-              <button
-                type="button"
-                onClick={() => setPreviewImage(null)}
-                aria-label={t('modal.closeLabel')}
-                className="w-9 h-9 rounded-lg bg-surface border border-card-border text-on-surface flex items-center justify-center"
-              >
-                <span className="material-symbols-outlined text-[18px]">close</span>
-              </button>
-            </div>
-            <div className="p-2 bg-surface-dim flex items-center justify-center">
-              <img
-                src={previewImage.url}
-                alt={previewImage.publicId}
-                className="max-h-[75dvh] w-auto object-contain rounded-lg"
-              />
-            </div>
-          </div>
-        </div>
-      )}
+            <m.div
+              variants={scaleIn}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="relative max-w-4xl w-full bg-surface rounded-2xl overflow-hidden border border-outline-variant shadow-card-hover"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between p-3 border-b border-outline-variant bg-card">
+                <span className="text-xs font-mono text-on-surface-variant truncate">
+                  <bdi dir="ltr">{previewImage.publicId}</bdi>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setPreviewImage(null)}
+                  aria-label={t('modal.closeLabel')}
+                  className="w-9 h-9 rounded-lg bg-surface border border-card-border text-on-surface flex items-center justify-center transition-colors duration-300 ease-nexus"
+                >
+                  <span className="material-symbols-outlined text-[18px]">close</span>
+                </button>
+              </div>
+              <div className="p-2 bg-surface-dim flex items-center justify-center">
+                <img
+                  src={previewImage.url}
+                  alt={previewImage.publicId}
+                  className="max-h-[75dvh] w-auto object-contain rounded-lg"
+                />
+              </div>
+            </m.div>
+          </m.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

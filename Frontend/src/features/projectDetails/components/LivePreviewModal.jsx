@@ -52,7 +52,7 @@ export function LivePreviewModal({ isOpen, onClose, project }) {
       labelledBy="live-preview-dialog-title"
       dialogClassName={isFullscreen ? '!p-0' : 'p-2 sm:p-4'}
       panelClassName={clsx(
-        'transition-all duration-200',
+        'transition-[width,height,border-radius] duration-300 ease-nexus',
         isFullscreen
           ? 'w-[100dvw] h-[100dvh] max-w-none rounded-none border-0'
           : 'w-full max-w-7xl h-[92dvh] sm:h-[90dvh]'
@@ -155,7 +155,7 @@ export function LivePreviewModal({ isOpen, onClose, project }) {
       <div className="relative flex-1 min-h-0 bg-surface-dim flex items-stretch justify-center p-0 sm:p-3 bc-scroll overflow-x-auto">
         <div
           className={clsx(
-            'relative h-full bg-background transition-all duration-200 flex flex-col overflow-hidden',
+            'relative h-full bg-background transition-[width,max-width,border-radius,box-shadow] duration-300 ease-nexus flex flex-col overflow-hidden',
             activeDevice.widthClass,
             device !== 'desktop'
               ? 'border border-card-border rounded-xl shadow-card mx-auto'

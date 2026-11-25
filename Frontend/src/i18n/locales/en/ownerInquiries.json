@@ -60,7 +60,7 @@
     "quickReply": "Quick Reply",
     "replyByEmail": "Reply by Email",
     "replyByWhatsApp": "Reply by WhatsApp",
-    "whatsappPrefill": "Hi {{name}}, following up on your ByteCraft inquiry: {{subject}}",
+    "whatsappPrefill": "Hi {{name}}, following up on your Nexus inquiry: {{subject}}",
     "sections": {
       "contact": "Contact Details",
       "scope": "Project Specifications",

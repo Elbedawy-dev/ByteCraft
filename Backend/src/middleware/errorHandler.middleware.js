@@ -40,7 +40,7 @@ function formatMongooseDetails(mongooseError) {
 
 function errorHandler(err, req, res, next) {
   let statusCode = 500;
-  let code = ERROR_CODES.INTERNAL_SERVER_ERROR;
+  let code = ERROR_CODES.INTERNAL_ERROR;
   let message = 'An unexpected internal server error occurred.';
   let details = [];
 
@@ -50,9 +50,23 @@ function errorHandler(err, req, res, next) {
     code = err.code;
     message = err.message;
     details = err.details || [];
+    if (err.retryAfterSeconds) {
+      res.set('Retry-After', String(err.retryAfterSeconds));
+    }
   }
 
-  // 2. Zod Request Payload / Query / Params Validation Errors
+  // 2. JWT Authentication Errors
+  else if (
+    err.name === 'JsonWebTokenError' ||
+    err.name === 'TokenExpiredError' ||
+    err.name === 'NotBeforeError'
+  ) {
+    statusCode = 401;
+    code = ERROR_CODES.UNAUTHORIZED;
+    message = err.name === 'TokenExpiredError' ? 'Session expired. Please log in again.' : 'Invalid authentication session.';
+  }
+
+  // 3. Zod Request Payload / Query / Params Validation Errors
   else if (err instanceof ZodError) {
     statusCode = 400;
     code = ERROR_CODES.VALIDATION_ERROR;
@@ -60,7 +74,7 @@ function errorHandler(err, req, res, next) {
     details = formatZodDetails(err);
   }
 
-  // 3. Mongoose Schema Validation Errors
+  // 4. Mongoose Schema Validation Errors
   else if (err instanceof mongoose.Error.ValidationError) {
     statusCode = 400;
     code = ERROR_CODES.VALIDATION_ERROR;
@@ -68,7 +82,7 @@ function errorHandler(err, req, res, next) {
     details = formatMongooseDetails(err);
   }
 
-  // 4. Mongoose Duplicate Key Error (Unique constraint violation)
+  // 5. Mongoose Duplicate Key Error (Unique constraint violation)
   else if (err.code === 11000) {
     statusCode = 409;
     code = ERROR_CODES.CONFLICT;
@@ -78,10 +92,10 @@ function errorHandler(err, req, res, next) {
     details = [{ field: fieldName, message: `Duplicate value for "${fieldName}"` }];
   }
 
-  // 5. Mongoose Cast Error (Invalid ObjectId or Type)
+  // 6. Mongoose Cast Error (Invalid ObjectId or Type)
   else if (err instanceof mongoose.Error.CastError) {
     statusCode = 400;
-    code = ERROR_CODES.INVALID_ID;
+    code = ERROR_CODES.VALIDATION_ERROR;
     message = `Invalid ${err.kind} format for parameter "${err.path}"`;
     details = [{ field: err.path, message: `Cannot cast value "${err.value}" to ${err.kind}` }];
   }

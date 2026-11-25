@@ -1,8 +1,8 @@
 {
 	"info": {
 		"_postman_id": "bytecraft-api-v1-collection",
-		"name": "ByteCraft API v1",
-		"description": "Complete Postman collection for ByteCraft Backend API (v1).\nCovers Platform Meta, Owner Auth, Dashboard, Settings, Categories, Projects, Service Plans, Coupons, Orders, Manual & Online Payments (Paymob), Reviews, Inquiries (JSON & Multipart Attachments), and Uploads.\n\nNotes:\n- All prices and amounts are integers in piasters (1 EGP = 100 piasters).\n- Tax-free billing: total = max(0, subtotal - discount).\n- Owner endpoints require the `bc_owner` httpOnly cookie (set automatically by POST /owner/login).",
+		"name": "Nexus API v1",
+		"description": "Complete Postman collection for Nexus Backend API (v1).\nCovers Platform Meta, Public Stats, Latest Reviews, User Auth (/api/auth/*), Customer Account (/api/account/*), Admin Users & Admins (/api/owner/users, /api/owner/admins), Dashboard, Settings, Categories, Projects, Service Plans, Coupons, Orders, Manual & Online Payments (Paymob), Reviews, Inquiries (JSON & Multipart Attachments), and Uploads.\n\nNotes:\n- All prices and amounts are integers in piasters (1 EGP = 100 piasters).\n- Tax-free billing: total = max(0, subtotal - discount).\n- Authenticated endpoints use the `bc_session` httpOnly cookie (set automatically by POST /auth/login or POST /auth/register).\n- All /api/owner/* endpoints require role `admin` (customers receive 403 FORBIDDEN).",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"variable": [
@@ -60,6 +60,16 @@
 			"key": "reviewId",
 			"value": "653a1f8b8e1a2c001234567e",
 			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": "653a1f8b8e1a2c001234567f",
+			"type": "string"
+		},
+		{
+			"key": "adminId",
+			"value": "653a1f8b8e1a2c0012345680",
+			"type": "string"
 		}
 	],
 	"item": [
@@ -91,14 +101,365 @@
 						},
 						"description": "Public platform metadata: siteName, guaranteeDays, contact, active categories, and sanitized paymentMethods (enabled flags & bilingual instructions only; no walletNumber/ipa/accountName)."
 					}
+				},
+				{
+					"name": "Get Public Stats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/stats/public",
+							"host": ["{{baseUrl}}"],
+							"path": ["stats", "public"]
+						},
+						"description": "Real public platform counters for the home page: publishedProjects, deliveredOrders (paid + delivered), reviewsCount (published), reviewsAverage. Cached for 5 minutes (no invented numbers, no minimums)."
+					}
 				}
 			]
 		},
 		{
-			"name": "Owner Auth",
+			"name": "Auth (/api/auth)",
 			"item": [
 				{
-					"name": "Owner Login",
+					"name": "Register Customer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Karim Adel\",\n  \"email\": \"karim@example.com\",\n  \"password\": \"KarimPassword123!\",\n  \"phone\": \"+201012345678\",\n  \"locale\": \"en\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/register",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "register"]
+						},
+						"description": "Registers a new customer account, sets the `bc_session` httpOnly cookie, and sends a verification email. Blocked (403) if `settings.registrationEnabled` is false. Rate limited: 5 / hour / IP."
+					}
+				},
+				{
+					"name": "Login (Customer or Admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"owner@bytecraft.dev\",\n  \"password\": \"OwnerSecretPassword123!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "login"]
+						},
+						"description": "Unified login for both `customer` and `admin` roles. Sets the `bc_session` httpOnly cookie and returns `{ user }` with `role`. Locks account for 15 minutes after 5 failed attempts (423 ACCOUNT_LOCKED). Rate limited: 10 failed attempts / 15 min / IP."
+					}
+				},
+				{
+					"name": "Get Current User (Me)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/auth/me",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "me"]
+						},
+						"description": "Returns the currently authenticated user profile from `bc_session`."
+					}
+				},
+				{
+					"name": "Verify Email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"<email-verification-token>\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/verify-email",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "verify-email"]
+						},
+						"description": "Consumes a single-use 24h email verification token and sends a welcome email."
+					}
+				},
+				{
+					"name": "Resend Verification Email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"karim@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/resend-verification",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "resend-verification"]
+						},
+						"description": "Resends a verification email for the signed-in unverified user or for the provided email (generic response when unauthenticated). Rate limited: 3 / hour / IP."
+					}
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"karim@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/forgot-password",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "forgot-password"]
+						},
+						"description": "Always returns the same generic 200 OK response and dispatches a 1h reset link if an active account matches. Rate limited: 3 / hour / IP and 3 / hour / email."
+					}
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"<password-reset-or-admin-invite-token>\",\n  \"password\": \"NewKarimPassword123!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/reset-password",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "reset-password"]
+						},
+						"description": "Consumes a single-use password reset (or admin invite) token, updates the password, and bumps `tokenVersion` to invalidate all prior sessions."
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/auth/logout",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "logout"]
+						},
+						"description": "Clears the `bc_session` httpOnly cookie."
+					}
+				}
+			]
+		},
+		{
+			"name": "Customer Account (/api/account)",
+			"item": [
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Karim Adel\",\n  \"phone\": \"+201012345678\",\n  \"gitProvider\": \"github\",\n  \"gitUsername\": \"karim-dev\",\n  \"locale\": \"en\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/account/profile",
+							"host": ["{{baseUrl}}"],
+							"path": ["account", "profile"]
+						},
+						"description": "Updates authenticated user's profile fields (including optional checkout prefill fields `gitProvider` and `gitUsername`)."
+					}
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"currentPassword\": \"KarimPassword123!\",\n  \"newPassword\": \"UpdatedKarimPassword456!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/account/password",
+							"host": ["{{baseUrl}}"],
+							"path": ["account", "password"]
+						},
+						"description": "Verifies currentPassword, updates password, bumps `tokenVersion`, re-issues the `bc_session` cookie (killing older sessions), and sends a password-changed notice email."
+					}
+				},
+				{
+					"name": "Delete Account",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"password\": \"UpdatedKarimPassword456!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/account",
+							"host": ["{{baseUrl}}"],
+							"path": ["account"]
+						},
+						"description": "Deletes a customer account after password confirmation and clears `bc_session`. Preserves all historical orders with snapshots intact (`Order.user` set to `null`). Blocked for admins."
+					}
+				},
+				{
+					"name": "List My Orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/account/orders?page=1&limit=10",
+							"host": ["{{baseUrl}}"],
+							"path": ["account", "orders"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "status",
+									"value": "pending_payment",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Paginated list of the signed-in user's own orders with optional `status` filter."
+					}
+				},
+				{
+					"name": "Get My Order Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/account/orders/{{orderNumber}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["account", "orders", "{{orderNumber}}"]
+						},
+						"description": "Retrieves a single order owned by the signed-in user without requiring a `?token=` query parameter."
+					}
+				},
+				{
+					"name": "Upload Payment Proof (My Order)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "proof",
+									"type": "file",
+									"src": ""
+								},
+								{
+									"key": "reference",
+									"value": "VF-998877",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/account/orders/{{orderNumber}}/payment-proof",
+							"host": ["{{baseUrl}}"],
+							"path": ["account", "orders", "{{orderNumber}}", "payment-proof"]
+						},
+						"description": "Uploads manual payment proof (JPEG/PNG/WebP/PDF, max 4 MB) for an authenticated user's own order without needing `?token=`."
+					}
+				},
+				{
+					"name": "Submit Review (My Order)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rating\": 5,\n  \"comment\": \"Clean codebase and effortless installation!\",\n  \"customerName\": \"Karim A.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/account/orders/{{orderNumber}}/reviews",
+							"host": ["{{baseUrl}}"],
+							"path": ["account", "orders", "{{orderNumber}}", "reviews"]
+						},
+						"description": "Submits a verified buyer review for the authenticated user's own paid/delivered order without needing `?token=`."
+					}
+				},
+				{
+					"name": "Claim Guest Orders",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/account/claim-orders",
+							"host": ["{{baseUrl}}"],
+							"path": ["account", "claim-orders"]
+						},
+						"description": "Attaches unclaimed guest orders (`Order.user === null`) whose `customer.email` matches the user's email. Requires `emailVerified: true` (403 EMAIL_NOT_VERIFIED otherwise)."
+					}
+				}
+			]
+		},
+		{
+			"name": "Owner Auth (Deprecated Aliases)",
+			"item": [
+				{
+					"name": "Owner Login (Deprecated)",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -116,11 +477,11 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "login"]
 						},
-						"description": "Logs in the owner and sets an httpOnly cookie (bc_owner). Rate limited to 5 failed attempts / 15 min / IP."
+						"description": "Deprecated alias for POST /auth/login (sets `bc_session` httpOnly cookie and `Deprecation: true` header). Rate limited: 10 failed attempts / 15 min / IP."
 					}
 				},
 				{
-					"name": "Get Current Owner (Me)",
+					"name": "Get Current Owner (Me - Deprecated)",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -129,11 +490,11 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "me"]
 						},
-						"description": "Returns current logged-in owner profile."
+						"description": "Deprecated alias for GET /auth/me (requires admin role). Sets `Deprecation: true` header."
 					}
 				},
 				{
-					"name": "Change Password",
+					"name": "Change Password (Owner - Deprecated)",
 					"request": {
 						"method": "PATCH",
 						"header": [
@@ -151,11 +512,11 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "password"]
 						},
-						"description": "Changes the owner password. Requires currentPassword and newPassword (min 8 chars)."
+						"description": "Deprecated alias for PATCH /account/password (requires admin role). Bumps `tokenVersion` and re-issues `bc_session`."
 					}
 				},
 				{
-					"name": "Owner Logout",
+					"name": "Owner Logout (Deprecated)",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -164,7 +525,7 @@
 							"host": ["{{baseUrl}}"],
 							"path": ["owner", "logout"]
 						},
-						"description": "Clears the bc_owner session cookie."
+						"description": "Deprecated alias for POST /auth/logout (requires admin role). Clears the `bc_session` session cookie."
 					}
 				}
 			]
@@ -210,7 +571,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"siteName\": \"ByteCraft\",\n  \"guaranteeDays\": 30,\n  \"contact\": {\n    \"email\": \"contact@bytecraft.dev\",\n    \"phone\": \"+201012345678\",\n    \"whatsapp\": \"+201012345678\",\n    \"location\": {\n      \"ar\": \"القاهرة، مصر\",\n      \"en\": \"Cairo, Egypt\"\n    },\n    \"socials\": {\n      \"github\": \"https://github.com/ByteCraft\",\n      \"linkedin\": \"https://linkedin.com/company/bytecraft\",\n      \"twitter\": \"\",\n      \"facebook\": \"\"\n    }\n  },\n  \"paymentMethods\": {\n    \"vodafone_cash\": {\n      \"enabled\": true,\n      \"walletNumber\": \"01012345678\",\n      \"accountName\": \"ByteCraft Studio\",\n      \"instructions\": {\n        \"ar\": \"حول المبلغ المطلوب عبر فودافون كاش ثم ارفع إيصال التحويل.\",\n        \"en\": \"Transfer the required amount via Vodafone Cash and upload the payment proof.\"\n      }\n    },\n    \"instapay\": {\n      \"enabled\": true,\n      \"ipa\": \"bytecraft@instapay\",\n      \"accountName\": \"ByteCraft Studio\",\n      \"instructions\": {\n        \"ar\": \"حول المبلغ المطلوب عبر انستاباي ثم ارفع إيصال التحويل.\",\n        \"en\": \"Transfer the required amount via InstaPay and upload the payment proof.\"\n      }\n    },\n    \"card\": {\n      \"enabled\": true\n    },\n    \"fawry\": {\n      \"enabled\": true\n    }\n  }\n}"
+							"raw": "{\n  \"siteName\": \"Nexus\",\n  \"guaranteeDays\": 30,\n  \"registrationEnabled\": true,\n  \"contact\": {\n    \"email\": \"contact@nexus.dev\",\n    \"phone\": \"+201012345678\",\n    \"whatsapp\": \"+201012345678\",\n    \"location\": {\n      \"ar\": \"القاهرة، مصر\",\n      \"en\": \"Cairo, Egypt\"\n    },\n    \"socials\": {\n      \"github\": \"https://github.com/Elbedawy-dev\",\n      \"linkedin\": \"https://www.linkedin.com/in/moaaz-elbedawy\",\n      \"twitter\": \"\",\n      \"facebook\": \"\"\n    }\n  },\n  \"paymentMethods\": {\n    \"vodafone_cash\": {\n      \"enabled\": true,\n      \"walletNumber\": \"01012345678\",\n      \"accountName\": \"Nexus Studio\",\n      \"instructions\": {\n        \"ar\": \"حول المبلغ المطلوب عبر فودافون كاش ثم ارفع إيصال التحويل.\",\n        \"en\": \"Transfer the required amount via Vodafone Cash and upload the payment proof.\"\n      }\n    },\n    \"instapay\": {\n      \"enabled\": true,\n      \"ipa\": \"nexus@instapay\",\n      \"accountName\": \"Nexus Studio\",\n      \"instructions\": {\n        \"ar\": \"حول المبلغ المطلوب عبر انستاباي ثم ارفع إيصال التحويل.\",\n        \"en\": \"Transfer the required amount via InstaPay and upload the payment proof.\"\n      }\n    },\n    \"card\": {\n      \"enabled\": true\n    },\n    \"fawry\": {\n      \"enabled\": true\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/owner/settings",
@@ -218,6 +579,114 @@
 							"path": ["owner", "settings"]
 						},
 						"description": "Updates singleton site settings. Note: platform is tax-free (no vatRate)."
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin Users & Admins",
+			"item": [
+				{
+					"name": "List Customers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/users?page=1&limit=20",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "users"],
+							"query": [
+								{
+									"key": "search",
+									"value": "karim",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "active",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								}
+							]
+						},
+						"description": "Lists customer accounts with search, status filter, pagination, and `ordersCount`. Admin only."
+					}
+				},
+				{
+					"name": "Enable / Disable User",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"disabled\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/users/{{userId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "users", "{{userId}}"]
+						},
+						"description": "Enables or disables a user account. Disabling bumps `tokenVersion` to immediately kill active sessions. Admin only."
+					}
+				},
+				{
+					"name": "List Admins",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/admins",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "admins"]
+						},
+						"description": "Lists all admin accounts. Admin only."
+					}
+				},
+				{
+					"name": "Invite / Create Admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Second Admin\",\n  \"email\": \"admin2@bytecraft.dev\",\n  \"locale\": \"en\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/owner/admins",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "admins"]
+						},
+						"description": "Creates a new admin account and emails a one-time 24h 'set your password' link (`/api/auth/reset-password`). Admin only."
+					}
+				},
+				{
+					"name": "Delete Admin",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/admins/{{adminId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["owner", "admins", "{{adminId}}"]
+						},
+						"description": "Deletes another admin account. Prevents self-deletion (403) and removing the last admin (409). Admin only."
 					}
 				}
 			]
@@ -986,8 +1455,24 @@
 			]
 		},
 		{
-			"name": "Reviews (Owner Moderation)",
+			"name": "Reviews",
 			"item": [
+				{
+					"name": "Public Latest Reviews",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/reviews/latest?limit=6",
+							"host": ["{{baseUrl}}"],
+							"path": ["reviews", "latest"],
+							"query": [
+								{ "key": "limit", "value": "6", "description": "1..12 (default 6)" }
+							]
+						},
+						"description": "Latest published reviews across all projects for the home page. Names are anonymized (Firstname L.), comments trimmed to 240 chars, no rating filter (moderation is isPublished), and zero PII/order info exposed."
+					}
+				},
 				{
 					"name": "Owner List Reviews",
 					"request": {

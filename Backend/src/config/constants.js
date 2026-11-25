@@ -7,8 +7,18 @@
  */
 
 module.exports = {
-  // Cookie name for Owner HTTP-only authentication
-  AUTH_COOKIE_NAME: 'bc_owner',
+  // Cookie name for User HTTP-only session authentication (customer & admin)
+  AUTH_COOKIE_NAME: 'bc_session',
+
+  // User roles & statuses
+  ROLES: {
+    CUSTOMER: 'customer',
+    ADMIN: 'admin',
+  },
+  USER_STATUSES: {
+    ACTIVE: 'active',
+    DISABLED: 'disabled',
+  },
 
   // Standardized error codes matching the API response specification
   ERROR_CODES: {
@@ -21,6 +31,10 @@ module.exports = {
     INVALID_STATE: 'INVALID_STATE',
     INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
     INVALID_CURRENT_PASSWORD: 'INVALID_CURRENT_PASSWORD',
+    ACCOUNT_LOCKED: 'ACCOUNT_LOCKED',
+    INVALID_TOKEN: 'INVALID_TOKEN',
+    EMAIL_NOT_VERIFIED: 'EMAIL_NOT_VERIFIED',
+    ALREADY_VERIFIED: 'ALREADY_VERIFIED',
     TOO_MANY_REQUESTS: 'TOO_MANY_REQUESTS',
     UNSUPPORTED_MEDIA_TYPE: 'UNSUPPORTED_MEDIA_TYPE',
     FILE_TOO_LARGE: 'FILE_TOO_LARGE',

@@ -12,12 +12,12 @@ export function DeliveryFaq() {
   return (
     <section
       aria-labelledby="delivery-faq-heading"
-      className="p-5 sm:p-6 rounded-xl bg-card border border-card-border shadow-card space-y-4"
+      className="space-y-5"
     >
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-badge-green-bg border border-primary/20 flex items-center justify-center text-primary shrink-0">
-          <span className="material-symbols-outlined text-[22px]" aria-hidden="true">
-            help_outline
+      <div className="flex items-center gap-3.5">
+        <div className="w-12 h-12 rounded-lg bg-brand-soft flex items-center justify-center shrink-0">
+          <span className="material-symbols-rounded icon-gradient text-[24px]" aria-hidden="true">
+            help
           </span>
         </div>
         <h2 id="delivery-faq-heading" className="text-lg sm:text-headline-lg font-bold text-on-surface">

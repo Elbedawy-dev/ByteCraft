@@ -1,15 +1,18 @@
 import React, { forwardRef } from 'react';
 import clsx from 'clsx';
+import { m } from 'framer-motion';
+import { MOTION_TRANSITION } from '../../lib/motion';
 import { Spinner } from './Spinner';
 
 /**
- * Button component per ByteCraft design contract
+ * Nexus Pill Button
+ * Sizes: sm=40px (h-10), md=48px (h-12), lg=56px (h-14)
  * Variants:
- * - primary-gradient: Owner override #52E982 -> #19ECB5, text #0A0A0A, glow
- * - outline: border with primary color
- * - ghost: subtle hover surface
- * - danger: error background
- * - secondary: surface container high
+ * - primary-gradient: brand gradient (#2B72CF -> #5443A9) + white text + glow on hover
+ * - secondary: surface with 1px border and brand text
+ * - outline: surface with brand border and brand text
+ * - ghost: subtle brand-soft hover surface
+ * - danger: semantic danger fill
  */
 export const Button = forwardRef(function Button(
   {
@@ -26,35 +29,40 @@ export const Button = forwardRef(function Button(
   },
   ref
 ) {
+  const isDisabled = disabled || loading;
+
   const baseStyles =
-    'relative inline-flex items-center justify-center font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-input-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none select-none';
+    'relative inline-flex items-center justify-center rounded-full font-semibold transition-[background-color,border-color,color,box-shadow,filter,opacity] duration-300 ease-nexus focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none select-none';
 
   const sizeStyles = {
-    sm: 'h-10 px-4 text-xs sm:text-sm rounded-lg gap-1.5',
-    md: 'h-12 px-6 text-sm rounded-xl gap-2',
-    lg: 'h-14 px-8 text-base rounded-xl gap-2.5 font-semibold',
-    icon: 'h-12 w-12 rounded-xl p-0',
-    'icon-sm': 'h-10 w-10 rounded-lg p-0',
-  }[size] || 'h-12 px-6 text-sm rounded-xl gap-2';
+    sm: 'h-10 px-5 text-xs sm:text-sm gap-2',
+    md: 'h-12 px-6 text-sm gap-2',
+    lg: 'h-14 px-8 text-base gap-2.5',
+    icon: 'h-12 w-12 p-0',
+    'icon-sm': 'h-10 w-10 p-0',
+  }[size] || 'h-12 px-6 text-sm gap-2';
 
   const variantStyles = {
-    'primary-gradient': 'btn-primary-gradient font-semibold',
-    outline:
-      'border border-primary text-primary hover:bg-primary/10 active:bg-primary/20 bg-transparent',
-    ghost:
-      'text-on-surface hover:bg-surface-container-high hover:text-primary active:bg-surface-container-highest bg-transparent',
-    danger:
-      'bg-error text-on-error hover:bg-error/90 active:bg-error/80 shadow-sm',
+    'primary-gradient': 'btn-primary-gradient',
     secondary:
-      'bg-surface text-on-surface hover:bg-surface-container-high border border-input-border hover:border-outline',
-  }[variant] || 'btn-primary-gradient font-semibold';
+      'bg-surface text-primary border border-outline hover:bg-brand-soft hover:border-primary/45 active:bg-brand-soft/80',
+    outline:
+      'bg-surface text-primary border border-primary/50 hover:bg-brand-soft hover:border-primary active:bg-brand-soft/80',
+    ghost:
+      'text-on-surface-variant hover:bg-brand-soft hover:text-primary active:bg-brand-soft/80 bg-transparent font-medium',
+    danger:
+      'bg-danger text-on-error hover:opacity-95 active:opacity-90 shadow-sm',
+  }[variant] || 'btn-primary-gradient';
 
   return (
-    <button
+    <m.button
       ref={ref}
       type={type}
-      disabled={disabled || loading}
+      disabled={isDisabled}
       aria-busy={loading}
+      data-fm-tap="true"
+      whileTap={isDisabled ? undefined : { scale: 0.98 }}
+      transition={MOTION_TRANSITION}
       className={clsx(baseStyles, sizeStyles, variantStyles, className)}
       {...props}
     >
@@ -62,7 +70,7 @@ export const Button = forwardRef(function Button(
         <>
           <Spinner size={size === 'sm' || size === 'icon-sm' ? 'sm' : 'md'} />
           {size !== 'icon' && size !== 'icon-sm' && (
-            <span className="opacity-90">{children}</span>
+            <span className="opacity-95">{children}</span>
           )}
         </>
       ) : (
@@ -72,6 +80,6 @@ export const Button = forwardRef(function Button(
           {iconTrailing && <span className="inline-flex shrink-0">{iconTrailing}</span>}
         </>
       )}
-    </button>
+    </m.button>
   );
 });

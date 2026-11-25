@@ -85,6 +85,16 @@ const cleanup = {
 async function runTests() {
   console.log('🧪 Starting Phase 7 Hardening Verification Tests on PORT 5001 (DB: bytecraft_test)...\n');
 
+  const SUITE_IP = `10.70.${Math.floor(Math.random() * 200) + 1}.77`;
+  const nativeFetch = globalThis.fetch;
+  const fetch = (url, options = {}) => {
+    const headers = { ...(options.headers || {}) };
+    if (!headers['x-test-ip'] && !headers['X-Test-IP']) {
+      headers['x-test-ip'] = SUITE_IP;
+    }
+    return nativeFetch(url, { ...options, headers });
+  };
+
   let passed = 0;
   let failed = 0;
 
@@ -520,14 +530,14 @@ async function runTests() {
     };
 
     try {
-      await authMiddleware.authOwner(mockReq, mockRes, mockNext);
+      await authMiddleware.requireAuth(mockReq, mockRes, mockNext);
     } catch (err) {
       errorThrown = err;
     } finally {
       envConfig.NODE_ENV = originalEnv;
     }
 
-    assert.ok(errorThrown, 'authOwner must reject Bearer token in production');
+    assert.ok(errorThrown, 'requireAuth must reject Bearer token in production');
     assert.strictEqual(errorThrown.statusCode, 401);
     assert.strictEqual(errorThrown.code, 'UNAUTHORIZED');
   });

@@ -1,6 +1,5 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Button } from './Button';
 
 export function Pagination({
   page = 1,
@@ -10,7 +9,6 @@ export function Pagination({
 }) {
   if (totalPages <= 1) return null;
 
-  // Generate pagination items
   const getPages = () => {
     const pages = [];
     const maxVisible = 5;
@@ -40,28 +38,28 @@ export function Pagination({
     <nav
       role="navigation"
       aria-label="Pagination"
-      className={clsx('flex items-center justify-center gap-1 sm:gap-2 select-none', className)}
+      className={clsx('flex items-center justify-center gap-1.5 sm:gap-2 select-none', className)}
     >
-      <Button
-        variant="ghost"
-        size="icon-sm"
+      <button
+        type="button"
         disabled={page <= 1}
         onClick={() => onPageChange(page - 1)}
         aria-label="Previous page"
+        className="w-10 h-10 rounded-full border border-outline-variant bg-card text-on-surface-variant hover:text-primary hover:bg-brand-soft hover:border-primary/40 disabled:opacity-40 disabled:pointer-events-none transition-all duration-300 flex items-center justify-center"
       >
-        <span className="material-symbols-outlined text-[18px] rtl:-scale-x-100">
+        <span className="material-symbols-rounded text-[18px] rtl:-scale-x-100" aria-hidden="true">
           chevron_left
         </span>
-      </Button>
+      </button>
 
       {pages.map((item, idx) => {
         if (item === '...') {
           return (
             <span
               key={`dots-${idx}`}
-              className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-on-surface-variant text-sm"
+              className="w-9 h-10 flex items-center justify-center text-muted text-sm"
             >
-              ...
+              …
             </span>
           );
         }
@@ -75,10 +73,10 @@ export function Pagination({
             onClick={() => onPageChange(item)}
             aria-current={isCurrent ? 'page' : undefined}
             className={clsx(
-              'w-9 h-9 sm:w-10 sm:h-10 rounded-lg text-sm font-medium transition-colors flex items-center justify-center font-mono',
+              'w-10 h-10 rounded-full text-sm font-semibold transition-all duration-300 flex items-center justify-center font-mono',
               isCurrent
-                ? 'bg-primary text-on-primary font-bold shadow-sm'
-                : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
+                ? 'btn-primary-gradient text-white font-bold'
+                : 'border border-outline-variant bg-card text-on-surface-variant hover:text-primary hover:bg-brand-soft hover:border-primary/40'
             )}
           >
             {item}
@@ -86,17 +84,17 @@ export function Pagination({
         );
       })}
 
-      <Button
-        variant="ghost"
-        size="icon-sm"
+      <button
+        type="button"
         disabled={page >= totalPages}
         onClick={() => onPageChange(page + 1)}
         aria-label="Next page"
+        className="w-10 h-10 rounded-full border border-outline-variant bg-card text-on-surface-variant hover:text-primary hover:bg-brand-soft hover:border-primary/40 disabled:opacity-40 disabled:pointer-events-none transition-all duration-300 flex items-center justify-center"
       >
-        <span className="material-symbols-outlined text-[18px] rtl:-scale-x-100">
+        <span className="material-symbols-rounded text-[18px] rtl:-scale-x-100" aria-hidden="true">
           chevron_right
         </span>
-      </Button>
+      </button>
     </nav>
   );
 }

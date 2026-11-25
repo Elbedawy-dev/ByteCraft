@@ -32,11 +32,11 @@ export function OrderDeliverySection({ order }) {
   const iconName = DELIVERY_ICON_MAP[repoAccess] || 'inventory_2';
 
   return (
-    <Card variant="flat" padding="md" className="space-y-4">
+    <Card variant="panel" padding="md" className="space-y-4">
       <div className="flex items-center justify-between gap-3 flex-wrap">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-lg bg-surface-container-high border border-outline-variant/70 flex items-center justify-center text-primary">
-            <span className="material-symbols-outlined text-[20px]">terminal</span>
+        <div className="flex items-center gap-3">
+          <div className="w-11 h-11 rounded-lg bg-brand-soft flex items-center justify-center shrink-0">
+            <span className="material-symbols-rounded icon-gradient text-[22px]" aria-hidden="true">deployed_code</span>
           </div>
           <h2 className="text-lg font-bold text-on-surface">
             {t('tracking.delivery.title')}

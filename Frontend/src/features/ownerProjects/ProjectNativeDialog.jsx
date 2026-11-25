@@ -1,19 +1,18 @@
-import React, { useEffect, useId, useRef } from 'react';
+import React, { useId } from 'react';
 import clsx from 'clsx';
+import { AnimatePresence, m } from 'framer-motion';
 import { Badge } from '@/components/ui';
-
-function isOutsideRect(event, rect) {
-  return (
-    event.clientX < rect.left ||
-    event.clientX > rect.right ||
-    event.clientY < rect.top ||
-    event.clientY > rect.bottom
-  );
-}
+import {
+  fade,
+  scaleIn,
+  sheetSlideUp,
+  useAnimatedNativeDialog,
+  useIsMobileViewport,
+} from '@/lib/motion';
 
 /**
- * Native <dialog> modal matching Stitch bytecraft_7 on desktop (max-w-4xl, top gradient bar,
- * terminal icon, MERN Engine badge) and full-screen sheet with sticky header/footer on mobile.
+ * Native <dialog> modal for Owner Project Creation/Editing (max-w-4xl, top gradient bar,
+ * deployed_code gradient icon chip, 20px rounded-2xl panel on desktop, full-screen sheet on mobile).
  */
 export function ProjectNativeDialog({
   isOpen,
@@ -21,7 +20,7 @@ export function ProjectNativeDialog({
   title,
   badgeText,
   subtitle,
-  headerIcon = 'terminal',
+  headerIcon = 'deployed_code',
   subHeader,
   children,
   footer,
@@ -30,49 +29,20 @@ export function ProjectNativeDialog({
   closeLabel = 'Close',
   className = '',
 }) {
-  const dialogRef = useRef(null);
-  const panelRef = useRef(null);
-  const pressedOutsideRef = useRef(false);
   const titleId = useId();
   const descId = useId();
-
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-
-    if (isOpen) {
-      if (!dialog.open) {
-        dialog.showModal();
-      }
-    } else if (dialog.open) {
-      dialog.close();
-    }
-  }, [isOpen]);
-
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-
-    const handleCancel = (e) => {
-      e.preventDefault();
-      if (!preventClose) {
-        onClose?.();
-      }
-    };
-
-    const handleClose = () => {
-      dialog.returnValue = '';
-    };
-
-    dialog.addEventListener('cancel', handleCancel);
-    dialog.addEventListener('close', handleClose);
-    return () => {
-      dialog.removeEventListener('cancel', handleCancel);
-      dialog.removeEventListener('close', handleClose);
-    };
-  }, [onClose, preventClose]);
-
-  if (!isOpen) return null;
+  const isMobile = useIsMobileViewport();
+  const {
+    dialogRef,
+    panelRef,
+    handleExitComplete,
+    handlePointerDown,
+    handlePointerUp,
+  } = useAnimatedNativeDialog({
+    isOpen,
+    onClose,
+    preventClose,
+  });
 
   const sizeClass =
     {
@@ -81,29 +51,7 @@ export function ProjectNativeDialog({
       xl: 'sm:max-w-4xl',
     }[size] || 'sm:max-w-4xl';
 
-  const handlePointerDown = (e) => {
-    if (e.target instanceof Element && e.target.closest('[data-bc-select-portal]')) {
-      pressedOutsideRef.current = false;
-      return;
-    }
-    if (preventClose || !panelRef.current) {
-      pressedOutsideRef.current = false;
-      return;
-    }
-    pressedOutsideRef.current = isOutsideRect(e, panelRef.current.getBoundingClientRect());
-  };
-
-  const handlePointerUp = (e) => {
-    if (e.target instanceof Element && e.target.closest('[data-bc-select-portal]')) {
-      pressedOutsideRef.current = false;
-      return;
-    }
-    if (preventClose || !panelRef.current) return;
-    if (pressedOutsideRef.current && isOutsideRect(e, panelRef.current.getBoundingClientRect())) {
-      onClose?.();
-    }
-    pressedOutsideRef.current = false;
-  };
+  const panelVariants = isMobile ? sheetSlideUp : scaleIn;
 
   return (
     <dialog
@@ -113,28 +61,42 @@ export function ProjectNativeDialog({
       className="bc-dialog bc-modal p-0 sm:p-4 items-stretch sm:items-center"
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
-      {...{ closedby: preventClose ? 'none' : 'any' }}
     >
-      <div
-        ref={panelRef}
-        className={clsx(
-          'bc-modal-panel relative w-full bg-surface border-0 sm:border sm:border-outline-variant',
-          'h-[100dvh] max-h-[100dvh] sm:h-auto sm:max-h-[90dvh] rounded-none sm:rounded-2xl',
-          'shadow-card-hover flex flex-col overflow-hidden',
-          sizeClass,
-          className
-        )}
-      >
-        {/* Top Decorative Gradient Accent Line (Stitch Screen 7) */}
+      <AnimatePresence onExitComplete={handleExitComplete}>
+        {isOpen && (
+          <>
+            <m.div
+              variants={fade}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              aria-hidden="true"
+              className="fixed inset-0 bg-overlay backdrop-blur-sm"
+            />
+            <m.div
+              ref={panelRef}
+              variants={panelVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className={clsx(
+                'bc-modal-panel relative z-10 w-full bg-card border-0 sm:border sm:border-card-border',
+                'h-[100dvh] max-h-[100dvh] sm:h-auto sm:max-h-[90dvh] rounded-none sm:rounded-2xl',
+                'shadow-card-hover flex flex-col overflow-hidden',
+                sizeClass,
+                className
+              )}
+            >
+        {/* Top Decorative Gradient Accent Line */}
         <div className="h-1 w-full bg-primary-gradient shrink-0" aria-hidden="true" />
 
         {/* Sticky Modal Header */}
-        <div className="flex items-start justify-between gap-3 p-4 sm:p-6 bg-card border-b border-outline-variant shrink-0 sticky top-0 z-20">
+        <div className="flex items-start justify-between gap-3 p-4 sm:p-6 bg-card border-b border-card-border shrink-0 sticky top-0 z-20">
           <div className="flex flex-col gap-1 min-w-0">
             <div className="flex items-center gap-2.5 flex-wrap">
               {headerIcon && (
-                <div className="w-8 h-8 rounded-lg bg-badge-green-bg border border-primary/20 flex items-center justify-center text-primary shrink-0">
-                  <span className="material-symbols-outlined material-symbols-filled text-[20px]">
+                <div className="w-10 h-10 rounded-lg bg-primary-soft flex items-center justify-center shrink-0">
+                  <span className="material-symbols-rounded icon-gradient text-[20px]">
                     {headerIcon}
                   </span>
                 </div>
@@ -142,7 +104,7 @@ export function ProjectNativeDialog({
               {title && (
                 <h2
                   id={titleId}
-                  className="text-base sm:text-xl font-bold text-on-surface leading-snug"
+                  className="text-base sm:text-xl font-extrabold text-on-surface leading-snug"
                 >
                   {title}
                 </h2>
@@ -164,17 +126,17 @@ export function ProjectNativeDialog({
             <button
               type="button"
               onClick={onClose}
-              className="w-11 h-11 shrink-0 rounded-xl bg-surface border border-card-border text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high flex items-center justify-center transition-colors"
+              className="w-10 h-10 shrink-0 rounded-full bg-surface-soft border border-card-border text-on-surface-variant hover:text-primary hover:border-primary/40 flex items-center justify-center transition-colors"
               aria-label={closeLabel}
             >
-              <span className="material-symbols-outlined text-[20px]">close</span>
+              <span className="material-symbols-rounded text-[20px]">close</span>
             </button>
           )}
         </div>
 
         {/* Sticky Section / Step Pills */}
         {subHeader && (
-          <div className="px-4 sm:px-6 py-2.5 bg-card border-b border-outline-variant shrink-0">
+          <div className="px-4 sm:px-6 py-2.5 bg-surface-soft border-b border-card-border shrink-0">
             {subHeader}
           </div>
         )}
@@ -184,11 +146,14 @@ export function ProjectNativeDialog({
 
         {/* Sticky Footer */}
         {footer && (
-          <div className="p-4 sm:p-5 border-t border-outline-variant bg-card shrink-0 sticky bottom-0 z-20">
+          <div className="p-4 sm:p-5 border-t border-card-border bg-card shrink-0 sticky bottom-0 z-20">
             {footer}
           </div>
         )}
-      </div>
+            </m.div>
+          </>
+        )}
+      </AnimatePresence>
     </dialog>
   );
 }

@@ -140,7 +140,7 @@
     "consultantTitle": "Lead Architect Available",
     "consultantSubtitle": "Free Initial Consultation",
     "consultantBio": "We review your data schema, system boundaries, and estimated budget in a focused discovery session.",
-    "consultantAlt": "ByteCraft consulting engineer avatar",
+    "consultantAlt": "Nexus consulting engineer avatar",
     "cta": "Request a Custom Quote Now"
   },
   "faq": {
@@ -171,7 +171,7 @@
       {
         "id": "future-features",
         "question": "Can new features be added later as my business grows?",
-        "answer": "Absolutely. Every project follows a clean, modular structure so you can easily add new capabilities later—either with ByteCraft or with your own engineering team."
+        "answer": "Absolutely. Every project follows a clean, modular structure so you can easily add new capabilities later—either with Nexus or with your own engineering team."
       }
     ]
   },

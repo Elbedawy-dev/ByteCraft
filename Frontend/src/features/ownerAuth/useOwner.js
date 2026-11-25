@@ -1,14 +1,23 @@
-import { useContext } from 'react';
-import { OwnerSessionContext } from './OwnerSessionContext';
+import { useAuth } from '../auth';
 
 /**
- * Returns the authenticated owner session state and actions:
- * { owner, isLoading, isAuthenticated, isError, error, refetch, logout, isLoggingOut }
+ * Thin wrapper over `useAuth()` preserving compatibility for owner console pages.
+ * Exposes `owner` only when authenticated user has `role === 'admin'`.
  */
 export function useOwner() {
-  const context = useContext(OwnerSessionContext);
-  if (!context) {
-    throw new Error('useOwner must be used within an OwnerSessionProvider');
-  }
-  return context;
+  const auth = useAuth();
+
+  return {
+    owner: auth.isAdmin ? auth.user : null,
+    user: auth.user,
+    role: auth.role,
+    isLoading: auth.isLoading,
+    isFetching: auth.isFetching,
+    isAuthenticated: auth.isAdmin,
+    isError: auth.isError,
+    error: auth.error,
+    refetch: auth.refresh,
+    logout: auth.logout,
+    isLoggingOut: auth.isLoggingOut,
+  };
 }

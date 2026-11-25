@@ -1,0 +1,115 @@
+{
+  "nav": {
+    "ariaLabel": "Account sections",
+    "profile": "Profile & Security",
+    "orders": "My Orders",
+    "dashboard": "Owner Dashboard"
+  },
+  "page": {
+    "title": "My Account",
+    "subtitle": "Manage your personal details, default Git delivery account, password, and order history.",
+    "adminBadge": "Administrator"
+  },
+  "verificationBanner": {
+    "justRegisteredTitle": "Welcome! Check your email to verify your account",
+    "justRegisteredDescription": "We sent a verification link to your inbox. Please click the link to verify",
+    "title": "Verify your email address",
+    "description": "Confirm your email address so you can claim previous guest orders and receive updates on",
+    "resendAction": "Resend verification email",
+    "sending": "Sending...",
+    "sentMessage": "A new verification link has been sent to your email address.",
+    "sentToast": "Verification email sent",
+    "alreadyVerifiedToast": "Your email is already verified!"
+  },
+  "validation": {
+    "nameMin": "Full name must be at least 2 characters",
+    "nameMax": "Full name must be at most 100 characters",
+    "phoneMax": "Phone number must be at most 30 characters",
+    "gitUsernameMax": "Git username must be at most 100 characters",
+    "currentPasswordRequired": "Current password is required"
+  },
+  "profile": {
+    "title": "Profile & Delivery Preferences",
+    "subtitle": "These details automatically prefill checkout forms when you purchase new projects.",
+    "verifiedBadge": "Email verified",
+    "unverifiedBadge": "Email unverified",
+    "emailLabel": "Email Address",
+    "emailHint": "Your account email cannot be changed directly.",
+    "nameLabel": "Full Name",
+    "namePlaceholder": "e.g., Ahmed Abdullah",
+    "phoneLabel": "Phone / WhatsApp Number",
+    "phoneHint": "Used for order coordination and checkout prefill",
+    "phonePlaceholder": "+20 100 000 0000",
+    "gitProviderLabel": "Default Git Provider",
+    "gitProviderHint": "Preferred platform for source code repository access",
+    "gitProviderNone": "Not selected yet",
+    "gitUsernameLabel": "Default Git Username",
+    "gitUsernameHint": "Username without @ or profile URL",
+    "gitUsernamePlaceholder": "dev-username",
+    "save": "Save Profile",
+    "saving": "Saving...",
+    "savedToast": "Profile updated successfully"
+  },
+  "claimOrders": {
+    "title": "Claim Previous Guest Orders",
+    "description": "Purchased a project before creating your account? Link past guest orders placed with",
+    "action": "Claim My Guest Orders",
+    "claiming": "Checking...",
+    "successToast": "Linked {{count}} previous order(s) to your account!",
+    "noneFoundToast": "No unclaimed guest orders matched your email.",
+    "successMessage": "Successfully linked {{count}} past guest order(s) to your account.",
+    "noneFoundMessage": "No unclaimed guest orders matched this email address.",
+    "viewOrders": "View My Orders"
+  },
+  "password": {
+    "title": "Change Password",
+    "subtitle": "Keep your account secure by using a strong password with letters and numbers.",
+    "currentLabel": "Current Password",
+    "currentPlaceholder": "Enter current password",
+    "newLabel": "New Password",
+    "newPlaceholder": "At least 8 characters",
+    "confirmLabel": "Confirm New Password",
+    "confirmPlaceholder": "Re-enter new password",
+    "save": "Update Password",
+    "saving": "Updating...",
+    "savedToast": "Password updated successfully"
+  },
+  "deleteAccount": {
+    "title": "Delete Account",
+    "description": "Permanently remove your account access. Past order invoices remain archived for financial records without account linkage.",
+    "openAction": "Delete My Account",
+    "dialogTitle": "Confirm Account Deletion",
+    "dialogWarning": "Are you sure you want to permanently delete your account? Enter your current password to confirm.",
+    "irreversibleNotice": "This action is permanent and cannot be undone. You will lose access to your saved profile and account portal.",
+    "passwordLabel": "Confirm Password",
+    "passwordPlaceholder": "Enter your password",
+    "passwordRequired": "Please enter your password to confirm deletion",
+    "confirmAction": "Delete Permanently",
+    "deletedToast": "Your account has been permanently deleted"
+  },
+  "orders": {
+    "title": "My Orders",
+    "subtitle": "Track payment confirmations, upload transfer receipts, and check source code delivery status.",
+    "totalBadge": "{{count}} orders",
+    "filterLabel": "Filter by order status",
+    "allStatuses": "All order statuses",
+    "emptyTitle": "You have no orders yet",
+    "emptyDescription": "Browse our production-ready software platforms and choose a license to get started.",
+    "emptyFilteredTitle": "No orders match this status",
+    "emptyFilteredDescription": "Try selecting another status filter or reset filters to see all orders.",
+    "browseProjects": "Browse Projects",
+    "tableRegion": "My orders table",
+    "viewOrder": "View Order Details",
+    "backToList": "Back to My Orders",
+    "detailEyebrow": "CUSTOMER ORDER PORTAL",
+    "columns": {
+      "order": "Order #",
+      "project": "Project & Package",
+      "status": "Status",
+      "payment": "Payment Method",
+      "total": "Total",
+      "date": "Date",
+      "actions": "Actions"
+    }
+  }
+}

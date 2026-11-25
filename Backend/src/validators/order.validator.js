@@ -101,6 +101,21 @@ const orderIdParamSchema = z.object({
   }),
 });
 
+const accountOrderNumberParamSchema = z.object({
+  params: z.object({
+    orderNumber: z.string().trim().min(1, 'Order number is required'),
+  }),
+});
+
+const accountSubmitProofSchema = z.object({
+  params: z.object({
+    orderNumber: z.string().trim().min(1, 'Order number is required'),
+  }),
+  body: z.object({
+    reference: z.string().trim().optional().default(''),
+  }),
+});
+
 module.exports = {
   createOrderSchema,
   guestOrderQuerySchema,
@@ -110,4 +125,6 @@ module.exports = {
   deliveryOrderSchema,
   refundOrderSchema,
   orderIdParamSchema,
+  accountOrderNumberParamSchema,
+  accountSubmitProofSchema,
 };

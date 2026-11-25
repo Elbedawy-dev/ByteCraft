@@ -451,7 +451,7 @@ export const Select = forwardRef(function Select(
         }, MOTION_DURATION_MS);
       }
     },
-    [clearMotionTimers]
+    [clearMotionTimers, clearTypeAhead]
   );
 
   const openPanel = useCallback(
@@ -894,24 +894,24 @@ export const Select = forwardRef(function Select(
           if (!opt.disabled) commitSelection(opt);
         }}
         className={clsx(
-          'min-h-[44px] px-3 rounded-[8px] text-start w-full flex items-center justify-between gap-2 select-none transition-colors duration-150',
+          'min-h-[44px] px-3 rounded-[10px] text-start w-full flex items-center justify-between gap-2 select-none transition-colors duration-300 ease-nexus',
           opt.disabled
             ? 'opacity-50 cursor-not-allowed'
             : 'cursor-pointer',
           isSelected
             ? clsx(
-                'bg-badge-green-bg text-badge-green-text font-semibold',
+                'bg-brand-soft text-brand-soft-text font-semibold',
                 isActive && 'ring-1 ring-primary/35'
               )
             : isActive && !opt.disabled
-              ? 'bg-surface-container-high text-on-surface'
-              : 'text-on-surface hover:bg-surface-container-high'
+              ? 'bg-section-band text-on-surface'
+              : 'text-on-surface hover:bg-section-band'
         )}
       >
         <span className="truncate flex-1 min-w-0 text-sm">{opt.label}</span>
         {isSelected && (
           <span
-            className="material-symbols-outlined text-[18px] text-primary shrink-0"
+            className="material-symbols-rounded text-[18px] text-primary shrink-0"
             aria-hidden="true"
           >
             check
@@ -988,13 +988,13 @@ export const Select = forwardRef(function Select(
                 aria-modal="true"
                 aria-labelledby={sheetTitleId}
                 data-state={panelState}
-                className="bc-select-sheet relative z-10 w-full rounded-t-[16px] bg-surface dark:bg-surface-container border-t border-outline-variant shadow-card-hover max-h-[60vh] max-h-[60dvh] flex flex-col overflow-hidden pb-[env(safe-area-inset-bottom)]"
+                className="bc-select-sheet relative z-10 w-full rounded-t-2xl bg-card border-t border-card-border shadow-card-hover max-h-[60vh] max-h-[60dvh] flex flex-col overflow-hidden pb-[env(safe-area-inset-bottom)]"
               >
                 <div
-                  className="w-10 h-1 rounded-full bg-outline/30 mx-auto mt-2.5 shrink-0"
+                  className="w-10 h-1 rounded-full bg-outline mx-auto mt-2.5 shrink-0"
                   aria-hidden="true"
                 />
-                <div className="sticky top-0 z-10 flex items-center justify-between gap-3 px-4 py-2.5 border-b border-outline-variant bg-surface dark:bg-surface-container shrink-0">
+                <div className="sticky top-0 z-10 flex items-center justify-between gap-3 px-4 py-2.5 border-b border-outline-variant bg-card shrink-0">
                   <span
                     id={sheetTitleId}
                     className="text-sm font-bold text-on-surface truncate"
@@ -1005,9 +1005,9 @@ export const Select = forwardRef(function Select(
                     type="button"
                     onClick={() => closePanel({ returnFocus: true })}
                     aria-label={t('actions.close', { defaultValue: 'Close' })}
-                    className="w-11 h-11 min-w-[44px] min-h-[44px] -me-2 rounded-xl inline-flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors shrink-0"
+                    className="w-11 h-11 min-w-[44px] min-h-[44px] -me-2 rounded-full inline-flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-section-band transition-colors shrink-0"
                   >
-                    <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
+                    <span className="material-symbols-rounded text-[20px]" aria-hidden="true">
                       close
                     </span>
                   </button>
@@ -1035,7 +1035,7 @@ export const Select = forwardRef(function Select(
               <div
                 data-state={panelState}
                 data-side={desktopSide}
-                className="bc-select-panel rounded-[12px] border border-outline-variant bg-surface dark:bg-surface-container shadow-card-hover overflow-hidden p-[6px]"
+                className="bc-select-panel rounded-xl border border-card-border bg-card shadow-card-hover overflow-hidden p-1.5"
               >
                 <div
                   id={listboxId}
@@ -1110,22 +1110,21 @@ export const Select = forwardRef(function Select(
         onBlur={handleTriggerBlur}
         onFocus={onFocus}
         className={clsx(
-          'relative w-full h-12 flex items-center text-start transition-[color,background-color,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]',
-          'border outline-none focus-visible:ring-2 focus-visible:ring-input-focus focus-visible:border-input-focus',
+          'relative w-full h-12 flex items-center justify-between gap-2 text-start transition-[color,background-color,border-color,box-shadow] duration-300 ease-nexus',
+          'border outline-none focus-visible:outline-none focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-primary/20',
           'disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer',
           !hasCustomBg && 'bg-input',
           !hasCustomRadius && 'rounded-lg',
           !hasCustomTextSize && 'text-sm',
-          iconLeading ? 'ps-11' : 'ps-4',
-          'pe-10',
+          iconLeading ? 'ps-11 pe-3.5' : 'px-4',
           error
             ? clsx(
-                'border-error focus-visible:border-error focus-visible:ring-error/20',
-                isOpen && 'border-error ring-2 ring-error/20'
+                'border-danger focus-visible:border-danger focus-visible:ring-danger/20',
+                isOpen && 'border-danger ring-[3px] ring-danger/20'
               )
             : clsx(
-                'border-input-border hover:border-card-hover-border',
-                isOpen && 'border-input-focus ring-2 ring-input-focus'
+                'border-input-border hover:border-outline',
+                isOpen && 'border-primary ring-[3px] ring-primary/20'
               ),
           className
         )}
@@ -1142,8 +1141,7 @@ export const Select = forwardRef(function Select(
 
         <span
           className={clsx(
-            'material-symbols-outlined text-[20px] text-on-surface-variant pointer-events-none shrink-0',
-            'absolute end-3.5 transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]',
+            'material-symbols-rounded text-[20px] text-muted pointer-events-none shrink-0 transition-transform duration-300 ease-nexus',
             isOpen && 'rotate-180'
           )}
           aria-hidden="true"

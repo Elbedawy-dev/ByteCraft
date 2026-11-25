@@ -1,0 +1,101 @@
+{
+  "status": {
+    "active": "Active",
+    "disabled": "Disabled"
+  },
+  "verification": {
+    "verified": "Verified",
+    "unverified": "Unverified"
+  },
+  "validation": {
+    "nameMin": "Name must be at least 2 characters",
+    "nameMax": "Name must be at most 100 characters",
+    "emailRequired": "Email address is required",
+    "emailInvalid": "Please enter a valid email address"
+  },
+  "customers": {
+    "title": "Customer Accounts",
+    "subtitle": "View registered customers, search by name or contact info, and enable or disable account access.",
+    "totalBadge": "{{count}} customers",
+    "tableRegion": "Customers table",
+    "emptyTitle": "No registered customers yet",
+    "emptyDescription": "Customer accounts will appear here once users sign up.",
+    "emptyFilteredTitle": "No customers match your filters",
+    "emptyFilteredDescription": "Try adjusting your search query or clearing the status filter.",
+    "filters": {
+      "searchLabel": "Search customers",
+      "searchPlaceholder": "Search by name, email, or phone...",
+      "statusLabel": "Filter by status",
+      "allStatuses": "All statuses"
+    },
+    "columns": {
+      "customer": "Customer",
+      "verification": "Email",
+      "status": "Status",
+      "orders": "Orders",
+      "joined": "Joined",
+      "actions": "Actions"
+    },
+    "actions": {
+      "disable": "Disable",
+      "enable": "Enable"
+    },
+    "confirmDisable": {
+      "title": "Disable Customer Account?",
+      "message": "Disabling {{name}} ({{email}}) will revoke active sessions and block future sign-ins until re-enabled."
+    },
+    "confirmEnable": {
+      "title": "Enable Customer Account?",
+      "message": "Re-enable {{name}} ({{email}}) so they can sign in and access their account?"
+    },
+    "toasts": {
+      "disabled": "Customer account disabled",
+      "enabled": "Customer account enabled"
+    }
+  },
+  "admins": {
+    "title": "Administrators",
+    "subtitle": "Manage administrator accounts who have full access to the owner console.",
+    "totalBadge": "{{count}} admins",
+    "createAction": "Add Admin",
+    "emptyTitle": "No administrators found",
+    "emptyDescription": "Invite an administrator to help manage projects and orders.",
+    "tableRegion": "Administrators table",
+    "youBadge": "You",
+    "neverLoggedIn": "Never signed in",
+    "selfProtected": "Current session",
+    "lastProtected": "Last admin",
+    "columns": {
+      "admin": "Administrator",
+      "status": "Status",
+      "lastLogin": "Last Sign-In",
+      "createdAt": "Created",
+      "actions": "Actions"
+    },
+    "createModal": {
+      "title": "Add New Administrator",
+      "description": "Enter the new administrator's name and email. They will receive a one-time invitation link to set their password.",
+      "nameLabel": "Full Name",
+      "namePlaceholder": "e.g., Sarah Hassan",
+      "emailLabel": "Work Email",
+      "emailHint": "Invitation email with password setup link will be sent here",
+      "emailPlaceholder": "admin@company.com",
+      "localeLabel": "Preferred Email Language",
+      "localeAr": "Arabic (العربية)",
+      "localeEn": "English",
+      "submit": "Create & Send Invite",
+      "submitting": "Creating..."
+    },
+    "confirmDelete": {
+      "title": "Delete Administrator?",
+      "message": "Are you sure you want to permanently remove administrator {{name}} ({{email}})? This cannot be undone."
+    },
+    "toasts": {
+      "created": "Admin created and invitation sent to {{email}}",
+      "deleted": "Administrator deleted"
+    },
+    "errors": {
+      "emailExists": "An account with this email already exists."
+    }
+  }
+}

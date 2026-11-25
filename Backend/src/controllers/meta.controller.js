@@ -62,6 +62,7 @@ const getMeta = asyncHandler(async (req, res) => {
     data: {
       siteName: settings.siteName,
       guaranteeDays: settings.guaranteeDays,
+      registrationEnabled: settings.registrationEnabled !== false,
       contact,
       categories,
       paymentMethods,

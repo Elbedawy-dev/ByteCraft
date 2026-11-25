@@ -10,6 +10,8 @@ import { ROUTES, contactPath } from '../../config/routes';
 import { Breadcrumbs } from '../../components/shared/Breadcrumbs';
 import { CtaBanner } from '../../components/shared/CtaBanner';
 import { ErrorState } from '../../components/shared/ErrorState';
+import { Reveal } from '../../components/ui/Motion';
+import { ProjectTitleBar } from '../../features/projectDetails/components/ProjectHeader';
 import {
   ProjectGallery,
   ProjectHeader,
@@ -124,7 +126,7 @@ export default function ProjectDetailsPage() {
     {
       label: (
         <span className="inline-flex items-center gap-1">
-          <span className="material-symbols-outlined text-[16px]" aria-hidden="true">
+          <span className="material-symbols-rounded text-[16px]" aria-hidden="true">
             home
           </span>
           <span>{t('common:nav.home')}</span>
@@ -142,14 +144,19 @@ export default function ProjectDetailsPage() {
   ];
 
   return (
-    <div className="relative w-full bc-hero-wash overflow-x-clip py-6 lg:py-10 pb-24 lg:pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-6 lg:space-y-8">
-        <Breadcrumbs items={breadcrumbItems} />
+    <div className="relative w-full overflow-x-clip pb-20 lg:pb-0">
+      <div className="w-full bc-hero-wash pt-8 lg:pt-12 pb-8 border-b border-outline-variant">
+        <div className="max-w-container mx-auto px-4 sm:px-6 space-y-5">
+          <Breadcrumbs items={breadcrumbItems} />
+          <ProjectTitleBar project={project} />
+        </div>
+      </div>
 
-        {/* Main 8 / 4 Asymmetric Split */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
+      <div className="max-w-container mx-auto px-4 sm:px-6 py-10 lg:py-14 space-y-12">
+        {/* Main 8 / 4 Split */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           {/* Primary Content Column */}
-          <div className="lg:col-span-8 flex flex-col gap-8 lg:gap-10 min-w-0">
+          <div className="lg:col-span-8 flex flex-col gap-10 min-w-0">
             <ProjectGallery
               project={project}
               onOpenLiveDemo={project.preview?.url?.trim() ? handleOpenLiveDemo : undefined}
@@ -163,15 +170,19 @@ export default function ProjectDetailsPage() {
 
             <ProjectSpecs project={project} />
 
-            <DeliveryFaq />
+            <Reveal>
+              <DeliveryFaq />
+            </Reveal>
 
-            <ProjectReviews
-              slug={project.slug}
-              reviewsSummary={project.reviewsSummary}
-            />
+            <Reveal>
+              <ProjectReviews
+                slug={project.slug}
+                reviewsSummary={project.reviewsSummary}
+              />
+            </Reveal>
           </div>
 
-          {/* Sticky Purchase Panel (Desktop Aside + Mobile Sticky Bottom Bar & Sheet) */}
+          {/* Sticky Purchase Panel */}
           <PurchasePanel
             project={project}
             packages={activePackages}
@@ -185,32 +196,30 @@ export default function ProjectDetailsPage() {
           />
         </div>
 
-        {/* Related Projects (Same Category) */}
+        {/* Related Projects */}
         <RelatedProjects
           categoryKey={categoryKey}
           currentSlug={project.slug}
         />
-
-        {/* Closing CTA Banner */}
-        <CtaBanner
-          title={t('projectDetails:cta.title')}
-          description={t('projectDetails:cta.description')}
-          primaryAction={{
-            label: t('projectDetails:cta.primaryAction'),
-            to: contactPath({ project: project.slug }),
-            icon: 'rocket_launch',
-          }}
-          secondaryAction={{
-            label: t('projectDetails:cta.secondaryAction'),
-            to: ROUTES.PROJECTS,
-            icon: 'grid_view',
-          }}
-          features={ctaBullets}
-          className="pt-4"
-        />
       </div>
 
-      {/* Live Preview Modal (when preview.mode === 'iframe') */}
+      {/* Closing CTA Band */}
+      <CtaBanner
+        title={t('projectDetails:cta.title')}
+        description={t('projectDetails:cta.description')}
+        primaryAction={{
+          label: t('projectDetails:cta.primaryAction'),
+          to: contactPath({ project: project.slug }),
+          icon: 'arrow_forward',
+        }}
+        secondaryAction={{
+          label: t('projectDetails:cta.secondaryAction'),
+          to: ROUTES.PROJECTS,
+        }}
+        features={ctaBullets}
+      />
+
+      {/* Live Preview Modal */}
       {project.preview?.url?.trim() && project.preview?.mode !== 'external' && (
         <LivePreviewModal
           isOpen={livePreviewOpen}

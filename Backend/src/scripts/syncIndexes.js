@@ -1,32 +1,35 @@
+const {
+  applyTestDatabaseEnvIfFlagged,
+  assertTestDatabaseIfFlagged,
+} = require('../utils/testDb');
+
+const isTestMode = applyTestDatabaseEnvIfFlagged();
+
 const { connectDB, disconnectDB } = require('../config/db');
 const Category = require('../models/Category');
 const Counter = require('../models/Counter');
 const Coupon = require('../models/Coupon');
 const Inquiry = require('../models/Inquiry');
 const Order = require('../models/Order');
-const Owner = require('../models/Owner');
 const Project = require('../models/Project');
 const Review = require('../models/Review');
 const ServicePlan = require('../models/ServicePlan');
 const Settings = require('../models/Settings');
+const User = require('../models/User');
 
 /**
  * Synchronize Database Indexes (`npm run db:indexes`)
- * 
- * WHY:
- * In production, `autoIndex` is disabled for performance and stability.
- * This script explicitly calls `syncIndexes()` on every Mongoose model to ensure
- * unique constraints (e.g. Order payment transactionId idempotency, Project slug,
- * Coupon code, Owner key, orderNumber) exist in MongoDB.
- * 
- * Must be executed once per database after deployment.
+ *
+ * Explicitly calls `syncIndexes()` on every Mongoose model to ensure
+ * unique and query indexes exist in MongoDB (especially in production where autoIndex is disabled).
  */
 async function syncAllIndexes() {
   console.log('🔄 Starting MongoDB Index Synchronization...\n');
   await connectDB({ exitOnError: false });
+  assertTestDatabaseIfFlagged(isTestMode);
 
   const models = [
-    { name: 'Owner', model: Owner },
+    { name: 'User', model: User },
     { name: 'Settings', model: Settings },
     { name: 'Category', model: Category },
     { name: 'Project', model: Project },

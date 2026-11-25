@@ -9,13 +9,14 @@ import {
   getStoredOrderReview,
   useSubmitOrderReview,
 } from '../../api/orderTracking';
+import { useSubmitAccountOrderReview } from '../../api/account';
 import { ApiError, applyApiErrorsToForm, getApiErrorMessage } from '../../api/client';
 import { useToast } from '../../app/providers';
 import { projectDetailsPath } from '../../config/routes';
 import { Button, Card, FormField, Input, Textarea } from '../../components/ui';
 import { Rating } from '../../components/shared';
 
-export function OrderReviewSection({ order, token }) {
+export function OrderReviewSection({ order, token, mode = 'guest' }) {
   const { t } = useTranslation('orders');
   const toast = useToast();
 
@@ -64,7 +65,10 @@ export function OrderReviewSection({ order, token }) {
   });
 
   const selectedRating = watch('rating');
-  const submitReviewMutation = useSubmitOrderReview(order.orderNumber, token);
+  const guestSubmitReviewMutation = useSubmitOrderReview(order.orderNumber, token);
+  const accountSubmitReviewMutation = useSubmitAccountOrderReview(order.orderNumber);
+  const submitReviewMutation =
+    mode === 'account' ? accountSubmitReviewMutation : guestSubmitReviewMutation;
 
   if (!['paid', 'delivered'].includes(order?.status)) {
     return null;

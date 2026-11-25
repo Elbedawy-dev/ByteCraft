@@ -52,7 +52,7 @@ const envSchema = z
     CRON_SECRET: z.string().optional().default(''),
 
     // Owner Seed Credentials (Required when running seed:owner)
-    OWNER_NAME: z.string().optional().default('ByteCraft Owner'),
+    OWNER_NAME: z.string().optional().default('Nexus Owner'),
     OWNER_EMAIL: z.string().email().optional(),
     OWNER_PASSWORD: z.string().min(8, 'OWNER_PASSWORD must be at least 8 characters').optional(),
 

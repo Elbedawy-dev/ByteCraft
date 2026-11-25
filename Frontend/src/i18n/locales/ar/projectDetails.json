@@ -128,7 +128,7 @@
   "reviews": {
     "emptyTitle": "لا توجد تقييمات منشورة بعد",
     "emptyDescription": "يمكن للمشترين الموثقين إضافة تقييمهم بعد إتمام الشراء والاستلام من صفحة متابعة الطلب.",
-    "ownerResponseLabel": "رد الفريق الهندسي (ByteCraft)",
+    "ownerResponseLabel": "رد الفريق الهندسي (Nexus)",
     "totalCount": "إجمالي {{count}} تقييم"
   },
   "related": {

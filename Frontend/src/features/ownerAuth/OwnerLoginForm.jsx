@@ -4,8 +4,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
+import { AnimatePresence, m } from 'framer-motion';
 import { ApiError, applyApiErrorsToForm, getApiErrorMessage } from '../../api/client';
 import { useOwnerLogin } from '../../api/owner/auth';
+import { MOTION_TRANSITION } from '../../lib/motion';
 import { Button, FormField, Input } from '../../components/ui';
 
 const PasswordInput = forwardRef(function PasswordInput(
@@ -34,11 +36,20 @@ const PasswordInput = forwardRef(function PasswordInput(
         disabled={disabled}
         aria-pressed={showPassword}
         aria-label={toggleLabel}
-        className="absolute end-1 top-1/2 -translate-y-1/2 h-10 w-10 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/70 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        className="absolute end-1 top-1/2 -translate-y-1/2 h-10 w-10 min-h-[40px] min-w-[40px] flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary hover:bg-primary-soft/60 transition-colors duration-300 ease-nexus focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       >
-        <span className="material-symbols-outlined text-[20px]">
-          {showPassword ? 'visibility_off' : 'visibility'}
-        </span>
+        <AnimatePresence mode="wait" initial={false}>
+          <m.span
+            key={showPassword ? 'hide' : 'show'}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={MOTION_TRANSITION}
+            className="material-symbols-rounded text-[20px] block"
+          >
+            {showPassword ? 'visibility_off' : 'visibility'}
+          </m.span>
+        </AnimatePresence>
       </button>
     </div>
   );
@@ -135,7 +146,7 @@ export function OwnerLoginForm({ onSuccess }) {
               : 'bg-error/10 border-error/30 text-error'
           )}
         >
-          <span className="material-symbols-outlined text-[20px] shrink-0 mt-0.5">
+          <span className="material-symbols-rounded text-[20px] shrink-0 mt-0.5">
             {formBannerError.type === 'warning' ? 'hourglass_top' : 'error'}
           </span>
           <span className="leading-relaxed">{formBannerError.message}</span>
@@ -160,7 +171,7 @@ export function OwnerLoginForm({ onSuccess }) {
           disabled={isBusy}
           className="ps-11 pe-11"
           iconLeading={
-            <span className="material-symbols-outlined text-[20px] text-outline">
+            <span className="material-symbols-rounded text-[20px] text-muted" aria-hidden="true">
               alternate_email
             </span>
           }
@@ -188,7 +199,7 @@ export function OwnerLoginForm({ onSuccess }) {
               : t('common:actions.showPassword')
           }
           iconLeading={
-            <span className="material-symbols-outlined text-[20px] text-outline">
+            <span className="material-symbols-rounded text-[20px] text-muted" aria-hidden="true">
               lock
             </span>
           }
@@ -204,8 +215,8 @@ export function OwnerLoginForm({ onSuccess }) {
         disabled={isBusy}
         className="w-full mt-1 font-bold"
         iconTrailing={
-          <span className="material-symbols-outlined text-[20px] rtl:-scale-x-100">
-            login
+          <span className="material-symbols-rounded text-[20px] rtl:-scale-x-100">
+            arrow_forward
           </span>
         }
       >

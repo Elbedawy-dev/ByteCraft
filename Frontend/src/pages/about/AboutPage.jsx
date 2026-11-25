@@ -5,7 +5,7 @@ import { DevelopmentLifecycle } from '@/features/about/DevelopmentLifecycle';
 
 export default function AboutPage() {
   return (
-    <div className="flex flex-col w-full bg-surface-container-lowest">
+    <div className="flex flex-col w-full bg-background">
       <AboutHero />
       <SkillsMatrix />
       <DevelopmentLifecycle />

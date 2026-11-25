@@ -2,31 +2,21 @@ import React, { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
+import { LayoutGroup, m } from 'framer-motion';
 import { useLang } from '@/app/providers';
 import { useServicePlans } from '@/api/servicePlans';
 import { useMeta } from '@/api/meta';
-import { ROUTES, contactPath } from '@/config/routes';
+import { ROUTES } from '@/config/routes';
+import { MOTION_TRANSITION, fade, slideFromEnd } from '@/lib/motion';
 import { Button } from '@/components/ui/Button';
-import { EmptyState } from '@/components/shared/EmptyState';
-import { ErrorState } from '@/components/shared/ErrorState';
+import { LayoutMotion, Reveal, Stagger, StaggerItem } from '@/components/ui/Motion';
+import { EmptyState, ErrorState, HeroCubes, SectionHeader } from '@/components/shared';
 import { getGroupMeta, groupServicePlans } from '@/features/pricing/groupConfig';
 import { ServicePlanCard } from '@/features/pricing/ServicePlanCard';
 import { ServicePlanSkeleton } from '@/features/pricing/ServicePlanSkeleton';
 import { FeatureMatrix } from '@/features/pricing/FeatureMatrix';
 import { CustomSolutionBanner } from '@/features/pricing/CustomSolutionBanner';
 import { PricingFaq } from '@/features/pricing/PricingFaq';
-
-const PILLAR_ICON_ACCENTS = {
-  primary: 'bc-chip-mint',
-  secondary: 'bc-chip-sky',
-  tertiary: 'bc-chip-violet',
-};
-
-const GROUP_ACCENT_TEXT = {
-  primary: 'text-chip-mint-fg',
-  secondary: 'text-chip-sky-fg',
-  tertiary: 'text-chip-violet-fg',
-};
 
 export default function PricingPage() {
   const { t } = useTranslation('pricing');
@@ -112,129 +102,128 @@ export default function PricingPage() {
 
   const rawPillars = t('pillars', { returnObjects: true });
   const pillars = Array.isArray(rawPillars) ? rawPillars : [];
-
-  const whatsappNumber = typeof meta?.contact?.whatsapp === 'string'
-    ? meta.contact.whatsapp.replace(/[^0-9]/g, '')
-    : '';
   const guaranteeDays = Number(meta?.guaranteeDays) || 30;
 
   return (
-    <div className="relative w-full overflow-x-clip bc-hero-wash">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-12 pb-14 relative z-10">
-        {/* 1. Centered Hero + Group Tabs */}
-        <header className="flex flex-col items-center text-center max-w-3xl mx-auto mb-10 sm:mb-12">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface border border-card-border text-primary mb-4 shadow-card">
-            <span className="material-symbols-outlined text-[16px]" aria-hidden="true">
-              verified
-            </span>
-            <span className="font-code text-label-code">
-              <bdi dir="ltr">{t('hero.badge')}</bdi>
-            </span>
-          </div>
+    <div className="relative w-full overflow-x-clip flex-1 flex flex-col">
+      {/* 1. Hero Header + Group Pill Chips */}
+      <div className="relative w-full bc-hero-wash py-14 lg:py-20 border-b border-outline-variant overflow-hidden">
+        <Reveal
+          variants={slideFromEnd}
+          custom={dir}
+          aria-hidden="true"
+          className="hidden xl:block pointer-events-none absolute top-10 end-10 w-44 opacity-55 dark:opacity-35"
+        >
+          <HeroCubes className="w-full h-auto rtl:-scale-x-100" />
+        </Reveal>
 
-          <h1 className="text-headline-xl-mobile sm:text-headline-xl lg:text-display-lg text-on-surface font-extrabold tracking-tight mb-3">
-            {t('hero.title')}
-          </h1>
+        <Reveal variants={fade} className="relative z-10 max-w-container mx-auto px-4 sm:px-6 flex flex-col items-center text-center">
+          <SectionHeader
+            align="center"
+            as="h1"
+            badge={t('hero.badge')}
+            title={t('hero.title')}
+            subtitle={t('hero.subtitle')}
+          />
 
-          <p className="text-body-md sm:text-body-lg text-on-surface-variant leading-relaxed">
-            {t('hero.subtitle')}
-          </p>
-
-          {/* Group Switcher Tabs (single-row scrollable container per modern-web-guidance: tabs) */}
           {tabs.length > 0 && (
-            <div className="w-full flex justify-center mt-7">
-              <div
-                role="tablist"
-                aria-label={t('tabs.ariaLabel')}
-                className="inline-flex items-center gap-1.5 max-w-full overflow-x-auto no-scrollbar p-1.5 rounded-xl bg-nav-pill border border-outline-variant shadow-sm"
-              >
-                {tabs.map((tab, index) => {
-                  const isSelected = effectiveGroup === tab.id;
-                  return (
-                    <button
-                      key={tab.id}
-                      ref={(el) => {
-                        if (el) tabRefs.current.set(tab.id, el);
-                        else tabRefs.current.delete(tab.id);
-                      }}
-                      id={`pricing-tab-${tab.id}`}
-                      type="button"
-                      role="tab"
-                      aria-selected={isSelected}
-                      tabIndex={isSelected ? 0 : -1}
-                      onClick={() => selectTab(tab.id)}
-                      onKeyDown={(e) => handleTabKeyDown(e, index)}
-                      className={clsx(
-                        'relative flex-none min-h-[44px] px-4 sm:px-5 py-2 rounded-lg text-label-lg transition-colors whitespace-nowrap flex items-center gap-2',
-                        isSelected
-                          ? 'bg-nav-active-bg text-primary font-bold shadow-sm'
-                          : 'text-on-surface-variant hover:text-on-surface hover:bg-surface/80 font-medium'
-                      )}
-                    >
-                      <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
-                        {tab.icon}
-                      </span>
-                      <span>{tab.label}</span>
-                      <span
-                        className={clsx(
-                          'px-1.5 py-0.5 rounded-full font-code text-[11px]',
-                          isSelected
-                            ? 'bg-primary text-on-primary'
-                            : 'bg-surface border border-card-border text-on-surface-variant'
-                        )}
-                      >
-                        <bdi dir="ltr">{tab.count}</bdi>
-                      </span>
-                      {isSelected && (
-                        <span
-                          className="absolute bottom-0 inset-x-3 border-b-2 border-primary"
-                          aria-hidden="true"
-                        />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
+            <div className="w-full flex justify-center mt-8">
+              <LayoutMotion>
+                <LayoutGroup id="pricing-group-tabs">
+                  <div
+                    role="tablist"
+                    aria-label={t('tabs.ariaLabel')}
+                    className="flex flex-wrap items-center justify-center gap-2.5"
+                  >
+                    {tabs.map((tab, index) => {
+                      const isSelected = effectiveGroup === tab.id;
+                      return (
+                        <button
+                          key={tab.id}
+                          ref={(el) => {
+                            if (el) tabRefs.current.set(tab.id, el);
+                            else tabRefs.current.delete(tab.id);
+                          }}
+                          id={`pricing-tab-${tab.id}`}
+                          type="button"
+                          role="tab"
+                          aria-selected={isSelected}
+                          tabIndex={isSelected ? 0 : -1}
+                          onClick={() => selectTab(tab.id)}
+                          onKeyDown={(e) => handleTabKeyDown(e, index)}
+                          className={clsx(
+                            'relative min-h-[42px] px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-300 ease-nexus whitespace-nowrap inline-flex items-center gap-2 border select-none',
+                            isSelected
+                              ? 'text-white border-transparent'
+                              : 'bg-card border-outline-variant text-on-surface-variant hover:bg-brand-soft hover:text-primary'
+                          )}
+                        >
+                          {isSelected && (
+                            <m.span
+                              layoutId="pricing-group-pill"
+                              transition={MOTION_TRANSITION}
+                              aria-hidden="true"
+                              className="absolute inset-0 rounded-full btn-primary-gradient"
+                            />
+                          )}
+                          <span className="relative z-10 material-symbols-rounded text-[18px]" aria-hidden="true">
+                            {tab.icon}
+                          </span>
+                          <span className="relative z-10">{tab.label}</span>
+                          <span
+                            className={clsx(
+                              'relative z-10 px-2 py-0.5 rounded-full font-mono text-[11px] font-bold',
+                              isSelected
+                                ? 'bg-white text-[#3A3F8F]'
+                                : 'bg-section-band text-muted'
+                            )}
+                          >
+                            <bdi dir="ltr">{tab.count}</bdi>
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </LayoutGroup>
+              </LayoutMotion>
             </div>
           )}
-        </header>
+        </Reveal>
+      </div>
 
+      {/* Main Content Container */}
+      <div className="max-w-container w-full mx-auto px-4 sm:px-6 py-14 lg:py-20 flex-1">
         {/* 2. 3 Value-Prop Pillars */}
         {pillars.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 mb-12">
+          <Stagger className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
             {pillars.map((pillar) => (
-              <div
+              <StaggerItem
                 key={pillar.id}
-                className="p-5 rounded-xl bg-card border border-card-border flex items-center gap-4 shadow-card"
+                className="p-6 rounded-xl bg-card border border-card-border flex items-start gap-4 shadow-card"
               >
-                <div
-                  className={clsx(
-                    'w-12 h-12 rounded-lg border flex items-center justify-center shrink-0',
-                    PILLAR_ICON_ACCENTS[pillar.accent] || PILLAR_ICON_ACCENTS.primary
-                  )}
-                >
-                  <span className="material-symbols-outlined text-[28px]" aria-hidden="true">
+                <div className="w-12 h-12 rounded-lg bg-brand-soft flex items-center justify-center shrink-0">
+                  <span className="material-symbols-rounded icon-gradient text-[26px]" aria-hidden="true">
                     {pillar.icon}
                   </span>
                 </div>
                 <div>
-                  <div className="text-body-lg text-on-surface font-bold leading-snug">
+                  <div className="text-base font-bold text-on-surface leading-snug">
                     {pillar.title}
                   </div>
-                  <div className="text-body-sm text-on-surface-variant mt-0.5 leading-relaxed">
+                  <div className="text-sm text-muted mt-1 leading-relaxed">
                     {pillar.description}
                   </div>
                 </div>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         )}
 
-        {/* 3. Real Service Plans Panel */}
+        {/* 3. 3-Column Service Plans Grid */}
         <div
           role={tabs.length > 0 ? 'tabpanel' : undefined}
           aria-labelledby={tabs.length > 0 ? `pricing-tab-${effectiveGroup}` : undefined}
-          className="space-y-14"
+          className="space-y-16"
         >
           {isLoading ? (
             <ServicePlanSkeleton />
@@ -270,90 +259,49 @@ export default function PricingPage() {
                   aria-labelledby={`group-heading-${groupEntry.group}`}
                   className="space-y-6"
                 >
-                  <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                    <div>
-                      <div
-                        className={clsx(
-                          'font-code text-label-code uppercase tracking-wider mb-1',
-                          GROUP_ACCENT_TEXT[groupMeta.accent] || GROUP_ACCENT_TEXT.primary
-                        )}
-                      >
+                  <Reveal className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                    <div id={`group-heading-${groupEntry.group}`}>
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-brand-soft text-brand-soft-text mb-2">
                         <bdi dir="ltr">{groupMeta.eyebrow}</bdi>
-                      </div>
-                      <h2
-                        id={`group-heading-${groupEntry.group}`}
-                        className="text-headline-lg text-on-surface font-bold"
-                      >
+                      </span>
+                      <h2 className="text-headline-lg text-on-surface font-bold">
                         {groupMeta.title}
                       </h2>
                     </div>
-                    <p className="text-body-md text-on-surface-variant max-w-md leading-relaxed">
+                    <p className="text-body-md text-muted max-w-md">
                       {groupMeta.description}
                     </p>
-                  </div>
+                  </Reveal>
 
-                  <div className={gridLayoutClass}>
+                  <Stagger key={`${effectiveGroup}-${groupEntry.group}`} inView={false} className={gridLayoutClass}>
                     {groupEntry.plans.map((plan) => (
-                      <ServicePlanCard
-                        key={plan.id}
-                        plan={plan}
-                        accent={groupMeta.accent}
-                      />
+                      <StaggerItem key={plan.id} className="flex">
+                        <ServicePlanCard
+                          plan={plan}
+                          accent={groupMeta.accent}
+                        />
+                      </StaggerItem>
                     ))}
-                  </div>
+                  </Stagger>
                 </section>
               );
             })
           )}
         </div>
 
-        {/* 4. Feature Matrix & Side-by-Side Comparison */}
-        <FeatureMatrix plans={visiblePlans} guaranteeDays={guaranteeDays} />
+        {/* 4. Comparison Table in a Soft Card */}
+        <Reveal>
+          <FeatureMatrix plans={visiblePlans} guaranteeDays={guaranteeDays} />
+        </Reveal>
 
-        {/* 5. Custom Solution Banner */}
-        <CustomSolutionBanner />
-
-        {/* 6. FAQ Accordion */}
-        <PricingFaq />
-
-        {/* 7. Bottom Help Strip */}
-        <div className="p-6 sm:p-7 rounded-2xl bg-card border border-card-border flex flex-col md:flex-row items-center justify-between gap-5 text-center md:text-start shadow-card">
-          <div>
-            <div className="text-body-lg text-on-surface font-bold">
-              {t('helpStrip.title')}
-            </div>
-            <div className="text-body-sm text-on-surface-variant mt-1">
-              {t('helpStrip.subtitle')}
-            </div>
-          </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-3 shrink-0">
-            {whatsappNumber && (
-              <a
-                href={`https://wa.me/${whatsappNumber}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 min-h-[48px] px-5 py-2.5 rounded-xl bg-surface border border-card-border text-on-surface hover:text-primary hover:border-primary/60 text-label-lg font-bold transition-colors"
-              >
-                <span className="material-symbols-outlined text-[20px] text-primary" aria-hidden="true">
-                  chat
-                </span>
-                <span>{t('helpStrip.whatsappCta')}</span>
-              </a>
-            )}
-
-            <Link
-              to={contactPath({ type: 'consulting' })}
-              className="inline-flex items-center justify-center gap-2 min-h-[48px] px-5 py-2.5 rounded-xl bg-badge-green-bg hover:bg-primary/20 border border-primary/25 text-primary text-label-lg font-bold transition-colors"
-            >
-              <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
-                headset_mic
-              </span>
-              <span>{t('helpStrip.cta')}</span>
-            </Link>
-          </div>
-        </div>
+        {/* 5. FAQ Accordion */}
+        <Reveal>
+          <PricingFaq />
+        </Reveal>
       </div>
+
+      {/* 6. Custom-Solution CTA Band */}
+      <CustomSolutionBanner />
     </div>
   );
 }

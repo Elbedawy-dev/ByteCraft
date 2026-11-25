@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
+import { AnimatePresence, m } from 'framer-motion';
 import { useLang } from '../../../app/providers';
 import { localized } from '../../../lib/localized';
+import { MOTION_TRANSITION } from '../../../lib/motion';
 
 function CredentialCopyRow({ label, value, copyAriaLabel }) {
   const { t } = useTranslation('projectDetails');
@@ -65,15 +67,25 @@ function CredentialCopyRow({ label, value, copyAriaLabel }) {
           onClick={handleCopy}
           aria-label={copyAriaLabel}
           className={clsx(
-            'min-w-[44px] min-h-[44px] sm:min-w-[36px] sm:min-h-[36px] rounded-lg inline-flex items-center justify-center transition-colors border',
+            'min-w-[44px] min-h-[44px] sm:min-w-[36px] sm:min-h-[36px] rounded-lg inline-flex items-center justify-center transition-colors duration-300 ease-nexus border',
             status === 'copied'
               ? 'bg-primary/15 border-primary/40 text-primary'
               : 'bg-surface-container-low border-outline-variant/60 text-on-surface-variant hover:text-primary hover:border-primary/40'
           )}
         >
-          <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
-            {status === 'copied' ? 'check' : 'content_copy'}
-          </span>
+          <AnimatePresence mode="wait" initial={false}>
+            <m.span
+              key={status === 'copied' ? 'copied' : 'idle'}
+              initial={{ opacity: 0, scale: 0.75 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.75 }}
+              transition={MOTION_TRANSITION}
+              className="material-symbols-outlined text-[18px] block"
+              aria-hidden="true"
+            >
+              {status === 'copied' ? 'check' : 'content_copy'}
+            </m.span>
+          </AnimatePresence>
         </button>
         <span role="status" className="visually-hidden">
           {status === 'copied' ? t('credentials.copied') : ''}
@@ -215,11 +227,26 @@ function CompactCopyChip({ prefix, value, ariaLabel, copiedMsg }) {
         type="button"
         onClick={handleCopy}
         aria-label={ariaLabel}
-        className="w-7 h-7 rounded-md inline-flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors"
+        className={clsx(
+          'w-7 h-7 rounded-md inline-flex items-center justify-center transition-colors duration-300 ease-nexus',
+          copied
+            ? 'text-primary bg-primary/10'
+            : 'text-on-surface-variant hover:text-primary hover:bg-surface-container-high'
+        )}
       >
-        <span className="material-symbols-outlined text-[15px]" aria-hidden="true">
-          {copied ? 'check' : 'content_copy'}
-        </span>
+        <AnimatePresence mode="wait" initial={false}>
+          <m.span
+            key={copied ? 'copied' : 'idle'}
+            initial={{ opacity: 0, scale: 0.75 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.75 }}
+            transition={MOTION_TRANSITION}
+            className="material-symbols-outlined text-[15px] block"
+            aria-hidden="true"
+          >
+            {copied ? 'check' : 'content_copy'}
+          </m.span>
+        </AnimatePresence>
       </button>
       <span role="status" className="visually-hidden">
         {copied ? copiedMsg : ''}

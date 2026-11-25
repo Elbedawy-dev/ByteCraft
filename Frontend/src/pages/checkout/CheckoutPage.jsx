@@ -1,18 +1,31 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
+import clsx from 'clsx';
+import { AnimatePresence, m } from 'framer-motion';
+import { MOTION_TRANSITION } from '@/lib/motion';
 import { Badge, Button, Skeleton } from '@/components/ui';
 import { Breadcrumbs, EmptyState, ErrorState } from '@/components/shared';
 import { useLang, useToast } from '@/app/providers';
 import { useMeta } from '@/api/meta';
+import { accountKeys } from '@/api/account';
+import { setOrderBootstrap } from '@/api/orderTracking';
 import { ApiError, applyApiErrorsToForm, getApiErrorMessage } from '@/api/client';
 import { useCheckoutProject, useCreateOrder, useValidateCoupon } from '@/api/checkout';
-import { ROUTES, orderTrackingPath, projectDetailsPath } from '@/config/routes';
+import {
+  ROUTES,
+  accountOrderDetailsPath,
+  loginPath,
+  orderTrackingPath,
+  projectDetailsPath,
+} from '@/config/routes';
 import { localized } from '@/lib/localized';
 import { formatMoney } from '@/lib/money';
 import { setOrderToken } from '@/lib/storage';
+import { useAuth } from '@/features/auth';
 import {
   CHECKOUT_FIELD_MAP,
   PAYMENT_METHOD_ORDER,
@@ -49,9 +62,12 @@ export default function CheckoutPage() {
   const packageKey = (searchParams.get('package') || '').trim().toLowerCase();
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const queryClient = useQueryClient();
   const { t } = useTranslation(['checkout', 'common']);
   const { lang } = useLang();
   const toast = useToast();
+  const { user, isAuthenticated } = useAuth();
 
   const { data: meta, isLoading: isMetaLoading, isPending: isMetaPending } = useMeta();
   const {
@@ -71,8 +87,10 @@ export default function CheckoutPage() {
   const [couponError, setCouponError] = useState('');
   const [submitBannerError, setSubmitBannerError] = useState('');
   const [isRedirectingPayment, setIsRedirectingPayment] = useState(false);
+  const [mobileSummaryOpen, setMobileSummaryOpen] = useState(false);
 
   const submittingRef = useRef(false);
+  const prefilledUserIdRef = useRef(null);
 
   const schema = useMemo(() => createCheckoutSchema(t), [t]);
 
@@ -82,7 +100,7 @@ export default function CheckoutPage() {
     watch,
     setValue,
     setError,
-    formState: { errors },
+    formState: { errors, dirtyFields },
   } = useForm({
     resolver: zodResolver(schema),
     mode: 'onTouched',
@@ -99,6 +117,31 @@ export default function CheckoutPage() {
       website: '',
     },
   });
+
+  // Prefill editable customer fields once from authenticated user profile without overwriting dirty edits
+  useEffect(() => {
+    if (!user?.id || prefilledUserIdRef.current === user.id) return;
+    prefilledUserIdRef.current = user.id;
+
+    if (!dirtyFields.fullName && user.name) {
+      setValue('fullName', user.name, { shouldDirty: false });
+    }
+    if (!dirtyFields.email && user.email) {
+      setValue('email', user.email, { shouldDirty: false });
+    }
+    if (!dirtyFields.phone && user.phone) {
+      setValue('phone', user.phone, { shouldDirty: false });
+    }
+    if (
+      !dirtyFields.gitProvider &&
+      (user.gitProvider === 'github' || user.gitProvider === 'gitlab')
+    ) {
+      setValue('gitProvider', user.gitProvider, { shouldDirty: false });
+    }
+    if (!dirtyFields.gitUsername && user.gitUsername) {
+      setValue('gitUsername', user.gitUsername, { shouldDirty: false });
+    }
+  }, [user, dirtyFields, setValue]);
 
   const selectedPaymentMethod = watch('paymentMethod');
   const selectedGitProvider = watch('gitProvider');
@@ -231,8 +274,26 @@ export default function CheckoutPage() {
         setOrderToken(order.orderNumber, order.publicToken);
       }
 
+      if (
+        order?.orderNumber &&
+        (order?.fawryReference || order?.paymentInstructions)
+      ) {
+        setOrderBootstrap(order.orderNumber, {
+          fawryReference: order.fawryReference || null,
+          paymentInstructions: order.paymentInstructions || null,
+        });
+      }
+
+      if (isAuthenticated) {
+        queryClient.invalidateQueries({ queryKey: accountKeys.orders() });
+      }
+
+      const destination = isAuthenticated
+        ? accountOrderDetailsPath(order.orderNumber)
+        : orderTrackingPath(order.orderNumber);
+
       if (order?.isFreeOrder) {
-        navigate(orderTrackingPath(order.orderNumber), {
+        navigate(destination, {
           replace: true,
           state: { order },
         });
@@ -245,8 +306,8 @@ export default function CheckoutPage() {
         return;
       }
 
-      // Manual (vodafone_cash / instapay) and Fawry navigate to tracking with router state fallback
-      navigate(orderTrackingPath(order.orderNumber), {
+      // Manual (vodafone_cash / instapay) and Fawry navigate with router state fallback
+      navigate(destination, {
         replace: true,
         state: { order },
       });
@@ -325,7 +386,7 @@ export default function CheckoutPage() {
   // 2. Loading Project or Meta
   if (isProjectLoading || isProjectPending || isMetaLoading || isMetaPending) {
     return (
-      <div className="relative w-full max-w-[1280px] mx-auto px-margin-mobile md:px-margin pt-6 pb-16">
+      <div className="relative w-full max-w-container mx-auto px-4 sm:px-6 pt-6 pb-16 overflow-x-clip">
         <AmbientGlow />
         <div className="mb-6">
           <Skeleton className="h-4 w-64 max-w-full" />
@@ -459,8 +520,14 @@ export default function CheckoutPage() {
 
       {/* Mobile Collapsible Order Summary (Top of 1-column mobile flow) */}
       <div className="lg:hidden mb-6">
-        <details className="bc-accordion-item group bg-card border border-card-border rounded-xl overflow-hidden shadow-card">
-          <summary className="flex items-center justify-between gap-3 p-4 cursor-pointer select-none min-h-[56px] hover:bg-card-hover transition-colors">
+        <div className="bg-card border border-card-border rounded-xl overflow-hidden shadow-card">
+          <button
+            type="button"
+            onClick={() => setMobileSummaryOpen((prev) => !prev)}
+            aria-expanded={mobileSummaryOpen}
+            aria-controls="checkout-mobile-summary-panel"
+            className="w-full flex items-center justify-between gap-3 p-4 text-start cursor-pointer select-none min-h-[56px] hover:bg-card-hover transition-colors duration-300 ease-nexus"
+          >
             <div className="flex items-center gap-2.5 min-w-0">
               <span className="material-symbols-outlined text-primary text-[20px] shrink-0" aria-hidden="true">
                 shopping_bag
@@ -468,48 +535,107 @@ export default function CheckoutPage() {
               <span className="text-sm font-bold text-on-surface truncate">
                 {t('checkout:summary.mobileToggle')}
               </span>
-              <span className="text-xs text-primary font-medium group-open:hidden">
-                ({t('checkout:summary.mobileShow')})
-              </span>
-              <span className="text-xs text-on-surface-variant font-medium hidden group-open:inline">
-                ({t('checkout:summary.mobileHide')})
+              <span className="text-xs text-primary font-medium">
+                ({t(mobileSummaryOpen ? 'checkout:summary.mobileHide' : 'checkout:summary.mobileShow')})
               </span>
             </div>
 
             <div className="flex items-center gap-2 shrink-0">
               <span className="text-base font-extrabold text-primary">{formattedTotal}</span>
               <span
-                className="material-symbols-outlined text-[20px] text-on-surface-variant transition-transform duration-200 group-open:rotate-180"
+                className={clsx(
+                  'material-symbols-outlined text-[20px] text-on-surface-variant transition-transform duration-300 ease-nexus',
+                  mobileSummaryOpen && 'rotate-180'
+                )}
                 aria-hidden="true"
               >
                 expand_more
               </span>
             </div>
-          </summary>
+          </button>
 
-          <div className="p-4 pt-2 border-t border-outline-variant/60">
-            <OrderSummaryContent
-              idPrefix="mobile"
-              project={project}
-              selectedPackage={selectedPackage}
-              pricing={effectivePricing}
-              couponCodeInput={couponCodeInput}
-              onCouponInputChange={handleCouponInputChange}
-              onApplyCoupon={handleApplyCoupon}
-              onRemoveCoupon={handleRemoveCoupon}
-              isApplyingCoupon={validateCouponMutation.isPending}
-              couponError={couponError}
-              appliedPricing={appliedPricing}
-              contactMeta={meta?.contact}
-            />
-          </div>
-        </details>
+          <AnimatePresence initial={false}>
+            {mobileSummaryOpen && (
+              <m.div
+                id="checkout-mobile-summary-panel"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={MOTION_TRANSITION}
+                className="overflow-hidden"
+              >
+                <div className="p-4 pt-2 border-t border-outline-variant/60">
+                  <OrderSummaryContent
+                    idPrefix="mobile"
+                    project={project}
+                    selectedPackage={selectedPackage}
+                    pricing={effectivePricing}
+                    couponCodeInput={couponCodeInput}
+                    onCouponInputChange={handleCouponInputChange}
+                    onApplyCoupon={handleApplyCoupon}
+                    onRemoveCoupon={handleRemoveCoupon}
+                    isApplyingCoupon={validateCouponMutation.isPending}
+                    couponError={couponError}
+                    appliedPricing={appliedPricing}
+                    contactMeta={meta?.contact}
+                  />
+                </div>
+              </m.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* Main Two-Column Desktop / Single-Column Mobile Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Form + Payment Column (7 cols on desktop, mirrored automatically in RTL) */}
         <div className="lg:col-span-7 flex flex-col gap-6">
+          {isAuthenticated && user ? (
+            <div
+              role="status"
+              className="rounded-2xl bg-brand-soft/60 border border-primary/25 px-4 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5"
+            >
+              <div className="flex items-center gap-2.5 text-sm text-on-surface min-w-0">
+                <span className="material-symbols-rounded text-primary text-[20px] shrink-0" aria-hidden="true">
+                  verified_user
+                </span>
+                <span className="truncate">
+                  {t('checkout:accountBanner.loggedInPrefix')}{' '}
+                  <bdi dir="ltr" className="font-mono font-bold text-primary">
+                    {user.email}
+                  </bdi>
+                </span>
+              </div>
+              <Link
+                to={ROUTES.ACCOUNT}
+                className="text-xs font-semibold text-primary hover:underline shrink-0"
+              >
+                {t('checkout:accountBanner.manageAccount')}
+              </Link>
+            </div>
+          ) : (
+            <div className="rounded-2xl bg-section-band border border-card-border px-4 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-start sm:items-center gap-2.5 text-sm text-on-surface-variant">
+                <span className="material-symbols-rounded text-primary text-[20px] shrink-0 mt-0.5 sm:mt-0" aria-hidden="true">
+                  account_circle
+                </span>
+                <span>{t('checkout:accountBanner.guestPrompt')}</span>
+              </div>
+              <div className="flex items-center gap-2 shrink-0 flex-wrap">
+                <Link to={loginPath(`${location.pathname}${location.search}`)}>
+                  <Button type="button" variant="outline" size="sm">
+                    {t('common:nav.login', { defaultValue: 'Login' })}
+                  </Button>
+                </Link>
+                <Link to={ROUTES.REGISTER}>
+                  <Button type="button" variant="primary-gradient" size="sm">
+                    {t('common:nav.register', { defaultValue: 'Create account' })}
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          )}
+
           <form
             id="checkout-form"
             onSubmit={handleSubmit(onSubmit)}
@@ -584,7 +710,7 @@ export default function CheckoutPage() {
           aria-label={t('checkout:aria.orderSummaryRegion')}
           className="hidden lg:flex lg:col-span-5 flex-col gap-4 lg:sticky lg:top-24"
         >
-          <div className="bg-card border border-card-border rounded-xl p-6 shadow-card flex flex-col gap-5">
+          <div className="bg-card border border-card-border rounded-2xl p-6 sm:p-7 shadow-card flex flex-col gap-5">
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2.5 min-w-0">
                 <span className="material-symbols-outlined text-primary text-[22px] shrink-0" aria-hidden="true">

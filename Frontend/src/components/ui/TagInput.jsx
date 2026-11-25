@@ -38,7 +38,7 @@ export function TagInput({
   return (
     <div
       className={clsx(
-        'w-full min-h-[48px] p-2 rounded-lg bg-input border border-input-border hover:border-outline focus-within:border-input-focus focus-within:ring-2 focus-within:ring-input-focus transition-all flex flex-wrap items-center gap-1.5',
+        'w-full min-h-[48px] p-2 rounded-lg bg-input border border-input-border hover:border-outline focus-within:border-primary focus-within:ring-[3px] focus-within:ring-primary/20 transition-all duration-300 ease-nexus flex flex-wrap items-center gap-1.5',
         disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
         className
       )}
@@ -48,17 +48,17 @@ export function TagInput({
           key={`${tag}-${idx}`}
           variant="primary"
           size="sm"
-          className="ps-2 pe-1 py-1"
+          className="ps-2.5 pe-1 py-1"
         >
           <span>{tag}</span>
           {!disabled && (
             <button
               type="button"
               onClick={() => removeTag(idx)}
-              className="ms-1 p-0.5 rounded hover:bg-primary/20 text-primary transition-colors"
+              className="ms-1 p-0.5 rounded-full hover:bg-primary/20 text-brand-soft-text transition-colors"
               aria-label={`Remove ${tag}`}
             >
-              <span className="material-symbols-outlined text-[14px] block">close</span>
+              <span className="material-symbols-rounded text-[14px] block" aria-hidden="true">close</span>
             </button>
           )}
         </Badge>
@@ -72,7 +72,7 @@ export function TagInput({
         onBlur={() => addTag(inputVal)}
         placeholder={value.length === 0 ? placeholder : ''}
         disabled={disabled || (maxTags && value.length >= maxTags)}
-        className="flex-1 min-w-[120px] bg-transparent text-sm text-on-surface placeholder:text-placeholder outline-none px-2 py-1"
+        className="flex-1 min-w-[120px] bg-transparent text-sm text-on-surface placeholder:text-placeholder outline-none focus-visible:outline-none px-2 py-1"
       />
     </div>
   );

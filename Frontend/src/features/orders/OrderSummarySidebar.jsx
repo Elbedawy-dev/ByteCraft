@@ -26,20 +26,22 @@ export function OrderSummarySidebar({ order }) {
 
   return (
     <aside className="lg:col-span-4 space-y-5 lg:sticky lg:top-24">
-      <Card variant="flat" padding="md" className="space-y-5">
-        <div className="flex items-center gap-2.5">
-          <span className="material-symbols-outlined text-primary text-[22px]">
-            shopping_bag
-          </span>
+      <Card variant="panel" padding="md" className="space-y-5">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg bg-brand-soft flex items-center justify-center shrink-0">
+            <span className="material-symbols-rounded icon-gradient text-[22px]" aria-hidden="true">
+              shopping_bag
+            </span>
+          </div>
           <h2 className="text-lg font-bold text-on-surface">
             {t('tracking.summary.title')}
           </h2>
         </div>
 
         {/* Project & Package Snapshot */}
-        <div className="p-4 rounded-xl bg-surface-container border border-outline-variant/70 space-y-2.5">
+        <div className="p-4 rounded-xl bg-section-band border border-card-border space-y-2.5">
           <div>
-            <span className="text-[11px] text-on-surface-variant block">
+            <span className="text-[11px] text-muted block">
               {t('tracking.summary.projectLabel')}
             </span>
             {snapshot.slug ? (
@@ -56,24 +58,24 @@ export function OrderSummarySidebar({ order }) {
             )}
           </div>
 
-          <div className="flex items-center justify-between gap-2 flex-wrap pt-2 border-t border-outline-variant/50">
+          <div className="flex items-center justify-between gap-2 flex-wrap pt-2 border-t border-outline-variant">
             <div>
-              <span className="text-[11px] text-on-surface-variant block">
+              <span className="text-[11px] text-muted block">
                 {t('tracking.summary.packageLabel')}
               </span>
               <span className="text-xs sm:text-sm font-semibold text-on-surface">
                 {localized(snapshot.packageName, lang)}
               </span>
             </div>
-            <Badge variant="neutral" size="sm">
+            <Badge variant="primary" size="sm">
               {licenseLabel}
             </Badge>
           </div>
         </div>
 
-        {/* Pricing Breakdown */}
-        <div className="space-y-2.5 text-sm">
-          <div className="flex items-center justify-between gap-2 text-on-surface-variant">
+        {/* Soft Totals Band */}
+        <div className="p-4 rounded-xl bg-section-band border border-card-border space-y-2.5 text-sm">
+          <div className="flex items-center justify-between gap-2 text-muted">
             <span>{t('tracking.summary.subtotal')}</span>
             <span className="font-mono font-semibold text-on-surface">
               {formatMoney(pricing.subtotal || 0, lang)}
@@ -93,15 +95,15 @@ export function OrderSummarySidebar({ order }) {
             </div>
           )}
 
-          <div className="flex items-center justify-between gap-2 text-on-surface-variant">
+          <div className="flex items-center justify-between gap-2 text-muted">
             <span>{t('tracking.summary.taxFree')}</span>
             <span className="text-primary font-medium">
               {t('tracking.summary.taxFreeValue')}
             </span>
           </div>
 
-          <div className="flex items-center justify-between gap-2 pt-3 border-t border-outline-variant/70">
-            <span className="text-base font-bold text-on-surface">
+          <div className="flex items-center justify-between gap-2 pt-3 border-t border-outline-variant">
+            <span className="text-base font-extrabold text-on-surface">
               {t('tracking.summary.total')}
             </span>
             <span className="font-mono text-2xl font-extrabold text-primary">

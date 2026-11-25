@@ -2,19 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
+import { m } from 'framer-motion';
 import { useLang } from '@/app/providers';
 import { localized } from '@/lib/localized';
 import { formatMoney } from '@/lib/money';
+import { MOTION_TRANSITION } from '@/lib/motion';
 import { contactPath } from '@/config/routes';
 import { Button } from '@/components/ui/Button';
 
-const ACCENT_CLASSES = {
-  primary: 'text-chip-mint-fg',
-  secondary: 'text-chip-sky-fg',
-  tertiary: 'text-chip-violet-fg',
-};
-
-export function ServicePlanCard({ plan, accent = 'primary' }) {
+export function ServicePlanCard({ plan }) {
   const { t } = useTranslation('pricing');
   const { lang } = useLang();
 
@@ -27,32 +23,22 @@ export function ServicePlanCard({ plan, accent = 'primary' }) {
     ? plan.features.map((f) => localized(f, lang)).filter(Boolean)
     : [];
 
-  const accentTextClass = ACCENT_CLASSES[accent] || ACCENT_CLASSES.primary;
   const ctaLabel = isPopular ? t('card.ctaPopular') : t('card.ctaDefault');
 
-  return (
-    <article
+  const innerCard = (
+    <m.article
+      data-fm-hover={!isPopular ? 'true' : undefined}
+      whileHover={!isPopular ? { y: -4 } : undefined}
+      transition={MOTION_TRANSITION}
       className={clsx(
-        'relative rounded-xl p-6 sm:p-7 flex flex-col justify-between bg-card shadow-card transition-all duration-200 hover:bg-card-hover hover:shadow-card-hover hover:-translate-y-0.5',
+        'relative flex flex-col justify-between flex-1 p-6 sm:p-7 bg-card transition-colors duration-300 ease-nexus',
         isPopular
-          ? 'border border-primary/60 ring-1 ring-primary/20 hover:border-primary'
-          : 'border border-card-border hover:border-card-hover-border'
+          ? 'rounded-[14px]'
+          : 'bc-card-hover rounded-xl'
       )}
     >
-      {/* Floating Popular Badge */}
-      {isPopular && (
-        <div className="absolute -top-3.5 inset-x-0 flex justify-center pointer-events-none">
-          <span className="btn-primary-gradient px-4 py-1 rounded-full text-label-md font-bold shadow-md inline-flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[16px]" aria-hidden="true">
-              local_fire_department
-            </span>
-            <span>{t('card.popular')}</span>
-          </span>
-        </div>
-      )}
-
       <div>
-        {/* Card Header: Name + Delivery Days Badge */}
+        {/* Card Header: Name + Delivery Days Pill */}
         <div className={clsx('flex items-start justify-between gap-3 mb-4', isPopular && 'mt-1')}>
           <h3
             className={clsx(
@@ -63,8 +49,8 @@ export function ServicePlanCard({ plan, accent = 'primary' }) {
             {planName}
           </h3>
 
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface border border-card-border font-code text-label-code text-on-surface-variant shrink-0">
-            <span className="material-symbols-outlined text-[14px]" aria-hidden="true">
+          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-brand-soft text-brand-soft-text text-xs font-semibold shrink-0">
+            <span className="material-symbols-rounded text-[15px]" aria-hidden="true">
               schedule
             </span>
             <span>{t('card.deliveryDays', { count: deliveryDays })}</span>
@@ -73,79 +59,105 @@ export function ServicePlanCard({ plan, accent = 'primary' }) {
 
         {/* Starting Price */}
         <div className="mb-5">
-          <span className="block text-label-md text-on-surface-variant mb-1">
+          <span className="block text-xs font-semibold text-muted mb-1">
             {t('card.startingFrom')}
           </span>
           <div className="flex items-baseline gap-1.5 flex-wrap">
             {lang === 'en' && (
-              <span className={clsx('text-body-md font-bold', accentTextClass)}>
+              <span className="text-sm font-bold text-primary">
                 EGP
               </span>
             )}
             <bdi
               dir="ltr"
-              className="text-headline-xl font-extrabold text-on-surface font-code tabular-nums tracking-tight"
+              className="text-headline-xl font-extrabold text-on-surface font-mono tabular-nums tracking-tight"
             >
               {numericPrice}
             </bdi>
             {lang !== 'en' && (
-              <span className={clsx('text-body-md font-bold', accentTextClass)}>
+              <span className="text-sm font-bold text-primary">
                 ج.م
               </span>
             )}
           </div>
 
           {planDescription && (
-            <p className="text-body-sm text-on-surface-variant mt-2.5 leading-relaxed">
+            <p className="text-sm text-muted mt-2.5 leading-relaxed">
               {planDescription}
             </p>
           )}
         </div>
 
-        <div className="w-full h-px bg-outline-variant/50 mb-5" aria-hidden="true" />
+        <div className="w-full h-px bg-outline-variant mb-5" aria-hidden="true" />
 
-        {/* Feature List */}
+        {/* Gradient-Check Feature List */}
         {features.length > 0 ? (
           <ul className="space-y-3 mb-7 list-none p-0 m-0">
             {features.map((featureText, idx) => (
               <li key={idx} className="flex items-start gap-2.5">
                 <span
-                  className={clsx(
-                    'material-symbols-outlined text-[20px] shrink-0 mt-0.5',
-                    accentTextClass
-                  )}
+                  className="material-symbols-rounded icon-gradient text-[20px] shrink-0 mt-0.5"
                   aria-hidden="true"
                 >
                   check_circle
                 </span>
-                <span className="text-body-md text-on-surface leading-relaxed">
+                <span className="text-sm sm:text-base text-on-surface leading-relaxed">
                   {featureText}
                 </span>
               </li>
             ))}
           </ul>
         ) : (
-          <p className="text-body-sm text-on-surface-variant mb-7 leading-relaxed">
+          <p className="text-sm text-muted mb-7 leading-relaxed">
             {t('card.noFeatures')}
           </p>
         )}
       </div>
 
-      {/* CTA Button */}
+      {/* Pill CTA Button */}
       <Link
         to={contactPath({ plan: plan.id })}
         aria-label={t('card.ctaAria', { action: ctaLabel, name: planName })}
         className="block w-full mt-auto"
       >
         <Button
-          variant={isPopular ? 'primary-gradient' : 'secondary'}
+          variant={isPopular ? 'primary-gradient' : 'outline'}
           size="md"
-          className="w-full font-bold"
+          className="w-full"
           tabIndex={-1}
+          iconTrailing={
+            <span className="material-symbols-rounded text-[18px] rtl:-scale-x-100" aria-hidden="true">
+              arrow_forward
+            </span>
+          }
         >
           {ctaLabel}
         </Button>
       </Link>
-    </article>
+    </m.article>
+  );
+
+  if (!isPopular) {
+    return innerCard;
+  }
+
+  // Popular plan: 2px brand-gradient border + floating gradient pill
+  return (
+    <m.div
+      data-fm-hover="true"
+      whileHover={{ y: -4 }}
+      transition={MOTION_TRANSITION}
+      className="relative rounded-xl p-[2px] bg-primary-gradient shadow-card-hover flex flex-col"
+    >
+      <div className="absolute -top-3.5 inset-x-0 flex justify-center pointer-events-none z-10">
+        <span className="btn-primary-gradient px-4 py-1 rounded-full text-xs font-bold text-white inline-flex items-center gap-1.5">
+          <span className="material-symbols-rounded text-[15px]" aria-hidden="true">
+            auto_awesome
+          </span>
+          <span>{t('card.popular')}</span>
+        </span>
+      </div>
+      {innerCard}
+    </m.div>
   );
 }

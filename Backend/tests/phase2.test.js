@@ -53,6 +53,16 @@ async function runTests() {
   let failed = 0;
   let cookieHeader = '';
 
+  const SUITE_IP = `10.20.${Math.floor(Math.random() * 200) + 1}.22`;
+  const nativeFetch = globalThis.fetch;
+  const fetch = (url, options = {}) => {
+    const headers = { ...(options.headers || {}) };
+    if (!headers['x-test-ip'] && !headers['X-Test-IP']) {
+      headers['x-test-ip'] = SUITE_IP;
+    }
+    return nativeFetch(url, { ...options, headers });
+  };
+
   // Track created IDs for strict cleanup (Rule 2)
   const createdProjectIds = [];
   const createdCategoryIds = [];
@@ -74,9 +84,9 @@ async function runTests() {
   }
 
   try {
-    // 0. Owner Login
-    await test('Owner logs in to obtain authentication cookie', async () => {
-      const res = await fetch(`${BASE_URL}/owner/login`, {
+    // 0. Admin Login
+    await test('Admin logs in to obtain authentication cookie', async () => {
+      const res = await fetch(`${BASE_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: OWNER_EMAIL, password: OWNER_PASSWORD }),
@@ -84,7 +94,7 @@ async function runTests() {
       const json = await res.json();
       assert(res.status === 200, `Expected 200, got ${res.status}: ${json.error?.message}`);
       const setCookie = res.headers.get('set-cookie');
-      assert(setCookie && setCookie.includes('bc_owner='), 'Missing bc_owner cookie in response');
+      assert(setCookie && setCookie.includes('bc_session='), 'Missing bc_session cookie in response');
       cookieHeader = setCookie.split(';')[0];
     });
 

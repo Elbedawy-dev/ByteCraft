@@ -6,8 +6,14 @@ import {
   setOrderToken,
   useGuestOrder,
 } from '../../api/orderTracking';
+import { useAccountOrder } from '../../api/account';
 import { ApiError } from '../../api/client';
-import { orderTrackingPath, ROUTES } from '../../config/routes';
+import { useAuth } from '../../features/auth';
+import {
+  accountOrderDetailsPath,
+  orderTrackingPath,
+  ROUTES,
+} from '../../config/routes';
 import {
   Badge,
   Button,
@@ -22,6 +28,7 @@ export default function PaymentResultPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { t } = useTranslation('orders');
+  const { isAuthenticated } = useAuth();
 
   const orderNumber = (searchParams.get('merchant_order_id') || '').trim();
   const urlSuccess = searchParams.get('success') === 'true';
@@ -48,20 +55,35 @@ export default function PaymentResultPage() {
     }
   }, [orderNumber]);
 
+  const useSessionLookup = Boolean(orderNumber && isAuthenticated && !token);
+
   const shouldPollBriefly =
-    Boolean(orderNumber && token) &&
+    Boolean(orderNumber && (token || isAuthenticated)) &&
     urlSuccess &&
     !urlErrorOccured &&
     !urlPending &&
     !verifyTimedOut;
 
   const {
-    data: order,
-    isLoading,
-    error,
+    data: guestOrder,
+    isLoading: guestLoading,
+    error: guestError,
   } = useGuestOrder(orderNumber, token, {
-    customIntervalMs: shouldPollBriefly ? 3000 : false,
+    customIntervalMs: shouldPollBriefly && token ? 3000 : false,
   });
+
+  const {
+    data: accountOrder,
+    isLoading: accountLoading,
+    error: accountError,
+  } = useAccountOrder(orderNumber, {
+    enabled: useSessionLookup,
+    customIntervalMs: shouldPollBriefly && useSessionLookup ? 3000 : false,
+  });
+
+  const order = token ? guestOrder : accountOrder;
+  const isLoading = token ? guestLoading : useSessionLookup ? accountLoading : false;
+  const error = token ? guestError : accountError;
 
   // Cap webhook wait polling on the return page at 12 seconds
   useEffect(() => {
@@ -82,12 +104,16 @@ export default function PaymentResultPage() {
   const isConfirmedPaid =
     order?.status === 'paid' || order?.status === 'delivered';
 
-  // Auto-redirect to /orders/:orderNumber once confirmed paid
+  const targetOrderPath = isAuthenticated
+    ? accountOrderDetailsPath(orderNumber)
+    : orderTrackingPath(orderNumber);
+
+  // Auto-redirect to order page once confirmed paid
   useEffect(() => {
     if (!isConfirmedPaid || !orderNumber) return undefined;
 
     if (redirectSeconds <= 0) {
-      navigate(orderTrackingPath(orderNumber), { replace: true });
+      navigate(targetOrderPath, { replace: true });
       return undefined;
     }
 
@@ -96,7 +122,7 @@ export default function PaymentResultPage() {
     }, 1000);
 
     return () => clearTimeout(countdown);
-  }, [isConfirmedPaid, redirectSeconds, orderNumber, navigate]);
+  }, [isConfirmedPaid, redirectSeconds, orderNumber, navigate, targetOrderPath]);
 
   const handleManualLookup = (event) => {
     event.preventDefault();
@@ -117,7 +143,7 @@ export default function PaymentResultPage() {
   let viewState = 'missingOrder';
   if (!orderNumber) {
     viewState = 'missingOrder';
-  } else if (!token) {
+  } else if (!token && !isAuthenticated) {
     viewState = 'missingToken';
   } else if (isLoading) {
     viewState = 'verifying';
@@ -322,7 +348,7 @@ export default function PaymentResultPage() {
             viewState === 'pending' ||
             viewState === 'failed') && (
             <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-              <Link to={orderTrackingPath(orderNumber)}>
+              <Link to={targetOrderPath}>
                 <Button variant="primary-gradient" size="md">
                   {t(`paymentResult.states.${viewState}.cta`)}
                 </Button>

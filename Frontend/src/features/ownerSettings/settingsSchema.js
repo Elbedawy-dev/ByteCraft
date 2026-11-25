@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { BRAND } from '../../config/brand';
 
 export function mapSettingsToFormValues(settings) {
   const s = settings || {};
@@ -12,9 +13,10 @@ export function mapSettingsToFormValues(settings) {
   const card = pm.card || {};
 
   return {
-    siteName: s.siteName ?? 'ByteCraft',
+    siteName: s.siteName ?? BRAND.name,
     guaranteeDays:
       typeof s.guaranteeDays === 'number' ? s.guaranteeDays : 30,
+    registrationEnabled: s.registrationEnabled !== false,
     contact: {
       email: contact.email ?? '',
       whatsapp: contact.whatsapp ?? '',
@@ -86,6 +88,7 @@ export function createSettingsSchema(t) {
         .int(t('validation.guaranteeDaysInteger'))
         .min(0, t('validation.guaranteeDaysMin'))
     ),
+    registrationEnabled: z.boolean().default(true),
     contact: z.object({
       email: z
         .string()

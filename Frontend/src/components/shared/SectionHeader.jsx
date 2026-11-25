@@ -1,13 +1,60 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Badge } from '../ui/Badge';
+
+/**
+ * Renders a heading string in the Nexus two-tone style:
+ * first word(s) in heading color, trailing word(s) in brand gradient.
+ * Works naturally in both LTR (English) and RTL (Arabic).
+ */
+export function TwoToneText({ text, accent, highlightWords }) {
+  if (accent) {
+    return (
+      <>
+        {text ? <span>{text} </span> : null}
+        <span className="text-brand-gradient">{accent}</span>
+      </>
+    );
+  }
+
+  if (typeof text !== 'string') {
+    return text;
+  }
+
+  const trimmed = text.trim();
+  if (!trimmed) return null;
+
+  const words = trimmed.split(/\s+/);
+  if (words.length <= 1) {
+    return <span className="text-brand-gradient">{trimmed}</span>;
+  }
+
+  const count =
+    typeof highlightWords === 'number' && highlightWords > 0
+      ? Math.min(highlightWords, words.length - 1)
+      : words.length >= 4
+        ? 2
+        : 1;
+
+  const startPart = words.slice(0, words.length - count).join(' ');
+  const endPart = words.slice(words.length - count).join(' ');
+
+  return (
+    <>
+      <span>{startPart} </span>
+      <span className="text-brand-gradient">{endPart}</span>
+    </>
+  );
+}
 
 export function SectionHeader({
   badge,
   title,
+  accent,
+  highlightWords,
   subtitle,
   action,
-  align = 'start', // 'start' | 'center'
+  align = 'center', // 'start' | 'center'
+  as: HeadingTag = 'h2',
   className = '',
 }) {
   return (
@@ -21,28 +68,23 @@ export function SectionHeader({
       {badge && (
         <div>
           {typeof badge === 'string' ? (
-            <Badge variant="primary" size="md">
+            <span className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold bg-brand-soft text-brand-soft-text border border-chip-mint-border select-none">
               {badge}
-            </Badge>
+            </span>
           ) : (
             badge
           )}
         </div>
       )}
 
-      {title && (
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-on-surface">
-          {title}
-        </h2>
+      {(title || accent) && (
+        <HeadingTag className="text-headline-xl-mobile md:text-headline-xl font-extrabold text-on-surface">
+          <TwoToneText text={title} accent={accent} highlightWords={highlightWords} />
+        </HeadingTag>
       )}
 
       {subtitle && (
-        <p
-          className={clsx(
-            'text-sm sm:text-base text-on-surface-variant leading-relaxed',
-            align === 'center' ? 'max-w-2xl' : 'max-w-3xl'
-          )}
-        >
+        <p className="text-body-md text-muted max-w-[560px]">
           {subtitle}
         </p>
       )}

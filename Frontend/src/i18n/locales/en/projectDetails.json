@@ -125,7 +125,7 @@
   "reviews": {
     "emptyTitle": "No reviews yet",
     "emptyDescription": "Verified buyers can submit a review directly from their order tracking page after purchase.",
-    "ownerResponseLabel": "ByteCraft Engineering Response",
+    "ownerResponseLabel": "Nexus Engineering Response",
     "totalCount": "{{count}} total reviews"
   },
   "related": {

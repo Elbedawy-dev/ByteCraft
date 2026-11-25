@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import clsx from 'clsx';
+import { AnimatePresence, m } from 'framer-motion';
+import { fade, scaleIn, sheetSlideUp, useIsMobileViewport } from '../../lib/motion';
 
 export function Modal({
   isOpen,
@@ -15,10 +17,10 @@ export function Modal({
   closeOnEsc = true,
 }) {
   const dialogRef = useRef(null);
+  const isMobile = useIsMobileViewport();
 
-  // Close on Escape
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) return undefined;
 
     function handleKeyDown(e) {
       if (e.key === 'Escape' && closeOnEsc) {
@@ -30,7 +32,6 @@ export function Modal({
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, closeOnEsc, onClose]);
 
-  // Lock body scroll
   useEffect(() => {
     if (isOpen) {
       const originalOverflow = document.body.style.overflow;
@@ -39,9 +40,8 @@ export function Modal({
         document.body.style.overflow = originalOverflow;
       };
     }
+    return undefined;
   }, [isOpen]);
-
-  if (!isOpen) return null;
 
   const sizeClasses = {
     sm: 'max-w-md',
@@ -51,69 +51,80 @@ export function Modal({
     full: 'max-w-full m-4',
   }[size] || 'max-w-lg';
 
+  const panelVariants = isMobile ? sheetSlideUp : scaleIn;
+
   const modalContent = (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby={title ? 'modal-title' : undefined}
-      aria-describedby={description ? 'modal-description' : undefined}
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200"
-    >
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity"
-        onClick={closeOnBackdrop ? onClose : undefined}
-        aria-hidden="true"
-      />
+    <AnimatePresence>
+      {isOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={title ? 'modal-title' : undefined}
+          aria-describedby={description ? 'modal-description' : undefined}
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
+        >
+          {/* Backdrop */}
+          <m.div
+            variants={fade}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="fixed inset-0 bg-overlay backdrop-blur-sm"
+            onClick={closeOnBackdrop ? onClose : undefined}
+            aria-hidden="true"
+          />
 
-      {/* Modal Dialog Content */}
-      <div
-        ref={dialogRef}
-        className={clsx(
-          'relative w-full bg-surface border border-outline-variant rounded-t-2xl sm:rounded-2xl shadow-card-hover flex flex-col max-h-[92vh] sm:max-h-[85vh] z-10 overflow-hidden',
-          sizeClasses,
-          className
-        )}
-      >
-        {/* Header */}
-        {(title || onClose) && (
-          <div className="flex items-center justify-between p-4 sm:p-6 border-b border-outline-variant shrink-0">
-            <div>
-              {title && (
-                <h3 id="modal-title" className="text-base sm:text-lg font-semibold text-on-surface">
-                  {title}
-                </h3>
-              )}
-              {description && (
-                <p id="modal-description" className="text-xs sm:text-sm text-on-surface-variant mt-1">
-                  {description}
-                </p>
-              )}
-            </div>
-            {onClose && (
-              <button
-                type="button"
-                onClick={onClose}
-                className="text-on-surface-variant hover:text-on-surface p-1.5 rounded-lg hover:bg-surface-container-high transition-colors -me-1.5"
-                aria-label="Close dialog"
-              >
-                <span className="material-symbols-outlined text-[20px] block">close</span>
-              </button>
+          {/* Modal Panel (20px radius = rounded-2xl) */}
+          <m.div
+            ref={dialogRef}
+            variants={panelVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className={clsx(
+              'relative w-full bg-card border border-card-border rounded-t-2xl sm:rounded-2xl shadow-card-hover flex flex-col max-h-[92vh] sm:max-h-[85vh] z-10 overflow-hidden',
+              sizeClasses,
+              className
             )}
-          </div>
-        )}
+          >
+            {(title || onClose) && (
+              <div className="flex items-center justify-between p-5 sm:p-6 border-b border-outline-variant shrink-0">
+                <div>
+                  {title && (
+                    <h3 id="modal-title" className="text-base sm:text-lg font-bold text-on-surface">
+                      {title}
+                    </h3>
+                  )}
+                  {description && (
+                    <p id="modal-description" className="text-xs sm:text-sm text-on-surface-variant mt-1">
+                      {description}
+                    </p>
+                  )}
+                </div>
+                {onClose && (
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="w-10 h-10 flex items-center justify-center text-muted hover:text-on-surface rounded-full hover:bg-section-band transition-colors -me-1.5"
+                    aria-label="Close dialog"
+                  >
+                    <span className="material-symbols-rounded text-[20px] block" aria-hidden="true">close</span>
+                  </button>
+                )}
+              </div>
+            )}
 
-        {/* Body */}
-        <div className="p-4 sm:p-6 bc-scroll flex-1">{children}</div>
+            <div className="p-5 sm:p-6 bc-scroll flex-1">{children}</div>
 
-        {/* Footer */}
-        {footer && (
-          <div className="p-4 sm:p-6 border-t border-outline-variant bg-surface-container-low/50 shrink-0 flex items-center justify-end gap-3 flex-wrap">
-            {footer}
-          </div>
-        )}
-      </div>
-    </div>
+            {footer && (
+              <div className="p-4 sm:p-6 border-t border-outline-variant bg-section-band/70 shrink-0 flex items-center justify-end gap-3 flex-wrap">
+                {footer}
+              </div>
+            )}
+          </m.div>
+        </div>
+      )}
+    </AnimatePresence>
   );
 
   return createPortal(modalContent, document.body);

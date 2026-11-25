@@ -6,6 +6,7 @@ import { useLang } from '../../app/providers';
 import { ROUTES } from '../../config/routes';
 import { formatMoney } from '../../lib/money';
 import { formatNumber } from '../../lib/format';
+import { Stagger, StaggerItem } from '../../components/ui/Motion';
 
 export function DashboardKpiGrid({ totals = {} }) {
   const { t } = useTranslation('ownerDashboard');
@@ -26,7 +27,8 @@ export function DashboardKpiGrid({ totals = {} }) {
       hint: t('kpis.revenue.hint'),
       icon: 'account_balance_wallet',
       highlight: true,
-      iconClasses: 'bc-chip-mint border',
+      chipClasses: 'bg-primary-soft',
+      iconClasses: 'icon-gradient',
       to: `${ROUTES.OWNER_ORDERS}?status=paid`,
     },
     {
@@ -35,7 +37,8 @@ export function DashboardKpiGrid({ totals = {} }) {
       value: formatNumber(ordersCount),
       hint: t('kpis.ordersCount.hint'),
       icon: 'shopping_bag',
-      iconClasses: 'bc-chip-blue border',
+      chipClasses: 'bg-primary-soft',
+      iconClasses: 'icon-gradient',
       to: ROUTES.OWNER_ORDERS,
     },
     {
@@ -44,7 +47,8 @@ export function DashboardKpiGrid({ totals = {} }) {
       value: formatNumber(paidOrders),
       hint: t('kpis.paidOrders.hint'),
       icon: 'verified',
-      iconClasses: 'bc-chip-sky border',
+      chipClasses: 'bg-success/10',
+      iconClasses: 'text-success',
       to: `${ROUTES.OWNER_ORDERS}?status=paid`,
     },
     {
@@ -58,7 +62,8 @@ export function DashboardKpiGrid({ totals = {} }) {
       icon: 'receipt_long',
       alert: pendingProofs > 0,
       alertTone: 'warning',
-      iconClasses: 'bc-chip-amber border',
+      chipClasses: pendingProofs > 0 ? 'bg-warning/15' : 'bg-primary-soft',
+      iconClasses: pendingProofs > 0 ? 'text-warning' : 'icon-gradient',
       to: `${ROUTES.OWNER_ORDERS}?status=awaiting_review`,
     },
     {
@@ -72,7 +77,8 @@ export function DashboardKpiGrid({ totals = {} }) {
       icon: 'mark_chat_unread',
       alert: newInquiries > 0,
       alertTone: 'primary',
-      iconClasses: 'bc-chip-rose border',
+      chipClasses: 'bg-primary-soft',
+      iconClasses: 'icon-gradient',
       to: `${ROUTES.OWNER_INQUIRIES}?status=new`,
     },
     {
@@ -80,94 +86,100 @@ export function DashboardKpiGrid({ totals = {} }) {
       label: t('kpis.publishedProjects.label'),
       value: formatNumber(publishedProjects),
       hint: t('kpis.publishedProjects.hint'),
-      icon: 'folder_code',
-      iconClasses: 'bc-chip-violet border',
+      icon: 'deployed_code',
+      chipClasses: 'bg-primary-soft',
+      iconClasses: 'icon-gradient',
       to: ROUTES.OWNER_PROJECTS,
     },
   ];
 
   return (
-    <section
+    <Stagger
+      as="section"
+      inView={false}
       aria-label={t('title')}
-      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
+      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
     >
       {cards.map((card) => (
-        <Link
-          key={card.key}
-          to={card.to}
-          className={clsx(
-            'group relative rounded-xl border p-5 flex flex-col justify-between gap-4 bg-card shadow-card transition-all duration-200 hover:bg-card-hover hover:shadow-card-hover hover:-translate-y-0.5',
-            card.highlight
-              ? 'border-primary/40 hover:border-primary'
-              : 'border-card-border hover:border-card-hover-border'
-          )}
-        >
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-on-surface-variant">
-                  {card.label}
-                </span>
-                {card.alert && (
-                  <span className="relative flex h-2 w-2 shrink-0" aria-hidden="true">
-                    <span
-                      className={clsx(
-                        'animate-ping absolute inline-flex h-full w-full rounded-full opacity-75',
-                        card.alertTone === 'warning' ? 'bg-warning' : 'bg-primary'
-                      )}
-                    />
-                    <span
-                      className={clsx(
-                        'relative inline-flex rounded-full h-2 w-2',
-                        card.alertTone === 'warning' ? 'bg-warning' : 'bg-primary'
-                      )}
-                    />
+        <StaggerItem key={card.key} className="flex">
+          <Link
+            to={card.to}
+            className={clsx(
+              'group relative flex-1 rounded-xl border p-6 flex flex-col justify-between gap-4 bg-card shadow-card transition-[background-color,border-color,box-shadow,transform] duration-300 ease-nexus hover:shadow-card-hover hover:-translate-y-0.5',
+              card.highlight
+                ? 'border-primary/35 hover:border-primary'
+                : 'border-card-border hover:border-card-hover-border'
+            )}
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-semibold text-on-surface-variant">
+                    {card.label}
                   </span>
-                )}
+                  {card.alert && (
+                    <span className="relative flex h-2 w-2 shrink-0" aria-hidden="true">
+                      <span
+                        className={clsx(
+                          'animate-ping absolute inline-flex h-full w-full rounded-full opacity-75',
+                          card.alertTone === 'warning' ? 'bg-warning' : 'bg-primary'
+                        )}
+                      />
+                      <span
+                        className={clsx(
+                          'relative inline-flex rounded-full h-2 w-2',
+                          card.alertTone === 'warning' ? 'bg-warning' : 'bg-primary'
+                        )}
+                      />
+                    </span>
+                  )}
+                </div>
+
+                <div
+                  className={clsx(
+                    'mt-2 text-2xl sm:text-3xl font-extrabold tracking-tight truncate',
+                    card.highlight ? 'text-brand-gradient' : 'text-on-surface'
+                  )}
+                >
+                  {card.value}
+                </div>
               </div>
 
               <div
                 className={clsx(
-                  'mt-2 text-2xl sm:text-3xl font-bold tracking-tight truncate',
-                  card.highlight ? 'text-primary' : 'text-on-surface'
+                  'w-12 h-12 rounded-lg flex items-center justify-center shrink-0 transition-transform duration-300 ease-nexus group-hover:scale-105',
+                  card.chipClasses
                 )}
+                aria-hidden="true"
               >
-                {card.value}
+                <span className={clsx('material-symbols-rounded text-[24px]', card.iconClasses)}>
+                  {card.icon}
+                </span>
               </div>
             </div>
 
-            <div
-              className={clsx(
-                'w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-105',
-                card.iconClasses
-              )}
-              aria-hidden="true"
-            >
-              <span className="material-symbols-outlined text-[22px]">
-                {card.icon}
+            <div className="flex items-center justify-between gap-2 pt-3 border-t border-card-border text-xs">
+              <span
+                className={clsx(
+                  'truncate',
+                  card.alert
+                    ? card.alertTone === 'warning'
+                      ? 'text-warning font-semibold'
+                      : 'text-primary font-semibold'
+                    : 'text-on-surface-variant'
+                )}
+              >
+                {card.hint}
+              </span>
+              <span className="w-8 h-8 rounded-full bg-primary-soft text-primary inline-flex items-center justify-center shrink-0 transition-transform duration-300 ease-nexus group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5">
+                <span className="material-symbols-rounded text-[16px] rtl:-scale-x-100">
+                  arrow_forward
+                </span>
               </span>
             </div>
-          </div>
-
-          <div className="flex items-center justify-between gap-2 pt-3 border-t border-outline-variant/50 text-xs">
-            <span
-              className={clsx(
-                'truncate',
-                card.alert
-                  ? card.alertTone === 'warning'
-                    ? 'text-warning font-medium'
-                    : 'text-primary font-medium'
-                  : 'text-on-surface-variant'
-              )}
-            >
-              {card.hint}
-            </span>
-            <span className="material-symbols-outlined text-[16px] text-on-surface-variant group-hover:text-primary transition-colors rtl:-scale-x-100 shrink-0">
-              arrow_forward
-            </span>
-          </div>
-        </Link>
+          </Link>
+        </StaggerItem>
       ))}
-    </section>
+    </Stagger>
   );
 }

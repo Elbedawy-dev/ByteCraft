@@ -6,51 +6,9 @@ import { ROUTES } from '@/config/routes';
 import { getApiErrorMessage } from '@/api/client';
 import { formatNumber } from '@/lib/format';
 import { Button, Pagination, Skeleton, Spinner } from '@/components/ui';
+import { Stagger, StaggerItem } from '@/components/ui/Motion';
 import { EmptyState, ErrorState, ProjectCard } from '@/components/shared';
 
-function ProjectCardSkeleton() {
-  return (
-    <div
-      aria-hidden="true"
-      className="flex flex-col h-full bg-card rounded-2xl border border-card-border shadow-card overflow-hidden"
-    >
-      <Skeleton className="w-full aspect-video rounded-none" />
-      <div className="p-5 flex flex-col flex-1 justify-between gap-4">
-        <div className="space-y-3">
-          <div className="flex items-start justify-between gap-3">
-            <Skeleton className="h-5 w-3/4 rounded-md" />
-            <Skeleton className="h-4 w-12 rounded-md shrink-0" />
-          </div>
-          <div className="space-y-2">
-            <Skeleton className="h-3.5 w-full rounded" />
-            <Skeleton className="h-3.5 w-4/5 rounded" />
-          </div>
-          <div className="flex flex-wrap gap-1.5 pt-1">
-            <Skeleton className="h-5 w-16 rounded-full" />
-            <Skeleton className="h-5 w-20 rounded-full" />
-            <Skeleton className="h-5 w-14 rounded-full" />
-          </div>
-        </div>
-        <div className="pt-3 border-t border-outline-variant/60 space-y-3">
-          <div className="flex items-center justify-between">
-            <Skeleton className="h-3.5 w-24 rounded" />
-            <Skeleton className="h-6 w-24 rounded-md" />
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            <Skeleton className="h-10 w-full rounded-lg" />
-            <Skeleton className="h-10 w-full rounded-lg" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/**
- * Wraps shared ProjectCard so:
- * 1. `thumbnail` is never an object (avoids `[object Object]` when thumbnailUrl is empty).
- * 2. Every card fills full row height (`h-full`) for uniform card heights across 2-column rows.
- */
 function MarketplaceProjectCard({ project }) {
   const cardProject = {
     ...project,
@@ -99,9 +57,9 @@ export function MarketplaceGrid({
   }
 
   return (
-    <section aria-label={t('results.archBadge')} className="space-y-space-lg">
+    <section aria-label={t('results.archBadge')} className="space-y-6">
       {/* Status & Total Count Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-2 text-on-surface-variant font-label-code text-label-code">
+      <div className="flex flex-wrap items-center justify-between gap-2 text-muted text-xs">
         <div
           role="status"
           aria-live="polite"
@@ -118,23 +76,23 @@ export function MarketplaceGrid({
             {statusLabel}
           </span>
           {isFetching && !isPending && (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface-container-high border border-outline-variant/60 text-primary text-[11px] font-medium">
+            <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-brand-soft text-brand-soft-text text-[11px] font-semibold">
               <Spinner size="sm" />
               <span>{t('results.updating')}</span>
             </span>
           )}
         </div>
 
-        <span className="hidden sm:inline-block text-on-surface-variant">
+        <span className="hidden sm:inline-block text-muted font-mono">
           <bdi dir="ltr">{t('results.archBadge')}</bdi>
         </span>
       </div>
 
-      {/* State 1: Initial Loading Skeleton Grid */}
+      {/* State 1: Loading Skeleton Grid (3 / 2 / 1 columns) */}
       {isPending && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {Array.from({ length: 6 }).map((_, idx) => (
-            <ProjectCardSkeleton key={idx} />
+            <Skeleton.Card key={idx} />
           ))}
         </div>
       )}
@@ -151,7 +109,7 @@ export function MarketplaceGrid({
       {/* State 3: Empty Results */}
       {!isPending && !isError && projects.length === 0 && (
         <EmptyState
-          icon={hasActiveFilters ? 'search_off' : 'inventory_2'}
+          icon={hasActiveFilters ? 'search_off' : 'deployed_code'}
           title={
             hasActiveFilters
               ? t('results.empty.filteredTitle')
@@ -170,7 +128,7 @@ export function MarketplaceGrid({
                 size="md"
                 onClick={onClearFilters}
                 iconLeading={
-                  <span className="material-symbols-outlined text-[18px]">
+                  <span className="material-symbols-rounded text-[18px]" aria-hidden="true">
                     filter_alt_off
                   </span>
                 }
@@ -182,9 +140,9 @@ export function MarketplaceGrid({
                 <Button
                   variant="primary-gradient"
                   size="md"
-                  iconLeading={
-                    <span className="material-symbols-outlined text-[18px]">
-                      add_circle
+                  iconTrailing={
+                    <span className="material-symbols-rounded text-[18px] rtl:-scale-x-100" aria-hidden="true">
+                      arrow_forward
                     </span>
                   }
                 >
@@ -196,24 +154,26 @@ export function MarketplaceGrid({
         />
       )}
 
-      {/* State 4: Results Grid (1 column on mobile, 2 on desktop, equal heights) */}
+      {/* State 4: Results Grid (3 / 2 / 1 columns of ProjectCard) */}
       {!isPending && !isError && projects.length > 0 && (
         <>
-          <div
+          <Stagger
+            key={`${currentPage}-${projects.map((p) => p.id || p._id || p.slug).slice(0, 3).join(',')}`}
+            inView={false}
             className={clsx(
-              'grid grid-cols-1 md:grid-cols-2 gap-space-lg transition-opacity duration-200',
+              'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-opacity duration-300 ease-nexus',
               isPlaceholderData && isFetching && 'opacity-70'
             )}
           >
             {projects.map((project) => (
-              <div key={project.id || project.slug} className="min-w-0 h-full">
+              <StaggerItem key={project.id || project._id || project.slug} className="min-w-0 h-full">
                 <MarketplaceProjectCard project={project} />
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
 
-          {/* Pagination + Footnote */}
-          <div className="pt-space-md flex flex-col items-center justify-center gap-space-md">
+          {/* Pill Pagination + Footnote */}
+          <div className="pt-6 flex flex-col items-center justify-center gap-4">
             {totalPages > 1 && (
               <Pagination
                 page={currentPage}
@@ -222,7 +182,7 @@ export function MarketplaceGrid({
               />
             )}
 
-            <div className="flex items-start sm:items-center justify-center gap-2 text-center text-on-surface-variant font-body-sm text-xs sm:text-body-sm">
+            <div className="flex items-start sm:items-center justify-center gap-2 text-center text-muted text-xs sm:text-sm">
               <span
                 className="w-1.5 h-1.5 rounded-full bg-primary shrink-0 mt-2 sm:mt-0"
                 aria-hidden="true"

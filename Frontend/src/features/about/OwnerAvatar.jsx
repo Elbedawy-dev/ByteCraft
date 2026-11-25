@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
+import { BRAND } from '../../config/brand';
+import { LogoMark } from '../../components/shared/LogoMark';
+import { MotionImage } from '../../components/ui/Motion';
 
 const OWNER_PHOTO_MODULES = import.meta.glob(
   '../../assets/owner-photo.{jpg,jpeg,png,webp}',
@@ -22,9 +25,9 @@ function resolveOwnerPhotoUrl() {
 const resolvedPhotoUrl = resolveOwnerPhotoUrl();
 
 export function OwnerAvatar({
-  initials = 'BC',
-  alt = 'ByteCraft Founder',
-  variant = 'portrait', // 'portrait' | 'circle'
+  initials = 'NX',
+  alt = `${BRAND.name} Founder`,
+  variant = 'portrait',
   className = '',
   imageClassName = '',
   badgeOffset = false,
@@ -32,7 +35,7 @@ export function OwnerAvatar({
   const [imgError, setImgError] = useState(false);
   const showImage = Boolean(resolvedPhotoUrl) && !imgError;
 
-  const displayInitials = String(initials || 'BC')
+  const displayInitials = String(initials || 'NX')
     .trim()
     .slice(0, 3)
     .toUpperCase();
@@ -41,12 +44,12 @@ export function OwnerAvatar({
     return (
       <div
         className={clsx(
-          'relative w-12 h-12 rounded-full overflow-hidden shrink-0 border border-outline-variant/80 bg-surface-container-high shadow-sm',
+          'relative w-12 h-12 rounded-full overflow-hidden shrink-0 border border-card-border bg-brand-soft shadow-sm',
           className
         )}
       >
         {showImage ? (
-          <img
+          <MotionImage
             src={resolvedPhotoUrl}
             alt={alt}
             loading="lazy"
@@ -57,7 +60,7 @@ export function OwnerAvatar({
           <div
             role="img"
             aria-label={alt}
-            className="w-full h-full flex items-center justify-center bg-gradient-to-br from-surface-container-high via-surface-container to-primary/20 text-primary font-code font-bold text-sm tracking-wider select-none"
+            className="w-full h-full flex items-center justify-center bg-brand-soft text-brand-soft-text font-mono font-bold text-sm tracking-wider select-none"
           >
             <bdi dir="ltr">{displayInitials}</bdi>
           </div>
@@ -69,18 +72,18 @@ export function OwnerAvatar({
   return (
     <div
       className={clsx(
-        'relative w-full h-full overflow-hidden bg-surface-container',
+        'relative w-full h-full overflow-hidden bg-section-band',
         className
       )}
     >
       {showImage ? (
-        <img
+        <MotionImage
           src={resolvedPhotoUrl}
           alt={alt}
           loading="lazy"
           onError={() => setImgError(true)}
           className={clsx(
-            'w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105',
+            'w-full h-full object-cover object-top transition-transform duration-300 ease-nexus group-hover:scale-105',
             imageClassName
           )}
         />
@@ -89,13 +92,12 @@ export function OwnerAvatar({
           role="img"
           aria-label={alt}
           className={clsx(
-            'relative w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-surface-container-lowest via-surface-container to-surface-container-high select-none',
+            'relative w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-section-band via-brand-soft/65 to-section-band select-none',
             badgeOffset && 'pb-16'
           )}
         >
-          {/* Subtle architectural dot pattern & radial highlight */}
           <div
-            className="absolute inset-0 opacity-25 pointer-events-none"
+            className="absolute inset-0 opacity-30 pointer-events-none"
             style={{
               backgroundImage:
                 'radial-gradient(rgb(var(--bc-primary) / 0.35) 1px, transparent 1px)',
@@ -103,22 +105,16 @@ export function OwnerAvatar({
             }}
             aria-hidden="true"
           />
-          <div
-            className="absolute inset-0 bg-gradient-to-tr from-primary/10 via-transparent to-secondary/15 pointer-events-none"
-            aria-hidden="true"
-          />
 
-          <div className="relative z-10 flex flex-col items-center gap-3">
-            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-surface border border-primary/35 shadow-card flex items-center justify-center">
-              <span className="font-code text-3xl sm:text-4xl font-extrabold tracking-widest text-primary">
-                <bdi dir="ltr">{displayInitials}</bdi>
-              </span>
+          <div className="relative z-10 flex flex-col items-center gap-3.5">
+            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-card border border-card-border shadow-card flex items-center justify-center">
+              <LogoMark className="w-14 h-14 sm:w-16 sm:h-16" />
             </div>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface border border-card-border text-[11px] font-code text-on-surface-variant">
-              <span className="material-symbols-outlined text-[14px] text-primary" aria-hidden="true">
-                terminal
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-card border border-card-border text-xs font-bold tracking-wider text-on-surface">
+              <span className="material-symbols-rounded icon-gradient text-[16px]" aria-hidden="true">
+                code_blocks
               </span>
-              <bdi dir="ltr">ByteCraft Studio</bdi>
+              <bdi dir="ltr">{BRAND.wordmark}</bdi>
             </span>
           </div>
         </div>

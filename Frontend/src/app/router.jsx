@@ -1,39 +1,59 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useEffect, useRef } from 'react';
 import {
   createBrowserRouter,
   RouterProvider,
   Outlet,
   useLocation,
 } from 'react-router-dom';
+import { m } from 'framer-motion';
 import { PublicLayout } from '../components/layout/PublicLayout';
 import { OwnerLayout } from '../components/layout/OwnerLayout';
 import { ErrorBoundary } from './ErrorBoundary';
 import { Spinner } from '../components/ui/Spinner';
+import { BRAND } from '../config/brand';
+import { MOTION_TRANSITION } from '../lib/motion';
+
+function getLayoutBranch(pathname) {
+  if (pathname === '/owner/login') return 'raw';
+  if (pathname.startsWith('/owner')) return 'owner';
+  return 'public';
+}
 
 /**
- * ScrollToTop helper: scrolls window to top on route change
+ * ScrollToTop helper: scrolls immediately on cross-layout navigation.
+ * Intra-layout transitions scroll smoothly inside AnimatedOutlet.onExitComplete.
  */
 function ScrollToTop() {
   const { pathname } = useLocation();
+  const prevBranchRef = useRef(getLayoutBranch(pathname));
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const nextBranch = getLayoutBranch(pathname);
+    if (nextBranch !== prevBranchRef.current || nextBranch === 'raw') {
+      window.scrollTo(0, 0);
+    }
+    prevBranchRef.current = nextBranch;
   }, [pathname]);
 
   return null;
 }
 
 /**
- * Page Suspense fallback
+ * Page Suspense fallback (fades in subtly over 300ms so fast lazy loads don't flash)
  */
 function PageFallback() {
   return (
-    <div className="flex-1 flex flex-col items-center justify-center p-12 min-h-[50vh]">
+    <m.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={MOTION_TRANSITION}
+      className="flex-1 flex flex-col items-center justify-center p-12 min-h-[50vh]"
+    >
       <Spinner size="lg" className="text-primary mb-3" />
-      <span className="text-xs font-mono text-on-surface-variant animate-pulse">
-        Loading ByteCraft...
+      <span className="text-xs font-medium text-muted animate-pulse">
+        {BRAND.name}
       </span>
-    </div>
+    </m.div>
   );
 }
 

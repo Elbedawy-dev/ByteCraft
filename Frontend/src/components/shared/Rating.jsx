@@ -2,9 +2,9 @@ import React from 'react';
 import clsx from 'clsx';
 
 export function Rating({
-  rating = 0, // e.g. 4.8
-  count, // e.g. 24
-  size = 'sm', // 'sm' | 'md'
+  rating = 0,
+  count,
+  size = 'sm',
   showCount = true,
   className = '',
 }) {
@@ -21,14 +21,7 @@ export function Rating({
       <div className="flex items-center text-star" aria-hidden="true">
         {stars.map((star) => {
           const diff = numericRating - (star - 1);
-          let iconName = 'star';
-          if (diff >= 0.75) {
-            iconName = 'star';
-          } else if (diff >= 0.25) {
-            iconName = 'star_half';
-          } else {
-            iconName = 'star';
-          }
+          const iconName = diff >= 0.75 ? 'star' : diff >= 0.25 ? 'star_half' : 'star';
           const isFilled = diff >= 0.25;
 
           return (
@@ -36,9 +29,9 @@ export function Rating({
               key={star}
               aria-hidden="true"
               className={clsx(
-                'material-symbols-outlined',
+                'material-symbols-rounded',
                 sizeClasses,
-                isFilled ? 'text-star fill-current' : 'text-input-border'
+                isFilled ? 'text-star' : 'text-outline'
               )}
               style={isFilled ? { fontVariationSettings: "'FILL' 1" } : undefined}
             >
@@ -49,13 +42,13 @@ export function Rating({
       </div>
 
       {numericRating > 0 && (
-        <span className="font-mono text-xs sm:text-sm font-semibold text-on-surface ms-0.5">
+        <span className="font-mono text-xs sm:text-sm font-bold text-on-surface ms-0.5">
           {numericRating.toFixed(1)}
         </span>
       )}
 
       {showCount && count !== undefined && count > 0 && (
-        <span className="text-xs text-on-surface-variant font-mono">
+        <span className="text-xs text-muted font-mono">
           ({count})
         </span>
       )}

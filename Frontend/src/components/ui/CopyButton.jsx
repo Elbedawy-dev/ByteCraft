@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
+import { AnimatePresence, m } from 'framer-motion';
+import { MOTION_TRANSITION } from '../../lib/motion';
 import { Button } from './Button';
 
 export function CopyButton({
@@ -37,18 +39,26 @@ export function CopyButton({
       size={size}
       variant={variant}
       onClick={handleCopy}
-      className={clsx('transition-colors', className)}
+      className={clsx('transition-colors duration-300 ease-nexus', copied && 'text-primary', className)}
       title={copied ? copiedLabel : (label || 'Copy to clipboard')}
       aria-label={copied ? copiedLabel : (label || 'Copy to clipboard')}
     >
-      <span
-        className={clsx(
-          'material-symbols-outlined text-[18px] transition-transform',
-          copied && 'text-primary scale-110'
-        )}
-      >
-        {copied ? 'check' : 'content_copy'}
-      </span>
+      <AnimatePresence mode="wait" initial={false}>
+        <m.span
+          key={copied ? 'copied' : 'idle'}
+          initial={{ opacity: 0, scale: 0.75 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.75 }}
+          transition={MOTION_TRANSITION}
+          className={clsx(
+            'material-symbols-rounded text-[18px] block',
+            copied && 'text-primary'
+          )}
+          aria-hidden="true"
+        >
+          {copied ? 'check' : 'content_copy'}
+        </m.span>
+      </AnimatePresence>
       {label && <span className="ms-1.5">{copied ? copiedLabel : label}</span>}
     </Button>
   );

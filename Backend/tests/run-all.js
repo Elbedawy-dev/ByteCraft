@@ -1,9 +1,9 @@
 /**
- * Master Test Suite Runner for ByteCraft Backend
+ * Master Test Suite Runner for Nexus Backend
  * 
  * WHY:
  * 1. Automatically ensures test server (port 5001, DB: bytecraft_test) is up and healthy.
- * 2. Runs all Phase 1-7 test suites sequentially in isolated child processes.
+ * 2. Runs all Phase 1-10 test suites sequentially in isolated child processes.
  * 3. Provides clean execution summaries and ensures proper server cleanup.
  */
 
@@ -22,7 +22,9 @@ const TEST_SUITES = [
   { name: 'Phase 6: Reviews, Inquiries & Aggregations', file: 'phase6.test.js' },
   { name: 'Phase 7: Hardening, Allow-lists & Privacy Protections', file: 'phase7.test.js' },
   { name: 'Phase 8: Public Projects Computed Fields & Extended Inquiries', file: 'phase8.test.js' },
-  { name: 'Phase 9: Vercel Serverless, Cron & Hops Proxy Verification', file: 'vercel-serverless.test.js' },
+  { name: 'Phase 9: User Accounts, Auth, RBAC & Security', file: 'phase9.test.js' },
+  { name: 'Vercel Serverless, Cron & Hops Proxy Verification', file: 'vercel-serverless.test.js' },
+  { name: 'Phase 10: Nexus Brand, seed:brand & Home Real Data Endpoints', file: 'phase10.test.js' },
 ];
 
 async function isServerRunning() {
@@ -66,7 +68,7 @@ function runSuite(file) {
 
 async function main() {
   console.log('====================================================');
-  console.log('🚀 ByteCraft Master Test Runner');
+  console.log('🚀 Nexus Master Test Runner');
   console.log(`📡 Target Test Port: ${PORT} (Database: bytecraft_test)`);
   console.log('====================================================\n');
 

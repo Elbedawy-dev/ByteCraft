@@ -4,6 +4,9 @@ import { api } from './client';
 export const homeKeys = {
   all: ['home'],
   featuredProjects: () => ['home', 'featured-projects'],
+  portfolioProjects: (category = 'all') => ['home', 'portfolio-projects', category || 'all'],
+  publicStats: () => ['home', 'public-stats'],
+  latestReviews: (limit = 3) => ['home', 'latest-reviews', limit],
 };
 
 /**
@@ -78,10 +81,75 @@ export async function fetchFeaturedProjects({ signal } = {}) {
   };
 }
 
+/**
+ * Loads up to 3 portfolio projects filtered by category key (or featured/newest when 'all').
+ */
+export async function fetchPortfolioProjects({ category = 'all', signal } = {}) {
+  if (!category || category === 'all') {
+    return fetchFeaturedProjects({ signal });
+  }
+
+  const response = await api.get('/projects', {
+    params: { category, sort: 'newest', limit: 3 },
+    signal,
+  });
+
+  const list = Array.isArray(response?.data?.projects) ? response.data.projects : [];
+  return {
+    projects: list.map(normalizeProjectForCard),
+    isFallback: false,
+  };
+}
+
+/**
+ * Loads real public stats from GET /api/stats/public.
+ */
+export async function fetchPublicStats({ signal } = {}) {
+  const response = await api.get('/stats/public', { signal });
+  return response?.data || null;
+}
+
+/**
+ * Loads real latest reviews from GET /api/reviews/latest.
+ */
+export async function fetchLatestReviews({ limit = 3, signal } = {}) {
+  const response = await api.get('/reviews/latest', {
+    params: { limit },
+    signal,
+  });
+  return Array.isArray(response?.data?.reviews) ? response.data.reviews : [];
+}
+
 export function useFeaturedProjects(options = {}) {
   return useQuery({
     queryKey: homeKeys.featuredProjects(),
     queryFn: ({ signal }) => fetchFeaturedProjects({ signal }),
+    ...options,
+  });
+}
+
+export function usePortfolioProjects(category = 'all', options = {}) {
+  return useQuery({
+    queryKey: homeKeys.portfolioProjects(category),
+    queryFn: ({ signal }) => fetchPortfolioProjects({ category, signal }),
+    ...options,
+  });
+}
+
+export function usePublicStats(options = {}) {
+  return useQuery({
+    queryKey: homeKeys.publicStats(),
+    queryFn: ({ signal }) => fetchPublicStats({ signal }),
+    retry: 2,
+    ...options,
+  });
+}
+
+export function useLatestReviews(limit = 3, options = {}) {
+  return useQuery({
+    queryKey: homeKeys.latestReviews(limit),
+    queryFn: ({ signal }) => fetchLatestReviews({ limit, signal }),
+    retry: 2,
     ...options,
   });
 }

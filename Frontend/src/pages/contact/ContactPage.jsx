@@ -1,45 +1,52 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLang } from '../../app/providers';
+import { fade, slideFromEnd } from '../../lib/motion';
+import { Reveal } from '../../components/ui/Motion';
+import { HeroCubes, SectionHeader } from '../../components/shared';
 import { ContactSidebar } from '../../features/contact/ContactSidebar';
 import { ContactForm } from '../../features/contact/ContactForm';
 import { ContactValueProps } from '../../features/contact/ContactValueProps';
 
 export default function ContactPage() {
   const { t } = useTranslation('contact');
+  const { dir } = useLang();
 
   return (
-    <div className="relative w-full overflow-hidden py-10 sm:py-14 bc-hero-wash">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-10 sm:space-y-12">
-        {/* Hero Header */}
-        <header className="flex flex-col items-center text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface border border-card-border shadow-card text-primary">
-            <span className="relative flex h-2 w-2" aria-hidden="true">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
-            </span>
-            <span className="font-mono text-xs tracking-wider uppercase">
-              {t('hero.badge')}
-            </span>
-          </div>
+    <div className="relative w-full overflow-x-clip flex-1 flex flex-col">
+      {/* Header Band */}
+      <div className="relative w-full bc-hero-wash py-14 lg:py-20 border-b border-outline-variant overflow-hidden">
+        <Reveal
+          variants={slideFromEnd}
+          custom={dir}
+          aria-hidden="true"
+          className="hidden xl:block pointer-events-none absolute top-10 end-10 w-44 opacity-55 dark:opacity-35"
+        >
+          <HeroCubes className="w-full h-auto rtl:-scale-x-100" />
+        </Reveal>
 
-          <h1 className="text-headline-xl-mobile md:text-headline-xl font-extrabold text-on-surface">
-            {t('hero.titlePrefix')}
-            <span className="text-primary">{t('hero.titleBrand')}</span>
-          </h1>
+        <Reveal variants={fade} className="relative z-10 max-w-container mx-auto px-4 sm:px-6">
+          <SectionHeader
+            align="center"
+            as="h1"
+            badge={t('hero.badge')}
+            title={t('hero.titlePrefix').trim()}
+            accent={t('hero.titleBrand').trim()}
+            subtitle={t('hero.subtitle')}
+          />
+        </Reveal>
+      </div>
 
-          <p className="text-body-md sm:text-body-lg text-on-surface-variant max-w-2xl leading-relaxed">
-            {t('hero.subtitle')}
-          </p>
-        </header>
-
-        {/* Main 12-Column Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      {/* Main 12-Column Grid */}
+      <div className="max-w-container w-full mx-auto px-4 sm:px-6 py-14 lg:py-20 space-y-14">
+        <Reveal className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           <ContactSidebar />
           <ContactForm />
-        </div>
+        </Reveal>
 
-        {/* Bottom 3 Value Propositions */}
-        <ContactValueProps />
+        <Reveal>
+          <ContactValueProps />
+        </Reveal>
       </div>
     </div>
   );

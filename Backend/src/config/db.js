@@ -34,8 +34,8 @@ async function connectDB(options = {}) {
   if (!cached.promise) {
     const opts = {
       autoIndex: env.NODE_ENV !== 'production',
-      serverSelectionTimeoutMS: isTestServer ? 2000 : 5000,
-      connectTimeoutMS: isTestServer ? 2000 : 5000,
+      serverSelectionTimeoutMS: 5000,
+      connectTimeoutMS: 5000,
     };
 
     cached.promise = mongoose

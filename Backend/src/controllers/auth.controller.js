@@ -5,14 +5,10 @@ const { AUTH_COOKIE_NAME } = require('../config/constants');
 
 /**
  * Authentication Controller
- * 
- * WHY:
- * Handles HTTP cookie management, response formats, and delegates business logic
- * (credential checking, token generation, password hashing) to AuthService.
- * If COOKIE_SAMESITE is 'none', forces secure: true so modern browsers do not reject it.
+ *
+ * Manages HTTP-only `bc_session` cookies and delegates auth business logic to AuthService.
  */
 
-// Helper to determine cookie max-age in milliseconds (defaults to 7 days)
 function getCookieMaxAge() {
   const expiresIn = env.JWT_EXPIRES_IN;
   const match = expiresIn.match(/^(\d+)([dhms])$/);
@@ -38,34 +34,52 @@ function resolveCookieSecurity() {
   return env.NODE_ENV === 'production' || env.COOKIE_SAMESITE === 'none';
 }
 
+function setSessionCookie(res, token) {
+  res.cookie(AUTH_COOKIE_NAME, token, {
+    httpOnly: true,
+    secure: resolveCookieSecurity(),
+    sameSite: env.COOKIE_SAMESITE,
+    path: '/',
+    maxAge: getCookieMaxAge(),
+  });
+}
+
+function clearSessionCookie(res) {
+  res.clearCookie(AUTH_COOKIE_NAME, {
+    httpOnly: true,
+    secure: resolveCookieSecurity(),
+    sameSite: env.COOKIE_SAMESITE,
+    path: '/',
+  });
+}
+
+const register = asyncHandler(async (req, res) => {
+  const result = await authService.register(req.body);
+  setSessionCookie(res, result.token);
+
+  res.status(201).json({
+    success: true,
+    data: {
+      user: result.user,
+    },
+  });
+});
+
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const result = await authService.login(email, password);
-
-  // Set the JWT inside an HTTP-only secure cookie
-  res.cookie(AUTH_COOKIE_NAME, result.token, {
-    httpOnly: true, // Prevents JavaScript (XSS) from reading the token
-    secure: resolveCookieSecurity(), // Secure in production or when SameSite=None
-    sameSite: env.COOKIE_SAMESITE, // CSRF protection policy ('lax', 'none', or 'strict')
-    maxAge: getCookieMaxAge(),
-  });
+  setSessionCookie(res, result.token);
 
   res.status(200).json({
     success: true,
     data: {
-      owner: result.owner,
-      token: result.token, // Also provided in data for API testing flexibility
+      user: result.user,
     },
   });
 });
 
 const logout = asyncHandler(async (req, res) => {
-  // Clear the authentication cookie
-  res.clearCookie(AUTH_COOKIE_NAME, {
-    httpOnly: true,
-    secure: resolveCookieSecurity(),
-    sameSite: env.COOKIE_SAMESITE,
-  });
+  clearSessionCookie(res);
 
   res.status(200).json({
     success: true,
@@ -79,19 +93,116 @@ const getMe = asyncHandler(async (req, res) => {
   res.status(200).json({
     success: true,
     data: {
-      owner: {
-        id: req.owner._id,
-        name: req.owner.name,
-        email: req.owner.email,
-        lastLoginAt: req.owner.lastLoginAt,
-      },
+      user: req.user.toSafeObject(),
     },
+  });
+});
+
+const verifyEmail = asyncHandler(async (req, res) => {
+  const result = await authService.verifyEmail(req.body.token);
+
+  res.status(200).json({
+    success: true,
+    data: result,
+  });
+});
+
+const resendVerification = asyncHandler(async (req, res) => {
+  const result = await authService.resendVerification({
+    currentUser: req.user || null,
+    email: req.body?.email || '',
+  });
+
+  res.status(200).json({
+    success: true,
+    data: result,
+  });
+});
+
+const forgotPassword = asyncHandler(async (req, res) => {
+  const result = await authService.forgotPassword(req.body.email);
+
+  res.status(200).json({
+    success: true,
+    data: result,
+  });
+});
+
+const resetPassword = asyncHandler(async (req, res) => {
+  const { token, password } = req.body;
+  const result = await authService.resetPassword(token, password);
+
+  res.status(200).json({
+    success: true,
+    data: result,
   });
 });
 
 const changePassword = asyncHandler(async (req, res) => {
   const { currentPassword, newPassword } = req.body;
-  await authService.changePassword(req.owner._id, currentPassword, newPassword);
+  const result = await authService.changePassword(req.user._id, currentPassword, newPassword);
+
+  // Re-issue cookie with the bumped tokenVersion so current session stays valid while others die
+  setSessionCookie(res, result.token);
+
+  res.status(200).json({
+    success: true,
+    data: {
+      message: 'Password updated successfully',
+    },
+  });
+});
+
+// ==========================================
+// Deprecated `/api/owner/*` Auth Aliases
+// ==========================================
+
+const deprecatedOwnerLogin = asyncHandler(async (req, res) => {
+  res.set('Deprecation', 'true');
+  const { email, password } = req.body;
+  const result = await authService.login(email, password);
+  setSessionCookie(res, result.token);
+
+  res.status(200).json({
+    success: true,
+    data: {
+      user: result.user,
+      owner: result.user,
+      token: result.token,
+    },
+  });
+});
+
+const deprecatedOwnerLogout = asyncHandler(async (req, res) => {
+  res.set('Deprecation', 'true');
+  clearSessionCookie(res);
+
+  res.status(200).json({
+    success: true,
+    data: {
+      message: 'Logged out successfully',
+    },
+  });
+});
+
+const deprecatedOwnerMe = asyncHandler(async (req, res) => {
+  res.set('Deprecation', 'true');
+  const safeUser = req.user.toSafeObject();
+
+  res.status(200).json({
+    success: true,
+    data: {
+      user: safeUser,
+      owner: safeUser,
+    },
+  });
+});
+
+const deprecatedOwnerChangePassword = asyncHandler(async (req, res) => {
+  res.set('Deprecation', 'true');
+  const { currentPassword, newPassword } = req.body;
+  const result = await authService.changePassword(req.user._id, currentPassword, newPassword);
+  setSessionCookie(res, result.token);
 
   res.status(200).json({
     success: true,
@@ -102,8 +213,19 @@ const changePassword = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
+  setSessionCookie,
+  clearSessionCookie,
+  register,
   login,
   logout,
   getMe,
+  verifyEmail,
+  resendVerification,
+  forgotPassword,
+  resetPassword,
   changePassword,
+  deprecatedOwnerLogin,
+  deprecatedOwnerLogout,
+  deprecatedOwnerMe,
+  deprecatedOwnerChangePassword,
 };
