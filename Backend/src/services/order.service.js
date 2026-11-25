@@ -40,9 +40,9 @@ class OrderService {
     return hashToken(token);
   }
   /**
-   * Creates a new Order (Guest Checkout)
+   * Creates a new Order (Guest or Authenticated Checkout)
    */
-  async createOrder(data) {
+  async createOrder(data, { userId = null } = {}) {
     const { projectSlug, packageKey, couponCode, paymentMethod, locale = 'ar', customer } = data;
 
     // 1. Authoritative Pricing Calculation
@@ -142,6 +142,7 @@ class OrderService {
           orderNumber,
           publicToken: publicTokenHash,
           locale,
+          user: userId || null,
           project: pricing.project.id,
           snapshot,
           customer: {
@@ -247,53 +248,42 @@ class OrderService {
   }
 
   /**
-   * Guest Order Status Retrieval
+   * Resolves manual payment instructions while order is pending_payment.
    */
-  async getGuestOrder(orderNumber, token) {
-    if (!token) {
-      throw AppError.unauthorized('Order access token is required.', ERROR_CODES.UNAUTHORIZED);
+  async _resolvePaymentInstructions(order) {
+    if (order.status !== 'pending_payment') return null;
+
+    const settings = await settingsService.getSettings();
+    const rawPm = settings.paymentMethods || {};
+    const pmConfig = rawPm[order.paymentMethod];
+    if (!pmConfig) return null;
+
+    if (order.paymentMethod === 'vodafone_cash') {
+      return {
+        type: 'vodafone_cash',
+        destination: pmConfig.walletNumber,
+        accountName: pmConfig.accountName,
+        instructions: pmConfig.instructions,
+      };
     }
 
-    const order = await Order.findOne({ orderNumber }).select('+publicToken');
-    if (!order) {
-      throw AppError.notFound(`Order "${orderNumber}" not found.`, ERROR_CODES.NOT_FOUND);
+    if (order.paymentMethod === 'instapay') {
+      return {
+        type: 'instapay',
+        destination: pmConfig.ipa,
+        accountName: pmConfig.accountName,
+        instructions: pmConfig.instructions,
+      };
     }
 
-    // SHA-256 hash comparison with constant-time equality check
-    const hashedProvided = hashToken(token);
-    const bufferA = Buffer.from(order.publicToken, 'utf8');
-    const bufferB = Buffer.from(hashedProvided, 'utf8');
+    return null;
+  }
 
-    if (bufferA.length !== bufferB.length || !crypto.timingSafeEqual(bufferA, bufferB)) {
-      throw AppError.unauthorized('Invalid order access token.', ERROR_CODES.UNAUTHORIZED);
-    }
-
-    // Fetch payment instructions if pending payment
-    let paymentInstructions = null;
-    if (order.status === 'pending_payment') {
-      const settings = await settingsService.getSettings();
-      const rawPm = settings.paymentMethods || {};
-      const pmConfig = rawPm[order.paymentMethod];
-      if (pmConfig) {
-        if (order.paymentMethod === 'vodafone_cash') {
-          paymentInstructions = {
-            type: 'vodafone_cash',
-            destination: pmConfig.walletNumber,
-            accountName: pmConfig.accountName,
-            instructions: pmConfig.instructions,
-          };
-        } else if (order.paymentMethod === 'instapay') {
-          paymentInstructions = {
-            type: 'instapay',
-            destination: pmConfig.ipa,
-            accountName: pmConfig.accountName,
-            instructions: pmConfig.instructions,
-          };
-        }
-      }
-    }
-
-    return {
+  /**
+   * Formats safe order detail payload (never exposes publicToken).
+   */
+  _formatCustomerOrderDetail(order, paymentInstructions, { includeCustomer = false } = {}) {
+    const payload = {
       orderNumber: order.orderNumber,
       status: order.status,
       isFreeOrder: order.isFreeOrder,
@@ -317,12 +307,20 @@ class OrderService {
       paymentInstructions,
       createdAt: order.createdAt,
     };
+
+    if (includeCustomer) {
+      payload.customer = order.customer;
+      payload.fawryReference = order.payment?.fawryReference || null;
+      payload.updatedAt = order.updatedAt;
+    }
+
+    return payload;
   }
 
   /**
-   * Guest Payment Proof Submission
+   * Guest Order Status Retrieval
    */
-  async submitPaymentProof(orderNumber, token, { file, reference }) {
+  async getGuestOrder(orderNumber, token) {
     if (!token) {
       throw AppError.unauthorized('Order access token is required.', ERROR_CODES.UNAUTHORIZED);
     }
@@ -332,13 +330,23 @@ class OrderService {
       throw AppError.notFound(`Order "${orderNumber}" not found.`, ERROR_CODES.NOT_FOUND);
     }
 
+    // SHA-256 hash comparison with constant-time equality check
     const hashedProvided = hashToken(token);
     const bufferA = Buffer.from(order.publicToken, 'utf8');
     const bufferB = Buffer.from(hashedProvided, 'utf8');
+
     if (bufferA.length !== bufferB.length || !crypto.timingSafeEqual(bufferA, bufferB)) {
       throw AppError.unauthorized('Invalid order access token.', ERROR_CODES.UNAUTHORIZED);
     }
 
+    const paymentInstructions = await this._resolvePaymentInstructions(order);
+    return this._formatCustomerOrderDetail(order, paymentInstructions, { includeCustomer: false });
+  }
+
+  /**
+   * Shared manual payment proof submission for a verified order document.
+   */
+  async _submitProofForOrder(order, { file, reference }) {
     // State machine check: proof can ONLY be submitted when pending_payment or rejected
     if (!['pending_payment', 'rejected'].includes(order.status)) {
       throw AppError.conflict(
@@ -350,7 +358,7 @@ class OrderService {
     // Must be a manual payment method
     if (!['vodafone_cash', 'instapay'].includes(order.paymentMethod)) {
       throw AppError.badRequest(
-        `Payment proof is only applicable for manual payment methods (Vodafone Cash, InstaPay).`,
+        'Payment proof is only applicable for manual payment methods (Vodafone Cash, InstaPay).',
         ERROR_CODES.VALIDATION_ERROR
       );
     }
@@ -398,6 +406,142 @@ class OrderService {
         reference: order.payment.proof.reference,
         submittedAt: order.payment.proof.submittedAt,
       },
+    };
+  }
+
+  /**
+   * Guest Payment Proof Submission
+   */
+  async submitPaymentProof(orderNumber, token, { file, reference }) {
+    if (!token) {
+      throw AppError.unauthorized('Order access token is required.', ERROR_CODES.UNAUTHORIZED);
+    }
+
+    const order = await Order.findOne({ orderNumber }).select('+publicToken');
+    if (!order) {
+      throw AppError.notFound(`Order "${orderNumber}" not found.`, ERROR_CODES.NOT_FOUND);
+    }
+
+    const hashedProvided = hashToken(token);
+    const bufferA = Buffer.from(order.publicToken, 'utf8');
+    const bufferB = Buffer.from(hashedProvided, 'utf8');
+    if (bufferA.length !== bufferB.length || !crypto.timingSafeEqual(bufferA, bufferB)) {
+      throw AppError.unauthorized('Invalid order access token.', ERROR_CODES.UNAUTHORIZED);
+    }
+
+    return this._submitProofForOrder(order, { file, reference });
+  }
+
+  /**
+   * Authenticated Customer: List own orders (paginated, status filter)
+   */
+  async getAccountOrders(userId, { status, page = 1, limit = 10 } = {}) {
+    const filter = { user: userId };
+    if (status) {
+      filter.status = status;
+    }
+
+    const pageNum = Math.max(1, parseInt(page, 10) || 1);
+    const limitNum = Math.min(50, Math.max(1, parseInt(limit, 10) || 10));
+    const skip = (pageNum - 1) * limitNum;
+
+    const [docs, total] = await Promise.all([
+      Order.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limitNum),
+      Order.countDocuments(filter),
+    ]);
+
+    const orders = docs.map((o) => ({
+      orderNumber: o.orderNumber,
+      status: o.status,
+      isFreeOrder: o.isFreeOrder,
+      pricing: o.pricing,
+      snapshot: o.snapshot,
+      paymentMethod: o.paymentMethod,
+      delivery: {
+        repoAccess: o.delivery?.repoAccess || 'pending',
+        grantedAt: o.delivery?.grantedAt || null,
+      },
+      payment: {
+        proof: o.payment?.proof?.submittedAt
+          ? {
+              submittedAt: o.payment.proof.submittedAt,
+              reference: o.payment.proof.reference,
+            }
+          : null,
+        rejectionReason: o.payment?.rejectionReason || null,
+        paidAt: o.payment?.paidAt || null,
+      },
+      createdAt: o.createdAt,
+      updatedAt: o.updatedAt,
+    }));
+
+    return {
+      orders,
+      meta: {
+        page: pageNum,
+        limit: limitNum,
+        total,
+        totalPages: Math.ceil(total / limitNum) || 1,
+      },
+    };
+  }
+
+  /**
+   * Authenticated Customer: Retrieve single own order without publicToken
+   */
+  async getAccountOrderByNumber(orderNumber, userId) {
+    const order = await Order.findOne({ orderNumber });
+    if (!order) {
+      throw AppError.notFound(`Order "${orderNumber}" not found.`, ERROR_CODES.NOT_FOUND);
+    }
+
+    if (!order.user || String(order.user) !== String(userId)) {
+      throw AppError.forbidden('You do not have access to this order.', ERROR_CODES.FORBIDDEN);
+    }
+
+    const paymentInstructions = await this._resolvePaymentInstructions(order);
+    return this._formatCustomerOrderDetail(order, paymentInstructions, { includeCustomer: true });
+  }
+
+  /**
+   * Authenticated Customer: Upload payment proof for own order without publicToken
+   */
+  async submitAccountPaymentProof(orderNumber, userId, { file, reference }) {
+    const order = await Order.findOne({ orderNumber });
+    if (!order) {
+      throw AppError.notFound(`Order "${orderNumber}" not found.`, ERROR_CODES.NOT_FOUND);
+    }
+
+    if (!order.user || String(order.user) !== String(userId)) {
+      throw AppError.forbidden('You do not have access to this order.', ERROR_CODES.FORBIDDEN);
+    }
+
+    return this._submitProofForOrder(order, { file, reference });
+  }
+
+  /**
+   * Authenticated Customer: Claim unclaimed guest orders matching user's verified email
+   */
+  async claimGuestOrders(user) {
+    if (!user.emailVerified) {
+      throw AppError.forbidden(
+        'Please verify your email address before claiming guest orders.',
+        ERROR_CODES.EMAIL_NOT_VERIFIED
+      );
+    }
+
+    const result = await Order.updateMany(
+      {
+        $or: [{ user: null }, { user: { $exists: false } }],
+        'customer.email': user.email.toLowerCase(),
+      },
+      {
+        $set: { user: user._id },
+      }
+    );
+
+    return {
+      claimedCount: result.modifiedCount || 0,
     };
   }
 

@@ -33,6 +33,12 @@ const orderSchema = new mongoose.Schema(
       enum: ['ar', 'en'],
       default: 'ar',
     },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+      index: true,
+    },
     project: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Project',
@@ -158,6 +164,7 @@ const orderSchema = new mongoose.Schema(
 );
 
 // Composite indexes for Owner dashboard and list filters
+orderSchema.index({ user: 1, createdAt: -1 });
 orderSchema.index({ status: 1, createdAt: -1 });
 orderSchema.index({ paymentMethod: 1, createdAt: -1 });
 orderSchema.index({ 'customer.fullName': 'text', 'customer.email': 'text', orderNumber: 'text' });

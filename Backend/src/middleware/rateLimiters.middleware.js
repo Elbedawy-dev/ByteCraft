@@ -3,18 +3,12 @@ const { ERROR_CODES } = require('../config/constants');
 
 /**
  * Rate Limiting Middleware
- * 
- * WHY:
- * 1. Global Limiter: Prevents DDoS or brute-force scraping against general API routes.
- * 2. Login Limiter: Strictly restricts password guessing attempts against the Owner login
- *    (5 attempts per 15 minutes per IP address).
- * 3. Standard Envelope: If a limit is exceeded, responds with the unified error format
- *    instead of express-rate-limit's default plain text.
- * 4. Real Client IP Extraction: Correctly extracts the client IP address according to Express
- *    `trust proxy` settings, supporting multi-hop proxy chains (e.g. Browser -> Vercel FE -> Vercel BE).
+ *
+ * Uses unified JSON error envelope (`429 TOO_MANY_REQUESTS`) and supports
+ * `X-Test-IP` header strictly on the local test server (non-production, PORT 5001)
+ * so integration test suites can isolate rate-limit buckets cleanly.
  */
 
-// Helper to determine the real client IP
 function getClientIp(req) {
   if (
     process.env.NODE_ENV !== 'production' &&
@@ -30,7 +24,6 @@ function clientIpKeyGenerator(req) {
   return ipKeyGenerator(getClientIp(req));
 }
 
-// Helper to create uniform rate-limit responses
 function createRateLimitHandler(message) {
   return (req, res /* , next, options */) => {
     res.status(429).json({
@@ -55,16 +48,63 @@ const globalLimiter = rateLimit({
   handler: createRateLimitHandler('Too many requests from this IP, please try again after 15 minutes.'),
 });
 
-// Strict limiter for Owner Login (15 minutes, 5 attempts per IP)
+// Login limiter (15 minutes, 10 failed attempts per IP)
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  limit: 5,
+  limit: 10,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
-  skipSuccessfulRequests: true, // Only failed/repeated attempts count towards lockout
+  skipSuccessfulRequests: true,
   keyGenerator: clientIpKeyGenerator,
   validate: { trustProxy: false },
   handler: createRateLimitHandler('Too many login attempts. Please try again after 15 minutes.'),
+});
+
+// Registration limiter (1 hour, 5 registrations per IP)
+const registerLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 5,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  keyGenerator: clientIpKeyGenerator,
+  validate: { trustProxy: false },
+  handler: createRateLimitHandler('Too many registration attempts from this IP. Please try again after an hour.'),
+});
+
+// Forgot-password IP limiter (1 hour, 3 requests per IP)
+const forgotPasswordIpLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 3,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  keyGenerator: clientIpKeyGenerator,
+  validate: { trustProxy: false },
+  handler: createRateLimitHandler('Too many password reset requests from this IP. Please try again after an hour.'),
+});
+
+// Forgot-password per-email limiter (1 hour, 3 requests per normalized email)
+const forgotPasswordEmailLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 3,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  keyGenerator: (req) => {
+    const email = req.body && typeof req.body.email === 'string' ? req.body.email.trim().toLowerCase() : '';
+    return email ? `email:${email}` : clientIpKeyGenerator(req);
+  },
+  validate: { trustProxy: false, keyGeneratorIpFallback: false },
+  handler: createRateLimitHandler('Too many password reset requests for this email. Please try again after an hour.'),
+});
+
+// Resend-verification limiter (1 hour, 3 requests per IP)
+const resendVerificationLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 3,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  keyGenerator: clientIpKeyGenerator,
+  validate: { trustProxy: false },
+  handler: createRateLimitHandler('Too many verification email requests. Please try again after an hour.'),
 });
 
 // Rate limiter for Project preview view increments (15 minutes, 60 requests per IP)
@@ -78,7 +118,7 @@ const previewViewLimiter = rateLimit({
   handler: createRateLimitHandler('Too many preview view requests from this IP.'),
 });
 
-// Strict limiter for public coupon validation to prevent code guessing / brute-forcing (15 minutes, 30 requests per IP)
+// Strict limiter for public coupon validation (15 minutes, 30 requests per IP)
 const couponValidateLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 30,
@@ -139,7 +179,7 @@ const tokenGuessLimiter = rateLimit({
   limit: 20,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
-  skipSuccessfulRequests: true, // Legitimate requests with valid tokens do not count towards lockout
+  skipSuccessfulRequests: true,
   keyGenerator: clientIpKeyGenerator,
   validate: { trustProxy: false },
   handler: createRateLimitHandler('Too many access attempts. Please try again after 15 minutes.'),
@@ -148,6 +188,10 @@ const tokenGuessLimiter = rateLimit({
 module.exports = {
   globalLimiter,
   loginLimiter,
+  registerLimiter,
+  forgotPasswordIpLimiter,
+  forgotPasswordEmailLimiter,
+  resendVerificationLimiter,
   previewViewLimiter,
   couponValidateLimiter,
   orderCreateLimiter,

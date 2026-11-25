@@ -31,6 +31,16 @@ const cleanup = {
 async function runTests() {
   console.log('🧪 Starting Phase 6 & System Review Verification Tests on PORT 5001 (DB: bytecraft_test)...\n');
 
+  const SUITE_IP = `10.60.${Math.floor(Math.random() * 200) + 1}.66`;
+  const nativeFetch = globalThis.fetch;
+  const fetch = (url, options = {}) => {
+    const headers = { ...(options.headers || {}) };
+    if (!headers['x-test-ip'] && !headers['X-Test-IP']) {
+      headers['x-test-ip'] = SUITE_IP;
+    }
+    return nativeFetch(url, { ...options, headers });
+  };
+
   let cookieHeader = '';
   let testProjectSlug = '';
   let testProjectId = '';
@@ -55,19 +65,22 @@ async function runTests() {
     const InquiryModel = require('../src/models/Inquiry');
     const ReviewModel = require('../src/models/Review');
     const CategoryModel = require('../src/models/Category');
-    const OwnerModel = require('../src/models/Owner');
+    const UserModel = require('../src/models/User');
     const SettingsModel = require('../src/models/Settings');
 
-    // Ensure Owner exists in test DB
-    let testOwner = await OwnerModel.findOne({ key: 'owner' });
-    if (!testOwner) {
+    // Ensure admin User exists in test DB
+    let testAdmin = await UserModel.findOne({ email: OWNER_EMAIL.toLowerCase() });
+    if (!testAdmin) {
       const salt = await bcrypt.genSalt(12);
       const passwordHash = await bcrypt.hash(OWNER_PASSWORD, salt);
-      await OwnerModel.create({
-        key: 'owner',
+      await UserModel.create({
         name: 'ByteCraft Owner',
         email: OWNER_EMAIL.toLowerCase(),
         passwordHash,
+        role: 'admin',
+        status: 'active',
+        emailVerified: true,
+        emailVerifiedAt: new Date(),
       });
     }
 
@@ -105,8 +118,8 @@ async function runTests() {
     // 1. Owner Authentication & Setup
     // ==========================================
 
-    await test('Owner logs into test server to obtain authentication cookie', async () => {
-      const res = await fetch(`${BASE_URL}/owner/login`, {
+    await test('Admin logs into test server to obtain authentication cookie', async () => {
+      const res = await fetch(`${BASE_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -117,7 +130,7 @@ async function runTests() {
 
       assert(res.status === 200, `Login failed with status ${res.status}`);
       const rawCookie = res.headers.get('set-cookie');
-      assert(rawCookie, 'No set-cookie header returned');
+      assert(rawCookie && rawCookie.includes('bc_session='), 'No bc_session set-cookie header returned');
       cookieHeader = rawCookie.split(';')[0];
     });
 

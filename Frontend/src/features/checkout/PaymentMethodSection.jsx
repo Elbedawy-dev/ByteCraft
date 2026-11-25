@@ -61,23 +61,23 @@ export function PaymentMethodSection({
   return (
     <section
       aria-labelledby="checkout-payment-heading"
-      className="bg-card border border-card-border rounded-xl p-5 sm:p-6 shadow-card"
+      className="bg-card border border-card-border rounded-2xl p-6 sm:p-7 shadow-card"
     >
       <div className="flex flex-wrap items-start justify-between gap-3 mb-6">
-        <div className="flex items-start gap-3 min-w-0">
-          <div className="w-9 h-9 rounded-lg bg-badge-green-bg border border-primary/20 flex items-center justify-center text-primary shrink-0 mt-0.5">
-            <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
+        <div className="flex items-start gap-3.5 min-w-0">
+          <div className="w-12 h-12 rounded-lg bg-brand-soft flex items-center justify-center shrink-0">
+            <span className="material-symbols-rounded icon-gradient text-[24px]" aria-hidden="true">
               account_balance_wallet
             </span>
           </div>
           <div className="min-w-0">
             <h2
               id="checkout-payment-heading"
-              className="font-headline-md text-lg sm:text-xl text-on-surface font-bold"
+              className="text-lg sm:text-xl text-on-surface font-bold"
             >
               {t('payment.title')}
             </h2>
-            <p className="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+            <p className="text-xs sm:text-sm text-muted mt-0.5">
               {t('payment.subtitle')}
             </p>
           </div>
@@ -221,18 +221,18 @@ export function PaymentMethodSection({
       )}
 
       {/* Delivery & Support Explanation Block */}
-      <div className="mt-5 p-4 rounded-xl bg-surface border border-card-border flex items-start gap-3">
+      <div className="mt-5 p-4 rounded-xl bg-section-band border border-card-border flex items-start gap-3">
         <span
-          className="material-symbols-outlined text-primary text-[22px] shrink-0 mt-0.5"
+          className="material-symbols-rounded icon-gradient text-[22px] shrink-0 mt-0.5"
           aria-hidden="true"
         >
-          terminal
+          deployed_code
         </span>
         <div className="flex flex-col gap-1 min-w-0">
-          <span className="font-semibold text-xs sm:text-sm text-on-surface">
+          <span className="font-bold text-xs sm:text-sm text-on-surface">
             {t('delivery.title')}
           </span>
-          <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+          <p className="text-xs sm:text-sm text-muted leading-relaxed">
             {t('delivery.description', {
               provider: providerLabel,
               supportDays,

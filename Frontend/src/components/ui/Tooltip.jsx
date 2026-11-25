@@ -4,7 +4,7 @@ import clsx from 'clsx';
 export function Tooltip({
   children,
   content,
-  position = 'top', // 'top' | 'bottom' | 'start' | 'end'
+  position = 'top',
   className = '',
 }) {
   const [isVisible, setIsVisible] = useState(false);
@@ -41,7 +41,7 @@ export function Tooltip({
         <div
           role="tooltip"
           className={clsx(
-            'absolute z-50 px-2.5 py-1 text-xs font-medium text-on-surface bg-surface border border-outline-variant rounded-md shadow-card-hover whitespace-nowrap pointer-events-none animate-in fade-in zoom-in-95 duration-100',
+            'absolute z-50 px-3 py-1.5 text-xs font-semibold text-white bg-navy border border-navy-border rounded-lg shadow-card-hover whitespace-nowrap pointer-events-none',
             positionStyles,
             className
           )}

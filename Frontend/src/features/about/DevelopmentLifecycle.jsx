@@ -1,21 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import clsx from 'clsx';
-import { Button } from '@/components/ui/Button';
 import { ROUTES } from '@/config/routes';
-
-const STEP_BADGE_STYLES = {
-  primary: 'bc-chip-mint',
-  secondary: 'bc-chip-sky',
-  tertiary: 'bc-chip-violet',
-};
-
-const STEP_TEXT_COLORS = {
-  primary: 'text-chip-mint-fg',
-  secondary: 'text-chip-sky-fg',
-  tertiary: 'text-chip-violet-fg',
-};
+import { CtaBanner, SectionHeader } from '@/components/shared';
+import { Reveal, Stagger, StaggerItem } from '@/components/ui/Motion';
 
 export function DevelopmentLifecycle() {
   const { t } = useTranslation('about');
@@ -23,124 +10,94 @@ export function DevelopmentLifecycle() {
   const steps = Array.isArray(rawSteps) ? rawSteps : [];
 
   return (
-    <section className="w-full bg-section-band border-t border-outline-variant py-12 sm:py-16 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-badge-green-bg border border-primary/25 text-badge-green-text font-code text-label-code mb-3">
-            <span className="material-symbols-outlined text-[16px]" aria-hidden="true">
-              cycle
-            </span>
-            <span>{t('lifecycle.eyebrow')}</span>
-          </span>
+    <>
+      <section className="w-full bg-section-band border-t border-outline-variant py-16 lg:py-24 relative overflow-hidden">
+        <div className="max-w-container mx-auto px-4 sm:px-6 relative z-10">
+          <Reveal className="mb-12">
+            <SectionHeader
+              align="center"
+              badge={t('lifecycle.eyebrow')}
+              title={t('lifecycle.title')}
+              subtitle={t('lifecycle.subtitle')}
+            />
+          </Reveal>
 
-          <h2 className="text-headline-xl-mobile sm:text-headline-xl font-bold text-on-surface">
-            {t('lifecycle.title')}
-          </h2>
+          {/* 4-Step Timeline: Vertical on Mobile, Horizontal on Desktop */}
+          <div className="relative">
+            {/* Desktop horizontal connector line */}
+            <div
+              aria-hidden="true"
+              className="hidden lg:block absolute top-6 inset-x-16 h-[2px] bg-primary-gradient opacity-35"
+            />
 
-          <p className="text-body-md text-on-surface-variant mt-2 leading-relaxed">
-            {t('lifecycle.subtitle')}
-          </p>
-        </div>
+            {/* Mobile vertical connector line */}
+            <div
+              aria-hidden="true"
+              className="lg:hidden absolute top-6 bottom-6 start-6 w-[2px] bg-primary-gradient opacity-35"
+            />
 
-        {/* 4 Milestone Process Cards Grid */}
-        <ol className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 list-none p-0 m-0">
-          {steps.map((step) => (
-            <li
-              key={step.number}
-              className="bg-card border border-card-border rounded-xl p-6 shadow-card flex flex-col justify-between transition-all duration-200 hover:bg-card-hover hover:border-card-hover-border hover:shadow-card-hover hover:-translate-y-0.5"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-5">
-                  <span
-                    className={clsx(
-                      'w-10 h-10 rounded-lg border flex items-center justify-center font-code text-headline-md font-bold',
-                      STEP_BADGE_STYLES[step.accent] || STEP_BADGE_STYLES.primary
-                    )}
-                  >
-                    <bdi dir="ltr">{step.number}</bdi>
-                  </span>
-                  <span
-                    className={clsx(
-                      'material-symbols-outlined text-[28px]',
-                      STEP_TEXT_COLORS[step.accent] || STEP_TEXT_COLORS.primary
-                    )}
-                    aria-hidden="true"
-                  >
-                    {step.icon}
-                  </span>
-                </div>
-
-                <h3 className="text-headline-md font-bold text-on-surface mb-2 leading-snug">
-                  {step.title}
-                </h3>
-
-                <p className="text-body-sm text-on-surface-variant leading-relaxed">
-                  {step.description}
-                </p>
-              </div>
-
-              <div className="mt-5 pt-4 border-t border-card-border">
-                <span
-                  className={clsx(
-                    'font-code text-label-code font-semibold flex items-center gap-1.5',
-                    STEP_TEXT_COLORS[step.accent] || STEP_TEXT_COLORS.primary
-                  )}
+            <Stagger as="ol" className="grid grid-cols-1 lg:grid-cols-4 gap-6 list-none p-0 m-0">
+              {steps.map((step) => (
+                <StaggerItem
+                  as="li"
+                  key={step.number}
+                  className="relative ps-16 lg:ps-0 flex flex-col lg:items-center"
                 >
-                  <span className="material-symbols-outlined text-[16px] shrink-0" aria-hidden="true">
-                    check_circle
-                  </span>
-                  <span>{step.deliverable}</span>
-                </span>
-              </div>
-            </li>
-          ))}
-        </ol>
+                  {/* Numbered Gradient Circle */}
+                  <div className="absolute start-0 top-0 lg:static lg:mb-6 w-12 h-12 rounded-full btn-primary-gradient text-white font-mono font-extrabold text-base flex items-center justify-center ring-4 ring-section-band z-10 shrink-0">
+                    <bdi dir="ltr">{step.number}</bdi>
+                  </div>
 
-        {/* Action Banner */}
-        <div className="mt-10 sm:mt-12 p-6 sm:p-8 rounded-2xl bg-card border border-card-border shadow-card flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="space-y-1.5 text-center md:text-start">
-            <h2 className="text-headline-md font-bold text-on-surface">
-              {t('cta.title')}
-            </h2>
-            <p className="text-body-sm sm:text-body-md text-on-surface-variant">
-              {t('cta.subtitle')}
-            </p>
-          </div>
+                  {/* Step Card */}
+                  <div className="w-full flex-1 bg-card border border-card-border rounded-xl p-6 shadow-card flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between gap-2 mb-3">
+                        <h3 className="text-lg font-bold text-on-surface leading-snug">
+                          {step.title}
+                        </h3>
+                        <span
+                          className="material-symbols-rounded icon-gradient text-[24px] shrink-0"
+                          aria-hidden="true"
+                        >
+                          {step.icon}
+                        </span>
+                      </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-3 w-full md:w-auto shrink-0">
-            <Link to={ROUTES.CONTACT} className="w-full sm:w-auto">
-              <Button
-                variant="primary-gradient"
-                size="md"
-                className="w-full sm:w-auto"
-                iconTrailing={
-                  <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
-                    bolt
-                  </span>
-                }
-              >
-                {t('cta.primaryAction')}
-              </Button>
-            </Link>
+                      <p className="text-sm text-muted leading-relaxed">
+                        {step.description}
+                      </p>
+                    </div>
 
-            <Link to={ROUTES.PROJECTS} className="w-full sm:w-auto">
-              <Button
-                variant="secondary"
-                size="md"
-                className="w-full sm:w-auto"
-                iconTrailing={
-                  <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
-                    inventory_2
-                  </span>
-                }
-              >
-                {t('cta.secondaryAction')}
-              </Button>
-            </Link>
+                    <div className="mt-5 pt-4 border-t border-outline-variant">
+                      <span className="text-xs font-semibold text-primary flex items-center gap-1.5">
+                        <span className="material-symbols-rounded icon-gradient text-[16px] shrink-0" aria-hidden="true">
+                          check_circle
+                        </span>
+                        <span>{step.deliverable}</span>
+                      </span>
+                    </div>
+                  </div>
+                </StaggerItem>
+              ))}
+            </Stagger>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Closing CTA Band */}
+      <CtaBanner
+        title={t('cta.title')}
+        description={t('cta.subtitle')}
+        primaryAction={{
+          label: t('cta.primaryAction'),
+          to: ROUTES.CONTACT,
+          icon: 'arrow_forward',
+        }}
+        secondaryAction={{
+          label: t('cta.secondaryAction'),
+          to: ROUTES.PROJECTS,
+        }}
+      />
+    </>
   );
 }

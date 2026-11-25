@@ -54,7 +54,7 @@ app.use('/api', globalLimiter);
 app.use(express.json({ limit: '100kb' }));
 app.use(express.urlencoded({ extended: true, limit: '100kb' }));
 
-// 6. Cookie Parser for reading the `bc_owner` HTTP-only auth token
+// 6. Cookie Parser for reading the `bc_session` HTTP-only auth token
 app.use(cookieParser());
 
 // 7. HTTP Request Logger

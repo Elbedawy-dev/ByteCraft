@@ -2,14 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
+import { fadeUp } from '../../lib/motion';
 import { Card, Button } from '../../components/ui';
+import { Stagger, StaggerItem } from '../../components/ui/Motion';
 import { projectDetailsPath, ROUTES } from '../../config/routes';
 
 const TIMELINE_STEPS = [
   { key: 'pending_payment', icon: 'payments' },
   { key: 'awaiting_review', icon: 'fact_check' },
   { key: 'paid', icon: 'verified' },
-  { key: 'delivered', icon: 'rocket_launch' },
+  { key: 'delivered', icon: 'deployed_code' },
 ];
 
 function getStepIndex(status) {
@@ -17,7 +19,7 @@ function getStepIndex(status) {
   if (status === 'awaiting_review') return 1;
   if (status === 'paid') return 2;
   if (status === 'delivered') return 3;
-  if (status === 'rejected') return 1; // Stuck at review step
+  if (status === 'rejected') return 1;
   return -1;
 }
 
@@ -29,10 +31,17 @@ export function OrderStatusTimeline({ order }) {
     status
   );
 
+  const progressPercent =
+    status === 'delivered'
+      ? 100
+      : activeStepIndex <= 0
+        ? 12
+        : Math.min(100, Math.round((activeStepIndex / (TIMELINE_STEPS.length - 1)) * 100));
+
   const variantTone = {
     rejected: {
       wrapper: 'bg-error/10 border-error/30',
-      iconBg: 'bg-error/15 text-error',
+      iconBg: 'bg-chip-danger-bg text-chip-danger-fg',
       icon: 'report',
     },
     expired: {
@@ -42,22 +51,22 @@ export function OrderStatusTimeline({ order }) {
     },
     cancelled: {
       wrapper: 'bg-error/10 border-error/30',
-      iconBg: 'bg-error/15 text-error',
+      iconBg: 'bg-chip-danger-bg text-chip-danger-fg',
       icon: 'cancel',
     },
     refunded: {
-      wrapper: 'bg-surface-container-high border-outline-variant',
-      iconBg: 'bg-surface-container text-on-surface-variant',
+      wrapper: 'bg-section-band border-outline-variant',
+      iconBg: 'bg-brand-soft text-brand-soft-text',
       icon: 'currency_exchange',
     },
   }[status];
 
   return (
-    <Card variant="flat" padding="md" className="space-y-6">
+    <Card variant="panel" padding="md" className="space-y-6">
       <div className="flex items-center justify-between gap-3 flex-wrap">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-lg bg-surface-container-high border border-outline-variant/70 flex items-center justify-center text-primary">
-            <span className="material-symbols-outlined text-[20px]">timeline</span>
+        <div className="flex items-center gap-3">
+          <div className="w-11 h-11 rounded-lg bg-brand-soft flex items-center justify-center shrink-0">
+            <span className="material-symbols-rounded icon-gradient text-[22px]" aria-hidden="true">timeline</span>
           </div>
           <h2 className="text-lg font-bold text-on-surface">
             {t('tracking.timeline.title')}
@@ -65,13 +74,26 @@ export function OrderStatusTimeline({ order }) {
         </div>
 
         {order?.isFreeOrder && (
-          <span className="text-xs font-medium text-primary bg-primary/10 border border-primary/25 px-3 py-1 rounded-full">
+          <span className="text-xs font-semibold text-brand-soft-text bg-brand-soft px-3 py-1 rounded-full">
             {t('tracking.timeline.freeOrderNote')}
           </span>
         )}
       </div>
 
-      {/* Special Variant Banner (rejected / expired / cancelled / refunded) */}
+      {/* Gradient Progress Bar */}
+      <div className="w-full h-2 rounded-full bg-section-band overflow-hidden border border-outline-variant/60" aria-hidden="true">
+        <div
+          className={clsx(
+            'h-full rounded-full transition-[width] duration-300 ease-nexus',
+            status === 'rejected' || status === 'cancelled'
+              ? 'bg-error'
+              : 'bg-primary-gradient'
+          )}
+          style={{ width: `${progressPercent}%` }}
+        />
+      </div>
+
+      {/* Special Variant Banner */}
       {isVariantStatus && variantTone && (
         <div
           role={status === 'rejected' || status === 'cancelled' ? 'alert' : 'status'}
@@ -82,11 +104,11 @@ export function OrderStatusTimeline({ order }) {
         >
           <div
             className={clsx(
-              'w-10 h-10 rounded-xl flex items-center justify-center shrink-0',
+              'w-10 h-10 rounded-lg flex items-center justify-center shrink-0',
               variantTone.iconBg
             )}
           >
-            <span className="material-symbols-outlined text-[22px]">
+            <span className="material-symbols-rounded text-[22px]" aria-hidden="true">
               {variantTone.icon}
             </span>
           </div>
@@ -100,7 +122,7 @@ export function OrderStatusTimeline({ order }) {
             </p>
 
             {status === 'rejected' && order?.payment?.rejectionReason && (
-              <div className="p-3 rounded-lg bg-surface-container border border-error/30 text-xs sm:text-sm">
+              <div className="p-3 rounded-lg bg-card border border-error/30 text-xs sm:text-sm">
                 <span className="font-semibold text-error">
                   {t('tracking.timeline.variants.rejected.reasonLabel')}{' '}
                 </span>
@@ -130,7 +152,7 @@ export function OrderStatusTimeline({ order }) {
       )}
 
       {/* 4-Step Linear Progress */}
-      <ol className="grid grid-cols-1 sm:grid-cols-4 gap-3 sm:gap-4">
+      <Stagger as="ol" inView={false} className="grid grid-cols-1 sm:grid-cols-4 gap-3.5">
         {TIMELINE_STEPS.map((step, index) => {
           const isCompleted =
             status === 'delivered' ||
@@ -142,33 +164,33 @@ export function OrderStatusTimeline({ order }) {
           const isRejectedStep = status === 'rejected' && index === 1;
 
           return (
-            <li
+            <StaggerItem
+              as="li"
+              variants={fadeUp}
               key={step.key}
               className={clsx(
-                'relative p-4 rounded-xl border transition-colors flex flex-col gap-2.5',
+                'relative p-4 rounded-xl border transition-colors duration-300 ease-nexus flex flex-col gap-2.5',
                 isRejectedStep
                   ? 'bg-error/5 border-error/40'
                   : isCompleted
-                    ? 'bg-badge-green-bg/60 border-primary/35'
+                    ? 'bg-brand-soft/45 border-primary/35'
                     : isCurrent
-                      ? 'bg-surface border-primary shadow-sm'
-                      : 'bg-surface/70 border-card-border opacity-80'
+                      ? 'bg-card border-primary ring-2 ring-primary/20 shadow-sm'
+                      : 'bg-section-band/70 border-card-border opacity-80'
               )}
             >
               <div className="flex items-center justify-between gap-2">
                 <div
                   className={clsx(
-                    'w-9 h-9 rounded-lg flex items-center justify-center shrink-0',
+                    'w-9 h-9 rounded-full flex items-center justify-center shrink-0',
                     isRejectedStep
-                      ? 'bg-error/15 text-error'
-                      : isCompleted
-                        ? 'bg-primary text-on-primary'
-                        : isCurrent
-                          ? 'bg-primary/15 text-primary border border-primary/30'
-                          : 'bg-surface-container-high text-on-surface-variant'
+                      ? 'bg-chip-danger-bg text-chip-danger-fg'
+                      : isCompleted || isCurrent
+                        ? 'btn-primary-gradient text-white'
+                        : 'bg-card border border-outline-variant text-muted'
                   )}
                 >
-                  <span className="material-symbols-outlined text-[20px]">
+                  <span className="material-symbols-rounded text-[18px]" aria-hidden="true">
                     {isRejectedStep
                       ? 'close'
                       : isCompleted
@@ -177,7 +199,7 @@ export function OrderStatusTimeline({ order }) {
                   </span>
                 </div>
 
-                <span className="font-mono text-[11px] font-semibold text-on-surface-variant">
+                <span className="font-mono text-[11px] font-bold text-muted">
                   0{index + 1}
                 </span>
               </div>
@@ -186,14 +208,14 @@ export function OrderStatusTimeline({ order }) {
                 <h3 className="text-xs sm:text-sm font-bold text-on-surface">
                   {t(`tracking.timeline.steps.${step.key}.title`)}
                 </h3>
-                <p className="text-xs text-on-surface-variant leading-relaxed">
+                <p className="text-xs text-muted leading-relaxed">
                   {t(`tracking.timeline.steps.${step.key}.description`)}
                 </p>
               </div>
-            </li>
+            </StaggerItem>
           );
         })}
-      </ol>
+      </Stagger>
     </Card>
   );
 }

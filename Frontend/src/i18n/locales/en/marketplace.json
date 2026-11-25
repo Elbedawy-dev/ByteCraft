@@ -31,7 +31,7 @@
     "priceRangeError": "Minimum price must be less than or equal to maximum price.",
     "featuredLabel": "Featured projects only",
     "featuredShort": "Featured only",
-    "featuredDescription": "Show curated flagship platforms selected by ByteCraft",
+    "featuredDescription": "Show curated flagship platforms selected by Nexus",
     "openFilters": "Filters",
     "drawerTitle": "Filter & Sort Projects",
     "applyFilters": "Apply filters",
@@ -95,7 +95,7 @@
   "cta": {
     "eyebrow": "BESPOKE_ENGINEERING // CUSTOM BUILD",
     "title": "Didn't find the exact project for your needs?",
-    "description": "No problem at all. ByteCraft's engineering team can design and build your digital platform from scratch—100% aligned with your business model and ready to scale.",
+    "description": "No problem at all. Nexus's engineering team can design and build your digital platform from scratch—100% aligned with your business model and ready to scale.",
     "primaryAction": "Request a Custom Build",
     "secondaryAction": "View Development Plans"
   }

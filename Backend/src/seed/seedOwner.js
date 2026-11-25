@@ -1,68 +1,96 @@
 const mongoose = require('mongoose');
+const {
+  applyTestDatabaseEnvIfFlagged,
+  assertTestDatabaseIfFlagged,
+} = require('../utils/testDb');
+
+const isTestMode = applyTestDatabaseEnvIfFlagged();
+
 const { connectDB, disconnectDB } = require('../config/db');
 const env = require('../config/env');
-const Owner = require('../models/Owner');
+const User = require('../models/User');
+const { ROLES, USER_STATUSES } = require('../config/constants');
 
 /**
- * Seed Owner Script (`npm run seed:owner`)
- * 
- * WHY:
- * As specified in the architecture, there is NO public registration endpoint.
- * The single Owner is created strictly from environment variables.
- * 
- * Rules:
- * 1. Refuses to create a second Owner.
- * 2. If the Owner already exists, does nothing unless the `--reset-password` CLI flag is passed.
+ * Seed Admin / Owner Script (`npm run seed:owner`)
+ *
+ * Creates or updates the initial admin User from environment variables
+ * (`OWNER_NAME`, `OWNER_EMAIL`, `OWNER_PASSWORD`).
+ *
+ * Flags:
+ * - `--reset-password` : Overwrites password, name, and bumps tokenVersion if user exists.
+ * - `--test`           : Force targeting `bytecraft_test` only.
  */
 
-async function seedOwner() {
-  console.log('🌱 Starting Owner Seed Script...\n');
+async function seedOwner({ manageConnection = true } = {}) {
+  console.log('🌱 Starting Admin User Seed Script...\n');
 
-  // Verify that required seed credentials exist in .env
   if (!env.OWNER_EMAIL || !env.OWNER_PASSWORD) {
-    console.error('❌ Error: OWNER_EMAIL and OWNER_PASSWORD must be configured in .env to seed the owner.');
+    console.error('❌ Error: OWNER_EMAIL and OWNER_PASSWORD must be configured in .env to seed the admin.');
     process.exit(1);
   }
 
-  await connectDB();
+  if (manageConnection) {
+    await connectDB({ exitOnError: false });
+    assertTestDatabaseIfFlagged(isTestMode);
+  }
 
   try {
-    const existingOwner = await Owner.findOne({ key: 'owner' }).select('+passwordHash');
+    const dbName = mongoose.connection.name;
+    console.log(`📡 Connected Database: "${dbName}"`);
+
+    const targetEmail = env.OWNER_EMAIL.trim().toLowerCase();
+    const existingAdmin = await User.findOne({ email: targetEmail }).select('+passwordHash');
     const isResetFlag = process.argv.includes('--reset-password');
 
-    if (existingOwner) {
+    if (existingAdmin) {
       if (isResetFlag) {
-        console.log(`🔄 Updating existing Owner password from .env for: ${existingOwner.email}`);
-        existingOwner.passwordHash = await Owner.hashPassword(env.OWNER_PASSWORD);
-        if (env.OWNER_NAME) existingOwner.name = env.OWNER_NAME;
-        if (env.OWNER_EMAIL) existingOwner.email = env.OWNER_EMAIL.toLowerCase();
-        await existingOwner.save();
-        console.log('✅ Owner credentials successfully updated.');
+        console.log(`🔄 Updating existing admin User credentials from .env for: ${existingAdmin.email}`);
+        existingAdmin.passwordHash = await User.hashPassword(env.OWNER_PASSWORD);
+        if (env.OWNER_NAME) existingAdmin.name = env.OWNER_NAME;
+        existingAdmin.role = ROLES.ADMIN;
+        existingAdmin.status = USER_STATUSES.ACTIVE;
+        existingAdmin.emailVerified = true;
+        existingAdmin.emailVerifiedAt = existingAdmin.emailVerifiedAt || new Date();
+        existingAdmin.failedLoginCount = 0;
+        existingAdmin.lockUntil = null;
+        existingAdmin.tokenVersion = (existingAdmin.tokenVersion || 0) + 1;
+        await existingAdmin.save();
+        console.log('✅ Admin User credentials successfully updated.');
       } else {
-        console.log(`ℹ️ Owner already exists: [${existingOwner.email}] (Name: ${existingOwner.name}).`);
-        console.log('   Refusing to create a duplicate owner document.');
+        console.log(`ℹ️ Admin User already exists: [${existingAdmin.email}] (Name: ${existingAdmin.name}, Role: ${existingAdmin.role}).`);
+        console.log('   Preserving existing credentials without overwriting.');
         console.log('   👉 Run `npm run seed:owner -- --reset-password` if you want to overwrite credentials from .env.');
       }
     } else {
-      console.log(`👤 Creating new Owner: ${env.OWNER_EMAIL}`);
-      const passwordHash = await Owner.hashPassword(env.OWNER_PASSWORD);
+      console.log(`👤 Creating new Admin User: ${targetEmail}`);
+      const passwordHash = await User.hashPassword(env.OWNER_PASSWORD);
 
-      await Owner.create({
-        key: 'owner',
-        name: env.OWNER_NAME || 'ByteCraft Owner',
-        email: env.OWNER_EMAIL.toLowerCase(),
+      await User.create({
+        name: env.OWNER_NAME || 'Nexus Owner',
+        email: targetEmail,
         passwordHash,
+        role: ROLES.ADMIN,
+        status: USER_STATUSES.ACTIVE,
+        emailVerified: true,
+        emailVerifiedAt: new Date(),
       });
 
-      console.log('✅ Single Owner account created successfully!');
+      console.log('✅ Admin User account created successfully!');
     }
   } catch (error) {
-    console.error('❌ Error while seeding owner:', error.message);
+    console.error('❌ Error while seeding admin user:', error.message);
     process.exitCode = 1;
   } finally {
-    await disconnectDB();
-    console.log('\n🏁 Owner seed execution finished.');
+    if (manageConnection) {
+      await disconnectDB();
+      console.log('\n🏁 Admin seed execution finished.');
+    }
   }
 }
 
-seedOwner();
+if (require.main === module) {
+  seedOwner({ manageConnection: true });
+}
+
+module.exports = seedOwner;

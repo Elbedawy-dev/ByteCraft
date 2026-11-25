@@ -71,6 +71,16 @@ async function runTests() {
   let failed = 0;
   let cookieHeader = '';
 
+  const SUITE_IP = `10.40.${Math.floor(Math.random() * 200) + 1}.44`;
+  const nativeFetch = globalThis.fetch;
+  const fetch = (url, options = {}) => {
+    const headers = { ...(options.headers || {}) };
+    if (!headers['x-test-ip'] && !headers['X-Test-IP']) {
+      headers['x-test-ip'] = SUITE_IP;
+    }
+    return nativeFetch(url, { ...options, headers });
+  };
+
   const cleanup = {
     orderIds: [],
     projectIds: [],
@@ -94,8 +104,8 @@ async function runTests() {
     }
   }
 
-  // Ensure owner & settings with enabled payment methods exist in test DB
-  console.log('🌱 Ensuring test owner & settings exist in bytecraft_test database...');
+  // Ensure admin user & settings with enabled payment methods exist in test DB
+  console.log('🌱 Ensuring test admin user & settings exist in bytecraft_test database...');
   let conn;
   try {
     conn = await mongoose.connect(testMongoUri, { serverSelectionTimeoutMS: 4000 });
@@ -105,13 +115,7 @@ async function runTests() {
   }
   const bcrypt = require('bcryptjs');
 
-  const Owner = conn.model('Owner', new mongoose.Schema({
-    key: { type: String, default: 'owner', unique: true },
-    email: { type: String, unique: true },
-    passwordHash: { type: String, select: false },
-    name: String,
-    lastLoginAt: Date,
-  }, { timestamps: true }));
+  const User = require('../src/models/User');
 
   const Settings = conn.model('Settings', new mongoose.Schema({
     key: { type: String, default: 'main', unique: true },
@@ -121,17 +125,20 @@ async function runTests() {
     paymentMethods: mongoose.Schema.Types.Mixed,
   }, { timestamps: true }));
 
-  let testOwner = await Owner.findOne({ key: 'owner' });
-  if (!testOwner) {
+  let testAdmin = await User.findOne({ email: OWNER_EMAIL.toLowerCase() });
+  if (!testAdmin) {
     const salt = await bcrypt.genSalt(12);
     const passwordHash = await bcrypt.hash(OWNER_PASSWORD, salt);
-    await Owner.create({
-      key: 'owner',
+    await User.create({
       name: 'Test Owner',
       email: OWNER_EMAIL.toLowerCase(),
       passwordHash,
+      role: 'admin',
+      status: 'active',
+      emailVerified: true,
+      emailVerifiedAt: new Date(),
     });
-    console.log('   ✅ Seeded owner in bytecraft_test');
+    console.log('   ✅ Seeded admin user in bytecraft_test');
   }
 
   let testSettings = await Settings.findOne({ key: 'main' });
@@ -182,9 +189,9 @@ async function runTests() {
   await conn.disconnect();
 
   try {
-    // 0. Owner Login
-    await test('Owner logs into test server to obtain authentication cookie', async () => {
-      const res = await fetch(`${BASE_URL}/owner/login`, {
+    // 0. Admin Login
+    await test('Admin logs into test server to obtain authentication cookie', async () => {
+      const res = await fetch(`${BASE_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: OWNER_EMAIL, password: OWNER_PASSWORD }),
@@ -192,7 +199,7 @@ async function runTests() {
       const json = await res.json();
       assert(res.status === 200, `Login failed: ${json.error?.message}`);
       const setCookie = res.headers.get('set-cookie');
-      assert(setCookie && setCookie.includes('bc_owner='), 'Missing bc_owner cookie');
+      assert(setCookie && setCookie.includes('bc_session='), 'Missing bc_session cookie');
       cookieHeader = setCookie.split(';')[0];
     });
 

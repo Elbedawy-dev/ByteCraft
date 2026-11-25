@@ -1,184 +1,158 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
+import { useLang } from '../../app/providers';
+import { slideFromEnd } from '../../lib/motion';
 import { Button } from '../ui/Button';
+import { Reveal } from '../ui/Motion';
+import { HeroCubes } from './HeroCubes';
+import { TwoToneText } from './SectionHeader';
+
+function resolveIcon(iconName, fallback = 'arrow_forward') {
+  return iconName || fallback;
+}
+
+function ActionButton({ action, variant = 'primary-gradient' }) {
+  if (!action) return null;
+
+  const isPrimary = variant === 'primary-gradient';
+  const iconName = resolveIcon(action.icon, isPrimary ? 'arrow_forward' : null);
+  const isDirectionalArrow =
+    iconName === 'arrow_forward' || iconName === 'arrow_right_alt' || iconName === 'east';
+
+  const iconEl = iconName ? (
+    <span
+      className={clsx(
+        'material-symbols-rounded text-[19px]',
+        isDirectionalArrow && 'rtl:-scale-x-100'
+      )}
+      aria-hidden="true"
+    >
+      {iconName}
+    </span>
+  ) : undefined;
+
+  const buttonNode = (
+    <Button
+      variant={variant}
+      size="lg"
+      onClick={action.onClick}
+      className="w-full sm:w-auto"
+      iconLeading={!isPrimary && !isDirectionalArrow ? iconEl : undefined}
+      iconTrailing={isPrimary || isDirectionalArrow ? iconEl : undefined}
+    >
+      {action.label}
+    </Button>
+  );
+
+  if (action.to) {
+    return (
+      <Link to={action.to} className="w-full sm:w-auto">
+        {buttonNode}
+      </Link>
+    );
+  }
+
+  if (action.href) {
+    return (
+      <a
+        href={action.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="w-full sm:w-auto"
+      >
+        {buttonNode}
+      </a>
+    );
+  }
+
+  return buttonNode;
+}
 
 export function CtaBanner({
-  icon = 'auto_awesome',
+  badge,
   title,
+  accent,
   description,
-  primaryAction, // { label, to, href, onClick, icon }
-  secondaryAction, // { label, to, href, onClick, icon }
-  features = [], // ['No hidden fees', 'Free consultation']
+  primaryAction,
+  secondaryAction,
+  features = [],
   className = '',
 }) {
-  return (
-    <section className={clsx('relative w-full max-w-7xl mx-auto py-8 sm:py-12', className)}>
-      <div className="relative rounded-3xl bg-card border border-card-border p-6 sm:p-10 lg:p-14 overflow-hidden shadow-card flex flex-col items-center text-center">
-        {/* Mint Ambient Accent Glow */}
-        <div
-          className="absolute -top-24 left-1/2 -translate-x-1/2 w-80 h-80 bg-primary/10 rounded-full blur-[100px] pointer-events-none"
-          aria-hidden="true"
-        />
+  const { t } = useTranslation('common');
+  const { dir } = useLang();
+  const resolvedBadge = badge || t('cta.badge', { defaultValue: 'Get in Touch' });
 
-        <div className="relative z-10 max-w-2xl flex flex-col items-center gap-4 sm:gap-6">
-          {icon && (
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-badge-green-bg flex items-center justify-center text-primary shadow-sm border border-primary/20">
-              <span className="material-symbols-outlined text-[32px] sm:text-[36px]">
-                {icon}
-              </span>
-            </div>
+  return (
+    <section
+      className={clsx(
+        'relative w-full bc-band-wash border-t border-outline-variant overflow-hidden py-16 lg:py-24',
+        className
+      )}
+    >
+      {/* Decorative translucent angled corner shapes */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-16 -start-16 w-64 h-64 rotate-12 rounded-3xl bg-gradient-to-br from-[#2B72CF]/10 to-transparent dark:from-[#2B72CF]/15"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-20 -end-16 w-72 h-72 -rotate-12 rounded-3xl bg-gradient-to-tl from-[#5443A9]/10 to-transparent dark:from-[#5443A9]/15"
+      />
+
+      <div className="relative z-10 max-w-container mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 items-center gap-10 lg:gap-8">
+        {/* Start Column: Copy + Pill Actions */}
+        <Reveal className="lg:col-span-7 flex flex-col items-start text-start gap-3">
+          {resolvedBadge && (
+            <span className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold bg-brand-soft text-brand-soft-text border border-chip-mint-border select-none">
+              {resolvedBadge}
+            </span>
           )}
 
-          {title && (
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-on-surface tracking-tight leading-snug">
-              {title}
+          {(title || accent) && (
+            <h2 className="text-headline-xl-mobile md:text-headline-xl font-extrabold text-on-surface">
+              <TwoToneText text={title} accent={accent} />
             </h2>
           )}
 
           {description && (
-            <p className="text-sm sm:text-base text-on-surface-variant leading-relaxed">
+            <p className="text-body-md text-muted max-w-[540px]">
               {description}
             </p>
           )}
 
-          {/* Action buttons */}
           {(primaryAction || secondaryAction) && (
-            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-2 w-full sm:w-auto">
-              {primaryAction && (
-                primaryAction.to ? (
-                  <Link to={primaryAction.to} className="w-full sm:w-auto">
-                    <Button
-                      variant="primary-gradient"
-                      size="lg"
-                      className="w-full sm:w-auto"
-                      iconLeading={
-                        primaryAction.icon ? (
-                          <span className="material-symbols-outlined text-[20px]">
-                            {primaryAction.icon}
-                          </span>
-                        ) : undefined
-                      }
-                    >
-                      {primaryAction.label}
-                    </Button>
-                  </Link>
-                ) : primaryAction.href ? (
-                  <a
-                    href={primaryAction.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full sm:w-auto"
-                  >
-                    <Button
-                      variant="primary-gradient"
-                      size="lg"
-                      className="w-full sm:w-auto"
-                      iconLeading={
-                        primaryAction.icon ? (
-                          <span className="material-symbols-outlined text-[20px]">
-                            {primaryAction.icon}
-                          </span>
-                        ) : undefined
-                      }
-                    >
-                      {primaryAction.label}
-                    </Button>
-                  </a>
-                ) : (
-                  <Button
-                    variant="primary-gradient"
-                    size="lg"
-                    onClick={primaryAction.onClick}
-                    className="w-full sm:w-auto"
-                    iconLeading={
-                      primaryAction.icon ? (
-                        <span className="material-symbols-outlined text-[20px]">
-                          {primaryAction.icon}
-                        </span>
-                      ) : undefined
-                    }
-                  >
-                    {primaryAction.label}
-                  </Button>
-                )
-              )}
-
-              {secondaryAction && (
-                secondaryAction.to ? (
-                  <Link to={secondaryAction.to} className="w-full sm:w-auto">
-                    <Button
-                      variant="secondary"
-                      size="lg"
-                      className="w-full sm:w-auto"
-                      iconLeading={
-                        secondaryAction.icon ? (
-                          <span className="material-symbols-outlined text-[20px] text-primary">
-                            {secondaryAction.icon}
-                          </span>
-                        ) : undefined
-                      }
-                    >
-                      {secondaryAction.label}
-                    </Button>
-                  </Link>
-                ) : secondaryAction.href ? (
-                  <a
-                    href={secondaryAction.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full sm:w-auto"
-                  >
-                    <Button
-                      variant="secondary"
-                      size="lg"
-                      className="w-full sm:w-auto"
-                      iconLeading={
-                        secondaryAction.icon ? (
-                          <span className="material-symbols-outlined text-[20px] text-primary">
-                            {secondaryAction.icon}
-                          </span>
-                        ) : undefined
-                      }
-                    >
-                      {secondaryAction.label}
-                    </Button>
-                  </a>
-                ) : (
-                  <Button
-                    variant="secondary"
-                    size="lg"
-                    onClick={secondaryAction.onClick}
-                    className="w-full sm:w-auto"
-                    iconLeading={
-                      secondaryAction.icon ? (
-                        <span className="material-symbols-outlined text-[20px] text-primary">
-                          {secondaryAction.icon}
-                        </span>
-                      ) : undefined
-                    }
-                  >
-                    {secondaryAction.label}
-                  </Button>
-                )
-              )}
+            <div className="flex flex-wrap items-center gap-3.5 pt-3 w-full sm:w-auto">
+              <ActionButton action={primaryAction} variant="primary-gradient" />
+              <ActionButton action={secondaryAction} variant="secondary" />
             </div>
           )}
 
-          {/* Guarantees / Features */}
           {features && features.length > 0 && (
-            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-on-surface-variant text-xs sm:text-sm pt-2">
+            <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-on-surface-variant text-xs sm:text-sm pt-3">
               {features.map((feat, idx) => (
-                <span key={idx} className="flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-primary text-[16px]">
-                    check
+                <span key={idx} className="inline-flex items-center gap-1.5 font-medium">
+                  <span className="material-symbols-rounded icon-gradient text-[18px]" aria-hidden="true">
+                    check_circle
                   </span>
                   <span>{feat}</span>
                 </span>
               ))}
             </div>
           )}
-        </div>
+        </Reveal>
+
+        {/* End Column: Isometric 3D Cubes */}
+        <Reveal variants={slideFromEnd} custom={dir} className="lg:col-span-5 flex items-center justify-center lg:justify-end">
+          <div className="relative w-full max-w-[300px] sm:max-w-[360px] lg:max-w-[420px]">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-6 rounded-full bg-gradient-to-tr from-[#2B72CF]/18 to-[#5443A9]/18 dark:from-[#2B72CF]/12 dark:to-[#5443A9]/12 blur-2xl"
+            />
+            <HeroCubes className="relative w-full h-auto rtl:-scale-x-100 select-none pointer-events-none" />
+          </div>
+        </Reveal>
       </div>
     </section>
   );

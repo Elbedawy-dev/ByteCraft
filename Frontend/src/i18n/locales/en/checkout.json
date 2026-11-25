@@ -5,6 +5,11 @@
   "breadcrumbs": {
     "current": "Checkout"
   },
+  "accountBanner": {
+    "loggedInPrefix": "Ordering as",
+    "manageAccount": "Edit profile",
+    "guestPrompt": "Log in or create an account to track your orders"
+  },
   "customer": {
     "title": "Customer & Git Delivery Details",
     "subtitle": "Used for license issuance and granting private Git repository access",

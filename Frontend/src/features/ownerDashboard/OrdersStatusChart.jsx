@@ -12,26 +12,28 @@ import { Card } from '../../components/ui';
 import { EmptyState } from '../../components/shared';
 import { formatNumber } from '../../lib/format';
 
+// Nexus Dark Chart Palette: #5B9BFF #8B7CFF #8FD0FF #6A5BDB #34D399 #FBBF24 (+ semantic danger/muted)
 const STATUS_COLORS_DARK = {
-  delivered: '#10B981',
-  paid: '#4EDEA3',
+  delivered: '#34D399',
+  paid: '#5B9BFF',
   awaiting_review: '#FBBF24',
-  pending_payment: '#38BDF8',
+  pending_payment: '#8B7CFF',
   rejected: '#F87171',
-  cancelled: '#9AA39F',
-  refunded: '#C084FC',
-  expired: '#6B7280',
+  cancelled: '#97A2CB',
+  refunded: '#6A5BDB',
+  expired: '#8FD0FF',
 };
 
+// Nexus Light Chart Palette: #2B72CF #5443A9 #8FD0FF #6A5BDB #0E9F6E #F59E0B (+ semantic danger/muted)
 const STATUS_COLORS_LIGHT = {
-  delivered: '#047857',
-  paid: '#0369A1',
-  awaiting_review: '#B45309',
-  pending_payment: '#1D4ED8',
-  rejected: '#B91C1C',
-  cancelled: '#475569',
-  refunded: '#6D28D9',
-  expired: '#64748B',
+  delivered: '#0E9F6E',
+  paid: '#2B72CF',
+  awaiting_review: '#F59E0B',
+  pending_payment: '#5443A9',
+  rejected: '#C81E1E',
+  cancelled: '#5C6289',
+  refunded: '#6A5BDB',
+  expired: '#8FD0FF',
 };
 
 function StatusTooltip({ active, payload, dir }) {
@@ -42,7 +44,7 @@ function StatusTooltip({ active, payload, dir }) {
   return (
     <div
       dir={dir}
-      className="rounded-xl border border-outline-variant bg-surface px-3 py-2 shadow-card-hover text-xs"
+      className="rounded-xl border border-card-border bg-card px-3 py-2 shadow-card-hover text-xs"
     >
       <div className="flex items-center gap-2">
         <span
@@ -75,14 +77,14 @@ export function OrdersStatusChart({ ordersByStatus = [] }) {
       label: t(`common:status.order.${item.status}`, {
         defaultValue: item.status,
       }),
-      color: palette[item.status] || (isDark ? '#4EDEA3' : '#047857'),
+      color: palette[item.status] || (isDark ? '#5B9BFF' : '#2B72CF'),
       percent: total > 0 ? Math.round(((Number(item.count) || 0) / total) * 100) : 0,
     }));
     return { items: mapped, totalOrders: total };
   }, [ordersByStatus, palette, isDark, t]);
 
   return (
-    <Card variant="flat" className="flex flex-col justify-between h-full">
+    <Card variant="default" className="flex flex-col justify-between h-full">
       <div className="mb-4">
         <h2 className="text-base sm:text-lg font-bold text-on-surface">
           {t('ownerDashboard:charts.ordersByStatusTitle')}
@@ -117,6 +119,8 @@ export function OrdersStatusChart({ ordersByStatus = [] }) {
                   outerRadius={82}
                   paddingAngle={items.length > 1 ? 3 : 0}
                   stroke="none"
+                  animationDuration={300}
+                  animationEasing="ease-out"
                 >
                   {items.map((entry) => (
                     <Cell key={entry.status} fill={entry.color} />
@@ -128,7 +132,7 @@ export function OrdersStatusChart({ ordersByStatus = [] }) {
 
             {/* Centered Total */}
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <span className="text-2xl font-bold text-on-surface font-mono leading-none">
+              <span className="text-2xl font-extrabold text-on-surface font-mono leading-none">
                 {formatNumber(totalOrders)}
               </span>
               <span className="text-[11px] text-on-surface-variant mt-1">
@@ -142,7 +146,7 @@ export function OrdersStatusChart({ ordersByStatus = [] }) {
             {items.map((entry) => (
               <li
                 key={entry.status}
-                className="flex items-center justify-between gap-2 text-xs py-1.5 px-2.5 rounded-lg bg-surface border border-card-border"
+                className="flex items-center justify-between gap-2 text-xs py-2 px-3 rounded-lg bg-surface-soft border border-card-border"
               >
                 <span className="flex items-center gap-2 min-w-0">
                   <span

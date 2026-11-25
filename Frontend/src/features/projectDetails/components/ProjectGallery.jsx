@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { useLang } from '../../../app/providers';
 import { localized } from '../../../lib/localized';
+import { MotionImage } from '../../../components/ui/Motion';
 import { AccessibleDialog } from './AccessibleDialog';
 
 export function ProjectGallery({ project, onOpenLiveDemo }) {
@@ -82,76 +83,65 @@ export function ProjectGallery({ project, onOpenLiveDemo }) {
 
   return (
     <section className="flex flex-col gap-3 sm:gap-4" aria-label={title}>
-      {/* Primary 16:9 Showcase Container */}
-      <div className="relative rounded-xl overflow-hidden bg-card border border-card-border shadow-card group">
-        <div className="relative aspect-video w-full bg-surface-container-high overflow-hidden">
+      {/* Primary Showcase Container (20px radius = rounded-2xl) */}
+      <div className="relative rounded-2xl overflow-hidden bg-card border border-card-border shadow-card group">
+        <div className="relative aspect-[16/10] w-full bg-section-band overflow-hidden">
           {!isCurrentBroken ? (
             <button
               type="button"
               onClick={() => setLightboxOpen(true)}
               aria-label={t('gallery.openLightbox')}
-              className="block w-full h-full relative text-start cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-input-focus"
+              className="block w-full h-full relative text-start cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
             >
-              <img
+              <MotionImage
+                key={currentImage.url}
                 src={currentImage.url}
                 alt={t('gallery.imageAlt', { title, index: safeIndex + 1 })}
-                fetchPriority="high"
                 onError={() => markBroken(currentImage.url)}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.015]"
+                className="w-full h-full object-cover transition-transform duration-300 ease-nexus group-hover:scale-[1.015]"
               />
-              {/* Subtle zoom hint badge */}
-              <span className="absolute bottom-2.5 sm:bottom-3 start-2.5 sm:start-3 inline-flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 rounded-lg bg-surface/95 backdrop-blur-md border border-card-border text-xs font-medium text-on-surface shadow-sm transition-colors group-hover:border-primary/50">
-                <span className="material-symbols-outlined text-[16px] text-primary" aria-hidden="true">
+              {/* Subtle zoom hint pill */}
+              <span className="absolute bottom-3 start-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card/95 backdrop-blur-md border border-card-border text-xs font-semibold text-on-surface shadow-sm transition-colors group-hover:border-primary/50">
+                <span className="material-symbols-rounded text-[16px] text-primary" aria-hidden="true">
                   zoom_in
                 </span>
                 <span className="hidden sm:inline">{t('gallery.openLightbox')}</span>
                 {images.length > 1 && (
-                  <bdi dir="ltr" className="font-mono text-[11px] text-on-surface-variant">
+                  <bdi dir="ltr" className="font-mono text-[11px] text-muted">
                     {t('gallery.counter', { current: safeIndex + 1, total: images.length })}
                   </bdi>
                 )}
               </span>
             </button>
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-card via-surface-container-high to-surface-container-highest text-on-surface-variant p-6 text-center">
-              <span className="material-symbols-outlined text-[48px] text-primary/60 mb-2" aria-hidden="true">
+            <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-section-band via-brand-soft/60 to-section-band text-muted p-6 text-center">
+              <span className="material-symbols-rounded icon-gradient text-[48px] mb-2" aria-hidden="true">
                 code_blocks
               </span>
-              <span className="text-xs font-mono text-on-surface-variant">{t('gallery.placeholder')}</span>
+              <span className="text-xs font-semibold text-muted">{t('gallery.placeholder')}</span>
             </div>
           )}
 
           {/* Top Status Pills */}
           {(hasPreview || project?.isFeatured) && (
-            <div className="absolute top-2.5 sm:top-3 start-2.5 sm:start-3 end-2.5 sm:end-3 flex flex-wrap items-center gap-1.5 sm:gap-2 pointer-events-none z-10">
+            <div className="absolute top-3 start-3 end-3 flex flex-wrap items-center gap-2 pointer-events-none z-10">
               {hasPreview && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-surface/95 backdrop-blur-md border border-card-border text-primary font-label-md text-[11px] sm:text-xs shadow-sm">
-                  <span className="relative flex h-2 w-2" aria-hidden="true">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
-                  </span>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-soft/95 backdrop-blur-md border border-chip-mint-border text-brand-soft-text font-semibold text-xs shadow-sm">
+                  <span className="w-2 h-2 rounded-full bg-primary" aria-hidden="true" />
                   <span>{t('badges.livePreview')}</span>
-                </span>
-              )}
-              {project?.isFeatured && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-surface/95 backdrop-blur-md border border-card-border text-on-surface font-label-md text-[11px] sm:text-xs shadow-sm">
-                  <span className="material-symbols-outlined text-[14px] text-star" aria-hidden="true">
-                    workspace_premium
-                  </span>
-                  <span>{t('badges.featured')}</span>
                 </span>
               )}
             </div>
           )}
 
-          {/* Sibling Live Demo Button (outside main button to avoid nested interactive elements) */}
+          {/* Sibling Live Demo Pill Button */}
           {hasPreview && onOpenLiveDemo && (
             <button
               type="button"
               onClick={onOpenLiveDemo}
-              className="absolute bottom-2.5 sm:bottom-3 end-2.5 sm:end-3 z-20 inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 min-h-[38px] sm:min-h-[40px] rounded-lg bg-surface/95 hover:bg-card-hover text-primary font-label-md text-xs border border-card-border hover:border-primary/50 backdrop-blur-md transition-all shadow-sm"
+              className="absolute bottom-3 end-3 z-20 inline-flex items-center gap-1.5 px-4 py-2 min-h-[40px] rounded-full bg-card/95 hover:bg-brand-soft text-primary font-semibold text-xs border border-primary/40 hover:border-primary backdrop-blur-md transition-all shadow-sm"
             >
-              <span className="material-symbols-outlined text-[16px]" aria-hidden="true">
+              <span className="material-symbols-rounded text-[16px]" aria-hidden="true">
                 {project?.preview?.mode === 'external' ? 'open_in_new' : 'desktop_windows'}
               </span>
               <span className="sm:hidden">{t('common:actions.liveDemo')}</span>

@@ -17,6 +17,7 @@ const updateSettingsSchema = z.object({
   body: z.object({
     siteName: z.string().trim().min(1, 'Site name cannot be empty').optional(),
     guaranteeDays: z.number().int().min(0, 'Guarantee days must be a non-negative integer').optional(),
+    registrationEnabled: z.boolean().optional(),
     contact: z
       .object({
         email: z.string().trim().email('Invalid contact email').or(z.literal('')).optional(),

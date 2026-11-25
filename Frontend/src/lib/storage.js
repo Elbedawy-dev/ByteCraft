@@ -1,7 +1,8 @@
 export const STORAGE_KEYS = {
   LANG: 'bc_lang',
-  THEME: 'bc_theme_v2',
+  THEME: 'bc_theme_v3',
   ORDER_TOKEN_PREFIX: 'bc_order_token_',
+  SESSION_HINT: 'bc_session_hint',
 };
 
 export function getLocal(key, fallback = null) {
@@ -31,6 +32,22 @@ export function removeLocal(key) {
     return true;
   } catch {
     return false;
+  }
+}
+
+export function hasSessionHint() {
+  return (
+    getLocal(STORAGE_KEYS.SESSION_HINT, null) === '1' ||
+    getLocal('bc_owner_session', null) === '1'
+  );
+}
+
+export function setSessionHint(active) {
+  if (active) {
+    setLocal(STORAGE_KEYS.SESSION_HINT, '1');
+  } else {
+    removeLocal(STORAGE_KEYS.SESSION_HINT);
+    removeLocal('bc_owner_session');
   }
 }
 

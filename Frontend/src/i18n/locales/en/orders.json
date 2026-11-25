@@ -99,7 +99,7 @@
         "amountLabel": "Exact Amount Due",
         "copyAmount": "Copy Amount",
         "proofSubmittedTitle": "Payment Proof Submitted",
-        "proofSubmittedDesc": "Your receipt is currently under review by the ByteCraft team. This page refreshes automatically.",
+        "proofSubmittedDesc": "Your receipt is currently under review by the Nexus team. This page refreshes automatically.",
         "submittedAtLabel": "Submitted at:",
         "referenceLabel": "Reference:",
         "uploadTitle": "Upload Payment Receipt",
@@ -176,7 +176,7 @@
       "submitSuccess": "Thank you! Your verified review is now live.",
       "alreadyReviewed": {
         "title": "You Already Reviewed This Order",
-        "description": "Thank you for sharing your feedback with ByteCraft! One verified review is allowed per order.",
+        "description": "Thank you for sharing your feedback with Nexus! One verified review is allowed per order.",
         "viewProject": "View Project Page"
       }
     },

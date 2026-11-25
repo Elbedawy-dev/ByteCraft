@@ -195,6 +195,25 @@ export function SettingsForm({ settings, onDirtyChange }) {
               />
             </FormField>
           </div>
+
+          <div className="rounded-xl border border-card-border bg-section-band/70 px-4 py-3">
+            <Controller
+              name="registrationEnabled"
+              control={control}
+              render={({ field }) => (
+                <Switch
+                  id="settings-registrationEnabled"
+                  name={field.name}
+                  checked={Boolean(field.value)}
+                  onChange={(e) => field.onChange(e.target.checked)}
+                  disabled={isBusy}
+                  label={t('ownerSettings:sections.general.registrationEnabledLabel')}
+                  description={t('ownerSettings:sections.general.registrationEnabledHint')}
+                  className="w-full"
+                />
+              )}
+            />
+          </div>
         </Card>
 
         {/* Section 2: Contact Info & Socials */}

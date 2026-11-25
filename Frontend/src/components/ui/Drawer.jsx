@@ -1,6 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import clsx from 'clsx';
+import { AnimatePresence, m } from 'framer-motion';
+import { useLang } from '../../app/providers';
+import { fade, getDrawerVariants } from '../../lib/motion';
 
 export function Drawer({
   isOpen,
@@ -9,12 +12,15 @@ export function Drawer({
   children,
   side = 'end', // 'end' | 'start' | 'bottom'
   size = 'md', // 'sm' | 'md' | 'lg'
+  tone = 'surface', // 'surface' | 'navy'
   className = '',
 }) {
   const drawerRef = useRef(null);
+  const { lang } = useLang();
+  const dir = lang === 'ar' ? 'rtl' : 'ltr';
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) return undefined;
 
     function handleKeyDown(e) {
       if (e.key === 'Escape') {
@@ -34,9 +40,8 @@ export function Drawer({
         document.body.style.overflow = originalOverflow;
       };
     }
+    return undefined;
   }, [isOpen]);
-
-  if (!isOpen) return null;
 
   const widthClasses = {
     sm: 'max-w-xs',
@@ -45,57 +50,85 @@ export function Drawer({
   }[size] || 'max-w-sm';
 
   const positionStyles = {
-    end: 'inset-y-0 end-0 h-full w-full',
-    start: 'inset-y-0 start-0 h-full w-full',
+    end: 'inset-y-0 end-0 h-full w-full rounded-s-2xl',
+    start: 'inset-y-0 start-0 h-full w-full rounded-e-2xl',
     bottom: 'inset-x-0 bottom-0 max-h-[85vh] w-full rounded-t-2xl',
-  }[side] || 'inset-y-0 end-0 h-full w-full';
+  }[side] || 'inset-y-0 end-0 h-full w-full rounded-s-2xl';
+
+  const isNavy = tone === 'navy';
+  const drawerVariants = getDrawerVariants(side, dir);
 
   return createPortal(
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-label={title || 'Drawer'}
-      className="fixed inset-0 z-50 flex animate-in fade-in duration-200"
-    >
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-overlay backdrop-blur-sm transition-opacity"
-        onClick={onClose}
-        aria-hidden="true"
-      />
-
-      {/* Drawer Panel */}
-      <div
-        ref={drawerRef}
-        className={clsx(
-          'fixed z-10 bg-surface border-outline-variant shadow-card-hover flex flex-col overflow-hidden',
-          side === 'end' && 'border-s',
-          side === 'start' && 'border-e',
-          side === 'bottom' && 'border-t',
-          side !== 'bottom' && widthClasses,
-          positionStyles,
-          className
-        )}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 sm:p-5 border-b border-outline-variant shrink-0">
-          <div className="font-semibold text-base sm:text-lg text-on-surface">
-            {title}
-          </div>
-          <button
-            type="button"
+    <AnimatePresence>
+      {isOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={typeof title === 'string' ? title : 'Drawer'}
+          className="fixed inset-0 z-50 flex"
+        >
+          {/* Backdrop */}
+          <m.div
+            variants={fade}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="fixed inset-0 bg-overlay backdrop-blur-sm"
             onClick={onClose}
-            className="text-on-surface-variant hover:text-on-surface p-1.5 rounded-lg hover:bg-surface-container-high transition-colors"
-            aria-label="Close drawer"
-          >
-            <span className="material-symbols-outlined text-[20px] block">close</span>
-          </button>
-        </div>
+            aria-hidden="true"
+          />
 
-        {/* Content */}
-        <div className="p-4 sm:p-6 bc-scroll flex-1">{children}</div>
-      </div>
-    </div>,
+          {/* Drawer Panel (20px radius) */}
+          <m.div
+            ref={drawerRef}
+            variants={drawerVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className={clsx(
+              'fixed z-10 shadow-card-hover flex flex-col overflow-hidden',
+              isNavy
+                ? 'bg-navy text-navy-text border-navy-border'
+                : 'bg-card text-on-surface border-card-border',
+              side === 'end' && 'border-s',
+              side === 'start' && 'border-e',
+              side === 'bottom' && 'border-t',
+              side !== 'bottom' && widthClasses,
+              positionStyles,
+              className
+            )}
+          >
+            {/* Header */}
+            <div
+              className={clsx(
+                'flex items-center justify-between p-4 sm:p-5 border-b shrink-0',
+                isNavy ? 'border-navy-border' : 'border-outline-variant'
+              )}
+            >
+              <div className={clsx('font-bold text-base sm:text-lg', isNavy ? 'text-white' : 'text-on-surface')}>
+                {title}
+              </div>
+              <button
+                type="button"
+                onClick={onClose}
+                className={clsx(
+                  'w-10 h-10 flex items-center justify-center rounded-full transition-colors',
+                  isNavy
+                    ? 'text-navy-text hover:text-white hover:bg-white/10'
+                    : 'text-muted hover:text-on-surface hover:bg-section-band'
+                )}
+                aria-label="Close drawer"
+              >
+                <span className="material-symbols-rounded text-[20px] block" aria-hidden="true">close</span>
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-4 sm:p-6 bc-scroll flex-1">{children}</div>
+          </m.div>
+        </div>
+      )}
+    </AnimatePresence>,
     document.body
   );
 }

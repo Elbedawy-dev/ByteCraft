@@ -1,6 +1,6 @@
-# 🚀 ByteCraft Dev Studio — Backend API Server
+# 🚀 Nexus — Backend API Server
 
-Production-ready, highly hardened, monolithic Node.js & Express RESTful API backend for **ByteCraft** — an online dev studio selling turnkey source code templates, digital SaaS starters, and custom software development services.
+Production-ready, highly hardened, monolithic Node.js & Express RESTful API backend for **Nexus** — an online dev studio selling turnkey source code templates, digital SaaS starters, and custom software development services.
 
 ---
 
@@ -59,6 +59,9 @@ npm run seed:owner
 
 # Seed platform settings (guarantee period, payment methods default state)
 npm run seed:settings
+
+# Update ONLY Settings.siteName to "Nexus" on an existing database (idempotent)
+npm run seed:brand
 ```
 
 ### 5. Running the Application
@@ -84,9 +87,11 @@ npm start
 |---|---|---|
 | `npm run dev` | `nodemon src/server.js` | Runs development server on `PORT` (default 5000) with hot reloading |
 | `npm run dev:test` | `node src/testServer.js` | Starts isolated test server on port 5001 targeting `bytecraft_test` |
-| `npm test` | `node tests/run-all.js` | Spawns test server (if not up), executes Phase 1–8 suites, and shuts down |
+| `npm test` | `node tests/run-all.js` | Spawns test server (if not up), executes Phase 1–10 suites, and shuts down |
 | `npm run seed:owner` | `node src/seed/seedOwner.js` | Seeds single owner account into database safely |
 | `npm run seed:settings` | `node src/seed/seedSettings.js` | Initializes singleton settings with tax-free schema and contact defaults |
+| `npm run seed:contact` | `node src/seed/seedContact.js` | Idempotently updates only owner contact details in Settings |
+| `npm run seed:brand` | `node src/seed/seedBrand.js` | Idempotently updates only `Settings.siteName` to `Nexus` and prints DB name |
 | `npm start` | `node src/server.js` | Starts production HTTP server |
 
 ---
@@ -103,8 +108,8 @@ npm start
 | `JWT_EXPIRES_IN` | No | `7d` | `7d` | Lifetime of owner login token |
 | `COOKIE_SAMESITE` | No | `lax` | `none` (for cross-site) | SameSite attribute for `bc_owner` cookie (`lax` or `none`) |
 | `TRUST_PROXY` | No | `false` | `true` | Enable `app.set('trust proxy', 1)` behind reverse proxies (Render/Railway/Nginx) |
-| `OWNER_NAME` | No | `ByteCraft Owner` | `Moaaz Elbedawy` | Owner display name |
-| `OWNER_EMAIL` | Yes | — | `owner@bytecraft.dev` | Email address for owner authentication and alerts |
+| `OWNER_NAME` | No | `Nexus Owner` | `Moaaz Elbedawy` | Owner display name |
+| `OWNER_EMAIL` | Yes | — | `owner@nexus.dev` | Email address for owner authentication and alerts |
 | `OWNER_PASSWORD` | Yes (seed) | — | `SuperSecret123!` | Initial password used only by `seedOwner.js` |
 | `CLOUDINARY_CLOUD_NAME`| Yes (prod) | — | `h0arrkpf` | Cloudinary cloud account name |
 | `CLOUDINARY_API_KEY` | Yes (prod) | — | `467933555336432` | Cloudinary API Key |
@@ -113,8 +118,8 @@ npm start
 | `SMTP_PORT` | No | `587` | `587` or `465` | SMTP port |
 | `SMTP_USER` | No | — | `apikey` | SMTP username |
 | `SMTP_PASS` | No | — | `re_...` | SMTP password / API token |
-| `MAIL_FROM` | No | — | `"ByteCraft" <noreply@...>` | Outgoing email `From:` header |
-| `OWNER_NOTIFY_EMAIL` | No | — | `owner@bytecraft.dev` | Fallback notification recipient for order alerts |
+| `MAIL_FROM` | No | — | `"Nexus" <noreply@...>` | Outgoing email `From:` header (defaults to `Settings.siteName` display name) |
+| `OWNER_NOTIFY_EMAIL` | No | — | `owner@nexus.dev` | Fallback notification recipient for order alerts |
 | `PAYMOB_MODE` | No | `sandbox` | `live` | Paymob mode (`sandbox` or `live`) |
 | `PAYMOB_API_KEY` | Yes (prod) | — | `ZXlKaGJHY2...` | Paymob API Key from Dashboard |
 | `PAYMOB_HMAC_SECRET` | Yes (prod) | — | `D8756...` | Paymob HMAC Secret from Dashboard settings |
@@ -328,10 +333,10 @@ If your frontend is on `https://bytecraft.dev` and backend is on `https://api.by
    - `SMTP_PORT=465` (secure) or `587`
    - `SMTP_USER=resend`
    - `SMTP_PASS=re_your_api_key`
-   - `MAIL_FROM="ByteCraft" <orders@yourdomain.com>`
+   - `MAIL_FROM="Nexus" <orders@yourdomain.com>` (or a bare email to inherit `Settings.siteName` automatically)
    - `OWNER_NOTIFY_EMAIL=owner@yourdomain.com`
 
 ---
 
 ## 📄 License
-Proprietary — ByteCraft Dev Studio. All rights reserved.
+Proprietary — Nexus. All rights reserved.

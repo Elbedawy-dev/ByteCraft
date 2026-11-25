@@ -1,10 +1,10 @@
 {
   "brand": {
-    "name": "ByteCraft",
-    "latinName": "ByteCraft",
-    "fullName": "ByteCraft Studio",
-    "tagline": "Turnkey MERN Stack platforms and custom web engineering",
-    "copyright": "© {{year}} ByteCraft. All rights reserved."
+    "name": "Nexus",
+    "latinName": "Nexus",
+    "fullName": "NEXUS",
+    "tagline": "Build Smarter. Grow Faster.",
+    "copyright": "© {{year}} NEXUS. All rights reserved."
   },
   "nav": {
     "home": "Home",
@@ -13,9 +13,23 @@
     "about": "About",
     "contact": "Contact",
     "getStarted": "Get Started",
+    "login": "Login",
+    "register": "Create account",
+    "userMenu": {
+      "openMenu": "Open user menu",
+      "menuLabel": "Account navigation",
+      "roleAdmin": "Admin",
+      "roleCustomer": "Customer",
+      "account": "My account",
+      "orders": "My orders",
+      "dashboard": "Dashboard",
+      "logout": "Logout",
+      "loggedOutToast": "Signed out successfully"
+    },
     "skipToContent": "Skip to main content",
     "primaryNavLabel": "Primary",
     "mobileNavLabel": "Mobile menu",
+    "mobileMenu": "Mobile menu",
     "breadcrumbLabel": "Breadcrumb",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
@@ -29,11 +43,16 @@
     "lightMode": "Light mode"
   },
   "footer": {
+    "tagline": "Build Smarter. Grow Faster.",
     "description": "Engineering studio specializing in high-performance web platforms and turnkey MERN Stack solutions for startups, academies, and modern e-commerce brands.",
     "quickLinks": "Quick Links",
-    "contactChannels": "Direct Contact",
+    "services": "Services & Platforms",
+    "followUs": "Follow Us",
+    "contactChannels": "Follow Us",
+    "contactNote": "Ready to turn your idea into production-grade software.",
     "contactSubtitle": "Ready to discuss your project idea and ship production-grade code fast.",
     "availableBadge": "Available for new engineering projects",
+    "copyright": "All rights reserved.",
     "links": {
       "projects": "Ready-Made Platforms",
       "pricing": "Pricing & Service Plans",
@@ -59,6 +78,8 @@
     "coupons": "Coupons",
     "categories": "Categories",
     "servicePlans": "Service Plans",
+    "users": "Customers",
+    "admins": "Admins",
     "settings": "Settings",
     "logout": "Sign out",
     "backToSite": "Back to site"
@@ -76,9 +97,10 @@
     "back": "Back",
     "backHome": "Back to Home",
     "viewAll": "View All",
-    "viewDetails": "View Details",
-    "buy": "Buy License",
+    "viewDetails": "Details",
+    "buy": "Buy Now",
     "buyNow": "Buy Now",
+    "startingPrice": "Starting from:",
     "liveDemo": "Live Demo",
     "copy": "Copy",
     "copied": "Copied",
@@ -136,6 +158,10 @@
       "PAYMENT_FAILED": "Payment could not be initialized. Please try again or pick another method.",
       "UNAUTHORIZED": "Unauthorized access. Please sign in or check your order token.",
       "INVALID_CREDENTIALS": "Invalid email or password.",
+      "INVALID_TOKEN": "This link is invalid or has expired.",
+      "ALREADY_VERIFIED": "Your email address is already verified.",
+      "EMAIL_NOT_VERIFIED": "Please verify your email address first.",
+      "ACCOUNT_LOCKED": "Account is temporarily locked due to repeated failed attempts.",
       "FORBIDDEN": "You don't have permission to perform this action.",
       "NOT_FOUND": "The requested resource was not found.",
       "CONFLICT": "A duplicate record already exists.",
@@ -210,10 +236,11 @@
     "ratingOutOf": "{{value}} out of 5"
   },
   "cta": {
-    "eyebrow": "Production Engineering • Fast Delivery",
-    "title": "Ready to launch your next platform and scale faster?",
+    "badge": "Get in Touch",
+    "eyebrow": "Get in Touch",
+    "title": "Let's Work Together",
     "description": "Reach out on WhatsApp or request a tailored technical quote. An engineer will review your scope and get back to you promptly.",
-    "primaryAction": "Start Your Project",
+    "primaryAction": "Contact Us",
     "secondaryAction": "Browse Ready Projects",
     "bullets": [
       "No hidden fees",

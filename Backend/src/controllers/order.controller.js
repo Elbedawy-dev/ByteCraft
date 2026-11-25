@@ -11,11 +11,13 @@ const asyncHandler = require('../utils/asyncHandler');
  */
 
 // ==========================================
-// Public Endpoints (Guest Checkout)
+// Public & Checkout Endpoints
 // ==========================================
 
 const createOrder = asyncHandler(async (req, res) => {
-  const order = await orderService.createOrder(req.body);
+  const order = await orderService.createOrder(req.body, {
+    userId: req.user?._id || null,
+  });
   res.status(201).json({
     success: true,
     data: { order },
@@ -43,6 +45,50 @@ const submitPaymentProof = asyncHandler(async (req, res) => {
   res.status(200).json({
     success: true,
     data: { order },
+  });
+});
+
+// ==========================================
+// Authenticated Customer Account Endpoints
+// ==========================================
+
+const getAccountOrders = asyncHandler(async (req, res) => {
+  const result = await orderService.getAccountOrders(req.user._id, req.query);
+  res.status(200).json({
+    success: true,
+    data: { orders: result.orders },
+    meta: result.meta,
+  });
+});
+
+const getAccountOrder = asyncHandler(async (req, res) => {
+  const order = await orderService.getAccountOrderByNumber(req.params.orderNumber, req.user._id);
+  res.status(200).json({
+    success: true,
+    data: { order },
+  });
+});
+
+const submitAccountPaymentProof = asyncHandler(async (req, res) => {
+  const order = await orderService.submitAccountPaymentProof(
+    req.params.orderNumber,
+    req.user._id,
+    {
+      file: req.file,
+      reference: req.body?.reference,
+    }
+  );
+  res.status(200).json({
+    success: true,
+    data: { order },
+  });
+});
+
+const claimGuestOrders = asyncHandler(async (req, res) => {
+  const result = await orderService.claimGuestOrders(req.user);
+  res.status(200).json({
+    success: true,
+    data: result,
   });
 });
 
@@ -113,6 +159,10 @@ module.exports = {
   createOrder,
   getGuestOrder,
   submitPaymentProof,
+  getAccountOrders,
+  getAccountOrder,
+  submitAccountPaymentProof,
+  claimGuestOrders,
   getOwnerOrders,
   getOwnerOrderById,
   approveOrder,

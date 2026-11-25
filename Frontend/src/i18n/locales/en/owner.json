@@ -42,7 +42,7 @@
     "title": "Sign in to Owner Console",
     "subtitle": "Enter your authorized owner credentials to manage projects, orders, and platform settings.",
     "emailLabel": "Admin Email Address",
-    "emailPlaceholder": "owner@bytecraft.dev",
+    "emailPlaceholder": "owner@nexus.dev",
     "passwordLabel": "Password",
     "passwordPlaceholder": "••••••••••••",
     "requiredTag": "Required",

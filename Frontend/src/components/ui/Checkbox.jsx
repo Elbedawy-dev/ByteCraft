@@ -44,15 +44,15 @@ export const Checkbox = forwardRef(function Checkbox(
         />
         <div
           className={clsx(
-            'w-5 h-5 rounded-[5px] border bg-input transition-all duration-150 flex items-center justify-center',
-            'peer-focus-visible:ring-2 peer-focus-visible:ring-input-focus peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-surface',
+            'w-5 h-5 rounded-[6px] border bg-input transition-[background-color,border-color,box-shadow] duration-300 ease-nexus flex items-center justify-center',
+            'peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-background',
             error
-              ? 'border-error'
-              : 'border-outline peer-hover:border-primary',
+              ? 'border-danger'
+              : 'border-control-border peer-hover:border-primary',
             'peer-checked:bg-primary peer-checked:border-primary peer-checked:text-on-primary'
           )}
         >
-          <span className="material-symbols-outlined text-[16px] font-bold opacity-0 peer-checked:opacity-100 transition-opacity">
+          <span className="material-symbols-rounded text-[16px] font-bold opacity-0 scale-75 peer-checked:opacity-100 peer-checked:scale-100 transition-[opacity,transform] duration-300 ease-nexus" aria-hidden="true">
             check
           </span>
         </div>
@@ -65,7 +65,7 @@ export const Checkbox = forwardRef(function Checkbox(
             </span>
           )}
           {description && (
-            <span className="text-xs text-on-surface-variant mt-0.5">
+            <span className="text-xs text-muted mt-0.5">
               {description}
             </span>
           )}

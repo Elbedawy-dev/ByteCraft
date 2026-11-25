@@ -4,17 +4,20 @@ import { Badge } from '../ui/Badge';
 
 export function StatusBadge({
   status,
-  type = 'order', // 'order' | 'inquiry' | 'project' | 'payment'
+  type = 'order',
   className = '',
 }) {
   const { t } = useTranslation('common');
 
-  // Variant mapping
   const variantMap = {
     // Orders
     pending: 'warning',
+    awaiting_proof: 'warning',
+    awaiting_review: 'info',
     confirmed: 'primary',
     in_progress: 'primary',
+    paid: 'success',
+    delivered: 'success',
     completed: 'success',
     cancelled: 'error',
     refunded: 'neutral',
@@ -22,22 +25,25 @@ export function StatusBadge({
     // Inquiries
     new: 'primary',
     contacted: 'warning',
-    in_discussion: 'primary',
+    in_discussion: 'info',
+    replied: 'success',
     closed: 'neutral',
 
-    // Projects
+    // Projects / Plans / Reviews
     draft: 'neutral',
     published: 'success',
+    active: 'success',
+    inactive: 'neutral',
+    approved: 'success',
+    rejected: 'error',
     archived: 'error',
 
     // Payment
-    paid: 'success',
     failed: 'error',
   };
 
-  const variant = variantMap[status] || 'neutral';
+  const variant = variantMap[status] || 'primary';
 
-  // Localized text resolution
   let label = status;
   if (type === 'order') {
     label = t(`statuses.order.${status}`, { defaultValue: status });

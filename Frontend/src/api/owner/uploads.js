@@ -1,15 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
-import api, { ApiError, buildApiUrl } from '../client';
-import { ROUTES } from '../../config/routes';
+import api, { ApiError, buildApiUrl, handleGlobalUnauthorized } from '../client';
 import i18n from '../../i18n';
 
 const MAX_FILES_PER_BATCH = 10;
 
 function redirectOnOwnerUnauthorized() {
-  if (typeof window === 'undefined') return;
-  if (window.location.pathname === ROUTES.OWNER_LOGIN) return;
-  const target = `${window.location.pathname}${window.location.search}`;
-  window.location.assign(`${ROUTES.OWNER_LOGIN}?redirect=${encodeURIComponent(target)}`);
+  handleGlobalUnauthorized();
 }
 
 function uploadBatch(batchFiles, onBatchProgress) {

@@ -6,6 +6,7 @@ import { useLang } from '@/app/providers';
 import { localized } from '@/lib/localized';
 import { formatMoney } from '@/lib/money';
 import { contactPath } from '@/config/routes';
+import { SectionHeader } from '@/components/shared';
 
 function collectUniquePlanFeatures(plans, lang, limit = 8) {
   const seen = new Map();
@@ -44,53 +45,32 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
   );
 
   return (
-    <section className="my-12 sm:my-14 space-y-6">
-      {/* Technical Baseline Card (Stitch bytecraft_4) */}
-      <div className="p-5 sm:p-6 rounded-2xl bg-card border border-card-border shadow-card">
-        <div className="flex flex-col items-start gap-4">
-          <div className="space-y-1.5 max-w-2xl">
-            <span className="font-code text-label-code text-primary uppercase tracking-wider block">
-              <bdi dir="ltr">{t('matrix.eyebrow')}</bdi>
-            </span>
-            <h2 className="text-headline-md font-bold text-on-surface">
-              {t('matrix.title')}
-            </h2>
-            <p className="text-body-sm text-on-surface-variant leading-relaxed">
-              {t('matrix.description')}
-            </p>
-          </div>
-        </div>
-      </div>
+    <section className="my-14 lg:my-20 space-y-8">
+      {/* Soft Card Container for Technical Baseline + Comparison Table */}
+      <div className="rounded-2xl bg-section-band border border-card-border p-6 sm:p-8 lg:p-10 space-y-8">
+        <SectionHeader
+          align="start"
+          badge={t('matrix.eyebrow')}
+          title={plans.length >= 2 ? t('matrix.tableTitle') : t('matrix.title')}
+          subtitle={plans.length >= 2 ? t('matrix.tableSubtitle') : t('matrix.description')}
+        />
 
-      {/* Side-by-Side Comparison Matrix when 2+ plans exist */}
-      {plans.length >= 2 && (
-        <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
-            <div>
-              <h3 className="text-headline-md font-bold text-on-surface">
-                {t('matrix.tableTitle')}
-              </h3>
-              <p className="text-body-sm text-on-surface-variant mt-0.5">
-                {t('matrix.tableSubtitle')}
-              </p>
-            </div>
-          </div>
-
+        {plans.length >= 2 && (
           <div
             tabIndex={0}
             role="region"
             aria-labelledby={captionId}
-            className="w-full overflow-x-auto rounded-xl border border-card-border bg-card shadow-card focus-visible:outline-2 focus-visible:outline-input-focus"
+            className="w-full overflow-x-auto rounded-xl border border-card-border bg-card shadow-card focus-visible:outline-2 focus-visible:outline-primary"
           >
             <table className="w-full min-w-[600px] border-separate border-spacing-0 text-start text-sm">
               <caption id={captionId} className="sr-only">
                 {t('matrix.tableCaption')}
               </caption>
               <thead>
-                <tr className="bg-surface-container-high text-on-surface">
+                <tr className="bg-section-band text-on-surface">
                   <th
                     scope="col"
-                    className="sticky start-0 z-20 bg-surface-container-high py-4 px-4 sm:px-5 text-start font-bold text-label-lg border-b border-e border-card-border min-w-[200px]"
+                    className="sticky start-0 z-20 bg-section-band py-4 px-4 sm:px-5 text-start font-bold text-sm border-b border-e border-card-border min-w-[200px]"
                   >
                     {t('matrix.featureCol')}
                   </th>
@@ -99,14 +79,14 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
                       key={plan.id}
                       scope="col"
                       className={clsx(
-                        'py-4 px-4 text-center font-bold text-label-lg border-b border-card-border min-w-[150px]',
-                        plan.isPopular && 'bg-badge-green-bg/50 text-primary'
+                        'py-4 px-4 text-center font-bold text-sm border-b border-card-border min-w-[150px]',
+                        plan.isPopular && 'bg-brand-soft/70 text-primary'
                       )}
                     >
                       <div className="flex flex-col items-center gap-1">
                         <span>{localized(plan.name, lang)}</span>
                         {plan.isPopular && (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-badge-green-bg text-badge-green-text border border-primary/25 font-code text-[11px] font-semibold">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full btn-primary-gradient text-white text-[10px] font-bold">
                             {t('card.popular')}
                           </span>
                         )}
@@ -116,12 +96,12 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
                 </tr>
               </thead>
 
-              <tbody className="divide-y divide-outline-variant/50">
+              <tbody className="divide-y divide-card-border">
                 {/* Starting Price */}
                 <tr>
                   <th
                     scope="row"
-                    className="sticky start-0 z-10 bg-surface-container-low py-3.5 px-4 sm:px-5 text-start font-semibold text-on-surface border-e border-outline-variant/60"
+                    className="sticky start-0 z-10 bg-card py-3.5 px-4 sm:px-5 text-start font-semibold text-on-surface border-e border-card-border"
                   >
                     {t('matrix.rows.startingPrice')}
                   </th>
@@ -129,8 +109,8 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
                     <td
                       key={`${plan.id}-price`}
                       className={clsx(
-                        'py-3.5 px-4 text-center font-code font-bold text-on-surface whitespace-nowrap',
-                        plan.isPopular && 'bg-primary/5'
+                        'py-3.5 px-4 text-center font-mono font-bold text-primary whitespace-nowrap',
+                        plan.isPopular && 'bg-brand-soft/25'
                       )}
                     >
                       {formatMoney(plan.startingPrice ?? 0, lang)}
@@ -142,7 +122,7 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
                 <tr>
                   <th
                     scope="row"
-                    className="sticky start-0 z-10 bg-surface-container-low py-3.5 px-4 sm:px-5 text-start font-semibold text-on-surface border-e border-outline-variant/60"
+                    className="sticky start-0 z-10 bg-card py-3.5 px-4 sm:px-5 text-start font-semibold text-on-surface border-e border-card-border"
                   >
                     {t('matrix.rows.delivery')}
                   </th>
@@ -151,7 +131,7 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
                       key={`${plan.id}-days`}
                       className={clsx(
                         'py-3.5 px-4 text-center text-on-surface-variant whitespace-nowrap',
-                        plan.isPopular && 'bg-primary/5'
+                        plan.isPopular && 'bg-brand-soft/25'
                       )}
                     >
                       {t('matrix.rows.deliveryValue', { count: Number(plan.deliveryDays) || 1 })}
@@ -163,7 +143,7 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
                 <tr>
                   <th
                     scope="row"
-                    className="sticky start-0 z-10 bg-surface-container-low py-3.5 px-4 sm:px-5 text-start font-semibold text-on-surface border-e border-outline-variant/60"
+                    className="sticky start-0 z-10 bg-card py-3.5 px-4 sm:px-5 text-start font-semibold text-on-surface border-e border-card-border"
                   >
                     {t('matrix.rows.sourceCode')}
                   </th>
@@ -171,12 +151,12 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
                     <td
                       key={`${plan.id}-source`}
                       className={clsx(
-                        'py-3.5 px-4 text-center text-primary font-code font-semibold whitespace-nowrap',
-                        plan.isPopular && 'bg-primary/5'
+                        'py-3.5 px-4 text-center text-primary font-mono font-semibold whitespace-nowrap',
+                        plan.isPopular && 'bg-brand-soft/25'
                       )}
                     >
                       <span className="inline-flex items-center gap-1">
-                        <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
+                        <span className="material-symbols-rounded icon-gradient text-[18px]" aria-hidden="true">
                           check_circle
                         </span>
                         <bdi dir="ltr">{t('matrix.rows.sourceCodeValue')}</bdi>
@@ -189,7 +169,7 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
                 <tr>
                   <th
                     scope="row"
-                    className="sticky start-0 z-10 bg-surface-container-low py-3.5 px-4 sm:px-5 text-start font-semibold text-on-surface border-e border-outline-variant/60"
+                    className="sticky start-0 z-10 bg-card py-3.5 px-4 sm:px-5 text-start font-semibold text-on-surface border-e border-card-border"
                   >
                     {t('matrix.rows.guarantee')}
                   </th>
@@ -198,7 +178,7 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
                       key={`${plan.id}-guarantee`}
                       className={clsx(
                         'py-3.5 px-4 text-center text-on-surface-variant whitespace-nowrap',
-                        plan.isPopular && 'bg-primary/5'
+                        plan.isPopular && 'bg-brand-soft/25'
                       )}
                     >
                       {t('matrix.rows.guaranteeDays', { count: guaranteeDays })}
@@ -210,7 +190,7 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
                 <tr>
                   <th
                     scope="row"
-                    className="sticky start-0 z-10 bg-surface-container-low py-3.5 px-4 sm:px-5 text-start font-semibold text-on-surface border-e border-outline-variant/60"
+                    className="sticky start-0 z-10 bg-card py-3.5 px-4 sm:px-5 text-start font-semibold text-on-surface border-e border-card-border"
                   >
                     {t('matrix.rows.responsive')}
                   </th>
@@ -219,10 +199,10 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
                       key={`${plan.id}-rtl`}
                       className={clsx(
                         'py-3.5 px-4 text-center',
-                        plan.isPopular && 'bg-primary/5'
+                        plan.isPopular && 'bg-brand-soft/25'
                       )}
                     >
-                      <span className="material-symbols-outlined text-primary text-[20px]" aria-hidden="true">
+                      <span className="material-symbols-rounded icon-gradient text-[20px]" aria-hidden="true">
                         check_circle
                       </span>
                       <span className="sr-only">{t('matrix.rows.included')}</span>
@@ -230,12 +210,12 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
                   ))}
                 </tr>
 
-                {/* Dynamic Feature Rows extracted from active plans */}
+                {/* Dynamic Feature Rows */}
                 {uniqueFeatures.map((feat) => (
-                  <tr key={feat.key} className="even:bg-surface-container-high/35">
+                  <tr key={feat.key} className="even:bg-section-band/40">
                     <th
                       scope="row"
-                      className="sticky start-0 z-10 bg-surface-container-low py-3.5 px-4 sm:px-5 text-start font-medium text-on-surface-variant border-e border-outline-variant/60"
+                      className="sticky start-0 z-10 bg-card py-3.5 px-4 sm:px-5 text-start font-medium text-on-surface-variant border-e border-card-border"
                     >
                       {feat.label}
                     </th>
@@ -246,13 +226,13 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
                           key={`${plan.id}-${feat.key}`}
                           className={clsx(
                             'py-3.5 px-4 text-center',
-                            plan.isPopular && 'bg-primary/5'
+                            plan.isPopular && 'bg-brand-soft/25'
                           )}
                         >
                           {hasIt ? (
                             <>
                               <span
-                                className="material-symbols-outlined text-primary text-[20px]"
+                                className="material-symbols-rounded icon-gradient text-[20px]"
                                 aria-hidden="true"
                               >
                                 check_circle
@@ -262,7 +242,7 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
                           ) : (
                             <>
                               <span
-                                className="material-symbols-outlined text-outline text-[20px]"
+                                className="material-symbols-rounded text-muted/60 text-[20px]"
                                 aria-hidden="true"
                               >
                                 remove
@@ -280,7 +260,7 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
                 <tr>
                   <th
                     scope="row"
-                    className="sticky start-0 z-10 bg-surface-container-low py-4 px-4 sm:px-5 text-start font-semibold text-on-surface border-e border-outline-variant/60"
+                    className="sticky start-0 z-10 bg-card py-4 px-4 sm:px-5 text-start font-semibold text-on-surface border-e border-card-border"
                   >
                     {t('matrix.rows.selectPlan')}
                   </th>
@@ -292,17 +272,17 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
                         key={`${plan.id}-cta`}
                         className={clsx(
                           'py-4 px-4 text-center',
-                          plan.isPopular && 'bg-primary/5'
+                          plan.isPopular && 'bg-brand-soft/25'
                         )}
                       >
                         <Link
                           to={contactPath({ plan: plan.id })}
                           aria-label={t('card.ctaAria', { action: label, name: planName })}
                           className={clsx(
-                            'inline-flex items-center justify-center min-h-[44px] px-4 py-2 rounded-lg text-label-md font-bold transition-all whitespace-nowrap',
+                            'inline-flex items-center justify-center min-h-[40px] px-5 py-2 rounded-full text-xs font-bold transition-all duration-300 whitespace-nowrap',
                             plan.isPopular
-                              ? 'btn-primary-gradient'
-                              : 'bg-surface-container-high text-on-surface border border-outline-variant hover:border-primary/60 hover:text-primary'
+                              ? 'btn-primary-gradient text-white'
+                              : 'bg-surface text-primary border border-primary/45 hover:bg-brand-soft'
                           )}
                         >
                           {label}
@@ -314,8 +294,8 @@ export function FeatureMatrix({ plans = [], guaranteeDays = 30 }) {
               </tbody>
             </table>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </section>
   );
 }

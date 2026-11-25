@@ -1,86 +1,116 @@
-import React from 'react';
+import React, { useId } from 'react';
 import clsx from 'clsx';
+import { LayoutGroup, m } from 'framer-motion';
+import { MOTION_TRANSITION } from '../../lib/motion';
+import { LayoutMotion } from './Motion';
 
 export function Tabs({
-  tabs = [], // [{ id, label, icon, badge }]
+  tabs = [],
   activeTab,
   onChange,
-  variant = 'pills', // 'pills' | 'underline'
+  variant = 'pills',
   className = '',
 }) {
+  const groupId = useId();
+
   return (
-    <div
-      role="tablist"
-      className={clsx(
-        'flex items-center gap-1.5 overflow-x-auto no-scrollbar',
-        variant === 'underline' && 'border-b border-outline-variant gap-4',
-        variant === 'pills' && 'p-1 rounded-xl bg-nav-pill border border-outline-variant w-fit',
-        className
-      )}
-    >
-      {tabs.map((tab) => {
-        const isActive = activeTab === tab.id;
+    <LayoutMotion>
+      <LayoutGroup id={`tabs-${groupId}`}>
+        <div
+          role="tablist"
+          className={clsx(
+            'flex items-center gap-1.5 max-w-full overflow-x-auto no-scrollbar',
+            variant === 'underline' && 'border-b border-outline-variant gap-6',
+            variant === 'pills' && 'p-1 rounded-full bg-section-band border border-outline-variant w-fit max-w-full',
+            className
+          )}
+        >
+          {tabs.map((tab) => {
+            const isActive = activeTab === tab.id;
 
-        if (variant === 'underline') {
-          return (
-            <button
-              key={tab.id}
-              role="tab"
-              type="button"
-              aria-selected={isActive}
-              onClick={() => onChange(tab.id)}
-              className={clsx(
-                'relative pb-3 pt-1 text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-2',
-                isActive
-                  ? 'text-primary font-semibold'
-                  : 'text-on-surface-variant hover:text-on-surface'
-              )}
-            >
-              {tab.icon && <span className="material-symbols-outlined text-[18px]">{tab.icon}</span>}
-              <span>{tab.label}</span>
-              {tab.badge !== undefined && (
-                <span className="text-[11px] px-1.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-mono">
-                  {tab.badge}
-                </span>
-              )}
-              {isActive && (
-                <span className="absolute bottom-0 inset-x-0 h-0.5 bg-primary rounded-full" />
-              )}
-            </button>
-          );
-        }
+            if (variant === 'underline') {
+              return (
+                <button
+                  key={tab.id}
+                  role="tab"
+                  type="button"
+                  aria-selected={isActive}
+                  onClick={() => onChange(tab.id)}
+                  className={clsx(
+                    'relative pb-3 pt-1 text-sm font-semibold transition-colors duration-300 ease-nexus whitespace-nowrap flex items-center gap-2',
+                    isActive
+                      ? 'text-primary'
+                      : 'text-muted hover:text-on-surface'
+                  )}
+                >
+                  {tab.icon && (
+                    <span className="material-symbols-rounded text-[18px]" aria-hidden="true">
+                      {tab.icon}
+                    </span>
+                  )}
+                  <span>{tab.label}</span>
+                  {tab.badge !== undefined && (
+                    <span className="text-[11px] px-2 py-0.5 rounded-full bg-brand-soft text-brand-soft-text font-mono">
+                      {tab.badge}
+                    </span>
+                  )}
+                  {isActive && (
+                    <m.span
+                      layoutId={`tab-underline-${groupId}`}
+                      transition={MOTION_TRANSITION}
+                      aria-hidden="true"
+                      className="absolute bottom-0 inset-x-0 h-[2px] bg-primary-gradient rounded-full"
+                    />
+                  )}
+                </button>
+              );
+            }
 
-        return (
-          <button
-            key={tab.id}
-            role="tab"
-            type="button"
-            aria-selected={isActive}
-            onClick={() => onChange(tab.id)}
-            className={clsx(
-              'px-3.5 py-1.5 rounded-lg text-sm font-medium transition-all duration-150 whitespace-nowrap flex items-center gap-2 select-none',
-              isActive
-                ? 'bg-surface text-primary shadow-sm font-semibold'
-                : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60'
-            )}
-          >
-            {tab.icon && <span className="material-symbols-outlined text-[18px]">{tab.icon}</span>}
-            <span>{tab.label}</span>
-            {tab.badge !== undefined && (
-              <span
+            return (
+              <button
+                key={tab.id}
+                role="tab"
+                type="button"
+                aria-selected={isActive}
+                onClick={() => onChange(tab.id)}
                 className={clsx(
-                  'text-[11px] px-1.5 py-0.5 rounded-full font-mono',
+                  'relative px-4 py-2 min-h-[38px] rounded-full text-sm font-semibold transition-colors duration-300 ease-nexus whitespace-nowrap flex items-center gap-2 select-none shrink-0',
                   isActive
-                    ? 'bg-chip-mint-bg text-chip-mint-fg'
-                    : 'bg-surface text-on-surface-variant'
+                    ? 'text-white'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-card/80'
                 )}
               >
-                {tab.badge}
-              </span>
-            )}
-          </button>
-        );
-      })}
-    </div>
+                {isActive && (
+                  <m.span
+                    layoutId={`tab-pill-${groupId}`}
+                    transition={MOTION_TRANSITION}
+                    aria-hidden="true"
+                    className="absolute inset-0 rounded-full btn-primary-gradient"
+                  />
+                )}
+                {tab.icon && (
+                  <span className="relative z-10 material-symbols-rounded text-[18px]" aria-hidden="true">
+                    {tab.icon}
+                  </span>
+                )}
+                <span className="relative z-10">{tab.label}</span>
+                {tab.badge !== undefined && (
+                  <span
+                    className={clsx(
+                      'relative z-10 text-[11px] px-2 py-0.5 rounded-full font-mono font-bold',
+                      isActive
+                        ? 'bg-white text-[#3A3F8F]'
+                        : 'bg-card text-on-surface-variant'
+                    )}
+                  >
+                    {tab.badge}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </LayoutGroup>
+    </LayoutMotion>
   );
 }

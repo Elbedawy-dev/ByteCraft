@@ -31,13 +31,17 @@ const settingsSchema = new mongoose.Schema(
     },
     siteName: {
       type: String,
-      default: 'ByteCraft',
+      default: 'Nexus',
       trim: true,
     },
     guaranteeDays: {
       type: Number,
       default: DEFAULT_GUARANTEE_DAYS,
       min: 0,
+    },
+    registrationEnabled: {
+      type: Boolean,
+      default: true,
     },
     contact: {
       email: { type: String, default: '', trim: true, lowercase: true },

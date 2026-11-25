@@ -1,7 +1,37 @@
 import i18n from '../i18n';
-import { ROUTES } from '../config/routes';
+import { getSafeRedirectPath, loginPath, ROUTES } from '../config/routes';
+import { setSessionHint } from '../lib/storage';
 
 const RAW_API_ORIGIN = (import.meta.env.VITE_API_URL || '').trim().replace(/\/+$/, '');
+
+let unauthorizedListener = null;
+
+export function registerUnauthorizedHandler(listener) {
+  unauthorizedListener = typeof listener === 'function' ? listener : null;
+  return () => {
+    if (unauthorizedListener === listener) {
+      unauthorizedListener = null;
+    }
+  };
+}
+
+export function handleGlobalUnauthorized() {
+  setSessionHint(false);
+  if (unauthorizedListener) {
+    try {
+      unauthorizedListener();
+    } catch {
+      // Ignore cleanup errors during redirect
+    }
+  }
+
+  if (typeof window === 'undefined') return;
+  const currentPath = window.location.pathname;
+  if (currentPath === ROUTES.LOGIN || currentPath === ROUTES.OWNER_LOGIN) return;
+
+  const target = getSafeRedirectPath(`${currentPath}${window.location.search}`, null);
+  window.location.assign(loginPath(target));
+}
 
 export class ApiError extends Error {
   constructor({ status = 0, code = 'UNKNOWN_ERROR', message = '', details = [] } = {}) {
@@ -12,6 +42,8 @@ export class ApiError extends Error {
     this.details = Array.isArray(details) ? details : [];
     this.isRateLimited = status === 429 || code === 'TOO_MANY_REQUESTS';
     this.isUnauthorized = status === 401 || code === 'UNAUTHORIZED';
+    this.isForbidden = status === 403 || code === 'FORBIDDEN';
+    this.isLocked = status === 423 || code === 'ACCOUNT_LOCKED';
   }
 }
 
@@ -57,19 +89,11 @@ export function buildApiUrl(path, params) {
   return url;
 }
 
-function handleOwnerUnauthorized(apiPath, skipAuthRedirect) {
-  if (skipAuthRedirect || typeof window === 'undefined') return;
-  const isOwnerCall = apiPath.startsWith('/api/owner/');
-  const isOwnerLoginCall = apiPath === '/api/owner/login';
-  if (!isOwnerCall || isOwnerLoginCall) return;
-
-  const currentPath = window.location.pathname;
-  if (currentPath === ROUTES.OWNER_LOGIN) return;
-
-  const target = `${currentPath}${window.location.search}`;
-  const loginUrl = `${ROUTES.OWNER_LOGIN}?redirect=${encodeURIComponent(target)}`;
-  window.location.assign(loginUrl);
-}
+const AUTH_EXEMPT_401_PATHS = new Set([
+  '/api/auth/login',
+  '/api/auth/register',
+  '/api/owner/login',
+]);
 
 /**
  * Unified API request helper.
@@ -77,7 +101,7 @@ function handleOwnerUnauthorized(apiPath, skipAuthRedirect) {
  * - Supports JSON and FormData payloads
  * - Unwraps `{ success, data, meta }` into `{ data, meta }`
  * - Throws `ApiError` on failure
- * - Redirects `/owner/*` 401 responses (except login) to `/owner/login`
+ * - Clears session and redirects to `/login?redirect=<current path>` on 401
  */
 export async function apiRequest(path, options = {}) {
   const {
@@ -148,13 +172,15 @@ export async function apiRequest(path, options = {}) {
       errObj.code ||
       (status === 429
         ? 'TOO_MANY_REQUESTS'
-        : status === 401
-          ? 'UNAUTHORIZED'
-          : status === 403
-            ? 'FORBIDDEN'
-            : status === 404
-              ? 'NOT_FOUND'
-              : 'INTERNAL_ERROR');
+        : status === 423
+          ? 'ACCOUNT_LOCKED'
+          : status === 401
+            ? 'UNAUTHORIZED'
+            : status === 403
+              ? 'FORBIDDEN'
+              : status === 404
+                ? 'NOT_FOUND'
+                : 'INTERNAL_ERROR');
 
     const message =
       status === 429
@@ -168,8 +194,8 @@ export async function apiRequest(path, options = {}) {
       details: errObj.details || [],
     });
 
-    if (status === 401) {
-      handleOwnerUnauthorized(apiPath, skipAuthRedirect);
+    if (status === 401 && !skipAuthRedirect && !AUTH_EXEMPT_401_PATHS.has(apiPath)) {
+      handleGlobalUnauthorized();
     }
 
     throw apiError;

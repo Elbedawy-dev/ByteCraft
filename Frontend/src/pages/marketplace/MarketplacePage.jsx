@@ -37,8 +37,6 @@ export default function MarketplacePage() {
   );
   const meta = projectsQuery.data?.meta ?? null;
 
-  // Accumulate distinct techStack values from real API responses so filter options
-  // remain accessible even while narrowing results
   const [knownTechs, setKnownTechs] = useState([]);
 
   useEffect(() => {
@@ -74,7 +72,6 @@ export default function MarketplacePage() {
     return Array.from(map.values()).sort((a, b) => a.localeCompare(b));
   }, [knownTechs, filters.tech]);
 
-  // If URL points past the last available page for a non-empty result set, snap to last valid page
   useEffect(() => {
     if (
       !projectsQuery.isFetching &&
@@ -105,10 +102,9 @@ export default function MarketplacePage() {
   };
 
   return (
-    <div className="relative w-full overflow-x-clip bc-hero-wash flex-1">
-      <div className="relative z-10 max-w-7xl mx-auto px-gutter-mobile sm:px-6 lg:px-gutter py-space-lg sm:py-space-xl space-y-space-xl">
-        {/* Top Section: Header + Stats Strip + Filter Console */}
-        <section className="space-y-space-lg">
+    <div className="relative w-full overflow-x-clip flex-1 flex flex-col">
+      <div className="w-full bc-hero-wash py-12 lg:py-16">
+        <div className="max-w-container mx-auto px-4 sm:px-6 space-y-10">
           <MarketplaceHeader />
 
           <MarketplaceFilterConsole
@@ -129,9 +125,10 @@ export default function MarketplacePage() {
             onApplyBatchFilters={applyBatchFilters}
             onClearAll={clearAllFilters}
           />
-        </section>
+        </div>
+      </div>
 
-        {/* Results Grid + Pagination */}
+      <div className="max-w-container w-full mx-auto px-4 sm:px-6 py-12 lg:py-16 space-y-16 flex-1">
         <div ref={resultsTopRef} className="scroll-mt-24">
           <MarketplaceGrid
             projects={projects}
@@ -148,12 +145,10 @@ export default function MarketplacePage() {
           />
         </div>
 
-        {/* What You Get With Every Project */}
         <IncludedFeaturesSection />
-
-        {/* Custom Build CTA Banner */}
-        <CustomBuildCta />
       </div>
+
+      <CustomBuildCta />
     </div>
   );
 }

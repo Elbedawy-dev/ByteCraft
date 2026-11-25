@@ -1,131 +1,103 @@
 {
   "meta": {
-    "description": "Turnkey and custom learning platforms and high-performance e-commerce stores engineered with modern MERN Stack in Egypt & MENA."
+    "description": "Turnkey and custom learning platforms, e-commerce stores, and scalable MERN Stack web applications engineered by Nexus."
   },
   "hero": {
-    "badge": {
-      "studio": "Leading MERN Stack Studio",
-      "region": "Egypt & Middle East"
-    },
-    "headlinePrefix": "We Engineer",
-    "headlineHighlight": "Learning Platforms",
-    "headlineSuffix": "& High-Converting E-Commerce with Modern MERN",
-    "subtitle": "Ultra-fast turnkey and custom software solutions built to turn visitors into paying customers and scale your business across Egypt and MENA with production-grade performance.",
-    "ctaPrimary": "Browse Ready Projects",
-    "ctaSecondary": "Request Custom Project",
-    "terminal": {
-      "filename": "Production_MERN_Stack.ts",
-      "floatingBadgeTitle": "Verified Clean Code",
-      "floatingBadgeSubtitle": "Modular Production Architecture"
-    }
+    "eyebrow": "MERN Stack Engineering Studio",
+    "line1": "Build Smarter.",
+    "line2": "Grow Faster.",
+    "subtitle": "Turnkey software platforms and custom MERN applications engineered for speed, clean ownership, and scalable digital growth across Egypt and MENA.",
+    "ctaPrimary": "Explore Ready Projects",
+    "ctaSecondary": "Contact Us"
   },
   "solutions": {
-    "eyebrow": "Core Engineering Specialties",
-    "title": "Engineering Solutions Built for Founders & Academies",
-    "subtitle": "We pair refined interface craft with MongoDB reliability and React speed to deliver an unmistakable digital customer experience.",
+    "eyebrow": "Our Services",
+    "title": "What We",
+    "titleAccent": "Offer",
+    "subtitle": "Production-grade web platforms combining modern React interfaces, secure Node.js APIs, and optimized MongoDB data models.",
     "cards": {
       "lms": {
-        "title": "Educational Center Platforms (LMS)",
-        "description": "A complete platform for educators and academies giving you full ownership over courses and secure video delivery.",
-        "features": [
-          "Protected video playback against unauthorized downloads",
-          "Question banks and automatic interactive exam grading",
-          "Instant local payments: Vodafone Cash, InstaPay & cards",
-          "Smart admin dashboard for students and cloud sessions"
-        ],
-        "cta": "Explore Learning Platforms"
+        "title": "Educational Platforms",
+        "description": "Complete LMS platforms for academies and instructors with protected video streaming, automated exams, and local payment gateways."
       },
       "ecommerce": {
-        "title": "Turnkey E-Commerce Stores",
-        "description": "Engineered from scratch without WordPress bloat—delivering instant page loads and frictionless checkout flows.",
-        "features": [
-          "Fast, intuitive catalog & inventory control with analytics",
-          "Single-page checkout built for maximum conversion",
-          "Direct shipping carrier integration and order tracking",
-          "Financial reports and automated WhatsApp notifications"
-        ],
-        "cta": "Browse Ready Stores"
+        "title": "E-Commerce Stores",
+        "description": "High-converting custom stores without CMS bloat—built for instant load speed, inventory clarity, and seamless checkout."
       },
       "custom": {
-        "title": "Custom Web Applications (MERN)",
-        "description": "Tailored software architecture engineered around your exact business model on cloud infrastructure built to scale.",
-        "features": [
-          "Full from-scratch MERN Stack (React + Node + Express)",
-          "High-throughput RESTful / GraphQL backend APIs",
-          "Indexed and query-optimized MongoDB data modeling",
-          "Seamless AI and third-party gateway integrations"
-        ],
-        "cta": "Request Custom Engineering"
+        "title": "Custom MERN Apps",
+        "description": "Tailored web applications and SaaS products architected from scratch around your exact business workflows and APIs."
+      },
+      "consulting": {
+        "title": "Technical Consulting",
+        "description": "Architecture reviews, performance optimization, payment gateway integration, and cloud deployment blueprints."
       }
     }
+  },
+  "about": {
+    "eyebrow": "About NEXUS",
+    "title": "Turning Ideas",
+    "titleAccent": "into Reality",
+    "description": "Nexus builds software products you truly own—clean modular source code, transparent documentation, and reliable engineering without vendor lock-in.",
+    "secondary": "Whether launching a ready-made platform in days or scoping a custom system from the ground up, every release goes through rigorous QA and security hardening.",
+    "cta": "Learn More About Us"
+  },
+  "stats": {
+    "publishedProjects": "Published Platforms",
+    "deliveredOrders": "Delivered Orders",
+    "reviewsCount": "Verified Reviews",
+    "reviewsAverage": "Average Rating"
   },
   "featured": {
-    "eyebrow": "Ready for Immediate Deployment",
-    "title": "Ready-Made Projects for Immediate Launch",
-    "viewAll": "View All Ready Platforms",
-    "errorTitle": "Unable to load featured projects",
-    "loadingLabel": "Loading ready-made projects"
-  },
-  "howItWorks": {
-    "eyebrow": "Clear & Direct Methodology",
-    "title": "How We Work: From Discovery to Launch",
-    "subtitle": "We follow an agile engineering workflow that guarantees a bug-free, production-ready launch in record time.",
-    "steps": {
-      "step1": {
-        "number": "01",
-        "title": "Pick or Scope Your Idea",
-        "description": "Choose from our battle-tested turnkey platforms or share your custom requirements for an immediate technical blueprint.",
-        "tag": "Rapid discovery call"
-      },
-      "step2": {
-        "number": "02",
-        "title": "Brand & Gateway Setup",
-        "description": "We tailor the entire platform to your visual identity: logo, brand palette, payment gateways, and custom domain configuration.",
-        "tag": "High visual fidelity"
-      },
-      "step3": {
-        "number": "03",
-        "title": "Integration & Full QA",
-        "description": "We run security hardening, server load benchmarks, and live payment flow verification (Vodafone Cash / Visa) before go-live.",
-        "tag": "Load & security testing"
-      },
-      "step4": {
-        "number": "04",
-        "title": "Handover & Ongoing Support",
-        "description": "Receive full ownership of your platform and dashboard, complete with walkthrough videos and dedicated technical support.",
-        "tag": "Comprehensive code warranty"
-      }
-    }
+    "eyebrow": "Our Work",
+    "title": "Our",
+    "titleAccent": "Portfolio",
+    "subtitle": "Explore battle-tested platforms ready for immediate branding and deployment.",
+    "filterLabel": "Filter portfolio by category",
+    "allCategories": "All",
+    "viewAll": "View All Projects",
+    "errorTitle": "Unable to load portfolio projects",
+    "loadingLabel": "Loading portfolio projects",
+    "emptyCategoryTitle": "No projects in this category yet",
+    "emptyCategoryDescription": "Switch back to All to explore available platforms."
   },
   "pillars": {
-    "eyebrow": "Why ByteCraft?",
-    "title": "Key Pillars That Keep Your Platform Ahead of Competitors",
-    "subtitle": "We never ship sluggish templates or bloated CMS plugins. Every platform is engineered with clean code and milled interfaces.",
+    "eyebrow": "Advantages",
+    "title": "Why Choose",
+    "subtitle": "We never ship sluggish templates or bloated plugins—every platform is built with clean architecture and crisp interfaces.",
     "items": {
       "speed": {
-        "title": "Full MERN Stack Without Lag",
-        "description": "Modern single-page architecture delivers instant route transitions and snappy responsiveness that boosts conversion and retention."
+        "title": "Full MERN Performance",
+        "description": "Snappy single-page navigation and optimized backend queries built for conversion and scale."
       },
       "security": {
-        "title": "Hardened Payments & Content Security",
-        "description": "Sensitive data encryption and verified integration with Egyptian payment gateways (Vodafone Cash, InstaPay, Visa) protect every transaction."
+        "title": "Hardened Security",
+        "description": "Protected media delivery, strict input validation, and verified Egyptian & global payment flows."
       },
       "delivery": {
-        "title": "Fast Turnaround Delivery",
-        "description": "Thanks to our modular studio engine, we deploy your customized turnkey platform quickly so you can start selling immediately."
+        "title": "Rapid Turnaround",
+        "description": "Launch ready-made platforms quickly with full source code and deployment guidance."
       },
       "support": {
-        "title": "Technical Support & Clean Code Warranty",
-        "description": "Full quality guarantee alongside responsive engineering support and routine backups to keep your business running around the clock."
+        "title": "Dedicated Support",
+        "description": "Direct engineer-to-founder communication, clean code warranty, and structured handover."
       }
     }
   },
+  "testimonials": {
+    "eyebrow": "Testimonials",
+    "title": "What Our",
+    "titleAccent": "Clients Say",
+    "subtitle": "Real feedback submitted by verified clients on delivered platforms."
+  },
   "cta": {
-    "title": "Ready to Launch Your Next Platform and Grow Sales?",
-    "description": "Chat with us on WhatsApp or request a detailed technical quote—a software engineer will review your idea and respond promptly.",
-    "primaryAction": "Start Now & Request Project",
-    "secondaryActionWhatsapp": "Quick WhatsApp Chat",
-    "secondaryActionContact": "Talk to an Engineer",
+    "eyebrow": "Get in Touch",
+    "title": "Let's Work",
+    "titleAccent": "Together",
+    "description": "Tell us about your platform goals or pick a ready-made system—an engineer will review your scope and respond promptly.",
+    "primaryAction": "Contact Us",
+    "secondaryActionWhatsapp": "Chat on WhatsApp",
+    "secondaryActionProjects": "Browse Projects",
     "features": {
       "noHiddenFees": "No hidden fees",
       "freeConsultation": "Free technical consultation"

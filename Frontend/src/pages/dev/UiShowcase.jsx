@@ -25,6 +25,8 @@ import {
   Table,
 } from '../../components/ui';
 import {
+  BrandLogo,
+  HeroCubes,
   ProjectCard,
   Rating,
   PriceTag,
@@ -36,6 +38,7 @@ import {
   EmptyState,
   ErrorState,
 } from '../../components/shared';
+import { BRAND } from '../../config/brand';
 import { useToast, useLang, useTheme } from '../../app/providers';
 
 export default function UiShowcase() {
@@ -61,8 +64,8 @@ export default function UiShowcase() {
     id: 'proj_sample_1',
     slug: 'storecraft-elite',
     title: {
-      ar: 'متجر ستور كرافت المتقدم',
-      en: 'StoreCraft Elite E-Commerce',
+      ar: 'متجر نيكسوس المتقدم',
+      en: 'Nexus Commerce Elite',
     },
     tagline: {
       ar: 'متجر إلكتروني فائق السرعة، تحكم مرن في المخزون، وعربة تسوق فورية دون مغادرة الصفحة مع دعم Paymob.',
@@ -89,10 +92,11 @@ export default function UiShowcase() {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
+    <div className="w-full max-w-container mx-auto px-4 sm:px-6 py-10 space-y-16">
       {/* Dev Controls Bar */}
-      <div className="p-4 rounded-2xl bg-surface-container-high border border-outline-variant flex flex-wrap items-center justify-between gap-4 sticky top-24 z-30 backdrop-blur-md shadow-lg">
-        <div className="flex items-center gap-3">
+      <div className="p-4 rounded-2xl bg-card/90 border border-card-border flex flex-wrap items-center justify-between gap-4 sticky top-24 z-30 backdrop-blur-md shadow-card">
+        <div className="flex items-center gap-4">
+          <BrandLogo tone="auto" size="sm" />
           <Badge variant="primary" size="lg">
             UI Test Bench
           </Badge>
@@ -114,12 +118,47 @@ export default function UiShowcase() {
             variant="secondary"
             size="sm"
             onClick={toggleTheme}
-            iconLeading={<span className="material-symbols-outlined text-[18px]">{theme === 'dark' ? 'light_mode' : 'dark_mode'}</span>}
+            iconLeading={
+              <span className="material-symbols-rounded text-[18px]">
+                {theme === 'dark' ? 'light_mode' : 'dark_mode'}
+              </span>
+            }
           >
             {theme === 'dark' ? 'Light' : 'Dark'}
           </Button>
         </div>
       </div>
+
+      {/* 0. BRAND & DECORATION */}
+      <section className="space-y-6">
+        <h2 className="text-xl font-bold border-b border-outline-variant pb-2 font-mono text-primary">
+          00. Brand Identity, Gradient Icons & 3D Cubes
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card padding="md" className="flex flex-col items-start justify-center gap-3">
+            <span className="text-xs font-mono text-on-surface-variant">Auto Tone Surface</span>
+            <BrandLogo tone="auto" size="lg" />
+          </Card>
+
+          <div className="rounded-xl bg-navy p-6 flex flex-col items-start justify-center gap-3">
+            <span className="text-xs font-mono text-navy-text">Light Tone on Navy</span>
+            <BrandLogo tone="light" size="lg" />
+          </div>
+
+          <Card variant="soft" padding="md" className="flex items-center justify-between gap-4">
+            <div className="space-y-2">
+              <div className="w-12 h-12 rounded-lg bg-primary-soft flex items-center justify-center">
+                <span className="material-symbols-rounded icon-gradient text-[24px]">
+                  deployed_code
+                </span>
+              </div>
+              <p className="text-xs font-semibold text-on-surface">48px Gradient Icon Chip</p>
+            </div>
+            <HeroCubes className="w-28 h-auto rtl:-scale-x-100" />
+          </Card>
+        </div>
+      </section>
 
       {/* 1. SECTION HEADERS & BREADCRUMBS */}
       <section className="space-y-6">
@@ -131,13 +170,13 @@ export default function UiShowcase() {
           items={[
             { label: 'الرئيسية', href: '/' },
             { label: 'المشاريع الجاهزة', href: '/projects' },
-            { label: 'متجر ستور كرافت' },
+            { label: 'متجر نيكسوس' },
           ]}
         />
 
         <SectionHeader
           badge="نظام التصميم الموحد"
-          title="معاينة كافة مكونات واجهة ByteCraft"
+          title={`معاينة كافة مكونات واجهة ${BRAND.name}`}
           subtitle="تتيح هذه الصفحة للمطورين والمصممين فحص دقة المسافات، وحالات الإدخال، والتوجيه LTR/RTL، ووضع الألوان الداكن والفاتح."
           action={
             <Button variant="outline" size="sm">
@@ -171,10 +210,10 @@ export default function UiShowcase() {
             <Button size="md">Medium (48px)</Button>
             <Button size="lg">Large (56px)</Button>
             <Button size="icon" aria-label="Icon only">
-              <span className="material-symbols-outlined text-[22px]">rocket_launch</span>
+              <span className="material-symbols-rounded text-[22px]">rocket_launch</span>
             </Button>
             <Button size="icon-sm" aria-label="Icon small">
-              <span className="material-symbols-outlined text-[18px]">terminal</span>
+              <span className="material-symbols-rounded text-[18px]">code_blocks</span>
             </Button>
           </div>
         </div>
@@ -183,12 +222,12 @@ export default function UiShowcase() {
           <h3 className="text-sm font-semibold text-on-surface-variant">States (Icons, Loading, Disabled)</h3>
           <div className="flex flex-wrap items-center gap-4">
             <Button
-              iconLeading={<span className="material-symbols-outlined text-[20px]">shopping_cart</span>}
+              iconLeading={<span className="material-symbols-rounded text-[20px]">shopping_cart</span>}
             >
               Leading Icon
             </Button>
             <Button
-              iconTrailing={<span className="material-symbols-outlined text-[20px] rtl:-scale-x-100">arrow_forward</span>}
+              iconTrailing={<span className="material-symbols-rounded text-[20px] rtl:-scale-x-100">arrow_forward</span>}
             >
               Trailing Icon
             </Button>
@@ -206,10 +245,10 @@ export default function UiShowcase() {
       {/* 3. FORM CONTROLS & SPACING */}
       <section className="space-y-6">
         <h2 className="text-xl font-bold border-b border-outline-variant pb-2 font-mono text-primary">
-          03. Form Controls (48px height, 8px gap to label, 20px between fields)
+          03. Form Controls (48px height, 12px radius, 3px focus ring)
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-6 rounded-2xl bg-surface-container border border-outline-variant">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-6 rounded-2xl bg-card border border-card-border shadow-card">
           {/* Default Input */}
           <FormField
             id="test-name"
@@ -230,7 +269,7 @@ export default function UiShowcase() {
               type="email"
               dir="ltr"
               placeholder="client@example.com"
-              iconLeading={<span className="material-symbols-outlined text-[20px]">mail</span>}
+              iconLeading={<span className="material-symbols-rounded text-[20px]">mail</span>}
             />
           </FormField>
 
@@ -244,7 +283,7 @@ export default function UiShowcase() {
             <Input
               dir="ltr"
               defaultValue="+20 10 1234 5678"
-              iconLeading={<span className="material-symbols-outlined text-[20px]">call</span>}
+              iconLeading={<span className="material-symbols-rounded text-[20px]">call</span>}
             />
           </FormField>
 
@@ -270,7 +309,7 @@ export default function UiShowcase() {
           >
             <Input
               disabled
-              defaultValue="PROJ-BC-8942"
+              defaultValue="PROJ-NX-8942"
               dir="ltr"
             />
           </FormField>
@@ -304,7 +343,7 @@ export default function UiShowcase() {
         </div>
 
         {/* Checkbox, Radio, RadioCards, Switch */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 rounded-2xl bg-surface-container border border-outline-variant">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 rounded-2xl bg-card border border-card-border shadow-card">
           <div className="space-y-4">
             <h4 className="font-semibold text-sm text-on-surface">Toggles & Checks</h4>
             <div className="space-y-2">
@@ -393,14 +432,14 @@ export default function UiShowcase() {
           <StatusBadge type="inquiry" status="new" />
         </div>
 
-        <div className="flex flex-wrap items-center gap-6 p-4 rounded-xl bg-surface-container border border-outline-variant">
+        <div className="flex flex-wrap items-center gap-6 p-4 rounded-xl bg-surface-soft border border-card-border">
           <Rating rating={5.0} count={32} />
           <Rating rating={4.8} count={19} />
           <Rating rating={3.5} count={4} />
 
           <PriceTag piasters={580000} size="lg" />
           <PriceTag piasters={750000} originalPiasters={950000} size="lg" prefix="خصم خاص:" />
-          <CopyButton text="ORDER-BC-2026-X89" label="نسخ رقم الطلب" />
+          <CopyButton text="ORDER-NX-2026-X89" label="نسخ رقم الطلب" />
         </div>
 
         {/* Interactive Cards */}
@@ -409,20 +448,20 @@ export default function UiShowcase() {
             <h4 className="font-bold text-on-surface mb-1">بطاقة تفاعلية (Interactive Card)</h4>
             <p className="text-xs text-on-surface-variant">تتفاعل هذه البطاقة مع حركة المؤشر بظل أنيق وتأثير hover سلس.</p>
           </Card>
-          <Card variant="flat" padding="md">
-            <h4 className="font-bold text-on-surface mb-1">بطاقة مسطحة (Flat Card)</h4>
+          <Card variant="soft" padding="md">
+            <h4 className="font-bold text-on-surface mb-1">بطاقة ناعمة (Soft Card)</h4>
             <p className="text-xs text-on-surface-variant">خلفية هادئة مع حدود دقيقة لعرض البيانات المنظمة.</p>
           </Card>
         </div>
 
         {/* Toast triggers */}
-        <div className="p-6 rounded-2xl bg-surface-container border border-outline-variant space-y-4">
+        <div className="p-6 rounded-2xl bg-card border border-card-border space-y-4">
           <h4 className="font-semibold text-sm text-on-surface">Interactive Toast System</h4>
           <div className="flex flex-wrap items-center gap-3">
             <Button
               size="sm"
               variant="secondary"
-              onClick={() => toast.success('تم إنشاء طلبك بنجاح! رقم الطلب: BC-9942')}
+              onClick={() => toast.success('تم إنشاء طلبك بنجاح! رقم الطلب: NX-9942')}
             >
               Show Success Toast
             </Button>
@@ -519,15 +558,15 @@ export default function UiShowcase() {
           data={[
             {
               id: '1',
-              orderNumber: 'BC-10024',
+              orderNumber: 'NX-10024',
               client: 'أحمد محمود',
-              project: 'StoreCraft Elite',
+              project: 'Nexus Commerce',
               total: '5,800 ج.م',
               status: 'confirmed',
             },
             {
               id: '2',
-              orderNumber: 'BC-10025',
+              orderNumber: 'NX-10025',
               client: 'سارة إبراهيم',
               project: 'EduWave LMS',
               total: '6,200 ج.م',
@@ -535,7 +574,7 @@ export default function UiShowcase() {
             },
             {
               id: '3',
-              orderNumber: 'BC-10026',
+              orderNumber: 'NX-10026',
               client: 'خالد عبد الله',
               project: 'SaaSKit Pro',
               total: '9,500 ج.م',
@@ -553,12 +592,12 @@ export default function UiShowcase() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Skeleton.Card />
-          <div className="p-6 rounded-xl border border-outline-variant bg-surface-container space-y-4">
+          <div className="p-6 rounded-xl border border-card-border bg-card space-y-4">
             <Skeleton className="h-6 w-1/3" />
             <Skeleton.Text lines={4} />
             <div className="flex gap-2 pt-2">
-              <Skeleton className="h-10 w-28 rounded-lg" />
-              <Skeleton className="h-10 w-28 rounded-lg" />
+              <Skeleton className="h-10 w-28 rounded-full" />
+              <Skeleton className="h-10 w-28 rounded-full" />
             </div>
           </div>
         </div>
@@ -582,7 +621,7 @@ export default function UiShowcase() {
       {/* 7. SHARED PROJECT CARD */}
       <section className="space-y-6">
         <h2 className="text-xl font-bold border-b border-outline-variant pb-2 font-mono text-primary">
-          07. Shared ProjectCard (Screens 2 & 5 Fidelity)
+          07. Shared ProjectCard
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -627,7 +666,7 @@ export default function UiShowcase() {
       {/* 8. CTA BANNER */}
       <section className="space-y-6">
         <h2 className="text-xl font-bold border-b border-outline-variant pb-2 font-mono text-primary">
-          08. Shared CtaBanner (Screens 2 & 3 Fidelity)
+          08. Shared CtaBanner
         </h2>
 
         <CtaBanner
@@ -637,7 +676,7 @@ export default function UiShowcase() {
           primaryAction={{
             label: 'ابدأ الآن واطلب مشروعك',
             to: '/contact',
-            icon: 'rocket_launch',
+            icon: 'arrow_forward',
           }}
           secondaryAction={{
             label: 'محادثة واتساب سريعة',

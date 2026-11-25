@@ -1,231 +1,124 @@
-# ByteCraft Front End Foundation
+# Nexus Front End
 
-Welcome to the Front End of **ByteCraft** — high-performance digital studio and platform engine.
-This foundation was created by Prompt 1 strictly according to `docs/frontend-contract.md`, `docs/stitch/bytecraft_studio_engine/DESIGN.md`, and `docs/API.md`.
+Welcome to the Front End of **Nexus** — full-stack software marketplace, custom engineering studio, and owner management console.
+Built according to [`docs/frontend-contract.md`](../docs/frontend-contract.md), [`docs/design-conformance.md`](../docs/design-conformance.md), and [`docs/API.md`](../docs/API.md).
 
 ---
 
-## 1. Stack & Fixed Versions
+## 1. Stack & Core Architecture
 
-| Technology | Version / Configuration | Notes |
+| Layer | Technology / Configuration | Notes |
 | :--- | :--- | :--- |
-| **Runtime / Library** | React 18.3.1 (JSX) | Strictly React 18 for full ecosystem compatibility |
-| **Bundler & Dev Server** | Vite 6 | Proxying `/api` and `/uploads` to `VITE_DEV_API_TARGET` (default port 5000; port 5001 in test mode) |
-| **Routing** | React Router v6.30 | Auto-collects routes from `pages/**/routes.jsx` |
-| **Styling** | TailwindCSS v3.4 + PostCSS | Custom color tokens based on CSS variables with alpha support |
-| **Icons** | Material Symbols Outlined | Self-hosted via npm package `material-symbols` (zero CDN hotlinking) |
-| **Typography** | Cairo (Arabic) & Inter (English) | Self-hosted via `@fontsource/cairo` and `@fontsource/inter` |
-| **Data Fetching** | `@tanstack/react-query` v5 | Central `queryClient` with 1m staleTime, namespaced queries |
-| **Forms & Validation** | `react-hook-form` + `zod` | Server errors automatically mapped via `applyApiErrorsToForm` |
-| **i18n & Direction** | `i18next` + `react-i18next` | Arabic default (RTL), English toggle (LTR), auto-loaded namespaces |
-
-> [!IMPORTANT]
-> **No new npm packages can be installed by subsequent prompts.** All dependencies needed by Prompts 2–10 are already installed.
+| **Brand Identity** | `Nexus` / `NEXUS` (`src/config/brand.js`) | Ribbon `N` `LogoMark` + `BrandLogo` (`tone="auto"` / `tone="light"`), fixed `<title>Nexus</title>`, `public/favicon.svg` |
+| **Runtime** | React 18.3 (JSX) + Vite 6 | Proxies `/api` and `/uploads` to `VITE_DEV_API_TARGET` (`http://localhost:5000`, or `http://localhost:5001` in test mode) |
+| **Routing** | React Router v6.30 | Auto-discovers route modules via `pages/**/routes.jsx` with lazy-loaded route chunks |
+| **Styling & Themes** | Tailwind CSS v3.4 (`darkMode: 'class'`) | Dual fully designed themes (**Light** default + **Dark**) driven by `--bc-*` RGB CSS variables |
+| **Typography** | `Plus Jakarta Sans` (EN) & `Cairo` (AR) | Self-hosted (`400–800`) via `@fontsource/plus-jakarta-sans` and `@fontsource/cairo` |
+| **Icons** | Material Symbols **Rounded** | Self-hosted via `material-symbols/rounded.css` with `.icon-gradient` fills |
+| **Data Layer** | `@tanstack/react-query` v5 | Real API data only (`projects`, `categories`, `service-plans`, `meta`, `stats/public`, `reviews/latest`) |
+| **Forms & Validation** | `react-hook-form` + `zod` | Accessible field errors + automatic server validation mapping via `applyApiErrorsToForm` |
+| **Charts** | `recharts` | Theme-reactive Light & Dark palettes on the Owner Dashboard |
+| **i18n & Direction** | `i18next` + `react-i18next` | Arabic (`ar`, RTL) & English (`en`, LTR) persisted in `bc_lang` |
 
 ---
 
-## 2. Folder Structure & Ownership Rules
+## 2. Folder Structure
 
-```
+```text
 Frontend/src/
   api/
-    client.js                 # Central API client & error handling (Owned by Prompt 1)
-    meta.js                   # Hook useMeta() for /api/meta (Prompt 1)
-    <domain>.js               # Domain APIs: projects.js, orders.js, etc. (Owned by their feature prompt)
+    client.js                 # Central fetch client, cookie credentials, 401 redirect & ApiError mapping
+    auth.js                   # Session (/api/auth/me), login, register, logout, verify email, password reset
+    account.js                # Customer profile, password, claim guest orders, session-mode orders
+    home.js                   # Featured/portfolio projects, /api/stats/public, /api/reviews/latest
+    meta.js                   # Public contact, social links, payment methods, registrationEnabled (/api/meta)
+    owner/                    # Authenticated admin console API hooks (dashboard, projects, orders, users, admins, settings, …)
+    ...                       # projects.js, checkout.js, orderTracking.js, servicePlans.js, inquiries.js
   app/
-    router.jsx                # Auto-discovers pages/**/routes.jsx (Prompt 1)
-    providers.jsx             # React Query, Lang, Theme, Toast providers (Prompt 1)
-    ErrorBoundary.jsx         # Catch-all error boundary (Prompt 1)
+    router.jsx                # Dynamic route collector + lazy suspense loader
+    providers.jsx             # QueryClient, Lang (bc_lang), Theme (bc_theme_v3), Toast, AuthProvider
+    ErrorBoundary.jsx         # Top-level crash recovery screen
   components/
-    ui/                       # 23 Core UI primitives (Prompt 1 - READ ONLY)
-    shared/                   # ProjectCard, Rating, PriceTag, CtaBanner, etc. (Prompt 1 - READ ONLY)
-    layout/                   # PublicLayout, Navbar, MobileMenu, Footer (Prompt 1) · OwnerLayout (Placeholder by 1, real by 8)
+    ui/                       # Pill Button, Card, Input, custom portal Select, Modal, Drawer, ConfirmDialog, Tabs, Pagination, Table, etc.
+    shared/                   # LogoMark/BrandLogo, HeroCubes, SectionHeader/TwoToneText, ProjectCard, CtaBanner, Accordion, etc.
+    layout/                   # PublicLayout (Navbar, UserMenu, MobileMenu, Footer) & OwnerLayout (Navy sidebar + topbar)
   config/
-    routes.js                 # Path constants (ROUTES.*) (Prompt 1)
-    nav.js                    # Public navigation & footer links (Prompt 1)
-    ownerNav.js               # Owner sidebar navigation & icons (Prompt 1)
-  features/<name>/            # Feature components & hooks (Owned by parallel prompts 2–10)
-  pages/<area>/               # Page components + routes.jsx (Owned by parallel prompts 2–10)
+    brand.js                  # BRAND = { name: 'Nexus', wordmark: 'NEXUS' }
+    routes.js                 # Route path constants & getSafeRedirectPath / loginPath helpers
+    nav.js / ownerNav.js      # Public & owner navigation items
+  features/<domain>/          # Domain-scoped feature sections (auth, account, checkout, orders, owner*, …)
+  pages/<area>/               # Lazy-loaded page entrypoints + routes.jsx (public, auth, account, owner*)
   i18n/
-    index.js                  # Auto-loaders for locales (Prompt 1)
-    locales/{ar,en}/          # JSON namespaces (common.json by 1; others by respective prompts)
+    index.js                  # Locale loader
+    locales/{ar,en}/*.json    # Bilingual translation namespaces
   lib/
-    money.js                  # Piasters <-> EGP & formatMoney (Prompt 1)
-    format.js                 # Dates (Cairo timezone), numbers, file sizes (Prompt 1)
-    localized.js              # Bilingual reader helper: localized(obj, lang) (Prompt 1)
-    storage.js                # Safe localStorage / sessionStorage wrappers (Prompt 1)
+    money.js                  # Integer piasters <-> EGP helpers & formatMoney
+    format.js                 # Cairo timezone dates, Western numbers, file sizes
+    localized.js              # Bilingual field resolver localized(obj, lang)
+    storage.js                # Safe localStorage / sessionStorage keys (bc_lang, bc_theme_v3, bc_session_hint, bc_order_token_*)
   styles/
-    index.css                 # CSS variables, tokens, fonts, button gradient, scrollbars (Prompt 1)
-```
-
-### Strict Rules for Parallel Prompts (2–10):
-1. **Scope Boundary**: Only create or modify files inside your own `features/<name>/`, `pages/<area>/`, `api/<domain>.js`, and `i18n/locales/{ar,en}/<namespace>.json`.
-2. **Never modify shared folders**: Do NOT touch `components/ui/`, `components/shared/`, `api/client.js`, `app/*`, `config/*`, `lib/*`, `styles/*`, `package.json`, or configuration files. If you need special behavior, compose or wrap the shared primitive inside your own `features/` folder.
-3. **No Mock Data**: All dynamic data must flow from the API. Marketing and static copy belong exclusively in `i18n/locales/{ar,en}/<namespace>.json`.
-4. **No Direct Images from Stitch Export**: Stitch `googleusercontent` URLs expire rapidly. Always use API images or neutral fallback placeholders.
-
----
-
-## 3. Router & Page Registration
-
-Every page area registers itself by placing a `routes.jsx` inside its folder (e.g. `src/pages/marketplace/routes.jsx`).
-
-```jsx
-// src/pages/marketplace/routes.jsx
-import React, { lazy } from 'react';
-import { ROUTES } from '@/config/routes';
-
-const MarketplacePage = lazy(() => import('./MarketplacePage'));
-
-export default {
-  layout: 'public', // 'public' (Navbar + Footer) | 'owner' (Sidebar shell) | 'none'
-  routes: [
-    {
-      path: ROUTES.PROJECTS,
-      element: <MarketplacePage />,
-    },
-  ],
-};
-```
-
-The router dynamically auto-discovers all `routes.jsx` files via `import.meta.glob('../pages/**/routes.jsx', { eager: true })`.
-
----
-
-## 4. Internationalization & RTL / LTR
-
-- **Default Language**: Arabic (`ar`, RTL). English (`en`, LTR) is the secondary language.
-- **Persistence**: Persisted in `localStorage` under `bc_lang`.
-- **Hooks & Helpers**:
-  ```jsx
-  import { useTranslation } from 'react-i18next';
-  import { useLang } from '@/app/providers';
-  import { localized } from '@/lib/localized';
-
-  function MyComponent({ project }) {
-    const { t } = useTranslation('marketplace'); // loads locales/{ar,en}/marketplace.json automatically
-    const { lang, dir } = useLang(); // 'ar'|'en', 'rtl'|'ltr'
-    const title = localized(project.title, lang); // resolves { ar: "...", en: "..." }
-    
-    return <h1>{title}</h1>;
-  }
-  ```
-- **Logical Tailwind Classes Only**:
-  - Use `ms-*` / `me-*` instead of `ml-*` / `mr-*`.
-  - Use `ps-*` / `pe-*` instead of `pl-*` / `pr-*`.
-  - Use `start-*` / `end-*` instead of `left-*` / `right-*`.
-  - Use `text-start` / `text-end` instead of `text-left` / `text-right`.
-- **Directional Icons**: Use `rtl:-scale-x-100` on chevrons and directional arrows (`arrow_forward`, `arrow_back`, `chevron_right`).
-- **Codes & Numbers**: Render emails, phone numbers, URLs, and git usernames inside `<bdi dir="ltr">` or inputs with `dir="ltr"`. Numbers always use Western numerals (`1, 2, 3...`).
-
----
-
-## 5. API Client & Data Layer
-
-Call backend endpoints using `client` from `@/api/client`:
-
-```javascript
-import { client, ApiError, applyApiErrorsToForm } from '@/api/client';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-
-export function useProjects(filters) {
-  return useQuery({
-    queryKey: ['projects', filters],
-    queryFn: () => client.get('/api/projects', { params: filters }),
-  });
-}
-```
-
-### Error Handling in Forms:
-```javascript
-const onSubmit = async (values) => {
-  try {
-    await submitMutation.mutateAsync(values);
-  } catch (err) {
-    if (err instanceof ApiError && err.status === 400 && err.details) {
-      applyApiErrorsToForm(err, setError); // Maps field-level server errors to react-hook-form
-    } else {
-      toast.error(err.message);
-    }
-  }
-};
-```
-
-### Money Conventions:
-- **Backend Representation**: All prices in the API are integer **piasters** (`100 piasters = 1 EGP`).
-- **Display**: Use `formatMoney(piasters, lang)` from `@/lib/money` (outputs `5,800 ج.م` in Arabic and `EGP 5,800` in English).
-- **Owner Form Entry**: The owner types EGP in forms. Convert using `egpToPiasters(egp)` before submitting. Never compute totals or taxes on the client.
-
-### Anti-Spam Honeypot:
-Public forms (`/inquiries`, `/orders`) must include the invisible honeypot field:
-```jsx
-import { HoneypotField } from '@/components/ui';
-
-// Inside your form:
-<HoneypotField register={register} />
+    index.css                 # Light (:root) & Dark (:root.dark) tokens, typography, gradients, scrollbars
 ```
 
 ---
 
-## 6. UI Primitives & Design Tokens (Light-First Theme)
+## 3. Dual Theme System (Light Default + Dark)
 
-### Theme & Storage Key:
-- **Default Theme**: Light (`light`). Persisted in `localStorage` under `bc_theme_v2` (bumped so users who previously had `dark` saved start in the new light theme). Dark mode remains functional via the theme toggle (`html.dark`).
+- **Default Theme**: **Light** (`light`) on first visit regardless of OS preference.
+- **Storage Key**: `bc_theme_v3` in `localStorage`.
+- **Zero-Flash Paint**: An inline early script in `index.html` applies `html.dark` and updates `<meta name="color-scheme">` and `<meta name="theme-color">` before first paint.
+- **Smooth Switching**: `44px` (`rounded-full`) sun/moon toggles in the public `Navbar`, `MobileMenu`, `OwnerLayout` top bar, and `OwnerLoginPage` animate surface, text, and border colors over `300ms`.
 
-### Light Theme Palette (`src/styles/index.css` & `tailwind.config.js` — White + Mint):
-- **Page / Canvas Background** (`bg-background` / `bg-surface`): `#FFFFFF`
-- **Alternate Section Band & Footer** (`bg-section-band`): `#F6FBF8`
-- **Cards (Mint-White)** (`bg-card` / `bg-surface-container`): `#F8FCFA`
-  - **Card Border** (`border-card-border`): `#E2EEE8` (1px solid)
-  - **Card Default Shadow** (`shadow-card`): `0 1px 2px rgba(15,23,42,.05), 0 10px 30px -12px rgba(15,23,42,.10)`
-  - **Clickable Card Hover**: background `#FFFFFF` (`bg-card-hover`), border `#BFEBD5` (`border-card-hover-border`), `translateY(-2px)`, hover shadow `0 16px 40px -14px rgba(16,185,129,.25)` (`shadow-card-hover`).
-- **Typography & Borders (Cool Slate)**:
-  - Primary (`text-on-surface`): `#0F172A`
-  - Secondary (`text-on-surface-variant`): `#475569`
-  - Muted (`text-muted`): `#64748B`
-  - Borders (`border-outline-variant`): `#E2E8F0`
-  - All three text tokens achieve ≥ 4.5:1 contrast on `#FFFFFF`, `#F8FCFA`, and `#F6FBF8`.
-- **Inputs (`Input`, `Select`, `Textarea`, `TagInput`)**:
-  - Background (`bg-input`): `#FFFFFF`
-  - Border (`border-input-border`): `#CBD5E1`
-  - Focus Ring (`focus:ring-input-focus`): 2px `#10B981`
-  - Placeholder (`placeholder:text-placeholder`): `#94A3B8`
-- **Navbar, Footer, Hero & Overlays**:
-  - Navbar: white 90% (`bg-surface/90`) with backdrop blur + bottom border `#E2E8F0`; nav pill `#F1F5F9` (`bg-nav-pill`) with active item `#E6FAF1` (`bg-nav-active-bg`) and text `#047857`; language/theme toggle buttons are white (`#FFFFFF`) with `#E2E8F0` border and `#F1F5F9` hover.
-  - Footer: `#F6FBF8` (`bg-section-band`) with top border `#E2E8F0`.
-  - Hero headers (`.bc-hero-wash`): soft radial `#DDF9EC` at top end + radial `#E3EEFF` at top start fading to `#FFFFFF`.
-  - Modals / Drawers: white panels (`#FFFFFF`) over overlay `rgba(15,23,42,.45)` (`bg-overlay`).
-- **Brand, Icon Chips & Statuses**:
-  - Filled Button Gradient (`btn-primary-gradient`): `linear-gradient(90deg, #52E982 0%, #19ECB5 100%)` with text `#0A0A0A` and glow `0 10px 24px -8px rgba(25,236,181,.45)`.
-  - Readable Green Text / Links / Icons / Active Nav / Charts (`text-primary`): `#047857` (≥ 5:1 contrast).
-  - Clean Pastel Icon Chips & Badges (6 pairs, all ≥ 4.5:1):
-    - Mint (`.bc-chip-mint`): `#E1F8EE` / `#047857`
-    - Violet (`.bc-chip-violet`): `#EEE6FF` / `#6D28D9`
-    - Sky (`.bc-chip-sky`): `#E0F2FE` / `#0369A1`
-    - Amber (`.bc-chip-amber`): `#FEF3C7` / `#B45309`
-    - Rose (`.bc-chip-rose`): `#FFE4E6` / `#BE123C`
-    - Blue (`.bc-chip-blue`): `#E0EAFF` / `#1D4ED8`
-  - Stars (`text-star`): `#F59E0B`
-  - Semantic Statuses: success `#047857`, warning `#B45309`, danger `#B91C1C`, info `#1D4ED8`
-  - **Intentional Dark Contrast Element**: Only the decorative code/terminal window in the Home hero (`#0F172A`, `.bc-code-window`) remains dark.
+### Token Summary
 
-### Buttons (`@/components/ui/Button`):
-- **Variants**:
-  - `primary-gradient`: `#52E982 → #19ECB5`, text `#0A0A0A` (never white), glow `0 10px 24px -8px rgba(25,236,181,.45)` (`btn-primary-gradient`).
-  - `outline`: `#047857` border and text with soft mint hover tint.
-  - `ghost`: Subtle `#F1F5F9` hover surface.
-  - `secondary`: Clean white surface (`#FFFFFF`) with `#CBD5E1` border and `#F1F5F9` hover.
-  - `danger`: `#B91C1C` background with white text (`#FFFFFF`).
-- **Sizes**: `sm` (40px), `md` (48px - default), `lg` (56px), `icon`, `icon-sm`.
+| Token Role | Light (`:root`) | Dark (`:root.dark`) |
+| :--- | :--- | :--- |
+| **Page Canvas** | `#FFFFFF` | `#0B1020` |
+| **Soft Band / Soft Card** | `#F5F7FC` | `#0F1730` |
+| **Card Surface** | `#FFFFFF` | `#121B38` |
+| **Border / Strong Border** | `#E6EAF5` / `#CBD3EC` | `#222D52` / `#33417A` |
+| **Headings / Body / Muted** | `#0A1134` / `#3D4468` / `#5C6289` | `#F2F5FF` / `#C3CCEA` / `#97A2CB` |
+| **Placeholder** | `#9AA1C2` | `#6F7AA6` |
+| **Brand Solid** | `#4150B0` | `#8EA2FF` |
+| **Brand Soft (Bg / Text)** | `#E5EDFA` / `#3A3F8F` | `#1B2550` / `#B9C6FF` |
+| **Brand Gradient** | `linear-gradient(90deg, #2B72CF 0%, #5443A9 100%)` (text `#FFFFFF`) | Same gradient (text `#FFFFFF`) |
+| **Footer & Owner Sidebar** | `#131F45` (text `#C9D0EE`) | `#070B1A` (text `#AEB8DE`) |
+| **Success / Warning / Danger** | `#0E9F6E` (`#067A55` text) / `#B45309` / `#C81E1E` | `#34D399` / `#FBBF24` / `#F87171` |
+| **Chart Palette** | `#2B72CF #5443A9 #8FD0FF #6A5BDB #0E9F6E #F59E0B` | `#5B9BFF #8B7CFF #8FD0FF #6A5BDB #34D399 #FBBF24` |
 
-### Form Layout Rules:
-- Height: 48px (`h-12`).
-- Radius: 8px (`rounded-lg`).
-- Label above control with 8px gap (`mb-2`).
-- Required field marker: primary-colored `*` after label.
-- Gap between fields: 20px (`gap-5`).
-- Hint/error below control: 12–13px (`mt-2`).
-- Select: styled native `<select>` with `appearance-none` and custom chevron on the `end` side (`pe-10`).
+---
 
-### Interactive Showcase:
-Browse `http://localhost:5173/__ui` in your local development environment to visually inspect all 23 primitives and 10 shared components across all states (default, hover, focus, error, disabled, loading) in light and dark modes.
+## 4. Development & Verification Commands
+
+Run all commands inside `Frontend/` (PowerShell):
+
+```powershell
+# Start local dev server against main backend (default port 5000)
+npm run dev
+
+# Start local dev server on port 5171 against isolated test backend (port 5001 / bytecraft_test)
+$env:VITE_DEV_API_TARGET="http://localhost:5001"; npm run dev -- --port 5171
+
+# Lint (ESLint — must pass with 0 errors and 0 warnings)
+npm run lint
+
+# Production build (Vite — must pass with 0 errors and 0 warnings)
+npm run build
+
+# Motion verification & sequence screenshots (Puppeteer, saved in Frontend/.screenshots/D/)
+node scripts/checkMotion.cjs
+```
+
+### Authentication & Customer Accounts
+- Root `AuthProvider` (`src/features/auth/AuthProvider.jsx`) exposes `useAuth()` backed by `GET /api/auth/me` (and `useOwner()` delegates to `useAuth()`).
+- Public auth pages (`/login`, `/register`, `/forgot-password`, `/reset-password`, `/verify-email`) use `PublicLayout` with a centered `rounded-3xl` card and top `BrandLogo`; `/owner/login` redirects cleanly to `/login`.
+- Customer portal (`/account`, `/account/orders`, `/account/orders/:orderNumber`) is guarded by `<RequireAuth>` and supports checkout prefill, verification resend, guest order claiming, password changes, account deletion, and session-mode order tracking/reviews.
+- Admin management pages `/owner/users` and `/owner/admins` plus the `registrationEnabled` toggle in `/owner/settings` live under `OwnerLayout` (showing a `403` view with a `/account` link if visited by a non-admin customer).
+
+### UI Component Test Bench
+Open `/__ui` in development (e.g., `http://localhost:5171/__ui`) to inspect `BrandLogo`, `HeroCubes`, `.icon-gradient` chips, pill buttons, custom `Select` portals, forms, cards, tables, modals, drawers, toasts, and empty/error states in both **Light** and **Dark** themes and **AR (RTL)** / **EN (LTR)**.
+
+### Motion System (`framer-motion`)
+- **Tokens & Provider**: `src/lib/motion.js` defines `MOTION_DURATION = 0.3`, `MOTION_EASE = [0.4, 0, 0.2, 1]`, `STAGGER_DELAY = 0.06`, RTL-aware variants (`fade`, `fadeUp`, `scaleIn`, `slideFromEnd`, `slideUp`, `sheetSlideUp`, `pageTransition`, `stagger`), and `useAnimatedNativeDialog`. `MotionProvider` in `src/app/providers.jsx` wraps the app with `<MotionConfig reducedMotion="user">` and `<LazyMotion features={domAnimation} strict>`.
+- **Primitives (`src/components/ui/Motion.jsx`)**: Exports `<Reveal>`, `<Stagger>`, `<StaggerItem>`, `<MotionImage>`, `<LayoutMotion>` (lazy-loading `src/lib/motionLayout.js` for shared `layoutId` indicators), and `<AnimatedOutlet>` (`AnimatePresence mode="wait" initial={false}` page transitions with scroll-to-top in `onExitComplete`).
+- **Timing & Reduced Motion**: All transitions, CSS tokens (`--duration-base: 300ms` / `--ease-base: cubic-bezier(0.4, 0, 0.2, 1)`), Tailwind default transitions (`300ms`), accordions, tabs, native `<dialog>` modals/drawers, interactive cards (`y: -4`), buttons (`whileTap` `0.98`), and Recharts (`animationDuration={300}`) enforce `300ms` timing (only infinite spinners/skeletons/pings are excluded). `HeroCubes` enters once from the `end` side (`0.3s`) without slow idle floating so the strict `300ms` rule holds everywhere. Run `node scripts/checkMotion.cjs` to audit computed durations across all routes, themes, and directions.

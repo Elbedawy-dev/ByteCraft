@@ -69,7 +69,7 @@ function CustomRevenueTooltip({ active, payload, lang, dir, t }) {
   return (
     <div
       dir={dir}
-      className="rounded-xl border border-outline-variant bg-surface px-3.5 py-2.5 shadow-card-hover text-xs min-w-[160px]"
+      className="rounded-xl border border-card-border bg-card px-3.5 py-2.5 shadow-card-hover text-xs min-w-[160px]"
     >
       <div className="font-semibold text-on-surface mb-1.5">
         {point.fullLabel}
@@ -107,16 +107,21 @@ export function RevenueTrendChart({ revenueByMonth = [] }) {
     [series]
   );
 
+  // Nexus Chart Palettes (Light & Dark)
   const chartColors = isDark
     ? {
-        stroke: '#4EDEA3',
-        grid: '#262A28',
-        tick: '#9AA39F',
+        stroke: '#5B9BFF',
+        strokeEnd: '#8B7CFF',
+        grid: '#222D52',
+        tick: '#97A2CB',
+        dotFill: '#121B38',
       }
     : {
-        stroke: '#047857',
-        grid: '#E2E8F0',
-        tick: '#475569',
+        stroke: '#2B72CF',
+        strokeEnd: '#5443A9',
+        grid: '#E6EAF5',
+        tick: '#5C6289',
+        dotFill: '#FFFFFF',
       };
 
   const formatCompactEgp = (val) => {
@@ -129,7 +134,7 @@ export function RevenueTrendChart({ revenueByMonth = [] }) {
   };
 
   return (
-    <Card variant="flat" className="flex flex-col justify-between h-full">
+    <Card variant="default" className="flex flex-col justify-between h-full">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
         <div>
           <h2 className="text-base sm:text-lg font-bold text-on-surface">
@@ -165,11 +170,11 @@ export function RevenueTrendChart({ revenueByMonth = [] }) {
                   <stop
                     offset="5%"
                     stopColor={chartColors.stroke}
-                    stopOpacity={isDark ? 0.35 : 0.28}
+                    stopOpacity={isDark ? 0.36 : 0.26}
                   />
                   <stop
                     offset="95%"
-                    stopColor={chartColors.stroke}
+                    stopColor={chartColors.strokeEnd}
                     stopOpacity={0.02}
                   />
                 </linearGradient>
@@ -215,11 +220,13 @@ export function RevenueTrendChart({ revenueByMonth = [] }) {
                 strokeWidth={2.5}
                 fillOpacity={1}
                 fill="url(#bcRevenueGradient)"
+                animationDuration={300}
+                animationEasing="ease-out"
                 activeDot={{
                   r: 5,
                   stroke: chartColors.stroke,
                   strokeWidth: 2,
-                  fill: isDark ? '#0A0A0A' : '#FFFFFF',
+                  fill: chartColors.dotFill,
                 }}
               />
             </AreaChart>

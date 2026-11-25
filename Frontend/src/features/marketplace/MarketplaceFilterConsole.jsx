@@ -285,10 +285,10 @@ export function MarketplaceFilterConsole({
                 spellCheck={false}
                 enterKeyHint="search"
                 iconLeading={
-                  <span className="material-symbols-outlined text-[20px]">search</span>
+                  <span className="material-symbols-rounded text-[20px]" aria-hidden="true">search</span>
                 }
                 className={clsx(
-                  'bg-input text-base sm:text-sm rounded-xl [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none',
+                  'bg-input text-base sm:text-sm !rounded-full [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none',
                   searchDraft && 'pe-12'
                 )}
               />
@@ -297,9 +297,9 @@ export function MarketplaceFilterConsole({
                   type="button"
                   onClick={handleClearSearch}
                   aria-label={t('filters.clearSearch')}
-                  className="absolute end-1.5 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors"
+                  className="absolute end-1.5 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center rounded-full text-muted hover:text-on-surface hover:bg-section-band transition-colors"
                 >
-                  <span className="material-symbols-outlined text-[18px]">close</span>
+                  <span className="material-symbols-rounded text-[18px]" aria-hidden="true">close</span>
                 </button>
               )}
             </form>
@@ -313,14 +313,14 @@ export function MarketplaceFilterConsole({
               onClick={() => setDrawerOpen(true)}
               aria-expanded={drawerOpen}
               aria-haspopup="dialog"
-              className="lg:hidden shrink-0 px-3.5 sm:px-4 rounded-xl"
+              className="lg:hidden shrink-0 px-4"
               iconLeading={
-                <span className="material-symbols-outlined text-[20px]">tune</span>
+                <span className="material-symbols-rounded text-[20px]" aria-hidden="true">tune</span>
               }
             >
               <span>{t('filters.openFilters')}</span>
               {drawerFilterCount > 0 && (
-                <span className="ms-1 min-w-[20px] h-5 px-1.5 rounded-full bg-primary text-on-primary font-label-code text-[11px] font-bold inline-flex items-center justify-center">
+                <span className="ms-1 min-w-[20px] h-5 px-1.5 rounded-full bg-primary text-on-primary font-mono text-[11px] font-bold inline-flex items-center justify-center">
                   {drawerFilterCount}
                 </span>
               )}
@@ -331,9 +331,9 @@ export function MarketplaceFilterConsole({
           <div className="hidden lg:flex items-center gap-2.5 shrink-0">
             <label
               htmlFor={desktopSortId}
-              className="font-label-lg text-label-lg text-on-surface-variant whitespace-nowrap flex items-center gap-1.5 select-none"
+              className="text-sm font-semibold text-on-surface-variant whitespace-nowrap flex items-center gap-1.5 select-none"
             >
-              <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
+              <span className="material-symbols-rounded text-[18px] text-primary" aria-hidden="true">
                 sort
               </span>
               <span>{t('filters.sortLabel')}</span>
@@ -344,7 +344,6 @@ export function MarketplaceFilterConsole({
                 name="sort"
                 value={filters.sort}
                 onChange={(e) => onSortChange(e.target.value)}
-                className="bg-input rounded-xl"
               >
                 {SORT_OPTIONS.map((option) => (
                   <option key={option} value={option}>
@@ -356,7 +355,7 @@ export function MarketplaceFilterConsole({
           </div>
         </div>
 
-        {/* Row 2: Category Chips (Horizontal scroll inside container on mobile, wrap on md+) */}
+        {/* Row 2: Category Pill Chips */}
         <div
           role="group"
           aria-label={t('filters.categoriesLabel')}
@@ -367,10 +366,10 @@ export function MarketplaceFilterConsole({
             onClick={() => onCategoryChange('')}
             aria-pressed={!filters.category}
             className={clsx(
-              'shrink-0 whitespace-nowrap min-h-[44px] px-4 py-2 rounded-xl font-label-lg text-label-lg transition-all cursor-pointer inline-flex items-center gap-2 border',
+              'shrink-0 whitespace-nowrap min-h-[42px] px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 cursor-pointer inline-flex items-center gap-2 border',
               !filters.category
-                ? 'btn-primary-gradient font-bold border-transparent shadow-primary-glow'
-                : 'bg-surface-container border-outline-variant/70 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
+                ? 'btn-primary-gradient text-white border-transparent'
+                : 'bg-section-band border-outline-variant text-on-surface-variant hover:bg-brand-soft hover:text-primary'
             )}
           >
             <span>{t('filters.allCategories')}</span>
@@ -380,22 +379,22 @@ export function MarketplaceFilterConsole({
             ? Array.from({ length: 3 }).map((_, idx) => (
                 <Skeleton
                   key={idx}
-                  className="h-11 w-32 rounded-xl shrink-0"
+                  className="h-10 w-28 rounded-full shrink-0"
                 />
               ))
             : categories.map((cat) => {
                 const isActive = filters.category === cat.key;
                 return (
                   <button
-                    key={cat.id || cat.key}
+                    key={cat.id || cat._id || cat.key}
                     type="button"
                     onClick={() => onCategoryChange(cat.key)}
                     aria-pressed={isActive}
                     className={clsx(
-                      'shrink-0 whitespace-nowrap min-h-[44px] px-4 py-2 rounded-xl font-label-lg text-label-lg transition-all cursor-pointer inline-flex items-center gap-2 border',
+                      'shrink-0 whitespace-nowrap min-h-[42px] px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 cursor-pointer inline-flex items-center gap-2 border',
                       isActive
-                        ? 'btn-primary-gradient font-bold border-transparent shadow-primary-glow'
-                        : 'bg-surface-container border-outline-variant/70 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
+                        ? 'btn-primary-gradient text-white border-transparent'
+                        : 'bg-section-band border-outline-variant text-on-surface-variant hover:bg-brand-soft hover:text-primary'
                     )}
                   >
                     <span>{localized(cat.name, lang)}</span>
@@ -428,7 +427,6 @@ export function MarketplaceFilterConsole({
                     onToggleTech(e.target.value);
                   }
                 }}
-                className="bg-surface-container-lowest rounded-xl"
               >
                 <option value="">
                   {availableTechs.length === 0
@@ -505,7 +503,7 @@ export function MarketplaceFilterConsole({
             </fieldset>
 
             {/* Featured Toggle */}
-            <div className="flex items-center h-12 px-3.5 rounded-xl bg-input border border-input-border">
+            <div className="flex items-center h-12 px-4 rounded-lg bg-input border border-input-border">
               <Switch
                 id={desktopFeaturedId}
                 name="featured"
@@ -524,9 +522,9 @@ export function MarketplaceFilterConsole({
                   variant="ghost"
                   size="sm"
                   onClick={onClearAll}
-                  className="text-on-surface-variant hover:text-error"
+                  className="text-muted hover:text-error"
                   iconLeading={
-                    <span className="material-symbols-outlined text-[18px]">filter_alt_off</span>
+                    <span className="material-symbols-rounded text-[18px]" aria-hidden="true">filter_alt_off</span>
                   }
                 >
                   {t('filters.clearAll')}
@@ -537,7 +535,7 @@ export function MarketplaceFilterConsole({
 
           {(desktopPriceInvalid || isPriceRangeInvalid) && (
             <p role="alert" className="text-xs text-error flex items-center gap-1.5 pt-1">
-              <span className="material-symbols-outlined text-[15px]" aria-hidden="true">
+              <span className="material-symbols-rounded text-[15px]" aria-hidden="true">
                 error
               </span>
               <span>{t('filters.priceRangeError')}</span>
@@ -545,19 +543,19 @@ export function MarketplaceFilterConsole({
           )}
         </div>
 
-        {/* Active Filter Pills (both mobile and desktop) */}
+        {/* Active Filter Pills */}
         {activePills.length > 0 && (
-          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-outline-variant/40">
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-outline-variant">
             {activePills.map((pill) => (
               <button
                 key={pill.key}
                 type="button"
                 onClick={pill.onRemove}
                 aria-label={t('filters.removeFilter', { label: pill.label })}
-                className="inline-flex items-center gap-1.5 min-h-[36px] px-3 py-1 rounded-full bg-primary/10 border border-primary/25 text-primary text-xs font-medium hover:bg-primary/20 transition-colors"
+                className="inline-flex items-center gap-1.5 min-h-[36px] px-3.5 py-1 rounded-full bg-brand-soft border border-chip-mint-border text-brand-soft-text text-xs font-semibold hover:bg-primary/15 transition-colors"
               >
                 <span>{pill.label}</span>
-                <span className="material-symbols-outlined text-[15px]" aria-hidden="true">
+                <span className="material-symbols-rounded text-[15px]" aria-hidden="true">
                   close
                 </span>
               </button>
@@ -566,7 +564,7 @@ export function MarketplaceFilterConsole({
             <button
               type="button"
               onClick={onClearAll}
-              className="lg:hidden text-xs font-semibold text-on-surface-variant hover:text-error px-2 py-1.5 min-h-[36px] transition-colors"
+              className="lg:hidden text-xs font-semibold text-muted hover:text-error px-2 py-1.5 min-h-[36px] transition-colors"
             >
               {t('filters.clearAll')}
             </button>

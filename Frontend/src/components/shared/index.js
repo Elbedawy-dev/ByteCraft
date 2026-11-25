@@ -8,3 +8,5 @@ export * from './CtaBanner';
 export * from './StatusBadge';
 export * from './EmptyState';
 export * from './ErrorState';
+export * from './LogoMark';
+export * from './HeroCubes';

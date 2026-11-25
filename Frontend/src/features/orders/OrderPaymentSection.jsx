@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useMeta } from '../../api/meta';
 import { useSubmitPaymentProof } from '../../api/orderTracking';
+import { useSubmitAccountPaymentProof } from '../../api/account';
 import { getApiErrorMessage } from '../../api/client';
 import { useLang, useToast } from '../../app/providers';
 import { localized } from '../../lib/localized';
@@ -12,7 +13,7 @@ import { projectDetailsPath, ROUTES } from '../../config/routes';
 import { Button, Card, CopyButton, FormField, Input } from '../../components/ui';
 import { ProofDropzone } from './ProofDropzone';
 
-export function OrderPaymentSection({ order, token, bootstrap }) {
+export function OrderPaymentSection({ order, token, bootstrap, mode = 'guest' }) {
   const { t } = useTranslation('orders');
   const { lang } = useLang();
   const toast = useToast();
@@ -22,7 +23,10 @@ export function OrderPaymentSection({ order, token, bootstrap }) {
   const [reference, setReference] = useState('');
   const [proofError, setProofError] = useState('');
 
-  const submitProofMutation = useSubmitPaymentProof(order.orderNumber, token);
+  const guestSubmitProofMutation = useSubmitPaymentProof(order.orderNumber, token);
+  const accountSubmitProofMutation = useSubmitAccountPaymentProof(order.orderNumber);
+  const submitProofMutation =
+    mode === 'account' ? accountSubmitProofMutation : guestSubmitProofMutation;
 
   const method = order.paymentMethod;
   const status = order.status;

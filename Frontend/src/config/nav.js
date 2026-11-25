@@ -4,7 +4,7 @@ export const PUBLIC_NAV_ITEMS = [
   { key: 'home', labelKey: 'nav.home', defaultLabel: 'الرئيسية', to: ROUTES.HOME, end: true },
   { key: 'projects', labelKey: 'nav.projects', defaultLabel: 'المشاريع الجاهزة', to: ROUTES.PROJECTS },
   { key: 'pricing', labelKey: 'nav.pricing', defaultLabel: 'باقات الأسعار', to: ROUTES.PRICING },
-  { key: 'about', labelKey: 'nav.about', defaultLabel: 'عن بايت كرافت', to: ROUTES.ABOUT },
+  { key: 'about', labelKey: 'nav.about', defaultLabel: 'عن Nexus', to: ROUTES.ABOUT },
   { key: 'contact', labelKey: 'nav.contact', defaultLabel: 'تواصل معنا', to: ROUTES.CONTACT },
 ];
 

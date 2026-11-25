@@ -10,30 +10,34 @@ export function Badge({
   icon,
 }) {
   const sizeStyles = {
-    sm: 'text-[11px] px-2 py-0.5 gap-1 font-medium rounded-full',
-    md: 'text-xs px-2.5 py-1 gap-1.5 font-medium rounded-full',
-    lg: 'text-sm px-3 py-1.5 gap-2 font-medium rounded-full',
-  }[size] || 'text-xs px-2.5 py-1 gap-1.5 font-medium rounded-full';
+    sm: 'text-[11px] px-2.5 py-0.5 gap-1 font-semibold rounded-full',
+    md: 'text-xs px-3 py-1 gap-1.5 font-semibold rounded-full',
+    lg: 'text-sm px-3.5 py-1.5 gap-2 font-semibold rounded-full',
+  }[size] || 'text-xs px-3 py-1 gap-1.5 font-semibold rounded-full';
 
   const variantStyles = {
-    neutral: 'bg-surface-container-high text-on-surface-variant border border-outline-variant',
-    primary: 'bg-chip-mint-bg text-chip-mint-fg border border-chip-mint-border',
-    success: 'bg-chip-mint-bg text-chip-mint-fg border border-chip-mint-border',
+    neutral: 'bg-section-band text-on-surface-variant border border-outline-variant',
+    primary: 'bg-brand-soft text-brand-soft-text border border-chip-mint-border',
+    success: 'bg-chip-emerald-bg text-chip-emerald-fg border border-chip-emerald-border',
     warning: 'bg-chip-amber-bg text-chip-amber-fg border border-chip-amber-border',
     error: 'bg-chip-danger-bg text-chip-danger-fg border border-chip-danger-border',
-    info: 'bg-chip-blue-bg text-chip-blue-fg border border-chip-blue-border',
-    outline: 'bg-surface text-on-surface border border-input-border',
-  }[variant] || 'bg-surface-container-high text-on-surface-variant border border-outline-variant';
+    danger: 'bg-chip-danger-bg text-chip-danger-fg border border-chip-danger-border',
+    info: 'bg-chip-sky-bg text-chip-sky-fg border border-chip-sky-border',
+    outline: 'bg-surface text-on-surface border border-outline',
+    gradient: 'btn-primary-gradient border-transparent',
+  }[variant] || 'bg-section-band text-on-surface-variant border border-outline-variant';
 
   const dotColors = {
-    neutral: 'bg-on-surface-variant',
+    neutral: 'bg-muted',
     primary: 'bg-primary',
     success: 'bg-success',
     warning: 'bg-warning',
     error: 'bg-error',
+    danger: 'bg-error',
     info: 'bg-info',
     outline: 'bg-on-surface',
-  }[variant] || 'bg-on-surface-variant';
+    gradient: 'bg-white',
+  }[variant] || 'bg-muted';
 
   return (
     <span

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Badge, Button, Input } from '@/components/ui';
+import { MotionImage } from '@/components/ui/Motion';
 import { useLang } from '@/app/providers';
 import { localized } from '@/lib/localized';
 import { formatMoney } from '@/lib/money';
@@ -73,7 +74,7 @@ export function OrderSummaryContent({
       <div className="bg-surface border border-card-border rounded-xl p-3.5 sm:p-4 flex flex-col gap-3">
         <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-surface-container-high border border-card-border">
           {thumbnailUrl && !imgFailed ? (
-            <img
+            <MotionImage
               src={thumbnailUrl}
               alt={title}
               loading="lazy"
@@ -246,11 +247,11 @@ export function OrderSummaryContent({
         ) : null}
       </div>
 
-      {/* Authoritative Tax-Free Pricing Breakdown (Never computed locally, never displays VAT) */}
-      <div className="flex flex-col gap-2.5 pt-3 border-t border-outline-variant/60">
-        <div className="flex items-center justify-between gap-2 text-xs sm:text-sm text-on-surface-variant">
+      {/* Authoritative Tax-Free Pricing Breakdown in a Soft Totals Band */}
+      <div className="flex flex-col gap-2.5 p-4 rounded-xl bg-section-band border border-card-border">
+        <div className="flex items-center justify-between gap-2 text-xs sm:text-sm text-muted">
           <span>{t('summary.subtotalLabel')}</span>
-          <span className="text-on-surface font-semibold">
+          <span className="text-on-surface font-semibold font-mono">
             {formatMoney(subtotal, lang)}
           </span>
         </div>
@@ -260,17 +261,17 @@ export function OrderSummaryContent({
             <span className="truncate">
               {t('summary.discountLabel', { code: appliedCode || '' })}
             </span>
-            <span className="font-semibold shrink-0">
+            <span className="font-semibold font-mono shrink-0">
               <bdi dir="ltr">-{formatMoney(discount, lang)}</bdi>
             </span>
           </div>
         )}
 
-        <div className="flex items-baseline justify-between gap-3 pt-3 border-t border-outline-variant/60 mt-1">
+        <div className="flex items-baseline justify-between gap-3 pt-3 border-t border-outline-variant mt-1">
           <span className="text-base sm:text-lg font-extrabold text-on-surface">
             {t('summary.totalLabel')}
           </span>
-          <span className="text-2xl sm:text-3xl font-black text-primary tracking-tight">
+          <span className="text-2xl sm:text-3xl font-extrabold font-mono text-primary tracking-tight">
             {total === 0 ? t('summary.freeValue') : formatMoney(total, lang)}
           </span>
         </div>

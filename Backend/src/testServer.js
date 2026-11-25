@@ -27,7 +27,7 @@ if (process.env.MONGODB_URI) {
   process.env.MONGODB_URI = uri;
 }
 
-console.log('🧪 Starting ByteCraft Test Server on port 5001...');
+console.log('🧪 Starting Nexus Test Server on port 5001...');
 console.log(`🧪 Test Database Target: bytecraft_test`);
 
 // 4. Delegate to standard server entrypoint

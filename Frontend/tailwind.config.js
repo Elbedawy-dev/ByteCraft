@@ -9,6 +9,7 @@ export default {
       colors: {
         background: rgbVar('--bc-background'),
         'section-band': rgbVar('--bc-section-band'),
+        'owner-bg': rgbVar('--bc-owner-bg'),
         'on-background': rgbVar('--bc-on-background'),
         surface: rgbVar('--bc-surface'),
         'surface-dim': rgbVar('--bc-surface-dim'),
@@ -27,10 +28,15 @@ export default {
         'inverse-on-surface': rgbVar('--bc-inverse-on-surface'),
         outline: rgbVar('--bc-outline'),
         'outline-variant': rgbVar('--bc-outline-variant'),
+        'control-border': rgbVar('--bc-control-border'),
 
         'nav-pill': rgbVar('--bc-nav-pill'),
         'nav-active-bg': rgbVar('--bc-nav-active-bg'),
         overlay: 'var(--bc-overlay)',
+
+        navy: rgbVar('--bc-navy'),
+        'navy-text': rgbVar('--bc-navy-text'),
+        'navy-border': rgbVar('--bc-navy-border'),
 
         card: rgbVar('--bc-card'),
         'card-hover': rgbVar('--bc-card-hover'),
@@ -52,12 +58,17 @@ export default {
         'on-primary-fixed': rgbVar('--bc-on-primary-fixed'),
         'on-primary-fixed-variant': rgbVar('--bc-on-primary-fixed-variant'),
 
+        'brand-soft': rgbVar('--bc-brand-soft-bg'),
+        'brand-soft-text': rgbVar('--bc-brand-soft-text'),
         'badge-green-bg': rgbVar('--bc-badge-green-bg'),
         'badge-green-text': rgbVar('--bc-badge-green-text'),
 
         'chip-mint-bg': rgbVar('--bc-chip-mint-bg'),
         'chip-mint-fg': rgbVar('--bc-chip-mint-fg'),
         'chip-mint-border': rgbVar('--bc-chip-mint-border'),
+        'chip-emerald-bg': rgbVar('--bc-chip-emerald-bg'),
+        'chip-emerald-fg': rgbVar('--bc-chip-emerald-fg'),
+        'chip-emerald-border': rgbVar('--bc-chip-emerald-border'),
         'chip-violet-bg': rgbVar('--bc-chip-violet-bg'),
         'chip-violet-fg': rgbVar('--bc-chip-violet-fg'),
         'chip-violet-border': rgbVar('--bc-chip-violet-border'),
@@ -102,18 +113,22 @@ export default {
         'on-error-container': rgbVar('--bc-on-error-container'),
 
         success: rgbVar('--bc-success'),
+        'success-text': rgbVar('--bc-success-text'),
         warning: rgbVar('--bc-warning'),
         info: rgbVar('--bc-info'),
         star: rgbVar('--bc-star'),
+      },
+      maxWidth: {
+        container: '75rem', // 1200px
       },
       borderRadius: {
         sm: '0.25rem',
         DEFAULT: '0.5rem',
         md: '0.5rem',
-        lg: '0.75rem',
-        xl: '1rem',
-        '2xl': '1.25rem',
-        '3xl': '1.5rem',
+        lg: '0.75rem', // 12px (inputs, select triggers, icon chips)
+        xl: '1rem', // 16px (cards, dropdown panels)
+        '2xl': '1.25rem', // 20px (modals, drawers, large panels)
+        '3xl': '1.5rem', // 24px (hero/login panels)
         full: '9999px',
       },
       spacing: {
@@ -146,32 +161,32 @@ export default {
       },
       fontSize: {
         'display-lg': [
-          '3.5rem',
+          '4rem',
           { lineHeight: 'var(--bc-lh-display-lg)', letterSpacing: '-0.03em', fontWeight: '800' },
         ],
         'display-lg-mobile': [
-          '2.25rem',
+          '2.375rem',
           { lineHeight: 'var(--bc-lh-display-lg-mobile)', letterSpacing: '-0.02em', fontWeight: '800' },
         ],
         'headline-xl': [
           '2.5rem',
-          { lineHeight: 'var(--bc-lh-headline-xl)', letterSpacing: '-0.02em', fontWeight: '700' },
+          { lineHeight: 'var(--bc-lh-headline-xl)', letterSpacing: '-0.02em', fontWeight: '800' },
         ],
         'headline-xl-mobile': [
           '1.75rem',
-          { lineHeight: 'var(--bc-lh-headline-xl-mobile)', letterSpacing: '-0.01em', fontWeight: '700' },
+          { lineHeight: 'var(--bc-lh-headline-xl-mobile)', letterSpacing: '-0.015em', fontWeight: '800' },
         ],
         'headline-lg': [
           '1.75rem',
-          { lineHeight: 'var(--bc-lh-headline-lg)', letterSpacing: '-0.01em', fontWeight: '600' },
+          { lineHeight: 'var(--bc-lh-headline-lg)', letterSpacing: '-0.01em', fontWeight: '700' },
         ],
         'headline-md': [
-          '1.375rem',
-          { lineHeight: 'var(--bc-lh-headline-md)', letterSpacing: '-0.01em', fontWeight: '600' },
+          '1.25rem',
+          { lineHeight: 'var(--bc-lh-headline-md)', letterSpacing: '-0.01em', fontWeight: '700' },
         ],
         'body-lg': ['1.125rem', { lineHeight: 'var(--bc-lh-body-lg)', fontWeight: '400' }],
-        'body-md': ['0.9375rem', { lineHeight: 'var(--bc-lh-body-md)', fontWeight: '400' }],
-        'body-sm': ['0.8125rem', { lineHeight: 'var(--bc-lh-body-sm)', fontWeight: '400' }],
+        'body-md': ['1rem', { lineHeight: 'var(--bc-lh-body-md)', fontWeight: '400' }],
+        'body-sm': ['0.875rem', { lineHeight: 'var(--bc-lh-body-sm)', fontWeight: '400' }],
         'label-lg': ['0.875rem', { lineHeight: '1.25rem', letterSpacing: '0.01em', fontWeight: '600' }],
         'label-md': ['0.75rem', { lineHeight: '1rem', letterSpacing: '0.02em', fontWeight: '600' }],
         'label-code': ['0.75rem', { lineHeight: '1.125rem', fontWeight: '500' }],
@@ -180,11 +195,18 @@ export default {
         card: 'var(--bc-card-shadow)',
         'card-hover': 'var(--bc-card-hover-shadow)',
         'primary-glow': 'var(--bc-btn-glow)',
-        'primary-glow-lg': 'var(--bc-btn-glow)',
-        'sticky-bar': '0 -8px 24px -6px rgba(15, 23, 42, 0.10)',
+        'primary-glow-lg': 'var(--bc-btn-glow-hover)',
+        'sticky-bar': '0 -8px 24px -6px rgba(19, 31, 69, 0.12)',
       },
       backgroundImage: {
-        'primary-gradient': 'linear-gradient(90deg, #52E982 0%, #19ECB5 100%)',
+        'primary-gradient': 'linear-gradient(90deg, #2B72CF 0%, #5443A9 100%)',
+      },
+      transitionDuration: {
+        DEFAULT: '300ms',
+      },
+      transitionTimingFunction: {
+        DEFAULT: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        nexus: 'cubic-bezier(0.4, 0, 0.2, 1)',
       },
     },
   },

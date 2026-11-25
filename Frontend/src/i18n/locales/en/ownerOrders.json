@@ -169,7 +169,7 @@
     "deliverySuccess": "Delivery details updated successfully.",
     "refund": "Mark as Refunded",
     "refundTitle": "Mark Order as Refunded",
-    "refundStatusOnlyWarning": "Status record only: This updates the order status in ByteCraft (and excludes it from revenue totals) without issuing an automatic Paymob/bank refund. Transfer the funds manually first.",
+    "refundStatusOnlyWarning": "Status record only: This updates the order status in Nexus (and excludes it from revenue totals) without issuing an automatic Paymob/bank refund. Transfer the funds manually first.",
     "refundNoteLabel": "Refund Note (Optional)",
     "refundNotePlaceholder": "e.g., Refunded customer manually via InstaPay...",
     "refundConfirm": "Mark as Refunded",

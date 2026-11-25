@@ -223,7 +223,7 @@ export default function OwnerProjectsPage() {
         <ErrorState message={getApiErrorMessage(error)} onRetry={() => refetch()} />
       ) : projects.length === 0 ? (
         <EmptyState
-          icon="folder_code"
+          icon="deployed_code"
           title={t('ownerProjects:empty.title')}
           description={
             hasFilters

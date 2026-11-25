@@ -139,8 +139,8 @@ export function ReviewModerationCard({ review }) {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-high border border-outline-variant text-xs font-medium text-on-surface hover:border-primary/50 hover:text-primary transition-colors max-w-full"
                 >
-                  <span className="material-symbols-outlined text-[15px] text-primary shrink-0">
-                    folder_code
+                  <span className="material-symbols-rounded text-[15px] text-primary shrink-0">
+                    deployed_code
                   </span>
                   <span className="truncate">{projectTitle}</span>
                   <span className="material-symbols-outlined text-[14px] shrink-0">

@@ -1,83 +1,75 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLang } from '@/app/providers';
+import { BRAND } from '@/config/brand';
 import { SectionHeader } from '@/components/shared';
+import { Reveal, Stagger, StaggerItem } from '@/components/ui/Motion';
 
 const PILLAR_ITEMS = [
-  {
-    key: 'speed',
-    icon: 'speed',
-    chipClass: 'bc-chip-mint',
-  },
-  {
-    key: 'security',
-    icon: 'lock_clock',
-    chipClass: 'bc-chip-sky',
-  },
-  {
-    key: 'delivery',
-    icon: 'electric_bolt',
-    chipClass: 'bc-chip-amber',
-  },
-  {
-    key: 'support',
-    icon: 'support_agent',
-    chipClass: 'bc-chip-rose',
-  },
+  { key: 'speed', icon: 'rocket_launch' },
+  { key: 'security', icon: 'shield_lock' },
+  { key: 'delivery', icon: 'bolt' },
+  { key: 'support', icon: 'support_agent' },
 ];
 
 export function PillarsSection() {
   const { t } = useTranslation('home');
+  const { lang } = useLang();
 
   return (
-    <div className="w-full bg-section-band border-y border-outline-variant/70">
-      <section
-        aria-labelledby="home-pillars-heading"
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 w-full"
-      >
-        <div>
+    <section
+      aria-labelledby="home-pillars-heading"
+      className="relative w-full bg-section-band border-y border-outline-variant overflow-hidden py-16 lg:py-24"
+    >
+      {/* Subtle reference corner shapes */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-20 -end-16 w-64 h-64 rotate-12 rounded-3xl bg-gradient-to-bl from-[#2B72CF]/10 to-transparent dark:from-[#2B72CF]/12"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-20 -start-16 w-64 h-64 -rotate-12 rounded-3xl bg-gradient-to-tr from-[#5443A9]/10 to-transparent dark:from-[#5443A9]/12"
+      />
+
+      <div className="relative z-10 max-w-container mx-auto px-4 sm:px-6">
+        <Reveal id="home-pillars-heading" className="mb-12">
           <SectionHeader
-            align="start"
-            badge={
-              <span className="text-primary text-label-md font-bold uppercase tracking-wider block">
-                {t('pillars.eyebrow')}
-              </span>
-            }
-            title={
-              <span id="home-pillars-heading">
-                {t('pillars.title')}
-              </span>
-            }
+            align="center"
+            badge={t('pillars.eyebrow')}
+            title={t('pillars.title')}
+            accent={`${BRAND.wordmark}${lang === 'ar' ? '؟' : '?'}`}
             subtitle={t('pillars.subtitle')}
-            className="max-w-3xl mb-8 lg:mb-10"
           />
+        </Reveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-            {PILLAR_ITEMS.map((pillar) => (
-              <article
-                key={pillar.key}
-                className="flex items-start gap-4 bg-card border border-card-border p-5 sm:p-6 rounded-2xl shadow-card hover:bg-card-hover hover:border-card-hover-border hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200"
-              >
-                <div
-                  className={`w-12 h-12 rounded-xl border flex items-center justify-center ${pillar.chipClass} shrink-0`}
+        {/* 4 Columns with gradient icons and vertical dividers (no numbers) */}
+        <Stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 lg:divide-x rtl:lg:divide-x-reverse divide-outline-variant">
+          {PILLAR_ITEMS.map((pillar) => (
+            <StaggerItem
+              as="article"
+              key={pillar.key}
+              className="flex flex-col items-center text-center px-5 py-6 lg:py-3 gap-3.5"
+            >
+              <div className="w-12 h-12 rounded-lg bg-brand-soft flex items-center justify-center shrink-0">
+                <span
+                  className="material-symbols-rounded icon-gradient text-[26px]"
+                  aria-hidden="true"
                 >
-                  <span className="material-symbols-outlined text-[28px]" aria-hidden="true">
-                    {pillar.icon}
-                  </span>
-                </div>
+                  {pillar.icon}
+                </span>
+              </div>
 
-                <div className="min-w-0">
-                  <h3 className="text-body-lg font-bold text-on-surface mb-1">
-                    {t(`pillars.items.${pillar.key}.title`)}
-                  </h3>
-                  <p className="text-body-sm text-on-surface-variant leading-relaxed">
-                    {t(`pillars.items.${pillar.key}.description`)}
-                  </p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-    </div>
+              <h3 className="text-base sm:text-lg font-bold text-on-surface">
+                {t(`pillars.items.${pillar.key}.title`)}
+              </h3>
+
+              <p className="text-sm text-muted leading-relaxed max-w-[250px]">
+                {t(`pillars.items.${pillar.key}.description`)}
+              </p>
+            </StaggerItem>
+          ))}
+        </Stagger>
+      </div>
+    </section>
   );
 }

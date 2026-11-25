@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useLang } from '../../app/providers';
 import { ROUTES } from '../../config/routes';
 import { Badge, Card } from '../../components/ui';
+import { MotionImage, Stagger, StaggerItem } from '../../components/ui/Motion';
 import { EmptyState } from '../../components/shared';
 import { localized } from '../../lib/localized';
 import { formatNumber } from '../../lib/format';
@@ -20,7 +21,7 @@ function ProjectThumbnail({ thumbnail, alt }) {
   }
 
   return (
-    <img
+    <MotionImage
       src={thumbnail.url}
       alt={alt}
       loading="lazy"
@@ -67,7 +68,7 @@ export function TopProjectsCard({ topProjects = [] }) {
           description={t('topProjects.emptyDesc')}
         />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-3.5">
+        <Stagger inView={false} className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-3.5">
           {topProjects.map((project, idx) => {
             const title = localized(project.title, lang) || project.slug;
             const categoryName =
@@ -77,45 +78,46 @@ export function TopProjectsCard({ topProjects = [] }) {
             const views = project.stats?.views ?? 0;
 
             return (
-              <Link
-                key={project._id || project.id || project.slug || idx}
-                to={ROUTES.OWNER_PROJECTS}
-                className="group rounded-xl bg-surface border border-card-border shadow-sm hover:bg-card-hover hover:border-card-hover-border hover:shadow-card-hover hover:-translate-y-0.5 p-3.5 flex flex-col justify-between gap-3 transition-all duration-200"
-              >
-                <div className="flex items-start gap-3">
-                  <ProjectThumbnail thumbnail={project.thumbnail} alt={title} />
-                  <div className="min-w-0 flex-1">
-                    <h3 className="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors line-clamp-2 leading-snug">
-                      {title}
-                    </h3>
-                    <div className="mt-1.5">
-                      <Badge size="sm" variant="neutral">
-                        {categoryName}
-                      </Badge>
+              <StaggerItem key={project._id || project.id || project.slug || idx} className="flex">
+                <Link
+                  to={ROUTES.OWNER_PROJECTS}
+                  className="group flex-1 rounded-xl bg-surface border border-card-border shadow-sm hover:bg-card-hover hover:border-card-hover-border hover:shadow-card-hover hover:-translate-y-0.5 p-3.5 flex flex-col justify-between gap-3 transition-[background-color,border-color,box-shadow,transform] duration-300 ease-nexus"
+                >
+                  <div className="flex items-start gap-3">
+                    <ProjectThumbnail thumbnail={project.thumbnail} alt={title} />
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors line-clamp-2 leading-snug">
+                        {title}
+                      </h3>
+                      <div className="mt-1.5">
+                        <Badge size="sm" variant="neutral">
+                          {categoryName}
+                        </Badge>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="flex items-center justify-between gap-2 pt-2.5 border-t border-outline-variant/50 text-xs font-mono text-on-surface-variant">
-                  <span className="inline-flex items-center gap-1 text-primary font-semibold">
-                    <span className="material-symbols-outlined text-[15px]">
-                      shopping_bag
+                  <div className="flex items-center justify-between gap-2 pt-2.5 border-t border-outline-variant/50 text-xs font-mono text-on-surface-variant">
+                    <span className="inline-flex items-center gap-1 text-primary font-semibold">
+                      <span className="material-symbols-outlined text-[15px]">
+                        shopping_bag
+                      </span>
+                      {t('topProjects.purchases', {
+                        count: formatNumber(purchases),
+                      })}
                     </span>
-                    {t('topProjects.purchases', {
-                      count: formatNumber(purchases),
-                    })}
-                  </span>
-                  <span className="inline-flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[15px]">
-                      visibility
+                    <span className="inline-flex items-center gap-1">
+                      <span className="material-symbols-outlined text-[15px]">
+                        visibility
+                      </span>
+                      {t('topProjects.views', { count: formatNumber(views) })}
                     </span>
-                    {t('topProjects.views', { count: formatNumber(views) })}
-                  </span>
-                </div>
-              </Link>
+                  </div>
+                </Link>
+              </StaggerItem>
             );
           })}
-        </div>
+        </Stagger>
       )}
     </Card>
   );

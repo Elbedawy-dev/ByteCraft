@@ -11,37 +11,32 @@ export function ContactValueProps() {
     {
       key: 'cleanCode',
       icon: 'code_blocks',
-      accentClass: 'bc-chip-mint',
       title: t('valueProps.cleanCode.title'),
       description: t('valueProps.cleanCode.description'),
     },
     {
       key: 'speed',
-      icon: 'speed',
-      accentClass: 'bc-chip-sky',
+      icon: 'rocket_launch',
       title: t('valueProps.speed.title'),
       description: t('valueProps.speed.description'),
     },
     {
       key: 'support',
       icon: 'support_agent',
-      accentClass: 'bc-chip-violet',
       title: t('valueProps.support.title', { days: guaranteeDays }),
       description: t('valueProps.support.description'),
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 pt-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {items.map((item) => (
         <div
           key={item.key}
-          className="bg-card border border-card-border shadow-card rounded-xl p-5 sm:p-6 flex items-start gap-4"
+          className="bg-card border border-card-border shadow-card rounded-xl p-6 flex items-start gap-4"
         >
-          <div
-            className={`w-10 h-10 rounded-xl border flex items-center justify-center shrink-0 ${item.accentClass}`}
-          >
-            <span className="material-symbols-outlined text-[24px]">
+          <div className="w-12 h-12 rounded-lg bg-brand-soft flex items-center justify-center shrink-0">
+            <span className="material-symbols-rounded icon-gradient text-[24px]" aria-hidden="true">
               {item.icon}
             </span>
           </div>
@@ -49,7 +44,7 @@ export function ContactValueProps() {
             <h3 className="text-base font-bold text-on-surface">
               {item.title}
             </h3>
-            <p className="text-xs sm:text-sm text-on-surface-variant mt-1 leading-relaxed">
+            <p className="text-xs sm:text-sm text-muted mt-1 leading-relaxed">
               {item.description}
             </p>
           </div>

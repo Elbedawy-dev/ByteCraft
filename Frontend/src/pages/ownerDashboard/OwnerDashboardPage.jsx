@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useLang } from '../../app/providers';
 import { useOwnerDashboard } from '../../api/owner/dashboard';
+import { BRAND } from '../../config/brand';
 import { ROUTES } from '../../config/routes';
 import { Button, Card } from '../../components/ui';
 import { ErrorState } from '../../components/shared';
@@ -63,7 +64,7 @@ export default function OwnerDashboardPage() {
         title={t('ownerDashboard:title')}
         description={t('ownerDashboard:description')}
         badge={
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-mono">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-soft border border-primary/20 text-primary-soft-text text-xs font-semibold">
             <span className="w-1.5 h-1.5 rounded-full bg-primary" aria-hidden="true" />
             {t('ownerDashboard:liveSync')}
           </span>
@@ -76,7 +77,7 @@ export default function OwnerDashboardPage() {
               loading={isFetching && !isLoading}
               onClick={() => refetch()}
               iconLeading={
-                <span className="material-symbols-outlined text-[18px]">
+                <span className="material-symbols-rounded text-[18px]">
                   refresh
                 </span>
               }
@@ -88,8 +89,8 @@ export default function OwnerDashboardPage() {
                 variant="primary-gradient"
                 size="sm"
                 iconLeading={
-                  <span className="material-symbols-outlined text-[18px]">
-                    folder_code
+                  <span className="material-symbols-rounded text-[18px]">
+                    deployed_code
                   </span>
                 }
               >
@@ -110,25 +111,25 @@ export default function OwnerDashboardPage() {
         />
       ) : (
         <div className="space-y-6">
-          {/* Greeting Banner (aligned with bytecraft_8) */}
-          <Card variant="flat" className="relative overflow-hidden">
+          {/* Greeting Banner */}
+          <Card variant="default" className="relative overflow-hidden">
             <div
               aria-hidden="true"
-              className="absolute -top-24 -end-20 w-72 h-72 rounded-full bg-primary/10 blur-3xl pointer-events-none"
+              className="absolute -top-24 -end-20 w-72 h-72 rounded-full bg-primary/10 dark:bg-primary/5 blur-3xl pointer-events-none"
             />
             <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="space-y-1.5">
                 <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-on-surface-variant">
-                  <span className="px-2 py-0.5 rounded-md bg-primary/10 text-primary font-semibold">
+                  <span className="px-2.5 py-0.5 rounded-full bg-primary-soft text-primary-soft-text font-semibold">
                     {t('owner:consoleBadge')}
                   </span>
                   <span>
                     {cairoNowLabel} · {t('ownerDashboard:cairoTime')}
                   </span>
                 </div>
-                <p className="text-lg sm:text-xl font-bold text-on-surface">
+                <p className="text-lg sm:text-xl font-extrabold text-on-surface">
                   {t('ownerDashboard:greeting', {
-                    name: owner?.name || 'ByteCraft',
+                    name: owner?.name || BRAND.name,
                   })}
                 </p>
               </div>
@@ -139,7 +140,7 @@ export default function OwnerDashboardPage() {
                     variant="outline"
                     size="sm"
                     iconLeading={
-                      <span className="material-symbols-outlined text-[18px]">
+                      <span className="material-symbols-rounded text-[18px]">
                         shopping_bag
                       </span>
                     }
@@ -152,7 +153,7 @@ export default function OwnerDashboardPage() {
                     variant="ghost"
                     size="sm"
                     iconLeading={
-                      <span className="material-symbols-outlined text-[18px]">
+                      <span className="material-symbols-rounded text-[18px]">
                         settings
                       </span>
                     }
@@ -167,12 +168,12 @@ export default function OwnerDashboardPage() {
           {/* Optional Getting Started Banner when DB is completely empty */}
           {isCompletelyEmpty && (
             <Card
-              variant="default"
-              className="border-primary/30 bg-primary/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+              variant="soft"
+              className="border-primary/25 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
             >
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-primary/15 text-primary flex items-center justify-center shrink-0">
-                  <span className="material-symbols-outlined text-[22px]">
+              <div className="flex items-start gap-3.5">
+                <div className="w-12 h-12 rounded-lg bg-primary-soft flex items-center justify-center shrink-0">
+                  <span className="material-symbols-rounded icon-gradient text-[24px]">
                     rocket_launch
                   </span>
                 </div>
@@ -207,8 +208,8 @@ export default function OwnerDashboardPage() {
           <React.Suspense
             fallback={
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                <div className="lg:col-span-2 h-72 rounded-xl bg-surface-container animate-pulse" />
-                <div className="h-72 rounded-xl bg-surface-container animate-pulse" />
+                <div className="lg:col-span-2 h-72 rounded-xl bg-surface-soft animate-pulse" />
+                <div className="h-72 rounded-xl bg-surface-soft animate-pulse" />
               </div>
             }
           >

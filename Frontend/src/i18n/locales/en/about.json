@@ -1,13 +1,13 @@
 {
   "hero": {
-    "eyebrow": "PRODUCTION SOFTWARE ENGINEERING • BYTECRAFT",
+    "eyebrow": "PRODUCTION SOFTWARE ENGINEERING • NEXUS",
     "titleBefore": "We engineer fast, intelligent web platforms that ",
     "titleHighlight": "elevate your business",
     "titleAfter": " to the next level"
   },
   "story": {
     "whoWeAre": {
-      "title": "About ByteCraft",
+      "title": "About Nexus",
       "bodyBefore": "An independent web engineering studio based in Cairo, specializing in high-speed, scalable web applications built on the modern ",
       "highlight": "MERN Stack",
       "bodyAfter": " and resilient cloud architectures."
@@ -41,9 +41,9 @@
     }
   },
   "owner": {
-    "name": "ByteCraft Founder",
-    "initials": "BC",
-    "photoAlt": "Portrait of the ByteCraft founder and lead fullstack architect",
+    "name": "Nexus Founder",
+    "initials": "NX",
+    "photoAlt": "Portrait of the Nexus founder and lead fullstack architect",
     "role": "Lead Fullstack Architect & Founder",
     "availabilityBadge": "Available for Technical Consulting",
     "experience": "Fullstack Architecture & Production Engineering",
@@ -132,7 +132,7 @@
   },
   "lifecycle": {
     "eyebrow": "STRUCTURED DELIVERY",
-    "title": "ByteCraft Development Lifecycle",
+    "title": "Nexus Development Lifecycle",
     "subtitle": "A transparent four-stage engineering roadmap from discovery to production launch—with zero guesswork.",
     "steps": [
       {

@@ -22,6 +22,13 @@ function formatPublicReviewerName(fullName) {
   return `${firstName} ${lastInitial}.`;
 }
 
+function trimReviewComment(comment, maxLength = 240) {
+  if (!comment || typeof comment !== 'string') return '';
+  const cleaned = comment.trim();
+  if (cleaned.length <= maxLength) return cleaned;
+  return `${cleaned.slice(0, maxLength - 1).trimEnd()}…`;
+}
+
 /**
  * Review Service
  * 
@@ -35,31 +42,9 @@ function formatPublicReviewerName(fullName) {
 
 class ReviewService {
   /**
-   * Post a customer review for a purchased project
+   * Shared review creation logic once order authorization has been verified.
    */
-  async createReview(orderNumber, token, data) {
-    const { rating, comment, customerName } = data;
-
-    if (!token) {
-      throw AppError.unauthorized('Order access token is required.', ERROR_CODES.UNAUTHORIZED);
-    }
-
-    // 1. Fetch Order including secret publicToken hash
-    const order = await Order.findOne({ orderNumber }).select('+publicToken');
-    if (!order) {
-      throw AppError.notFound(`Order "${orderNumber}" not found.`, ERROR_CODES.NOT_FOUND);
-    }
-
-    // 2. Constant-time token verification against SHA-256 hash
-    const hashedProvided = hashToken(token);
-    const bufferA = Buffer.from(order.publicToken, 'utf8');
-    const bufferB = Buffer.from(hashedProvided, 'utf8');
-
-    if (bufferA.length !== bufferB.length || !crypto.timingSafeEqual(bufferA, bufferB)) {
-      throw AppError.unauthorized('Invalid order access token.', ERROR_CODES.UNAUTHORIZED);
-    }
-
-    // 3. Status rule: Only buyers with a paid or delivered order can post a review
+  async _createReviewForOrder(order, { rating, comment, customerName }) {
     if (!['paid', 'delivered'].includes(order.status)) {
       throw AppError.conflict(
         `Reviews can only be submitted for paid or delivered orders (current status: "${order.status}").`,
@@ -67,7 +52,6 @@ class ReviewService {
       );
     }
 
-    // 4. One review per order constraint
     const existing = await Review.findOne({ order: order._id });
     if (existing) {
       throw AppError.conflict(
@@ -76,7 +60,6 @@ class ReviewService {
       );
     }
 
-    // 5. Create Review
     const cleanCustomerName = sanitizeText(customerName || order.customer.fullName);
     const cleanComment = sanitizeText(comment);
 
@@ -100,6 +83,46 @@ class ReviewService {
       ownerResponse: review.ownerResponse || '',
       createdAt: review.createdAt,
     };
+  }
+
+  /**
+   * Post a customer review for a purchased project (guest token auth)
+   */
+  async createReview(orderNumber, token, data) {
+    if (!token) {
+      throw AppError.unauthorized('Order access token is required.', ERROR_CODES.UNAUTHORIZED);
+    }
+
+    const order = await Order.findOne({ orderNumber }).select('+publicToken');
+    if (!order) {
+      throw AppError.notFound(`Order "${orderNumber}" not found.`, ERROR_CODES.NOT_FOUND);
+    }
+
+    const hashedProvided = hashToken(token);
+    const bufferA = Buffer.from(order.publicToken, 'utf8');
+    const bufferB = Buffer.from(hashedProvided, 'utf8');
+
+    if (bufferA.length !== bufferB.length || !crypto.timingSafeEqual(bufferA, bufferB)) {
+      throw AppError.unauthorized('Invalid order access token.', ERROR_CODES.UNAUTHORIZED);
+    }
+
+    return this._createReviewForOrder(order, data);
+  }
+
+  /**
+   * Post a review for an authenticated user's own order (no token needed)
+   */
+  async createAccountReview(orderNumber, userId, data) {
+    const order = await Order.findOne({ orderNumber });
+    if (!order) {
+      throw AppError.notFound(`Order "${orderNumber}" not found.`, ERROR_CODES.NOT_FOUND);
+    }
+
+    if (!order.user || String(order.user) !== String(userId)) {
+      throw AppError.forbidden('You do not have access to this order.', ERROR_CODES.FORBIDDEN);
+    }
+
+    return this._createReviewForOrder(order, data);
   }
 
   /**
@@ -146,6 +169,35 @@ class ReviewService {
         totalPages: Math.ceil(total / limit) || 1,
       },
     };
+  }
+
+  /**
+   * Public: Latest published reviews across all projects (Home Page)
+   * Anonymizes customer names (first name + last initial only), trims comments to 240 chars,
+   * never exposes PII/order info, and never filters by rating (moderation is strictly `isPublished`).
+   */
+  async getLatestReviews({ limit = 6 } = {}) {
+    const safeLimit = Math.min(12, Math.max(1, parseInt(limit, 10) || 6));
+
+    const rawReviews = await Review.find({ isPublished: true })
+      .select('customerName rating comment project createdAt')
+      .populate('project', 'title slug')
+      .sort({ createdAt: -1 })
+      .limit(safeLimit)
+      .lean();
+
+    return rawReviews.map((r) => ({
+      _id: r._id,
+      customerName: formatPublicReviewerName(r.customerName),
+      rating: r.rating,
+      comment: trimReviewComment(r.comment, 240),
+      projectTitle: {
+        ar: r.project?.title?.ar || '',
+        en: r.project?.title?.en || '',
+      },
+      projectSlug: r.project?.slug || '',
+      createdAt: r.createdAt,
+    }));
   }
 
   /**

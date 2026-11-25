@@ -33,39 +33,46 @@ export function ProjectReviews({ slug, reviewsSummary }) {
     <section
       id="reviews"
       aria-labelledby="project-reviews-heading"
-      className="p-5 sm:p-6 rounded-xl bg-card border border-card-border shadow-card space-y-5 scroll-mt-24"
+      className="space-y-5 scroll-mt-24"
     >
       {/* Header & Summary */}
-      <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-card-border">
-        <div>
-          <h2 id="project-reviews-heading" className="text-lg sm:text-headline-lg font-bold text-on-surface">
-            {t('sections.reviewsTitle')}
-          </h2>
-          <p className="text-xs sm:text-body-sm text-on-surface-variant mt-0.5">
-            {t('sections.reviewsSubtitle')}
-          </p>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-lg bg-brand-soft flex items-center justify-center shrink-0">
+            <span className="material-symbols-rounded icon-gradient text-[24px]" aria-hidden="true">
+              forum
+            </span>
+          </div>
+          <div>
+            <h2 id="project-reviews-heading" className="text-lg sm:text-headline-lg font-bold text-on-surface">
+              {t('sections.reviewsTitle')}
+            </h2>
+            <p className="text-xs sm:text-sm text-muted mt-0.5">
+              {t('sections.reviewsSubtitle')}
+            </p>
+          </div>
         </div>
 
         {totalCount > 0 && (
-          <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-surface border border-card-border">
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-section-band border border-card-border">
             <Rating rating={averageRating} showCount={false} size="sm" />
-            <bdi dir="ltr" className="font-mono text-xs text-on-surface-variant">
+            <bdi dir="ltr" className="font-mono text-xs text-muted">
               / 5.0
             </bdi>
-            <span className="text-xs text-on-surface-variant">
+            <span className="text-xs text-muted font-medium">
               {t('ratings.count', { count: totalCount })}
             </span>
           </div>
         )}
       </div>
 
-      {/* Reviews List States */}
+      {/* Reviews List as Soft Testimonial Cards */}
       {isLoading ? (
-        <div className="space-y-3" aria-busy="true">
+        <div className="space-y-3.5" aria-busy="true">
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="p-4 rounded-xl bg-surface-container border border-outline-variant/50 space-y-3"
+              className="p-5 sm:p-6 rounded-xl bg-section-band border border-card-border space-y-3"
             >
               <div className="flex items-center justify-between">
                 <Skeleton className="h-4 w-32" />
@@ -85,35 +92,34 @@ export function ProjectReviews({ slug, reviewsSummary }) {
           icon="rate_review"
           title={t('reviews.emptyTitle')}
           description={t('reviews.emptyDescription')}
-          className="bg-surface-container/40"
         />
       ) : (
         <div className={isFetching ? 'opacity-75 transition-opacity space-y-4' : 'space-y-4'}>
-          <ul className="space-y-3.5">
+          <ul className="space-y-4">
             {reviews.map((review, index) => {
-              const initial = (review.customerName || 'C').trim().charAt(0).toUpperCase();
+              const initial = (review.customerName || 'N').trim().charAt(0).toUpperCase();
               const hasResponse = Boolean(review.ownerResponse && review.ownerResponse.trim());
 
               return (
                 <li
                   key={review._id || `review-${index}`}
-                  className="p-4 sm:p-5 rounded-xl bg-surface border border-card-border space-y-3"
+                  className="p-5 sm:p-6 rounded-xl bg-section-band border border-card-border space-y-3.5"
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-3 min-w-0">
                       <div
-                        className="w-9 h-9 rounded-full bg-badge-green-bg border border-primary/25 text-primary font-bold text-sm flex items-center justify-center shrink-0"
+                        className="w-10 h-10 rounded-full bg-brand-soft text-brand-soft-text font-bold text-sm flex items-center justify-center shrink-0"
                         aria-hidden="true"
                       >
                         {initial}
                       </div>
                       <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="font-semibold text-sm text-on-surface">
+                          <span className="font-bold text-sm text-on-surface">
                             {review.customerName}
                           </span>
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-badge-green-bg text-badge-green-text border border-primary/25">
-                            <span className="material-symbols-outlined text-[12px]" aria-hidden="true">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-brand-soft text-brand-soft-text">
+                            <span className="material-symbols-rounded text-[13px]" aria-hidden="true">
                               verified
                             </span>
                             <span>{t('badges.verifiedBuyer')}</span>
@@ -122,7 +128,7 @@ export function ProjectReviews({ slug, reviewsSummary }) {
                         {review.createdAt && (
                           <time
                             dateTime={review.createdAt}
-                            className="block text-[11px] text-on-surface-variant mt-0.5"
+                            className="block text-[11px] text-muted mt-0.5"
                           >
                             {formatDate(review.createdAt, lang)}
                           </time>
@@ -138,9 +144,9 @@ export function ProjectReviews({ slug, reviewsSummary }) {
                   </p>
 
                   {hasResponse && (
-                    <div className="mt-3 ps-3.5 pe-3 py-3 rounded-lg bg-surface-container-low border-s-2 border-primary space-y-1">
-                      <div className="flex items-center gap-1.5 text-xs font-semibold text-primary">
-                        <span className="material-symbols-outlined text-[15px]" aria-hidden="true">
+                    <div className="mt-3 ps-4 pe-3.5 py-3.5 rounded-xl bg-card border-s-2 border-primary space-y-1">
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-primary">
+                        <span className="material-symbols-rounded text-[16px]" aria-hidden="true">
                           support_agent
                         </span>
                         <span>{t('reviews.ownerResponseLabel')}</span>

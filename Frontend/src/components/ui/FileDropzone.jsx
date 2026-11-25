@@ -5,7 +5,7 @@ import { formatFileSize } from '../../lib/format';
 export function FileDropzone({
   onFilesSelected,
   accept = '*/*',
-  maxSize = 4 * 1024 * 1024, // 4 MB default
+  maxSize = 4 * 1024 * 1024,
   multiple = false,
   disabled = false,
   label = 'Drag & drop files here, or click to browse',
@@ -67,10 +67,10 @@ export function FileDropzone({
         onDrop={handleDrop}
         onClick={() => !disabled && inputRef.current?.click()}
         className={clsx(
-          'relative flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-xl transition-all duration-150 text-center cursor-pointer select-none',
+          'relative flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-xl transition-all duration-300 ease-nexus text-center cursor-pointer select-none',
           isDragOver
-            ? 'border-primary bg-chip-mint-bg/60'
-            : 'border-input-border hover:border-primary/60 bg-input hover:bg-card',
+            ? 'border-primary bg-brand-soft/80'
+            : 'border-primary/35 hover:border-primary bg-brand-soft/35 hover:bg-brand-soft/60',
           disabled && 'opacity-50 cursor-not-allowed pointer-events-none'
         )}
       >
@@ -84,18 +84,18 @@ export function FileDropzone({
           className="sr-only"
         />
 
-        <div className="w-12 h-12 rounded-full bc-chip-mint border flex items-center justify-center mb-3">
-          <span className="material-symbols-outlined text-[24px]">
+        <div className="w-12 h-12 rounded-lg bg-brand-soft flex items-center justify-center mb-3">
+          <span className="material-symbols-rounded icon-gradient text-[24px]" aria-hidden="true">
             cloud_upload
           </span>
         </div>
 
-        <p className="text-sm font-medium text-on-surface mb-1">
+        <p className="text-sm font-semibold text-on-surface mb-1">
           {label}
         </p>
 
         {hint && (
-          <p className="text-xs text-on-surface-variant">
+          <p className="text-xs text-muted">
             {hint}
           </p>
         )}
@@ -103,7 +103,7 @@ export function FileDropzone({
 
       {error && (
         <p className="text-xs text-error flex items-center gap-1">
-          <span className="material-symbols-outlined text-[14px]">error</span>
+          <span className="material-symbols-rounded text-[14px]" aria-hidden="true">error</span>
           <span>{error}</span>
         </p>
       )}

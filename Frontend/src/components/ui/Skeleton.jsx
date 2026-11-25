@@ -6,7 +6,7 @@ export function Skeleton({ className = '', ...props }) {
     <div
       aria-hidden="true"
       className={clsx(
-        'bc-skeleton rounded-md',
+        'bc-skeleton rounded-lg',
         className
       )}
       {...props}
@@ -21,7 +21,7 @@ Skeleton.Text = function SkeletonText({ lines = 3, className = '' }) {
         <div
           key={i}
           className={clsx(
-            'h-3.5 bc-skeleton rounded',
+            'h-3.5 bc-skeleton rounded-full',
             i === lines - 1 ? 'w-3/5' : 'w-full'
           )}
         />
@@ -34,19 +34,19 @@ Skeleton.Card = function SkeletonCard({ className = '' }) {
   return (
     <div
       className={clsx(
-        'p-5 rounded-xl border border-card-border bg-card shadow-card space-y-4',
+        'p-6 rounded-xl border border-card-border bg-card shadow-card space-y-4',
         className
       )}
       aria-hidden="true"
     >
-      <div className="h-44 bc-skeleton rounded-lg w-full" />
+      <div className="aspect-[16/10] bc-skeleton rounded-lg w-full" />
       <div className="space-y-2">
-        <div className="h-5 bc-skeleton rounded w-3/4" />
-        <div className="h-3.5 bc-skeleton rounded w-1/2" />
+        <div className="h-5 bc-skeleton rounded-full w-3/4" />
+        <div className="h-3.5 bc-skeleton rounded-full w-1/2" />
       </div>
       <div className="flex items-center justify-between pt-2">
-        <div className="h-4 bc-skeleton rounded w-1/4" />
-        <div className="h-9 bc-skeleton rounded-xl w-24" />
+        <div className="h-4 bc-skeleton rounded-full w-1/4" />
+        <div className="h-10 bc-skeleton rounded-full w-28" />
       </div>
     </div>
   );

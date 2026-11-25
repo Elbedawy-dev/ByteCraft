@@ -31,3 +31,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Development flags
+.prompt-2-ready
+.foundation-ready

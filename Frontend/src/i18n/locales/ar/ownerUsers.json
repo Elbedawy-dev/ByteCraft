@@ -1,0 +1,101 @@
+{
+  "status": {
+    "active": "نشط",
+    "disabled": "معطّل"
+  },
+  "verification": {
+    "verified": "مؤكد",
+    "unverified": "غير مؤكد"
+  },
+  "validation": {
+    "nameMin": "يجب أن يتكون الاسم من حرفين على الأقل",
+    "nameMax": "يجب ألا يتجاوز الاسم 100 حرف",
+    "emailRequired": "البريد الإلكتروني مطلوب",
+    "emailInvalid": "يرجى إدخال بريد إلكتروني صحيح"
+  },
+  "customers": {
+    "title": "حسابات العملاء",
+    "subtitle": "عرض العملاء المسجلين، البحث بالاسم أو بيانات التواصل، وتفعيل أو تعطيل الحسابات.",
+    "totalBadge": "{{count}} عميل",
+    "tableRegion": "جدول العملاء",
+    "emptyTitle": "لا يوجد عملاء مسجلون بعد",
+    "emptyDescription": "ستظهر حسابات العملاء هنا فور تسجيل مستخدمين جدد.",
+    "emptyFilteredTitle": "لا يوجد عملاء يطابقون البحث",
+    "emptyFilteredDescription": "جرّب تعديل عبارة البحث أو إعادة ضبط فلتر الحالة.",
+    "filters": {
+      "searchLabel": "البحث في العملاء",
+      "searchPlaceholder": "ابحث بالاسم، البريد، أو الهاتف...",
+      "statusLabel": "تصفية حسب الحالة",
+      "allStatuses": "جميع الحالات"
+    },
+    "columns": {
+      "customer": "العميل",
+      "verification": "البريد",
+      "status": "الحالة",
+      "orders": "الطلبات",
+      "joined": "تاريخ التسجيل",
+      "actions": "الإجراءات"
+    },
+    "actions": {
+      "disable": "تعطيل",
+      "enable": "تفعيل"
+    },
+    "confirmDisable": {
+      "title": "تعطيل حساب العميل؟",
+      "message": "سيؤدي تعطيل حساب {{name}} ({{email}}) إلى إنهاء جلساته النشطة ومنعه من تسجيل الدخول حتى إعادة التفعيل."
+    },
+    "confirmEnable": {
+      "title": "تفعيل حساب العميل؟",
+      "message": "هل تريد إعادة تفعيل حساب {{name}} ({{email}}) ليتمكن من تسجيل الدخول واستخدام حسابه؟"
+    },
+    "toasts": {
+      "disabled": "تم تعطيل حساب العميل",
+      "enabled": "تم تفعيل حساب العميل"
+    }
+  },
+  "admins": {
+    "title": "المشرفون",
+    "subtitle": "إدارة حسابات المشرفين ذوي الصلاحيات الكاملة على لوحة التحكم.",
+    "totalBadge": "{{count}} مشرف",
+    "createAction": "إضافة مشرف",
+    "emptyTitle": "لا يوجد مشرفون",
+    "emptyDescription": "أضف مشرفاً جديداً للمساعدة في إدارة المشاريع والطلبات.",
+    "tableRegion": "جدول المشرفين",
+    "youBadge": "أنت",
+    "neverLoggedIn": "لم يسجل الدخول بعد",
+    "selfProtected": "الحساب الحالي",
+    "lastProtected": "آخر مشرف",
+    "columns": {
+      "admin": "المشرف",
+      "status": "الحالة",
+      "lastLogin": "آخر تسجيل دخول",
+      "createdAt": "تاريخ الإضافة",
+      "actions": "الإجراءات"
+    },
+    "createModal": {
+      "title": "إضافة مشرف جديد",
+      "description": "أدخل اسم المشرف الجديد وبريده الإلكتروني. سيتم إرسال رابط دعوة لمرة واحدة لتعيين كلمة المرور.",
+      "nameLabel": "الاسم الكامل",
+      "namePlaceholder": "مثال: سارة حسن",
+      "emailLabel": "البريد الإلكتروني",
+      "emailHint": "سيتم إرسال دعوة تعيين كلمة المرور إلى هذا البريد",
+      "emailPlaceholder": "admin@company.com",
+      "localeLabel": "لغة رسالة الدعوة",
+      "localeAr": "العربية",
+      "localeEn": "English",
+      "submit": "إنشاء وإرسال الدعوة",
+      "submitting": "جارٍ الإنشاء..."
+    },
+    "confirmDelete": {
+      "title": "حذف حساب المشرف؟",
+      "message": "هل أنت متأكد من حذف حساب المشرف {{name}} ({{email}}) نهائياً؟ لا يمكن التراجع عن هذا الإجراء."
+    },
+    "toasts": {
+      "created": "تم إنشاء المشرف وإرسال الدعوة إلى {{email}}",
+      "deleted": "تم حذف المشرف"
+    },
+    "errors": {
+      "emailExists": "يوجد حساب مسجل بهذا البريد الإلكتروني بالفعل."
+    }
+  }
+}

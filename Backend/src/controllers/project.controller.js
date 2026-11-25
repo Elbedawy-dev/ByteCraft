@@ -1,29 +1,13 @@
-const jwt = require('jsonwebtoken');
 const projectService = require('../services/project.service');
 const asyncHandler = require('../utils/asyncHandler');
-const env = require('../config/env');
-const { AUTH_COOKIE_NAME } = require('../config/constants');
+const { ROLES } = require('../config/constants');
 
 /**
  * Project Controller
  * 
  * WHY:
- * Exposes Owner CRUD routes and Public Catalog browsing endpoints.
+ * Exposes Owner/Admin CRUD routes and Public Catalog browsing endpoints.
  */
-
-// Helper to silently detect if request is from the authenticated Owner
-function isOwnerRequester(req) {
-  try {
-    const token = req.cookies?.[AUTH_COOKIE_NAME] || req.headers?.authorization?.split(' ')[1];
-    if (token) {
-      const decoded = jwt.verify(token, env.JWT_SECRET);
-      return Boolean(decoded && decoded.id);
-    }
-  } catch {
-    // Non-owner / guest visitor
-  }
-  return false;
-}
 
 // ==========================================
 // Owner Handlers
@@ -113,8 +97,8 @@ const getPublicProjects = asyncHandler(async (req, res) => {
 });
 
 const getPublicProjectBySlug = asyncHandler(async (req, res) => {
-  const isOwner = isOwnerRequester(req);
-  const project = await projectService.getPublicProjectBySlug(req.params.slug, isOwner);
+  const isAdmin = req.user?.role === ROLES.ADMIN;
+  const project = await projectService.getPublicProjectBySlug(req.params.slug, isAdmin);
 
   res.status(200).json({
     success: true,

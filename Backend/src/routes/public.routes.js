@@ -4,12 +4,14 @@ const categoryController = require('../controllers/category.controller');
 const servicePlanController = require('../controllers/servicePlan.controller');
 const couponController = require('../controllers/coupon.controller');
 const metaController = require('../controllers/meta.controller');
+const statsController = require('../controllers/stats.controller');
 const orderController = require('../controllers/order.controller');
 const paymentController = require('../controllers/payment.controller');
 const inquiryController = require('../controllers/inquiry.controller');
 const reviewController = require('../controllers/review.controller');
 
 const validate = require('../middleware/validate.middleware');
+const { authOptional } = require('../middleware/auth.middleware');
 const {
   previewViewLimiter,
   couponValidateLimiter,
@@ -32,6 +34,7 @@ const { createInquirySchema } = require('../validators/inquiry.validator');
 const {
   createReviewSchema,
   getProjectReviewsQuerySchema,
+  getLatestReviewsQuerySchema,
 } = require('../validators/review.validator');
 
 const router = express.Router();
@@ -51,6 +54,9 @@ const router = express.Router();
 // GET /api/meta - Returns site settings, contact, active categories & enabled payment methods (without secrets)
 router.get('/meta', metaController.getMeta);
 
+// GET /api/stats/public - Returns real public platform counters & review stats (cached 5 min)
+router.get('/stats/public', statsController.getPublicStats);
+
 // ==========================================
 // 2. Categories (Active Only)
 // ==========================================
@@ -66,7 +72,7 @@ router.get('/categories', categoryController.getCategories);
 router.get('/projects', validate(publicProjectQuerySchema), projectController.getPublicProjects);
 
 // GET /api/projects/:slug - Public project details
-router.get('/projects/:slug', projectController.getPublicProjectBySlug);
+router.get('/projects/:slug', authOptional, projectController.getPublicProjectBySlug);
 
 // POST /api/projects/:slug/preview-view - Increment live preview counter
 router.post('/projects/:slug/preview-view', previewViewLimiter, projectController.recordPreviewView);
@@ -94,8 +100,8 @@ router.post(
 // 6. Orders (Guest Checkout & Status)
 // ==========================================
 
-// POST /api/orders - Creates new order (manual or online)
-router.post('/orders', orderCreateLimiter, validate(createOrderSchema), orderController.createOrder);
+// POST /api/orders - Creates new order (guest or authenticated user)
+router.post('/orders', authOptional, orderCreateLimiter, validate(createOrderSchema), orderController.createOrder);
 
 // GET /api/orders/:orderNumber?token= - Checks order status for guest
 router.get(
@@ -146,6 +152,13 @@ router.post(
   reviewLimiter,
   validate(createReviewSchema),
   reviewController.createReview
+);
+
+// GET /api/reviews/latest?limit=6 - Latest published reviews across projects (max 12)
+router.get(
+  '/reviews/latest',
+  validate(getLatestReviewsQuerySchema),
+  reviewController.getLatestReviews
 );
 
 // GET /api/projects/:slug/reviews - Public list of published reviews for a project

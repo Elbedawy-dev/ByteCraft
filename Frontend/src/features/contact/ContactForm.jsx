@@ -233,26 +233,26 @@ export function ContactForm() {
   return (
     <section
       aria-labelledby="contact-form-heading"
-      className="lg:col-span-7 bg-card border border-card-border shadow-card rounded-xl p-5 sm:p-8 order-1 lg:order-2 space-y-6"
+      className="lg:col-span-7 bg-card border border-card-border shadow-card rounded-2xl p-6 sm:p-8 order-1 lg:order-2 space-y-6"
     >
       {/* Card Header */}
       <div className="space-y-2">
         <div className="flex items-center justify-between gap-2 flex-wrap">
-          <span className="font-mono text-xs font-semibold text-primary uppercase tracking-wider">
+          <span className="px-3.5 py-1 rounded-full bg-brand-soft text-brand-soft-text text-xs font-semibold">
             {t('form.eyebrow')}
           </span>
-          <span className="text-xs font-medium text-on-surface-variant bg-surface border border-card-border px-3 py-1 rounded-full">
+          <span className="text-xs font-medium text-muted bg-section-band border border-card-border px-3 py-1 rounded-full">
             {t('form.responseBadge')}
           </span>
         </div>
 
         <h2
           id="contact-form-heading"
-          className="text-xl sm:text-2xl font-bold text-on-surface"
+          className="text-xl sm:text-2xl font-extrabold text-on-surface"
         >
           {t('form.title')}
         </h2>
-        <p className="text-sm sm:text-base text-on-surface-variant leading-relaxed">
+        <p className="text-sm sm:text-base text-muted leading-relaxed">
           {t('form.subtitle')}
         </p>
       </div>
@@ -589,8 +589,8 @@ export function ContactForm() {
               loading={createInquiryMutation.isPending}
               className="w-full"
               iconTrailing={
-                <span className="material-symbols-outlined text-[20px] rtl:-scale-x-100">
-                  send
+                <span className="material-symbols-rounded text-[20px] rtl:-scale-x-100" aria-hidden="true">
+                  arrow_forward
                 </span>
               }
             >
@@ -599,8 +599,8 @@ export function ContactForm() {
                 : t('form.submit')}
             </Button>
 
-            <div className="flex items-center justify-center gap-2 text-xs sm:text-sm text-on-surface-variant text-center">
-              <span className="material-symbols-outlined text-primary text-[18px] shrink-0">
+            <div className="flex items-center justify-center gap-2 text-xs sm:text-sm text-muted text-center">
+              <span className="material-symbols-rounded icon-gradient text-[18px] shrink-0" aria-hidden="true">
                 lock
               </span>
               <span>{t('form.securityNote')}</span>

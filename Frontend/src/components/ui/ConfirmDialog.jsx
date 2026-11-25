@@ -12,6 +12,8 @@ export function ConfirmDialog({
   cancelText = 'Cancel',
   variant = 'danger', // 'danger' | 'primary'
   loading = false,
+  confirmDisabled = false,
+  children,
 }) {
   return (
     <Modal
@@ -25,6 +27,7 @@ export function ConfirmDialog({
             variant="ghost"
             onClick={onClose}
             disabled={loading}
+            autoFocus={variant === 'danger'}
           >
             {cancelText}
           </Button>
@@ -32,15 +35,21 @@ export function ConfirmDialog({
             variant={variant === 'danger' ? 'danger' : 'primary-gradient'}
             onClick={onConfirm}
             loading={loading}
+            disabled={confirmDisabled || loading}
           >
             {confirmText}
           </Button>
         </>
       }
     >
-      <p className="text-sm text-on-surface-variant leading-relaxed">
-        {message}
-      </p>
+      <div className="space-y-4">
+        {message && (
+          <p className="text-sm text-on-surface-variant leading-relaxed">
+            {message}
+          </p>
+        )}
+        {children}
+      </div>
     </Modal>
   );
 }

@@ -6,9 +6,9 @@ import { useLang } from '../../app/providers';
 export function PriceTag({
   piasters = 0,
   originalPiasters,
-  prefix, // e.g. "Starting at" or localized string
-  period, // e.g. "/ month"
-  size = 'md', // 'sm' | 'md' | 'lg' | 'xl'
+  prefix,
+  period,
+  size = 'md',
   className = '',
 }) {
   const { lang } = useLang();
@@ -17,16 +17,16 @@ export function PriceTag({
   const formattedOriginal = originalPiasters ? formatMoney(originalPiasters, lang) : null;
 
   const sizeClasses = {
-    sm: 'text-sm font-semibold',
-    md: 'text-base sm:text-lg font-bold',
-    lg: 'text-xl sm:text-2xl font-bold',
+    sm: 'text-sm font-bold',
+    md: 'text-base sm:text-lg font-extrabold',
+    lg: 'text-xl sm:text-2xl font-extrabold',
     xl: 'text-2xl sm:text-3xl font-extrabold',
-  }[size] || 'text-base sm:text-lg font-bold';
+  }[size] || 'text-base sm:text-lg font-extrabold';
 
   return (
     <div className={clsx('inline-flex items-baseline flex-wrap gap-1.5', className)}>
       {prefix && (
-        <span className="text-xs text-on-surface-variant font-normal">
+        <span className="text-xs text-muted font-medium">
           {prefix}
         </span>
       )}
@@ -36,13 +36,13 @@ export function PriceTag({
       </span>
 
       {formattedOriginal && (
-        <span className="text-xs sm:text-sm text-on-surface-variant line-through font-mono">
+        <span className="text-xs sm:text-sm text-muted line-through font-mono">
           {formattedOriginal}
         </span>
       )}
 
       {period && (
-        <span className="text-xs text-on-surface-variant font-normal">
+        <span className="text-xs text-muted font-medium">
           {period}
         </span>
       )}

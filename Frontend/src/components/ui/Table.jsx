@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { Skeleton } from './Skeleton';
 
 export function Table({
-  columns = [], // [{ key, header, render, className }]
+  columns = [],
   data = [],
   loading = false,
   emptyMessage = 'No data available',
@@ -15,7 +15,7 @@ export function Table({
       <div className="w-full overflow-x-auto">
         <table className="w-full text-start border-collapse text-sm">
           <thead>
-            <tr className="border-b border-card-border bg-surface-container-high text-on-surface-variant font-medium text-xs">
+            <tr className="border-b border-card-border bg-section-band text-muted font-semibold text-xs uppercase tracking-wider">
               {columns.map((col) => (
                 <th
                   key={col.key}
@@ -44,7 +44,7 @@ export function Table({
               <tr>
                 <td
                   colSpan={columns.length}
-                  className="py-12 text-center text-on-surface-variant text-sm"
+                  className="py-12 text-center text-muted text-sm"
                 >
                   {emptyMessage}
                 </td>
@@ -53,7 +53,7 @@ export function Table({
               data.map((row, rowIdx) => (
                 <tr
                   key={row[keyField] ?? rowIdx}
-                  className="even:bg-surface-container-high/40 hover:bg-card-hover transition-colors"
+                  className="even:bg-section-band/40 hover:bg-brand-soft/30 transition-colors duration-300 ease-nexus"
                 >
                   {columns.map((col) => (
                     <td

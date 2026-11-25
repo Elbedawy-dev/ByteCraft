@@ -4,17 +4,19 @@ import { useTranslation } from 'react-i18next';
 import { useLang } from '../../app/providers';
 import { useMeta } from '../../api/meta';
 import { useCategories } from '../../api/projects';
-import { useOwnerMe } from '../../api/owner/auth';
-import { techBadges, footerQuickLinks } from '../../config/nav';
+import { useAuth } from '../../features/auth';
+import { footerQuickLinks } from '../../config/nav';
 import { ROUTES } from '../../config/routes';
+import { BRAND } from '../../config/brand';
 import { localized } from '../../lib/localized';
+import { BrandLogo } from '../shared/LogoMark';
 
 export function Footer() {
   const { t } = useTranslation('common');
   const { lang } = useLang();
   const { data: meta } = useMeta();
   const { data: rawCategories = [] } = useCategories();
-  const { data: owner } = useOwnerMe();
+  const { isAuthenticated, isAdmin } = useAuth();
 
   const currentYear = new Date().getFullYear();
   const contact = meta?.contact || {};
@@ -30,92 +32,101 @@ export function Footer() {
 
   const githubUrl = (contact.github || socials.github || '').trim();
   const linkedinUrl = (contact.linkedin || socials.linkedin || '').trim();
+  const twitterUrl = (contact.twitter || contact.x || socials.twitter || socials.x || '').trim();
+  const facebookUrl = (contact.facebook || socials.facebook || '').trim();
+  const instagramUrl = (contact.instagram || socials.instagram || '').trim();
   const email = (contact.email || '').trim();
 
+  const socialItems = [
+    whatsappHref && { key: 'whatsapp', href: whatsappHref, label: 'WhatsApp', icon: 'chat', external: true },
+    githubUrl && { key: 'github', href: githubUrl, label: 'GitHub', icon: 'code', external: true },
+    linkedinUrl && { key: 'linkedin', href: linkedinUrl, label: 'LinkedIn', icon: 'work', external: true },
+    twitterUrl && { key: 'twitter', href: twitterUrl, label: 'X / Twitter', icon: 'share', external: true },
+    facebookUrl && { key: 'facebook', href: facebookUrl, label: 'Facebook', icon: 'public', external: true },
+    instagramUrl && { key: 'instagram', href: instagramUrl, label: 'Instagram', icon: 'photo_camera', external: true },
+    email && { key: 'email', href: `mailto:${email}`, label: 'Email', icon: 'mail', external: false },
+  ].filter(Boolean);
+
   const hasCategories = categories.length > 0;
+  const hasSocials = socialItems.length > 0;
 
   return (
-    <footer className="w-full bg-section-band border-t border-outline-variant text-on-surface-variant transition-colors mt-auto">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-12 border-b border-outline-variant">
-          {/* Col 1: Brand & Tech Badges */}
+    <footer className="relative w-full bg-navy text-navy-text overflow-hidden mt-auto">
+      {/* Subtle angled translucent corner decorations like the reference */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-20 -start-16 w-72 h-72 rotate-12 rounded-3xl bg-gradient-to-br from-[#2B72CF]/15 to-transparent"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-24 -end-16 w-80 h-80 -rotate-12 rounded-3xl bg-gradient-to-tl from-[#5443A9]/20 to-transparent"
+      />
+
+      <div className="relative z-10 max-w-container mx-auto px-4 sm:px-6 py-14 lg:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-10 border-b border-navy-border">
+          {/* Col 1: BrandLogo tone="light" + Tagline */}
           <div className={hasCategories ? 'lg:col-span-4 space-y-4' : 'lg:col-span-5 space-y-4'}>
             <Link
               to={ROUTES.HOME}
-              className="flex items-center gap-2.5 group w-fit select-none"
-              aria-label="ByteCraft Home"
+              className="inline-flex items-center w-fit select-none"
+              aria-label={`${BRAND.name} Home`}
             >
-              <div className="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-primary group-hover:border-primary/50 transition-colors shadow-sm">
-                <span className="material-symbols-outlined text-[24px]">terminal</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-extrabold text-xl tracking-tight text-on-surface">
-                  Byte<span className="text-primary">Craft</span>
-                </span>
-                <span className="text-[10px] font-mono tracking-wider text-on-surface-variant uppercase -mt-1">
-                  Studio Engine
-                </span>
-              </div>
+              <BrandLogo tone="light" size="md" />
             </Link>
 
-            <p className="text-xs sm:text-sm text-on-surface-variant max-w-sm leading-relaxed">
-              {t(
-                'footer.description',
-                { defaultValue: 'Custom web solutions & production-ready software platforms built with modern MERN architecture for maximum scalability.' }
-              )}
+            <p className="text-sm font-semibold text-white/95">
+              {t('footer.tagline', {
+                defaultValue: lang === 'ar' ? 'ابنِ بذكاء. انمُ بسرعة.' : 'Build Smarter. Grow Faster.',
+              })}
             </p>
 
-            {/* Tech Stack Badges */}
-            <div className="flex flex-wrap items-center gap-1.5 pt-2">
-              {techBadges.map((badge) => (
-                <span
-                  key={badge.name}
-                  className="px-2.5 py-1 rounded-full text-[11px] font-mono bg-surface border border-outline-variant text-on-surface-variant"
-                >
-                  {badge.name}
-                </span>
-              ))}
-            </div>
+            <p className="text-sm text-navy-text max-w-sm leading-relaxed">
+              {t('footer.description', {
+                defaultValue:
+                  'Custom web solutions & production-ready software platforms built with modern MERN architecture for maximum scalability.',
+              })}
+            </p>
           </div>
 
           {/* Col 2: Quick Links */}
-          <div className={hasCategories ? 'lg:col-span-2 space-y-3' : 'lg:col-span-3 space-y-3'}>
-            <h4 className="text-sm font-semibold text-on-surface">
+          <div className={hasCategories ? 'lg:col-span-2 space-y-3.5' : 'lg:col-span-3 space-y-3.5'}>
+            <h4 className="text-sm font-bold text-white tracking-wide">
               {t('footer.quickLinks', { defaultValue: 'Quick Links' })}
             </h4>
-            <ul className="space-y-2 text-xs sm:text-sm">
+            <ul className="space-y-2.5 text-sm">
               {footerQuickLinks.map((link) => (
                 <li key={link.key}>
                   <Link
                     to={link.to}
-                    className="hover:text-primary transition-colors flex items-center gap-1.5"
+                    className="text-navy-text hover:text-white transition-colors duration-300 inline-flex items-center gap-1.5"
                   >
-                    <span className="material-symbols-outlined text-[14px] text-primary rtl:-scale-x-100" aria-hidden="true">
-                      arrow_right_alt
+                    <span>
+                      {t(link.labelKey || `nav.${link.key}`, {
+                        defaultValue:
+                          lang === 'ar' ? link.defaultLabel : 'Custom Build Request',
+                      })}
                     </span>
-                    <span>{t(`nav.${link.key}`, { defaultValue: link.defaultLabel })}</span>
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Col 3: Dynamic Service/Category Links (built from GET /api/categories, up to 4; hidden if none) */}
+          {/* Col 3: Dynamic Categories (hidden if empty) */}
           {hasCategories && (
-            <div className="lg:col-span-3 space-y-3">
-              <h4 className="text-sm font-semibold text-on-surface">
-                {t('footer.services', { defaultValue: lang === 'ar' ? 'الخدمات والتصنيفات' : 'Services & Platforms' })}
+            <div className="lg:col-span-3 space-y-3.5">
+              <h4 className="text-sm font-bold text-white tracking-wide">
+                {t('footer.services', {
+                  defaultValue: lang === 'ar' ? 'الخدمات والتصنيفات' : 'Services & Platforms',
+                })}
               </h4>
-              <ul className="space-y-2 text-xs sm:text-sm">
+              <ul className="space-y-2.5 text-sm">
                 {categories.map((cat) => (
                   <li key={cat._id || cat.key}>
                     <Link
                       to={`${ROUTES.PROJECTS}?category=${encodeURIComponent(cat.key)}`}
-                      className="hover:text-primary transition-colors flex items-center gap-1.5"
+                      className="text-navy-text hover:text-white transition-colors duration-300 inline-flex items-center gap-1.5"
                     >
-                      <span className="material-symbols-outlined text-[14px] text-primary rtl:-scale-x-100" aria-hidden="true">
-                        arrow_right_alt
-                      </span>
                       <span>{localized(cat.name, lang)}</span>
                     </Link>
                   </li>
@@ -124,99 +135,95 @@ export function Footer() {
             </div>
           )}
 
-          {/* Col 4: Direct Contact & Availability */}
+          {/* Col 4: Follow Us / Contact Channels */}
           <div className={hasCategories ? 'lg:col-span-3 space-y-4' : 'lg:col-span-4 space-y-4'}>
-            <h4 className="text-sm font-semibold text-on-surface">
-              {t('footer.contactChannels', { defaultValue: 'Direct Contact' })}
+            <h4 className="text-sm font-bold text-white tracking-wide">
+              {t('footer.followUs', {
+                defaultValue: lang === 'ar' ? 'تابعنا وتواصل معنا' : 'Follow Us',
+              })}
             </h4>
-            <p className="text-xs sm:text-sm text-on-surface-variant">
-              {t('footer.contactNote', { defaultValue: 'Ready to turn your idea into production-grade code.' })}
+            <p className="text-sm text-navy-text leading-relaxed">
+              {t('footer.contactNote', {
+                defaultValue: 'Ready to turn your idea into production-grade software.',
+              })}
             </p>
 
-            {/* Social & Contact channels - only rendered if value exists */}
-            <div className="flex items-center gap-2">
-              {whatsappHref && (
-                <a
-                  href={whatsappHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary hover:bg-surface-container-high transition-all"
-                  aria-label="WhatsApp"
-                >
-                  <span className="material-symbols-outlined text-[20px]">chat</span>
-                </a>
-              )}
-
-              {githubUrl && (
-                <a
-                  href={githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary hover:bg-surface-container-high transition-all"
-                  aria-label="GitHub"
-                >
-                  <span className="material-symbols-outlined text-[20px]">code</span>
-                </a>
-              )}
-
-              {linkedinUrl && (
-                <a
-                  href={linkedinUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary hover:bg-surface-container-high transition-all"
-                  aria-label="LinkedIn"
-                >
-                  <span className="material-symbols-outlined text-[20px]">work</span>
-                </a>
-              )}
-
-              {email && (
-                <a
-                  href={`mailto:${email}`}
-                  className="w-10 h-10 rounded-xl bg-surface border border-outline-variant flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary hover:bg-surface-container-high transition-all"
-                  aria-label="Email"
-                >
-                  <span className="material-symbols-outlined text-[20px]">mail</span>
-                </a>
-              )}
-            </div>
-
-            {/* Availability Pill with pulsing dot */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface border border-outline-variant text-xs text-on-surface-variant">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
-              </span>
-              <span>{t('footer.available', { defaultValue: 'Available for new software projects' })}</span>
-            </div>
+            {hasSocials && (
+              <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                {socialItems.map((item) => (
+                  <a
+                    key={item.key}
+                    href={item.href}
+                    target={item.external ? '_blank' : undefined}
+                    rel={item.external ? 'noopener noreferrer' : undefined}
+                    aria-label={item.label}
+                    className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white hover:bg-primary-gradient hover:border-transparent transition-all duration-300"
+                  >
+                    <span className="material-symbols-rounded text-[19px]" aria-hidden="true">
+                      {item.icon}
+                    </span>
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Bottom bar: Copyright, public links & discreet owner entry */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-on-surface-variant">
+        {/* Bottom Bar: Copyright & discreet Owner link */}
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-navy-text">
           <p>
-            © {currentYear} {t('footer.copyright', { defaultValue: 'بايت كرافت (ByteCraft). جميع الحقوق محفوظة لمهندسي البرمجيات.' })}
+            © {currentYear} {BRAND.wordmark}.{' '}
+            {t('footer.copyright', {
+              defaultValue: lang === 'ar' ? 'جميع الحقوق محفوظة.' : 'All rights reserved.',
+            })}
           </p>
 
-          <div className="flex items-center gap-4">
-            <Link to="/about" className="hover:text-primary transition-colors">
-              {t('nav.about', { defaultValue: 'عن بايت كرافت' })}
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-x-4 gap-y-1">
+            <Link to={ROUTES.ABOUT} className="min-h-[44px] inline-flex items-center hover:text-white transition-colors duration-300">
+              {t('nav.about', { defaultValue: 'About' })}
             </Link>
-            <span className="text-muted" aria-hidden="true">•</span>
-            <Link to="/contact" className="hover:text-primary transition-colors">
-              {t('nav.contact', { defaultValue: 'تواصل معنا' })}
+            <span className="text-navy-text/50" aria-hidden="true">•</span>
+            <Link to={ROUTES.CONTACT} className="min-h-[44px] inline-flex items-center hover:text-white transition-colors duration-300">
+              {t('nav.contact', { defaultValue: 'Contact' })}
             </Link>
-            <span className="text-muted" aria-hidden="true">•</span>
-            {/* Discreet Owner entry link with 44px touch target */}
-            <Link
-              to={owner ? ROUTES.OWNER : ROUTES.OWNER_LOGIN}
-              className="min-h-[44px] min-w-[44px] inline-flex items-center text-xs text-on-surface-variant hover:text-primary transition-colors"
-            >
-              {owner
-                ? (lang === 'ar' ? 'لوحة التحكم' : 'Dashboard')
-                : (lang === 'ar' ? 'لوحة التحكم' : 'Owner login')}
-            </Link>
+            <span className="text-navy-text/50" aria-hidden="true">•</span>
+            {isAuthenticated ? (
+              <>
+                <Link
+                  to={ROUTES.ACCOUNT}
+                  className="min-h-[44px] inline-flex items-center text-xs text-navy-text hover:text-white transition-colors duration-300"
+                >
+                  {t('nav.userMenu.account', { defaultValue: 'My account' })}
+                </Link>
+                {isAdmin && (
+                  <>
+                    <span className="text-navy-text/50" aria-hidden="true">•</span>
+                    <Link
+                      to={ROUTES.OWNER_DASHBOARD}
+                      className="min-h-[44px] inline-flex items-center text-xs text-navy-text hover:text-white transition-colors duration-300"
+                    >
+                      {t('nav.userMenu.dashboard', { defaultValue: 'Dashboard' })}
+                    </Link>
+                  </>
+                )}
+              </>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 min-h-[44px]">
+                <Link
+                  to={ROUTES.LOGIN}
+                  className="min-h-[44px] inline-flex items-center text-xs text-navy-text hover:text-white transition-colors duration-300"
+                >
+                  {t('nav.login', { defaultValue: 'Login' })}
+                </Link>
+                <span className="text-navy-text/50" aria-hidden="true">/</span>
+                <Link
+                  to={ROUTES.REGISTER}
+                  className="min-h-[44px] inline-flex items-center text-xs text-navy-text hover:text-white transition-colors duration-300"
+                >
+                  {t('nav.register', { defaultValue: 'Create account' })}
+                </Link>
+              </span>
+            )}
           </div>
         </div>
       </div>

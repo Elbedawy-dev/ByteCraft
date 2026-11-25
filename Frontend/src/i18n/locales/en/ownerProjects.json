@@ -188,7 +188,7 @@
     "preview": {
       "heading": "Live Demo Preview Settings",
       "urlLabel": "Live Demo URL",
-      "urlPlaceholder": "https://demo.bytecraft.dev/lms-pro",
+      "urlPlaceholder": "https://demo.nexus.dev/lms-pro",
       "modeLabel": "Preview Mode",
       "modeIframe": "Embedded Iframe",
       "modeExternal": "External New Tab",
@@ -200,7 +200,7 @@
       "credLabel": "Account Label",
       "credLabelPlaceholder": "Demo Account",
       "credEmail": "Demo Email",
-      "credEmailPlaceholder": "demo@bytecraft.dev",
+      "credEmailPlaceholder": "demo@nexus.dev",
       "credPassword": "Demo Password",
       "credPasswordPlaceholder": "DemoUser123!"
     },
@@ -215,11 +215,11 @@
         "other": "Other"
       },
       "ownerLabel": "Repository Owner / Org",
-      "ownerPlaceholder": "ByteCraftDev",
+      "ownerPlaceholder": "NexusDev",
       "nameLabel": "Repository Name",
       "namePlaceholder": "academia-lms-mern",
       "urlLabel": "Private Repository URL",
-      "urlPlaceholder": "https://github.com/ByteCraftDev/academia-lms-mern"
+      "urlPlaceholder": "https://github.com/NexusDev/academia-lms-mern"
     },
     "validation": {
       "titleArRequired": "Arabic title is required",

@@ -5,11 +5,11 @@ const Counter = require('../models/Counter');
 const Coupon = require('../models/Coupon');
 const Inquiry = require('../models/Inquiry');
 const Order = require('../models/Order');
-const Owner = require('../models/Owner');
 const Project = require('../models/Project');
 const Review = require('../models/Review');
 const ServicePlan = require('../models/ServicePlan');
 const Settings = require('../models/Settings');
+const User = require('../models/User');
 
 /**
  * Database Sample Data Cleanup Script (`npm run db:cleanup-sample`)
@@ -44,7 +44,7 @@ async function main() {
   const dbArgMatch = args.find((a) => a.startsWith('--db='));
   const specifiedDb = dbArgMatch ? dbArgMatch.split('=')[1].trim() : null;
 
-  console.log('🧹 ByteCraft Sample Data Cleanup Utility');
+  console.log('🧹 Nexus Sample Data Cleanup Utility');
   console.log('====================================================');
 
   await connectDB({ exitOnError: false });

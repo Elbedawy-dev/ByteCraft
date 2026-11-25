@@ -1,5 +1,5 @@
 /**
- * Money helpers for ByteCraft.
+ * Money helpers for Nexus.
  * All API amounts are integer piasters (1 EGP = 100 piasters).
  * Numbers always use Western digits in both AR and EN per contract section 5.
  * Format: AR "7,800 ج.م" | EN "EGP 7,800"

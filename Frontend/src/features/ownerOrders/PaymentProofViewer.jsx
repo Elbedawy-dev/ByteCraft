@@ -197,7 +197,7 @@ export function PaymentProofViewer({ proof }) {
                   transform: `scale(${zoom})`,
                   transformOrigin: 'center center',
                 }}
-                className="max-h-72 w-auto object-contain rounded-lg transition-transform duration-150 cursor-zoom-in"
+                className="max-h-72 w-auto object-contain rounded-lg transition-transform duration-300 ease-nexus cursor-zoom-in"
               />
             </div>
           )}
@@ -270,7 +270,7 @@ export function PaymentProofViewer({ proof }) {
                   transform: `scale(${lightboxZoom})`,
                   transformOrigin: 'center center',
                 }}
-                className="max-h-[60dvh] w-auto object-contain transition-transform duration-150"
+                className="max-h-[60dvh] w-auto object-contain transition-transform duration-300 ease-nexus"
               />
             </div>
           </OwnerModal>

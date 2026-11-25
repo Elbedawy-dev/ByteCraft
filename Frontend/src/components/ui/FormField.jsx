@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 /**
- * FormField component enforcing ByteCraft form layout rules:
+ * FormField component enforcing Nexus form layout rules:
  * - Label above control with 8px gap (mb-2)
  * - Required marker: small primary-colored '*' after label
  * - Hint/error text below control: 12-13px, mt-2
@@ -25,7 +25,7 @@ export function FormField({
       {label && (
         <label
           htmlFor={id}
-          className="text-sm font-medium text-on-surface mb-2 flex items-center gap-1 select-none"
+          className="text-sm font-semibold text-on-surface mb-2 flex items-center gap-1 select-none"
         >
           <span>{label}</span>
           {required && (
@@ -41,7 +41,14 @@ export function FormField({
         {React.isValidElement(children)
           ? React.cloneElement(children, {
               id: children.props.id || id,
-              error: children.props.error !== undefined ? children.props.error : Boolean(error),
+              ...(typeof children.type !== 'string'
+                ? {
+                    error:
+                      children.props.error !== undefined
+                        ? children.props.error
+                        : Boolean(error),
+                  }
+                : {}),
               'aria-describedby':
                 children.props['aria-describedby'] ||
                 [errorId, hintId].filter(Boolean).join(' ') ||
@@ -55,13 +62,13 @@ export function FormField({
         <p
           id={errorId}
           role="alert"
-          className="text-xs sm:text-[13px] text-error mt-2 flex items-center gap-1.5 animate-in fade-in"
+          className="text-xs sm:text-[13px] text-error mt-2 flex items-center gap-1.5"
         >
-          <span className="material-symbols-outlined text-[16px] shrink-0">error</span>
+          <span className="material-symbols-rounded text-[16px] shrink-0" aria-hidden="true">error</span>
           <span>{error}</span>
         </p>
       ) : hint ? (
-        <p id={hintId} className="text-xs sm:text-[13px] text-on-surface-variant mt-2">
+        <p id={hintId} className="text-xs sm:text-[13px] text-muted mt-2">
           {hint}
         </p>
       ) : null}
@@ -70,8 +77,7 @@ export function FormField({
 }
 
 /**
- * Honeypot anti-spam field per contract section 6 line 69
- * (tabindex="-1", autocomplete="off", visually hidden, aria-hidden, always empty)
+ * Honeypot anti-spam field
  */
 export function HoneypotField({ register, name = 'website' }) {
   const registerProps = register ? register(name) : { name };

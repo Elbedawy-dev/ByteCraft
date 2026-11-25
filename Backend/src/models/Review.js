@@ -69,6 +69,7 @@ const reviewSchema = new mongoose.Schema(
 );
 
 reviewSchema.index({ project: 1, isPublished: 1, createdAt: -1 });
+reviewSchema.index({ isPublished: 1, createdAt: -1 });
 
 const Review = mongoose.model('Review', reviewSchema);
 
