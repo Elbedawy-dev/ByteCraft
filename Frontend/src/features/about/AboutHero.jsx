@@ -110,7 +110,7 @@ export function AboutHero() {
 
   const contact = meta?.contact || {};
   const channels = buildContactChannels(contact, t);
-  const locationText = localized(contact.location, lang) || t('owner.defaultLocation');
+  const locationText = localized(contact.location, lang);
 
   const rawMethodItems = t('story.methodology.items', { returnObjects: true });
   const methodologyItems = Array.isArray(rawMethodItems) ? rawMethodItems : [];
@@ -301,9 +301,13 @@ export function AboutHero() {
               )}
 
               <div className="pt-3 border-t border-outline-variant flex flex-wrap items-center justify-between gap-3">
-                <span className="font-mono text-xs text-muted">
-                  {t('owner.locationPrefix')} {locationText}
-                </span>
+                {locationText ? (
+                  <span className="font-mono text-xs text-muted">
+                    {t('owner.locationPrefix')} {locationText}
+                  </span>
+                ) : (
+                  <span />
+                )}
 
                 <Link
                   to={ROUTES.CONTACT}

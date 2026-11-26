@@ -344,7 +344,7 @@ export function ProjectFormModal({ isOpen, onClose, projectId = null }) {
       subHeader={
         !isEdit || (!isLoadingProject && !isLoadError) ? (
           <nav
-            aria-label="Form sections"
+            aria-label={t('modal.sectionsLabel', { defaultValue: t('modal.sections.all') })}
             className="flex items-center gap-1.5 overflow-x-auto pb-0.5"
           >
             {SECTION_IDS.map((secId) => {
@@ -807,8 +807,12 @@ export function ProjectFormModal({ isOpen, onClose, projectId = null }) {
                   control={control}
                   render={({ field }) => (
                     <TagInput
+                      id="proj-tech-stack"
                       value={field.value || []}
                       onChange={field.onChange}
+                      error={Boolean(errors.techStack)}
+                      aria-label={t('modal.techFeatures.techHeading')}
+                      aria-describedby={errors.techStack ? 'proj-tech-stack-error' : 'proj-tech-stack-hint'}
                       placeholder={t('modal.techFeatures.techPlaceholder')}
                     />
                   )}

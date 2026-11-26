@@ -27,7 +27,7 @@ export function DashboardKpiGrid({ totals = {} }) {
       hint: t('kpis.revenue.hint'),
       icon: 'account_balance_wallet',
       highlight: true,
-      chipClasses: 'bg-primary-soft',
+      chipClasses: 'bg-brand-soft',
       iconClasses: 'icon-gradient',
       to: `${ROUTES.OWNER_ORDERS}?status=paid`,
     },
@@ -37,7 +37,7 @@ export function DashboardKpiGrid({ totals = {} }) {
       value: formatNumber(ordersCount),
       hint: t('kpis.ordersCount.hint'),
       icon: 'shopping_bag',
-      chipClasses: 'bg-primary-soft',
+      chipClasses: 'bg-brand-soft',
       iconClasses: 'icon-gradient',
       to: ROUTES.OWNER_ORDERS,
     },
@@ -62,7 +62,7 @@ export function DashboardKpiGrid({ totals = {} }) {
       icon: 'receipt_long',
       alert: pendingProofs > 0,
       alertTone: 'warning',
-      chipClasses: pendingProofs > 0 ? 'bg-warning/15' : 'bg-primary-soft',
+      chipClasses: pendingProofs > 0 ? 'bg-warning/15' : 'bg-brand-soft',
       iconClasses: pendingProofs > 0 ? 'text-warning' : 'icon-gradient',
       to: `${ROUTES.OWNER_ORDERS}?status=awaiting_review`,
     },
@@ -77,7 +77,7 @@ export function DashboardKpiGrid({ totals = {} }) {
       icon: 'mark_chat_unread',
       alert: newInquiries > 0,
       alertTone: 'primary',
-      chipClasses: 'bg-primary-soft',
+      chipClasses: 'bg-brand-soft',
       iconClasses: 'icon-gradient',
       to: `${ROUTES.OWNER_INQUIRIES}?status=new`,
     },
@@ -87,7 +87,7 @@ export function DashboardKpiGrid({ totals = {} }) {
       value: formatNumber(publishedProjects),
       hint: t('kpis.publishedProjects.hint'),
       icon: 'deployed_code',
-      chipClasses: 'bg-primary-soft',
+      chipClasses: 'bg-brand-soft',
       iconClasses: 'icon-gradient',
       to: ROUTES.OWNER_PROJECTS,
     },
@@ -171,7 +171,7 @@ export function DashboardKpiGrid({ totals = {} }) {
               >
                 {card.hint}
               </span>
-              <span className="w-8 h-8 rounded-full bg-primary-soft text-primary inline-flex items-center justify-center shrink-0 transition-transform duration-300 ease-nexus group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5">
+              <span className="w-8 h-8 rounded-full bg-brand-soft text-primary inline-flex items-center justify-center shrink-0 transition-transform duration-300 ease-nexus group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5">
                 <span className="material-symbols-rounded text-[16px] rtl:-scale-x-100">
                   arrow_forward
                 </span>

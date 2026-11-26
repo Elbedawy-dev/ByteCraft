@@ -41,15 +41,15 @@
     "fields": {
       "name": {
         "label": "Full Name",
-        "placeholder": "e.g. Ahmed Abdelrahman"
+        "placeholder": "Enter your full name"
       },
       "phone": {
         "label": "Phone / WhatsApp",
-        "placeholder": "+20 10 1234 5678"
+        "placeholder": "Enter your phone or WhatsApp number"
       },
       "email": {
         "label": "Email Address",
-        "placeholder": "ahmed@example.com"
+        "placeholder": "Enter your email address"
       },
       "projectType": {
         "label": "Project Type",

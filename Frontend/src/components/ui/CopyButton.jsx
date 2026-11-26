@@ -7,6 +7,7 @@ import { Button } from './Button';
 export function CopyButton({
   text,
   label,
+  ariaLabel,
   copiedLabel = 'Copied!',
   size = 'icon-sm',
   variant = 'ghost',
@@ -33,6 +34,8 @@ export function CopyButton({
     }
   };
 
+  const accessibleName = copied ? copiedLabel : (ariaLabel || label || 'Copy to clipboard');
+
   return (
     <Button
       type="button"
@@ -40,8 +43,7 @@ export function CopyButton({
       variant={variant}
       onClick={handleCopy}
       className={clsx('transition-colors duration-300 ease-nexus', copied && 'text-primary', className)}
-      title={copied ? copiedLabel : (label || 'Copy to clipboard')}
-      aria-label={copied ? copiedLabel : (label || 'Copy to clipboard')}
+      aria-label={accessibleName}
     >
       <AnimatePresence mode="wait" initial={false}>
         <m.span

@@ -190,6 +190,8 @@ export default function CheckoutPage() {
       }
     } else if (isFreeOrder && !selectedPaymentMethod) {
       setValue('paymentMethod', 'vodafone_cash', { shouldValidate: false });
+    } else if (!isFreeOrder && selectedPaymentMethod) {
+      setValue('paymentMethod', '', { shouldValidate: false });
     }
   }, [enabledPaymentMethods, selectedPaymentMethod, isFreeOrder, setValue]);
 
@@ -374,9 +376,7 @@ export default function CheckoutPage() {
           title={t('checkout:errors.missingParamsTitle')}
           description={t('checkout:errors.missingParamsDescription')}
           action={
-            <Link to={ROUTES.PROJECTS}>
-              <Button variant="primary-gradient">{t('checkout:errors.browseProjects')}</Button>
-            </Link>
+            <Button to={ROUTES.PROJECTS} variant="primary-gradient">{t('checkout:errors.browseProjects')}</Button>
           }
         />
       </div>
@@ -425,9 +425,7 @@ export default function CheckoutPage() {
             title={t('checkout:errors.projectNotFoundTitle')}
             description={t('checkout:errors.projectNotFoundDescription')}
             action={
-              <Link to={ROUTES.PROJECTS}>
-                <Button variant="primary-gradient">{t('checkout:errors.browseProjects')}</Button>
-              </Link>
+              <Button to={ROUTES.PROJECTS} variant="primary-gradient">{t('checkout:errors.browseProjects')}</Button>
             }
           />
         ) : (
@@ -461,12 +459,8 @@ export default function CheckoutPage() {
           description={t('checkout:errors.invalidPackageDescription')}
           action={
             <div className="flex flex-wrap items-center justify-center gap-3">
-              <Link to={projectDetailsPath(project.slug)}>
-                <Button variant="primary-gradient">{t('checkout:errors.viewProject')}</Button>
-              </Link>
-              <Link to={ROUTES.PROJECTS}>
-                <Button variant="outline">{t('checkout:errors.browseProjects')}</Button>
-              </Link>
+              <Button to={projectDetailsPath(project.slug)} variant="primary-gradient">{t('checkout:errors.viewProject')}</Button>
+              <Button to={ROUTES.PROJECTS} variant="outline">{t('checkout:errors.browseProjects')}</Button>
             </div>
           }
         />
@@ -622,16 +616,20 @@ export default function CheckoutPage() {
                 <span>{t('checkout:accountBanner.guestPrompt')}</span>
               </div>
               <div className="flex items-center gap-2 shrink-0 flex-wrap">
-                <Link to={loginPath(`${location.pathname}${location.search}`)}>
-                  <Button type="button" variant="outline" size="sm">
+                <Button
+                  to={loginPath(`${location.pathname}${location.search}`)}
+                  variant="outline"
+                  size="sm"
+                >
                     {t('common:nav.login', { defaultValue: 'Login' })}
                   </Button>
-                </Link>
-                <Link to={ROUTES.REGISTER}>
-                  <Button type="button" variant="primary-gradient" size="sm">
+                <Button
+                  to={ROUTES.REGISTER}
+                  variant="primary-gradient"
+                  size="sm"
+                >
                     {t('common:nav.register', { defaultValue: 'Create account' })}
                   </Button>
-                </Link>
               </div>
             </div>
           )}

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ROUTES } from '../../../config/routes';
 import { Button } from '../../../components/ui/Button';
@@ -27,28 +26,26 @@ export function ProjectNotFound() {
       </p>
 
       <div className="flex flex-wrap items-center justify-center gap-3.5">
-        <Link to={ROUTES.PROJECTS}>
-          <Button
-            variant="primary-gradient"
-            size="lg"
-            iconTrailing={
+        <Button
+          to={ROUTES.PROJECTS}
+          variant="primary-gradient"
+          size="lg"
+          iconTrailing={
               <span className="material-symbols-rounded text-[18px] rtl:-scale-x-100" aria-hidden="true">
                 arrow_forward
               </span>
             }
-          >
+        >
             {t('notFound.browseProjects')}
           </Button>
-        </Link>
 
-        <Link to={ROUTES.HOME}>
-          <Button
-            variant="outline"
-            size="lg"
-          >
+        <Button
+          to={ROUTES.HOME}
+          variant="outline"
+          size="lg"
+        >
             {t('notFound.backHome')}
           </Button>
-        </Link>
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { m } from 'framer-motion';
 import { ROUTES } from '@/config/routes';
@@ -48,12 +47,12 @@ export function HeroSection() {
             </p>
 
             <div className="flex flex-wrap items-center gap-3.5 pt-2 w-full sm:w-auto">
-              <Link to={ROUTES.PROJECTS} className="w-full sm:w-auto">
-                <Button
-                  variant="primary-gradient"
-                  size="lg"
-                  className="w-full sm:w-auto"
-                  iconTrailing={
+              <Button
+                to={ROUTES.PROJECTS}
+                variant="primary-gradient"
+                size="lg"
+                className="w-full sm:w-auto"
+                iconTrailing={
                     <span
                       className="material-symbols-rounded text-[19px] rtl:-scale-x-100"
                       aria-hidden="true"
@@ -61,20 +60,18 @@ export function HeroSection() {
                       arrow_forward
                     </span>
                   }
-                >
+              >
                   {t('hero.ctaPrimary')}
                 </Button>
-              </Link>
 
-              <Link to={ROUTES.CONTACT} className="w-full sm:w-auto">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full sm:w-auto"
-                >
+              <Button
+                to={ROUTES.CONTACT}
+                variant="outline"
+                size="lg"
+                className="w-full sm:w-auto"
+              >
                   {t('hero.ctaSecondary')}
                 </Button>
-              </Link>
             </div>
           </m.div>
 

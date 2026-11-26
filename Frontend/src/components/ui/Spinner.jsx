@@ -1,7 +1,9 @@
 import React from 'react';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 
 export function Spinner({ size = 'md', className = '' }) {
+  const { t } = useTranslation('common');
   const sizeMap = {
     sm: 'w-4 h-4 border-2',
     md: 'w-5 h-5 border-2',
@@ -16,7 +18,7 @@ export function Spinner({ size = 'md', className = '' }) {
         className
       )}
       role="status"
-      aria-label="Loading"
+      aria-label={t('actions.loading', { defaultValue: 'Loading' })}
     />
   );
 }

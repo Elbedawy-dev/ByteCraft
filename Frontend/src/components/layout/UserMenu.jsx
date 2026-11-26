@@ -154,7 +154,6 @@ export function UserMenu() {
         aria-haspopup="menu"
         aria-expanded={open}
         aria-controls={open ? menuId : undefined}
-        aria-label={t('nav.userMenu.openMenu')}
         className={clsx(
           'min-h-[44px] ps-1.5 pe-3 py-1 rounded-full bg-section-band border text-sm font-semibold text-on-surface flex items-center gap-2 transition-all duration-300',
           open
@@ -169,6 +168,7 @@ export function UserMenu() {
           {initials}
         </span>
         <span className="max-w-[110px] truncate">{user?.name}</span>
+        <span className="sr-only"> — {t('nav.userMenu.openMenu')}</span>
         <span
           className={clsx(
             'material-symbols-rounded text-[18px] text-muted transition-transform duration-300 ease-nexus',

@@ -172,19 +172,20 @@ export function LivePreviewModal({ isOpen, onClose, project }) {
                   <p className="text-xs text-on-surface-variant">
                     {t('livePreview.fallbackDescription')}
                   </p>
-                  <a href={previewUrl} target="_blank" rel="noopener noreferrer">
-                    <Button
-                      variant="primary-gradient"
-                      size="sm"
-                      iconLeading={
+                  <Button
+                    href={previewUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="primary-gradient"
+                    size="sm"
+                    iconLeading={
                         <span className="material-symbols-outlined text-[16px]" aria-hidden="true">
                           open_in_new
                         </span>
                       }
-                    >
+                  >
                       {t('livePreview.openNewTab')}
                     </Button>
-                  </a>
                 </div>
               )}
             </div>
@@ -206,19 +207,20 @@ export function LivePreviewModal({ isOpen, onClose, project }) {
                   {t('livePreview.fallbackDescription')}
                 </p>
               </div>
-              <a href={previewUrl} target="_blank" rel="noopener noreferrer">
-                <Button
-                  variant="primary-gradient"
-                  size="md"
-                  iconLeading={
+              <Button
+                href={previewUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="primary-gradient"
+                size="md"
+                iconLeading={
                     <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
                       open_in_new
                     </span>
                   }
-                >
+              >
                   {t('livePreview.openNewTab')}
                 </Button>
-              </a>
             </div>
           ) : (
             <iframe

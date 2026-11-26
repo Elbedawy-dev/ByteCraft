@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 import { m } from 'framer-motion';
 import { MOTION_TRANSITION, slideFromEnd } from '../../lib/motion';
 
@@ -10,6 +11,7 @@ export function ToastItem({
   onClose,
   className = '',
 }) {
+  const { t } = useTranslation('common');
   const iconMap = {
     success: 'check_circle',
     error: 'error',
@@ -63,7 +65,7 @@ export function ToastItem({
           type="button"
           onClick={onClose}
           className="text-muted hover:text-on-surface p-1 rounded-full hover:bg-section-band transition-colors shrink-0"
-          aria-label="Close"
+          aria-label={t('actions.close', { defaultValue: 'Close' })}
         >
           <span className="material-symbols-rounded text-[16px] block" aria-hidden="true">close</span>
         </button>

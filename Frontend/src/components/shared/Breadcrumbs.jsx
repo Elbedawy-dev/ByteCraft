@@ -1,13 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 
 export function Breadcrumbs({ items = [], className = '' }) {
+  const { t } = useTranslation('common');
   if (!items || items.length === 0) return null;
 
   return (
     <nav
-      aria-label="Breadcrumb"
+      aria-label={t('nav.breadcrumbLabel', { defaultValue: 'Breadcrumb' })}
       className={clsx('flex items-center text-xs sm:text-sm text-muted', className)}
     >
       <ol className="flex items-center flex-wrap gap-1.5 sm:gap-2">

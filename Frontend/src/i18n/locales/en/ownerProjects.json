@@ -188,7 +188,7 @@
     "preview": {
       "heading": "Live Demo Preview Settings",
       "urlLabel": "Live Demo URL",
-      "urlPlaceholder": "https://demo.nexus.dev/lms-pro",
+      "urlPlaceholder": "https://...",
       "modeLabel": "Preview Mode",
       "modeIframe": "Embedded Iframe",
       "modeExternal": "External New Tab",
@@ -200,9 +200,9 @@
       "credLabel": "Account Label",
       "credLabelPlaceholder": "Demo Account",
       "credEmail": "Demo Email",
-      "credEmailPlaceholder": "demo@nexus.dev",
+      "credEmailPlaceholder": "Demo account email",
       "credPassword": "Demo Password",
-      "credPasswordPlaceholder": "DemoUser123!"
+      "credPasswordPlaceholder": "Demo account password"
     },
     "repo": {
       "heading": "Private Delivery Repository",

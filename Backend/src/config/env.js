@@ -15,6 +15,19 @@ const { z } = require('zod');
 // Load the .env file located at the server root
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
+const PAYMOB_CORE_KEYS = [
+  'PAYMOB_API_KEY',
+  'PAYMOB_HMAC_SECRET',
+  'PAYMOB_CARD_INTEGRATION_ID',
+  'PAYMOB_IFRAME_ID',
+];
+
+function isPaymobKeySet(value) {
+  if (typeof value !== 'string') return false;
+  const trimmed = value.trim();
+  return trimmed.length > 0 && !trimmed.toLowerCase().includes('placeholder');
+}
+
 const envSchema = z
   .object({
     NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
@@ -90,34 +103,20 @@ const envSchema = z
           message: 'CRON_SECRET is required and must be at least 16 characters in production mode.',
         });
       }
-      if (!data.PAYMOB_API_KEY || data.PAYMOB_API_KEY.includes('placeholder')) {
+    }
+
+    // Paymob is optional, but the 4 core keys are all-or-nothing:
+    // if any is set (non-empty and not containing "placeholder"), all 4 must be set.
+    const setPaymobKeys = PAYMOB_CORE_KEYS.filter((key) => isPaymobKeySet(data[key]));
+    if (setPaymobKeys.length > 0 && setPaymobKeys.length < PAYMOB_CORE_KEYS.length) {
+      const missingPaymobKeys = PAYMOB_CORE_KEYS.filter((key) => !isPaymobKeySet(data[key]));
+      missingPaymobKeys.forEach((key) => {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          path: ['PAYMOB_API_KEY'],
-          message: 'PAYMOB_API_KEY is required and cannot be a placeholder in production mode.',
+          path: [key],
+          message: `Partial Paymob configuration detected (${setPaymobKeys.join(', ')} set, missing: ${missingPaymobKeys.join(', ')}). Either provide all four core Paymob keys (${PAYMOB_CORE_KEYS.join(', ')}) or leave all of them empty to disable Paymob.`,
         });
-      }
-      if (!data.PAYMOB_HMAC_SECRET || data.PAYMOB_HMAC_SECRET.includes('placeholder')) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ['PAYMOB_HMAC_SECRET'],
-          message: 'PAYMOB_HMAC_SECRET is required and cannot be a placeholder in production mode.',
-        });
-      }
-      if (!data.PAYMOB_CARD_INTEGRATION_ID || data.PAYMOB_CARD_INTEGRATION_ID.includes('placeholder')) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ['PAYMOB_CARD_INTEGRATION_ID'],
-          message: 'PAYMOB_CARD_INTEGRATION_ID is required in production mode.',
-        });
-      }
-      if (!data.PAYMOB_IFRAME_ID || data.PAYMOB_IFRAME_ID.includes('placeholder')) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ['PAYMOB_IFRAME_ID'],
-          message: 'PAYMOB_IFRAME_ID is required in production mode.',
-        });
-      }
+      });
     }
   });
 
@@ -132,4 +131,11 @@ if (!parsedEnv.success) {
   process.exit(1);
 }
 
-module.exports = parsedEnv.data;
+const PAYMOB_CONFIGURED = PAYMOB_CORE_KEYS.every((key) => isPaymobKeySet(parsedEnv.data[key]));
+const PAYMOB_FAWRY_READY = PAYMOB_CONFIGURED && isPaymobKeySet(parsedEnv.data.PAYMOB_FAWRY_INTEGRATION_ID);
+
+module.exports = {
+  ...parsedEnv.data,
+  PAYMOB_CONFIGURED,
+  PAYMOB_FAWRY_READY,
+};

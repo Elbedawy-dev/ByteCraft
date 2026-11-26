@@ -15,13 +15,13 @@
     "subtitle": "البيانات المعتمدة لإصدار الترخيص وإرسال دعوة الوصول لمستودع Git",
     "fullNameLabel": "الاسم الكامل",
     "fullNameHint": "اسم المسؤول المالي أو التقني",
-    "fullNamePlaceholder": "مثال: أحمد عبد الله الهاشمي",
+    "fullNamePlaceholder": "أدخل اسمك الكامل",
     "emailLabel": "البريد الإلكتروني للتواصل والفاتورة",
     "emailHint": "تُرسل إليه تفاصيل الطلب وتحديثات التسليم",
-    "emailPlaceholder": "name@company.com",
+    "emailPlaceholder": "أدخل بريدك الإلكتروني",
     "phoneLabel": "رقم الهاتف / واتساب",
     "phoneHint": "لتنسيق التثبيت والدعم المباشر",
-    "phonePlaceholder": "+20 100 000 0000",
+    "phonePlaceholder": "أدخل رقم الهاتف أو واتساب",
     "gitProviderLabel": "منصة مستودع Git",
     "gitProviderHint": "المنصة التي سيُمنح عليها صلاحية الوصول للكود",
     "providers": {
@@ -32,7 +32,7 @@
     "gitUsernameHint": "اسم الحساب (Handle) بدون رابط أو @",
     "gitUsernamePlaceholder": "dev-username",
     "organizationLabel": "اسم المؤسسة أو المنصة (اختياري)",
-    "organizationPlaceholder": "مثال: أكاديمية المستقبل الدولية"
+    "organizationPlaceholder": "اسم الشركة أو الأكاديمية أو الفريق (اختياري)"
   },
   "validation": {
     "fullNameRequired": "الاسم الكامل مطلوب",

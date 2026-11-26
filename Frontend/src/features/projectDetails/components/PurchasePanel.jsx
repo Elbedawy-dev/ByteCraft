@@ -238,20 +238,19 @@ export function PurchasePanel({
 
           {/* Primary Actions: Gradient "Buy" & Outline "Live demo" */}
           <div className="space-y-2.5 pt-1">
-            <Link to={checkoutUrl} className="block w-full">
-              <Button
-                variant="primary-gradient"
-                size="lg"
-                className="w-full"
-                iconTrailing={
+            <Button
+              to={checkoutUrl}
+              variant="primary-gradient"
+              size="lg"
+              className="w-full"
+              iconTrailing={
                   <span className="material-symbols-rounded text-[20px] rtl:-scale-x-100" aria-hidden="true">
                     arrow_forward
                   </span>
                 }
-              >
+            >
                 {selectedPackage ? t('packages.buyNow') : t('supportCard.contactAction')}
               </Button>
-            </Link>
 
             {hasPreview && (
               <Button
@@ -429,20 +428,19 @@ export function PurchasePanel({
             )}
           </button>
 
-          <Link to={checkoutUrl} className="shrink-0">
-            <Button
-              variant="primary-gradient"
-              size="md"
-              className="px-4 sm:px-6 min-h-[44px] whitespace-nowrap"
-              iconLeading={
+          <Button
+            to={checkoutUrl}
+            variant="primary-gradient"
+            size="md"
+            className="px-4 sm:px-6 min-h-[44px] whitespace-nowrap shrink-0"
+            iconLeading={
                 <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
                   shopping_cart_checkout
                 </span>
               }
-            >
+          >
               {t('common:actions.buyNow')}
             </Button>
-          </Link>
         </div>
       </div>
 
@@ -528,20 +526,20 @@ export function PurchasePanel({
             )}
           </div>
 
-          <Link to={checkoutUrl} onClick={onCloseMobileSheet} className="shrink-0">
-            <Button
-              variant="primary-gradient"
-              size="md"
-              className="px-5"
-              iconLeading={
+          <Button
+            to={checkoutUrl}
+            onClick={onCloseMobileSheet}
+            variant="primary-gradient"
+            size="md"
+            className="px-5 shrink-0"
+            iconLeading={
                 <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
                   shopping_cart_checkout
                 </span>
               }
-            >
+          >
               {t('packages.buyNow')}
             </Button>
-          </Link>
         </div>
       </AccessibleDialog>
     </>

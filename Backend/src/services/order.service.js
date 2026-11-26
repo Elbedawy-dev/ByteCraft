@@ -8,6 +8,7 @@ const emailService = require('./email.service');
 const githubService = require('./github.service');
 const uploadService = require('./upload.service');
 const paymobService = require('./payments/paymob.service');
+const statsService = require('./stats.service');
 const { generateOrderNumber } = require('../utils/orderNumber');
 const { runWithTransaction } = require('../utils/transaction');
 const { validateMagicBytes } = require('../middleware/upload.middleware');
@@ -63,6 +64,15 @@ class OrderService {
       if (!pmConfig || !pmConfig.enabled) {
         throw AppError.badRequest(
           `Payment method "${paymentMethod}" is currently disabled.`,
+          ERROR_CODES.VALIDATION_ERROR
+        );
+      }
+      if (
+        (paymentMethod === 'card' && !env.PAYMOB_CONFIGURED) ||
+        (paymentMethod === 'fawry' && !env.PAYMOB_FAWRY_READY)
+      ) {
+        throw AppError.badRequest(
+          'This payment method is not available right now.',
           ERROR_CODES.VALIDATION_ERROR
         );
       }
@@ -248,10 +258,10 @@ class OrderService {
   }
 
   /**
-   * Resolves manual payment instructions while order is pending_payment.
+   * Resolves manual payment instructions while order is pending_payment or rejected (awaiting re-upload).
    */
   async _resolvePaymentInstructions(order) {
-    if (order.status !== 'pending_payment') return null;
+    if (!['pending_payment', 'rejected'].includes(order.status)) return null;
 
     const settings = await settingsService.getSettings();
     const rawPm = settings.paymentMethods || {};
@@ -581,7 +591,8 @@ class OrderService {
     }
 
     if (search && search.trim() !== '') {
-      const regex = new RegExp(search.trim(), 'i');
+      const escaped = search.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(escaped, 'i');
       filter.$or = [
         { orderNumber: regex },
         { 'customer.fullName': regex },
@@ -729,6 +740,7 @@ class OrderService {
     });
 
     await order.save();
+    statsService.clearCache();
     return order;
   }
 
@@ -756,6 +768,7 @@ class OrderService {
     });
 
     await order.save();
+    statsService.clearCache();
     return order;
   }
 
@@ -809,7 +822,8 @@ class OrderService {
       await order.save();
     }
 
-    // 3. Email notifications
+    // 3. Invalidate cached public stats & send email notifications
+    statsService.clearCache();
     emailService.sendPaymentApprovedCustomer(order).catch(console.error);
   }
 

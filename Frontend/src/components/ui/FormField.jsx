@@ -38,7 +38,9 @@ export function FormField({
 
       {/* Control slot */}
       <div className="relative w-full">
-        {React.isValidElement(children)
+        {React.isValidElement(children) &&
+        (typeof children.type !== 'string' ||
+          ['input', 'textarea', 'select'].includes(children.type))
           ? React.cloneElement(children, {
               id: children.props.id || id,
               ...(typeof children.type !== 'string'

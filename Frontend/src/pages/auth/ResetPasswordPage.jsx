@@ -129,11 +129,14 @@ export default function ResetPasswordPage() {
               {t('auth:resetPassword.successMessage')}
             </p>
           </div>
-          <Link to={ROUTES.LOGIN} className="block">
-            <Button variant="primary-gradient" size="md" className="w-full">
+          <Button
+            to={ROUTES.LOGIN}
+            variant="primary-gradient"
+            size="md"
+            className="w-full"
+          >
               {t('auth:resetPassword.goToLogin')}
             </Button>
-          </Link>
         </div>
       ) : invalidTokenError ? (
         <div role="alert" className="text-center space-y-5 py-2">
@@ -150,11 +153,14 @@ export default function ResetPasswordPage() {
               {t('auth:resetPassword.invalidTokenMessage')}
             </p>
           </div>
-          <Link to={ROUTES.FORGOT_PASSWORD} className="block">
-            <Button variant="primary-gradient" size="md" className="w-full">
+          <Button
+            to={ROUTES.FORGOT_PASSWORD}
+            variant="primary-gradient"
+            size="md"
+            className="w-full"
+          >
               {t('auth:resetPassword.requestNewLink')}
             </Button>
-          </Link>
         </div>
       ) : (
         <form

@@ -165,7 +165,7 @@
       "starLabel": "{{count}} out of 5 stars",
       "nameLabel": "Display Name (Optional)",
       "namePlaceholder": "Leave blank to use your order name",
-      "nameHint": "Publicly masked for privacy (e.g. Ahmed M.)",
+      "nameHint": "Displayed publicly as first name and last initial only for privacy",
       "commentLabel": "Your Review",
       "commentPlaceholder": "Share your feedback on code quality, documentation, delivery speed, and support...",
       "submit": "Publish Review",

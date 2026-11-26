@@ -88,11 +88,14 @@ export default function ForgotPasswordPage() {
               {t('auth:forgotPassword.successMessage')}
             </p>
           </div>
-          <Link to={ROUTES.LOGIN} className="block">
-            <Button variant="primary-gradient" size="md" className="w-full">
+          <Button
+            to={ROUTES.LOGIN}
+            variant="primary-gradient"
+            size="md"
+            className="w-full"
+          >
               {t('auth:forgotPassword.backToLogin')}
             </Button>
-          </Link>
         </div>
       ) : (
         <form

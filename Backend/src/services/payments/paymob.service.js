@@ -18,6 +18,37 @@ const { ERROR_CODES } = require('../../config/constants');
  */
 
 class PaymobService {
+  isCardConfigured() {
+    return Boolean(env.PAYMOB_CONFIGURED);
+  }
+
+  isFawryConfigured() {
+    return Boolean(env.PAYMOB_FAWRY_READY);
+  }
+
+  isMethodAvailable(method) {
+    if (method === 'card') {
+      return Boolean(env.PAYMOB_CONFIGURED);
+    }
+    if (method === 'fawry') {
+      return Boolean(env.PAYMOB_FAWRY_READY);
+    }
+    return method === 'vodafone_cash' || method === 'instapay';
+  }
+
+  getGatewayStatus() {
+    const paymobConfigured = Boolean(env.PAYMOB_CONFIGURED);
+    const fawryReady = Boolean(env.PAYMOB_FAWRY_READY);
+    return {
+      paymobConfigured,
+      fawryReady,
+      cardConfigured: paymobConfigured,
+      fawryConfigured: fawryReady,
+      cardAvailable: paymobConfigured,
+      fawryAvailable: fawryReady,
+    };
+  }
+
   /**
    * Helper to format Paymob canonical string for HMAC-SHA512
    * Follows Paymob's official 20-variable alphabetical concatenation order:
@@ -43,7 +74,7 @@ class PaymobService {
    * 20. success
    */
   calculateHmac(obj, secret = env.PAYMOB_HMAC_SECRET) {
-    if (!secret || typeof secret !== 'string') {
+    if (!secret || typeof secret !== 'string' || !secret.trim()) {
       return '';
     }
 
@@ -85,6 +116,11 @@ class PaymobService {
    * Verifies incoming webhook HMAC with timing-safe comparison
    */
   verifyWebhookHmac(req) {
+    const secret = env.PAYMOB_HMAC_SECRET;
+    if (!secret || typeof secret !== 'string' || !secret.trim() || secret.toLowerCase().includes('placeholder')) {
+      return false;
+    }
+
     const receivedHmac = req.query.hmac || req.body?.hmac || req.headers['x-paymob-hmac'];
     if (!receivedHmac || typeof receivedHmac !== 'string') {
       return false;
@@ -95,13 +131,16 @@ class PaymobService {
       return false;
     }
 
-    const expectedHmac = this.calculateHmac(transactionObj);
+    const expectedHmac = this.calculateHmac(transactionObj, secret);
+    if (!expectedHmac) {
+      return false;
+    }
 
     try {
       const bufferA = Buffer.from(expectedHmac, 'hex');
       const bufferB = Buffer.from(receivedHmac, 'hex');
 
-      if (bufferA.length !== bufferB.length) {
+      if (bufferA.length === 0 || bufferA.length !== bufferB.length) {
         return false;
       }
 
@@ -117,8 +156,18 @@ class PaymobService {
    * @returns {Promise<{ providerOrderId: string, paymentUrl?: string, fawryReference?: string }>}
    */
   async createPayment(order) {
+    if (
+      (order.paymentMethod === 'card' && !env.PAYMOB_CONFIGURED) ||
+      (order.paymentMethod === 'fawry' && !env.PAYMOB_FAWRY_READY)
+    ) {
+      throw AppError.badRequest(
+        'This payment method is not available right now.',
+        ERROR_CODES.VALIDATION_ERROR
+      );
+    }
+
     if (env.NODE_ENV === 'production') {
-      if (!env.PAYMOB_API_KEY || env.PAYMOB_API_KEY.includes('placeholder')) {
+      if (!env.PAYMOB_API_KEY || env.PAYMOB_API_KEY.toLowerCase().includes('placeholder')) {
         throw new Error('Paymob API key is missing or invalid in production mode. Simulation is strictly prohibited.');
       }
     }
@@ -126,7 +175,7 @@ class PaymobService {
     const isLiveApiCall = Boolean(
       env.NODE_ENV === 'production' ||
       (env.PAYMOB_API_KEY &&
-        !env.PAYMOB_API_KEY.includes('placeholder') &&
+        !env.PAYMOB_API_KEY.toLowerCase().includes('placeholder') &&
         env.PAYMOB_API_KEY.length > 25 &&
         process.env.PORT !== '5001' &&
         process.env.NODE_ENV !== 'test')

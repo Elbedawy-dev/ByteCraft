@@ -265,6 +265,7 @@ export function Providers({ children }) {
 // Inline Toast Container
 function ToastContainer() {
   const { toasts, removeToast } = useToastManager();
+  const { t } = useTranslation('common');
   const { lang } = useLang();
   const dir = lang === 'ar' ? 'rtl' : 'ltr';
   const dirSign = getDirectionSign(dir);
@@ -274,55 +275,55 @@ function ToastContainer() {
       className="fixed bottom-4 end-4 z-50 flex flex-col gap-2.5 max-w-sm w-[calc(100vw-2rem)] sm:w-full pointer-events-none"
       role="region"
       aria-live="polite"
-      aria-label="Notifications"
+      aria-label={t('nav.notifications', { defaultValue: 'Notifications' })}
     >
       <AnimatePresence initial={false}>
-        {toasts.map((t) => (
+        {toasts.map((toastItem) => (
           <m.div
-            key={t.id}
+            key={toastItem.id}
             initial={{ opacity: 0, x: dirSign * 24 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: dirSign * 24 }}
             transition={MOTION_TRANSITION}
             className={`pointer-events-auto flex items-start gap-3 p-4 rounded-2xl border bg-card text-on-surface shadow-card-hover transition-colors duration-300 ease-nexus ${
-              t.type === 'success'
+              toastItem.type === 'success'
                 ? 'border-success/40'
-                : t.type === 'error'
+                : toastItem.type === 'error'
                   ? 'border-error/45'
-                  : t.type === 'warning'
+                  : toastItem.type === 'warning'
                     ? 'border-warning/45'
                     : 'border-card-border'
             }`}
           >
             <span
               className={`material-symbols-rounded text-[20px] shrink-0 mt-0.5 ${
-                t.type === 'success'
+                toastItem.type === 'success'
                   ? 'text-success-text'
-                  : t.type === 'error'
+                  : toastItem.type === 'error'
                     ? 'text-error'
-                    : t.type === 'warning'
+                    : toastItem.type === 'warning'
                       ? 'text-warning'
                       : 'text-info'
               }`}
               aria-hidden="true"
             >
-              {t.type === 'success'
+              {toastItem.type === 'success'
                 ? 'check_circle'
-                : t.type === 'error'
+                : toastItem.type === 'error'
                   ? 'error'
-                  : t.type === 'warning'
+                  : toastItem.type === 'warning'
                     ? 'warning'
                     : 'info'}
             </span>
             <div className="flex-1 min-w-0">
-              {t.title && <div className="font-semibold text-sm text-on-surface mb-0.5">{t.title}</div>}
-              <div className="text-sm text-on-surface-variant break-words">{t.message}</div>
+              {toastItem.title && <div className="font-semibold text-sm text-on-surface mb-0.5">{toastItem.title}</div>}
+              <div className="text-sm text-on-surface-variant break-words">{toastItem.message}</div>
             </div>
             <button
               type="button"
-              onClick={() => removeToast(t.id)}
+              onClick={() => removeToast(toastItem.id)}
               className="text-muted hover:text-on-surface hover:bg-section-band p-1.5 rounded-full transition-colors shrink-0"
-              aria-label="Close"
+              aria-label={t('actions.close', { defaultValue: 'Close' })}
             >
               <span className="material-symbols-rounded text-[16px] block" aria-hidden="true">close</span>
             </button>

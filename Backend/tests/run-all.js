@@ -12,6 +12,22 @@ const path = require('path');
 
 const PORT = 5001;
 const HEALTH_URL = `http://localhost:${PORT}/api/health`;
+const TEST_PAYMOB_ENV = {
+  PAYMOB_API_KEY: (process.env.PAYMOB_API_KEY || 'test_paymob_api_key_local').trim(),
+  PAYMOB_HMAC_SECRET: (
+    process.env.PAYMOB_HMAC_SECRET || 'nexus_test_paymob_hmac_secret_local_only'
+  ).trim(),
+  PAYMOB_CARD_INTEGRATION_ID: (process.env.PAYMOB_CARD_INTEGRATION_ID || '400001').trim(),
+  PAYMOB_FAWRY_INTEGRATION_ID: (process.env.PAYMOB_FAWRY_INTEGRATION_ID || '400002').trim(),
+  PAYMOB_IFRAME_ID: (process.env.PAYMOB_IFRAME_ID || '800001').trim(),
+};
+const UNCONFIGURED_PAYMOB_ENV = {
+  PAYMOB_API_KEY: '',
+  PAYMOB_HMAC_SECRET: '',
+  PAYMOB_CARD_INTEGRATION_ID: '',
+  PAYMOB_FAWRY_INTEGRATION_ID: '',
+  PAYMOB_IFRAME_ID: '',
+};
 
 const TEST_SUITES = [
   { name: 'Phase 1: Foundation, Auth & Settings', file: 'phase1.test.js' },
@@ -47,11 +63,12 @@ async function waitForServer(maxWaitMs = 15000) {
   return false;
 }
 
-function runSuite(file) {
+function runSuite(file, extraEnv = {}) {
   return new Promise((resolve) => {
     const suitePath = path.resolve(__dirname, file);
     const child = fork(suitePath, [], {
       cwd: path.resolve(__dirname, '..'),
+      env: { ...process.env, ...extraEnv },
       stdio: 'inherit',
     });
 
@@ -81,6 +98,10 @@ async function main() {
     console.log('⏳ Spawning test server on port 5001 (src/testServer.js)...');
     testServerProcess = spawn('node', ['src/testServer.js'], {
       cwd: path.resolve(__dirname, '..'),
+      env: {
+        ...process.env,
+        ...TEST_PAYMOB_ENV,
+      },
       stdio: 'inherit',
     });
 
@@ -100,7 +121,12 @@ async function main() {
     console.log(`▶️ Running: ${suite.name} (${suite.file})`);
     console.log(`====================================================\n`);
 
-    const passed = await runSuite(suite.file);
+    const suiteEnv =
+      suite.file === 'vercel-serverless.test.js'
+        ? UNCONFIGURED_PAYMOB_ENV
+        : TEST_PAYMOB_ENV;
+
+    const passed = await runSuite(suite.file, suiteEnv);
     results.push({ name: suite.name, file: suite.file, passed });
 
     if (!passed) {

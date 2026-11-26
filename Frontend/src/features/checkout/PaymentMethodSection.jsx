@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Badge, Button, RadioCard, Skeleton } from '@/components/ui';
 import { useLang } from '@/app/providers';
@@ -134,11 +133,14 @@ export function PaymentMethodSection({
               </p>
             </div>
           </div>
-          <Link to={contactPath({ project: projectSlug })} className="shrink-0">
-            <Button variant="outline" size="sm">
+          <Button
+            to={contactPath({ project: projectSlug })}
+            variant="outline"
+            size="sm"
+            className="shrink-0"
+          >
               {t('payment.contactSupportAction')}
             </Button>
-          </Link>
         </div>
       ) : (
         <fieldset className="border-0 p-0 m-0 flex flex-col gap-3" disabled={disabled}>

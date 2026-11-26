@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -128,11 +127,13 @@ export function OrderReviewSection({ order, token, mode = 'guest' }) {
 
             {order?.snapshot?.slug && (
               <div className="pt-1">
-                <Link to={projectDetailsPath(order.snapshot.slug)}>
-                  <Button variant="outline" size="sm">
+                <Button
+                  to={projectDetailsPath(order.snapshot.slug)}
+                  variant="outline"
+                  size="sm"
+                >
                     {t('tracking.review.alreadyReviewed.viewProject')}
                   </Button>
-                </Link>
               </div>
             )}
           </div>

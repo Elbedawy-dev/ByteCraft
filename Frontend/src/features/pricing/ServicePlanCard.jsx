@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import { m } from 'framer-motion';
@@ -115,25 +114,21 @@ export function ServicePlanCard({ plan }) {
       </div>
 
       {/* Pill CTA Button */}
-      <Link
+      <Button
         to={contactPath({ plan: plan.id })}
         aria-label={t('card.ctaAria', { action: ctaLabel, name: planName })}
-        className="block w-full mt-auto"
-      >
-        <Button
-          variant={isPopular ? 'primary-gradient' : 'outline'}
-          size="md"
-          className="w-full"
-          tabIndex={-1}
-          iconTrailing={
+        variant={isPopular ? 'primary-gradient' : 'outline'}
+        size="md"
+        className="w-full mt-auto"
+        tabIndex={-1}
+        iconTrailing={
             <span className="material-symbols-rounded text-[18px] rtl:-scale-x-100" aria-hidden="true">
               arrow_forward
             </span>
           }
-        >
+      >
           {ctaLabel}
         </Button>
-      </Link>
     </m.article>
   );
 

@@ -36,7 +36,7 @@ const PasswordInput = forwardRef(function PasswordInput(
         disabled={disabled}
         aria-pressed={showPassword}
         aria-label={toggleLabel}
-        className="absolute end-1 top-1/2 -translate-y-1/2 h-10 w-10 min-h-[40px] min-w-[40px] flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary hover:bg-primary-soft/60 transition-colors duration-300 ease-nexus focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        className="absolute end-1 top-1/2 -translate-y-1/2 h-10 w-10 min-h-[40px] min-w-[40px] flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary hover:bg-brand-soft/60 transition-colors duration-300 ease-nexus focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       >
         <AnimatePresence mode="wait" initial={false}>
           <m.span

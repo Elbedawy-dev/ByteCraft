@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { BRAND } from '../../config/brand';
 
-export function mapSettingsToFormValues(settings) {
+export function mapSettingsToFormValues(settings, paymentGateways) {
   const s = settings || {};
   const contact = s.contact || {};
   const socials = contact.socials || {};
@@ -11,6 +11,8 @@ export function mapSettingsToFormValues(settings) {
   const ip = pm.instapay || {};
   const fawry = pm.fawry || {};
   const card = pm.card || {};
+  const fawryAvailable = paymentGateways ? Boolean(paymentGateways.fawryAvailable) : true;
+  const cardAvailable = paymentGateways ? Boolean(paymentGateways.cardAvailable) : true;
 
   return {
     siteName: s.siteName ?? BRAND.name,
@@ -52,10 +54,10 @@ export function mapSettingsToFormValues(settings) {
         },
       },
       fawry: {
-        enabled: Boolean(fawry.enabled),
+        enabled: fawryAvailable && Boolean(fawry.enabled),
       },
       card: {
-        enabled: Boolean(card.enabled),
+        enabled: cardAvailable && Boolean(card.enabled),
       },
     },
   };

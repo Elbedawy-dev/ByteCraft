@@ -1,5 +1,6 @@
 import React, { useId } from 'react';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 import { AnimatePresence, m } from 'framer-motion';
 import { Button } from '@/components/ui';
 import { useLang } from '@/app/providers';
@@ -28,6 +29,7 @@ export function OwnerModal({
   preventClose = false,
   className = '',
 }) {
+  const { t } = useTranslation('common');
   const titleId = useId();
   const descId = useId();
   const isMobile = useIsMobileViewport();
@@ -110,10 +112,10 @@ export function OwnerModal({
                     <button
                       type="button"
                       onClick={onClose}
-                      className="w-10 h-10 shrink-0 rounded-full bg-surface-soft border border-card-border text-on-surface-variant hover:text-primary hover:border-primary/40 flex items-center justify-center transition-colors"
-                      aria-label="Close"
+                      className="w-10 h-10 shrink-0 rounded-full bg-section-band border border-card-border text-on-surface-variant hover:text-primary hover:border-primary/40 flex items-center justify-center transition-colors"
+                      aria-label={t('actions.close', { defaultValue: 'Close' })}
                     >
-                      <span className="material-symbols-rounded text-[20px]">close</span>
+                      <span className="material-symbols-rounded text-[20px]" aria-hidden="true">close</span>
                     </button>
                   )}
                 </div>
@@ -146,9 +148,10 @@ export function OwnerDrawer({
   children,
   footer,
   size = 'lg',
-  closeLabel = 'Close',
+  closeLabel,
   className = '',
 }) {
+  const { t } = useTranslation('common');
   const titleId = useId();
   const { lang } = useLang();
   const dir = lang === 'ar' ? 'rtl' : 'ltr';
@@ -219,10 +222,10 @@ export function OwnerDrawer({
                 <button
                   type="button"
                   onClick={onClose}
-                  className="w-10 h-10 shrink-0 rounded-full bg-surface-soft border border-card-border text-on-surface-variant hover:text-primary hover:border-primary/40 flex items-center justify-center transition-colors"
-                  aria-label={closeLabel}
+                  className="w-10 h-10 shrink-0 rounded-full bg-section-band border border-card-border text-on-surface-variant hover:text-primary hover:border-primary/40 flex items-center justify-center transition-colors"
+                  aria-label={closeLabel || t('actions.close', { defaultValue: 'Close' })}
                 >
-                  <span className="material-symbols-rounded text-[20px]">close</span>
+                  <span className="material-symbols-rounded text-[20px]" aria-hidden="true">close</span>
                 </button>
               </div>
 

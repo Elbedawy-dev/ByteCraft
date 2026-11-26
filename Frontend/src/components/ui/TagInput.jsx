@@ -1,16 +1,23 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 import { Badge } from './Badge';
 
 export function TagInput({
+  id,
   value = [],
   onChange,
-  placeholder = 'Add tag and press Enter...',
+  placeholder,
   disabled = false,
+  error = false,
   className = '',
   maxTags,
+  'aria-label': ariaLabel,
+  'aria-describedby': ariaDescribedBy,
 }) {
+  const { t } = useTranslation('common');
   const [inputVal, setInputVal] = useState('');
+  const resolvedPlaceholder = placeholder || t('tagInput.placeholder', { defaultValue: 'Add a tag and press Enter...' });
 
   const addTag = (tag) => {
     const trimmed = tag.trim();
@@ -38,7 +45,10 @@ export function TagInput({
   return (
     <div
       className={clsx(
-        'w-full min-h-[48px] p-2 rounded-lg bg-input border border-input-border hover:border-outline focus-within:border-primary focus-within:ring-[3px] focus-within:ring-primary/20 transition-all duration-300 ease-nexus flex flex-wrap items-center gap-1.5',
+        'w-full min-h-[48px] p-2 rounded-lg bg-input border transition-all duration-300 ease-nexus flex flex-wrap items-center gap-1.5',
+        error
+          ? 'border-error focus-within:border-error focus-within:ring-[3px] focus-within:ring-error/20'
+          : 'border-input-border hover:border-outline focus-within:border-primary focus-within:ring-[3px] focus-within:ring-primary/20',
         disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
         className
       )}
@@ -56,7 +66,7 @@ export function TagInput({
               type="button"
               onClick={() => removeTag(idx)}
               className="ms-1 p-0.5 rounded-full hover:bg-primary/20 text-brand-soft-text transition-colors"
-              aria-label={`Remove ${tag}`}
+              aria-label={t('tagInput.removeTag', { tag, defaultValue: `Remove ${tag}` })}
             >
               <span className="material-symbols-rounded text-[14px] block" aria-hidden="true">close</span>
             </button>
@@ -65,13 +75,17 @@ export function TagInput({
       ))}
 
       <input
+        id={id}
         type="text"
         value={inputVal}
         onChange={(e) => setInputVal(e.target.value)}
         onKeyDown={handleKeyDown}
         onBlur={() => addTag(inputVal)}
-        placeholder={value.length === 0 ? placeholder : ''}
+        placeholder={value.length === 0 ? resolvedPlaceholder : ''}
         disabled={disabled || (maxTags && value.length >= maxTags)}
+        aria-label={ariaLabel}
+        aria-describedby={ariaDescribedBy}
+        aria-invalid={error ? 'true' : undefined}
         className="flex-1 min-w-[120px] bg-transparent text-sm text-on-surface placeholder:text-placeholder outline-none focus-visible:outline-none px-2 py-1"
       />
     </div>

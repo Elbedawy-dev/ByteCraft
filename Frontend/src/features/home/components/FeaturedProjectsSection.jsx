@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { LayoutGroup, m } from 'framer-motion';
@@ -194,11 +193,11 @@ export function FeaturedProjectsSection() {
 
         {/* Centered Outline Pill "View all projects" */}
         <div className="mt-12 flex justify-center">
-          <Link to={ROUTES.PROJECTS}>
-            <Button
-              variant="outline"
-              size="md"
-              iconTrailing={
+          <Button
+            to={ROUTES.PROJECTS}
+            variant="outline"
+            size="md"
+            iconTrailing={
                 <span
                   className="material-symbols-rounded text-[18px] rtl:-scale-x-100"
                   aria-hidden="true"
@@ -206,10 +205,9 @@ export function FeaturedProjectsSection() {
                   arrow_forward
                 </span>
               }
-            >
+          >
               {t('home:featured.viewAll')}
             </Button>
-          </Link>
         </div>
       </div>
     </section>

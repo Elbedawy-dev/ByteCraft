@@ -161,16 +161,20 @@ export function Navbar() {
               <UserMenu />
             ) : !isLoading ? (
               <div className="flex items-center gap-2 shrink-0">
-                <Link to={ROUTES.LOGIN}>
-                  <Button variant="outline" size="sm">
+                <Button
+                  to={ROUTES.LOGIN}
+                  variant="outline"
+                  size="sm"
+                >
                     {t('nav.login', { defaultValue: 'Login' })}
                   </Button>
-                </Link>
-                <Link to={ROUTES.REGISTER}>
-                  <Button variant="primary-gradient" size="sm">
+                <Button
+                  to={ROUTES.REGISTER}
+                  variant="primary-gradient"
+                  size="sm"
+                >
                     {t('nav.register', { defaultValue: 'Create account' })}
                   </Button>
-                </Link>
               </div>
             ) : null}
           </div>

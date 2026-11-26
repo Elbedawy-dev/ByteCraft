@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAccountOrder } from '../../api/account';
 import { getOrderBootstrap, setOrderBootstrap } from '../../api/orderTracking';
@@ -107,16 +107,20 @@ export default function AccountOrderDetailPage() {
                 {t('orders:tracking.notFound.message', { orderNumber })}
               </p>
               <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-                <Link to={ROUTES.ACCOUNT_ORDERS}>
-                  <Button variant="primary-gradient" size="sm">
+                <Button
+                  to={ROUTES.ACCOUNT_ORDERS}
+                  variant="primary-gradient"
+                  size="sm"
+                >
                     {t('account:orders.backToList')}
                   </Button>
-                </Link>
-                <Link to={ROUTES.PROJECTS}>
-                  <Button variant="outline" size="sm">
+                <Button
+                  to={ROUTES.PROJECTS}
+                  variant="outline"
+                  size="sm"
+                >
                     {t('orders:tracking.notFound.browseProjects')}
                   </Button>
-                </Link>
               </div>
             </Card>
           ) : error instanceof ApiError && error.isRateLimited ? (
@@ -175,20 +179,18 @@ export default function AccountOrderDetailPage() {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-                  <Link to={ROUTES.ACCOUNT_ORDERS}>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      iconLeading={
+                  <Button
+                    to={ROUTES.ACCOUNT_ORDERS}
+                    variant="outline"
+                    size="sm"
+                    iconLeading={
                         <span className="material-symbols-rounded text-[18px] rtl:-scale-x-100" aria-hidden="true">
                           arrow_back
                         </span>
                       }
-                    >
+                  >
                       {t('account:orders.backToList')}
                     </Button>
-                  </Link>
 
                   <Button
                     type="button"

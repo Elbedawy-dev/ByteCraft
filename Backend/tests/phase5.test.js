@@ -38,7 +38,9 @@ const PORT = 5001;
 const BASE_URL = `http://localhost:${PORT}/api`;
 const OWNER_EMAIL = (process.env.OWNER_EMAIL || 'moaazelbedawy@gmail.com').trim();
 const OWNER_PASSWORD = (process.env.OWNER_PASSWORD || '').trim();
-const PAYMOB_HMAC_SECRET = (process.env.PAYMOB_HMAC_SECRET || 'test_hmac_secret_bytecraft_phase5_secure_key').trim();
+const PAYMOB_HMAC_SECRET = (
+  process.env.PAYMOB_HMAC_SECRET || 'nexus_test_paymob_hmac_secret_local_only'
+).trim();
 
 // Ensure test HMAC secret is available in environment for test server
 process.env.PAYMOB_HMAC_SECRET = PAYMOB_HMAC_SECRET;

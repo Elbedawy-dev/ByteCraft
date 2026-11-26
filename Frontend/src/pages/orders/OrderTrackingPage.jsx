@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   getOrderBootstrap,
@@ -173,16 +173,20 @@ export default function OrderTrackingPage() {
                 {t('tracking.notFound.message', { orderNumber })}
               </p>
               <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-                <Link to={ROUTES.PROJECTS}>
-                  <Button variant="primary-gradient" size="sm">
+                <Button
+                  to={ROUTES.PROJECTS}
+                  variant="primary-gradient"
+                  size="sm"
+                >
                     {t('tracking.notFound.browseProjects')}
                   </Button>
-                </Link>
-                <Link to={ROUTES.CONTACT}>
-                  <Button variant="outline" size="sm">
+                <Button
+                  to={ROUTES.CONTACT}
+                  variant="outline"
+                  size="sm"
+                >
                     {t('tracking.notFound.contactSupport')}
                   </Button>
-                </Link>
               </div>
             </Card>
           ) : error instanceof ApiError && error.isRateLimited ? (

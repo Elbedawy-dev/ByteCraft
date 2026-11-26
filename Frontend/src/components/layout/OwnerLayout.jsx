@@ -359,16 +359,22 @@ function OwnerForbiddenPage() {
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1">
-            <Link to={ROUTES.ACCOUNT} className="w-full sm:w-auto">
-              <Button variant="primary-gradient" size="md" className="w-full">
+            <Button
+              to={ROUTES.ACCOUNT}
+              variant="primary-gradient"
+              size="md"
+              className="w-full sm:w-auto"
+            >
                 {t('auth:forbidden.goToAccount')}
               </Button>
-            </Link>
-            <Link to={ROUTES.HOME} className="w-full sm:w-auto">
-              <Button variant="outline" size="md" className="w-full">
+            <Button
+              to={ROUTES.HOME}
+              variant="outline"
+              size="md"
+              className="w-full sm:w-auto"
+            >
                 {t('common:actions.backHome')}
               </Button>
-            </Link>
           </div>
         </main>
       </div>
@@ -476,11 +482,13 @@ function OwnerLayoutShell() {
             onRetry={refresh}
           />
           <div className="flex justify-center">
-            <Link to={ROUTES.LOGIN}>
-              <Button variant="ghost" size="sm">
+            <Button
+              to={ROUTES.LOGIN}
+              variant="ghost"
+              size="sm"
+            >
                 {t('owner:session.goToLogin')}
               </Button>
-            </Link>
           </div>
         </div>
       </div>
@@ -708,16 +716,12 @@ function OwnerLayoutShell() {
                   }}
                   aria-expanded={notifMenuOpen}
                   aria-haspopup="menu"
-                  aria-label={
-                    totalNotifications > 0
-                      ? `${t('owner:topbar.notifications')} (${totalNotifications})`
-                      : t('owner:topbar.notifications')
-                  }
                   className="relative w-11 h-11 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full bg-section-band border border-outline-variant text-on-surface-variant hover:text-primary hover:bg-brand-soft transition-colors duration-300 ease-nexus"
                 >
                   <span className="material-symbols-rounded text-[20px]" aria-hidden="true">
                     notifications
                   </span>
+                  <span className="sr-only">{t('owner:topbar.notifications')}</span>
                   {totalNotifications > 0 && (
                     <span className="absolute top-0 end-0 min-w-[18px] h-[18px] px-1 rounded-full bg-error text-on-error text-[10px] font-mono font-bold flex items-center justify-center ring-2 ring-surface">
                       {totalNotifications > 99 ? '99+' : totalNotifications}
@@ -840,7 +844,6 @@ function OwnerLayoutShell() {
                   }}
                   aria-expanded={ownerMenuOpen}
                   aria-haspopup="menu"
-                  aria-label={t('owner:topbar.ownerMenu')}
                   className="h-11 min-h-[44px] ps-1.5 pe-3 flex items-center gap-2 rounded-full bg-section-band border border-outline-variant hover:bg-brand-soft transition-colors duration-300 ease-nexus"
                 >
                   <span className="w-8 h-8 rounded-full bg-primary-gradient text-white flex items-center justify-center shrink-0">
@@ -848,9 +851,10 @@ function OwnerLayoutShell() {
                       person
                     </span>
                   </span>
-                  <span className="hidden md:inline text-xs font-semibold text-on-surface max-w-[120px] truncate">
+                  <span className="sr-only md:not-sr-only text-xs font-semibold text-on-surface max-w-[120px] truncate">
                     {owner.name}
                   </span>
+                  <span className="sr-only"> — {t('owner:topbar.ownerMenu')}</span>
                   <span
                     className={clsx(
                       'material-symbols-rounded text-[16px] text-muted transition-transform duration-300 ease-nexus',

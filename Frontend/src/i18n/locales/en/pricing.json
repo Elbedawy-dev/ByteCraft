@@ -147,6 +147,8 @@
     "eyebrow": "CLEAR ANSWERS",
     "title": "Frequently Asked Questions",
     "subtitle": "Transparent answers on source code ownership, delivery timelines, payment options, and ongoing support.",
+    "paymentMethodsActive": "Currently enabled payment methods at checkout: {{methods}}.",
+    "paymentMethodsContact": "Please contact our team directly to coordinate the best available payment method for your order.",
     "items": [
       {
         "id": "source-code",
@@ -161,7 +163,7 @@
       {
         "id": "payment-methods",
         "question": "Which payment methods are supported?",
-        "answer": "We support flexible payment options including Vodafone Cash, InstaPay, Fawry, and bank cards through supported payment gateways."
+        "answer": "Available payment methods are shown automatically at checkout based on active storefront payment settings."
       },
       {
         "id": "post-delivery-support",

@@ -7,6 +7,7 @@ const AppError = require('../utils/AppError');
 const { ERROR_CODES } = require('../config/constants');
 const { generateUniqueSlug } = require('../utils/slug');
 const uploadService = require('./upload.service');
+const statsService = require('./stats.service');
 
 /**
  * Project Service
@@ -149,6 +150,7 @@ class ProjectService {
       ...data,
       slug,
     });
+    statsService.clearCache();
 
     return Project.findById(project._id).populate('category', 'key name');
   }
@@ -178,7 +180,8 @@ class ProjectService {
     }
 
     if (query.search) {
-      const searchRegex = new RegExp(query.search.trim(), 'i');
+      const escaped = query.search.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const searchRegex = new RegExp(escaped, 'i');
       filter.$or = [
         { 'title.ar': searchRegex },
         { 'title.en': searchRegex },
@@ -255,6 +258,7 @@ class ProjectService {
 
     Object.assign(project, data);
     await project.save();
+    statsService.clearCache();
 
     return Project.findById(id)
       .select('+privateRepo')
@@ -276,6 +280,7 @@ class ProjectService {
 
     project.status = status;
     await project.save();
+    statsService.clearCache();
 
     return Project.findById(id).populate('category', 'key name');
   }
@@ -316,6 +321,7 @@ class ProjectService {
     }
 
     await Project.findByIdAndDelete(id);
+    statsService.clearCache();
     return true;
   }
 
@@ -355,13 +361,19 @@ class ProjectService {
         .map((t) => t.trim())
         .filter(Boolean);
       if (techs.length > 0) {
-        filter.techStack = { $all: techs.map((t) => new RegExp(`^${t}$`, 'i')) };
+        filter.techStack = {
+          $all: techs.map((t) => {
+            const escaped = t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            return new RegExp(`^${escaped}$`, 'i');
+          }),
+        };
       }
     }
 
     // Filter: Search across title, tagline, techStack
     if (query.search) {
-      const searchRegex = new RegExp(query.search.trim(), 'i');
+      const escaped = query.search.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const searchRegex = new RegExp(escaped, 'i');
       filter.$or = [
         { 'title.ar': searchRegex },
         { 'title.en': searchRegex },
@@ -473,10 +485,10 @@ class ProjectService {
       throw AppError.notFound('Project not found', ERROR_CODES.NOT_FOUND);
     }
 
-    // Increment views only for public visitors (never for the logged-in owner)
+    // Increment views atomically only for public visitors (never for the logged-in owner)
     if (!isOwner) {
+      await Project.updateOne({ _id: project._id }, { $inc: { 'stats.views': 1 } });
       project.stats.views = (project.stats.views || 0) + 1;
-      await project.save();
     }
 
     const reviewsSummaryMap = await this._getReviewsSummaryMap([project._id]);

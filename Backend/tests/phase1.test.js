@@ -212,6 +212,12 @@ async function runTests() {
     assert(json.success === true, 'Expected success: true');
     assert(json.data.settings.key === 'main', 'Expected settings key "main"');
     assert(json.data.settings.vatRate === undefined, 'VAT rate should be completely removed');
+    assert(
+      json.data.integrations &&
+        typeof json.data.integrations.paymobConfigured === 'boolean' &&
+        typeof json.data.integrations.fawryReady === 'boolean',
+      'Expected integrations { paymobConfigured, fawryReady } in /api/owner/settings'
+    );
   });
 
   // 8. PATCH Settings

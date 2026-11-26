@@ -39,7 +39,9 @@ if (TEST_DB_URI.includes('.mongodb.net/')) {
 } else {
   TEST_DB_URI = TEST_DB_URI.replace(/\/([^/?]+)(\?|$)/, '/bytecraft_test$2');
 }
-const PAYMOB_HMAC_SECRET = process.env.PAYMOB_HMAC_SECRET || 'test_hmac_secret_phase7_hardening';
+const PAYMOB_HMAC_SECRET = (
+  process.env.PAYMOB_HMAC_SECRET || 'nexus_test_paymob_hmac_secret_local_only'
+).trim();
 
 // Calculate Paymob HMAC
 function calculatePaymobHmac(obj, secret = PAYMOB_HMAC_SECRET) {

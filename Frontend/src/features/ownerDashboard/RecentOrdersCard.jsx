@@ -93,7 +93,12 @@ export function RecentOrdersCard({ recentOrders = [] }) {
           </div>
 
           {/* Desktop/Tablet Scrollable Table (>= sm) */}
-          <div className="hidden sm:block overflow-x-auto rounded-xl border border-card-border bg-surface">
+          <div
+            tabIndex={0}
+            role="region"
+            aria-label={t('ownerDashboard:recentOrders.title')}
+            className="hidden sm:block overflow-x-auto rounded-xl border border-card-border bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
             <table className="w-full text-start border-collapse text-xs sm:text-sm">
               <thead>
                 <tr className="border-b border-card-border bg-surface-container-high text-on-surface-variant text-xs font-semibold">

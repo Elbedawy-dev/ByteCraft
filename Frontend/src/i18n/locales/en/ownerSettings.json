@@ -25,11 +25,11 @@
       "title": "Contact Information & Social Links",
       "description": "Public contact channels displayed in the footer and contact page.",
       "emailLabel": "Contact Email",
-      "emailPlaceholder": "contact@nexus.dev",
+      "emailPlaceholder": "Enter contact email",
       "whatsappLabel": "WhatsApp Number",
-      "whatsappPlaceholder": "+201012345678",
+      "whatsappPlaceholder": "Enter WhatsApp number with country code",
       "phoneLabel": "Phone Number",
-      "phonePlaceholder": "+201012345678",
+      "phonePlaceholder": "Enter phone number with country code",
       "locationArLabel": "Location (Arabic)",
       "locationArPlaceholder": "القاهرة، مصر",
       "locationEnLabel": "Location (English)",
@@ -47,12 +47,14 @@
     "payments": {
       "title": "Payment Methods",
       "description": "Enable and configure manual and gateway payment methods available at checkout.",
+      "gatewayConfigured": "Configured",
+      "gatewayNotConfigured": "Not Configured",
       "vodafone": {
         "title": "Vodafone Cash",
         "description": "Manual wallet transfer with payment receipt upload and owner review.",
         "enabledLabel": "Enable Vodafone Cash",
         "walletNumberLabel": "Wallet Number",
-        "walletNumberPlaceholder": "01012345678",
+        "walletNumberPlaceholder": "Enter Vodafone Cash wallet number",
         "accountNameLabel": "Account Name",
         "accountNamePlaceholder": "Nexus Studio",
         "instructionsArLabel": "Payment Instructions (Arabic)",
@@ -73,13 +75,15 @@
         "title": "Fawry",
         "description": "Generate Fawry kiosk reference codes via Paymob integration.",
         "enabledLabel": "Enable Fawry Payments",
-        "serverNote": "Note: Fawry payments require valid Paymob keys (API Key, Fawry Integration ID, HMAC Secret) configured in the server environment."
+        "serverNote": "Paymob Fawry gateway credentials are configured on the server.",
+        "unavailableNote": "Disabled because Paymob Fawry keys (PAYMOB_API_KEY, PAYMOB_FAWRY_INTEGRATION_ID, PAYMOB_HMAC_SECRET) are not configured on the server. Hidden from checkout."
       },
       "card": {
         "title": "Bank Cards",
         "description": "Online Visa & Mastercard checkout via Paymob iFrame.",
         "enabledLabel": "Enable Card Payments",
-        "serverNote": "Note: Card payments require valid Paymob keys (API Key, Card Integration ID, iFrame ID, HMAC Secret) configured in the server environment."
+        "serverNote": "Paymob Card gateway credentials are configured on the server.",
+        "unavailableNote": "Disabled because Paymob Card keys (PAYMOB_API_KEY, PAYMOB_CARD_INTEGRATION_ID, PAYMOB_IFRAME_ID, PAYMOB_HMAC_SECRET) are not configured on the server. Hidden from checkout."
       }
     },
     "security": {

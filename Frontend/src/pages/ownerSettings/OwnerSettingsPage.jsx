@@ -15,12 +15,18 @@ export default function OwnerSettingsPage() {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   const {
-    data: settings,
+    data,
     isLoading,
     isError,
     error,
     refetch,
   } = useOwnerSettings();
+
+  const settings = data?.settings ?? null;
+  const paymentGateways = data?.paymentGateways ?? {
+    cardAvailable: false,
+    fawryAvailable: false,
+  };
 
   return (
     <div className="space-y-6">
@@ -48,6 +54,7 @@ export default function OwnerSettingsPage() {
         <div className="space-y-8">
           <SettingsForm
             settings={settings}
+            paymentGateways={paymentGateways}
             onDirtyChange={setHasUnsavedChanges}
           />
           <ChangePasswordForm />

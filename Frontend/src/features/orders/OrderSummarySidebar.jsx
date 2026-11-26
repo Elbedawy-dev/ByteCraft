@@ -133,22 +133,25 @@ export function OrderSummarySidebar({ order }) {
 
         <div className="flex items-center gap-2 flex-wrap">
           {whatsappHref && (
-            <a
+            <Button
               href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1"
+              variant="secondary"
+              size="sm"
+              className="w-full flex-1"
             >
-              <Button variant="secondary" size="sm" className="w-full">
                 {t('tracking.summary.whatsapp')}
               </Button>
-            </a>
           )}
-          <Link to={ROUTES.CONTACT} className="flex-1">
-            <Button variant="outline" size="sm" className="w-full">
+          <Button
+            to={ROUTES.CONTACT}
+            variant="outline"
+            size="sm"
+            className="w-full flex-1"
+          >
               {t('tracking.summary.contact')}
             </Button>
-          </Link>
         </div>
       </Card>
     </aside>

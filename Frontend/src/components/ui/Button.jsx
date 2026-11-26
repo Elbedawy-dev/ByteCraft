@@ -1,4 +1,5 @@
 import React, { forwardRef } from 'react';
+import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { m } from 'framer-motion';
 import { MOTION_TRANSITION } from '../../lib/motion';
@@ -13,6 +14,10 @@ import { Spinner } from './Spinner';
  * - outline: surface with brand border and brand text
  * - ghost: subtle brand-soft hover surface
  * - danger: semantic danger fill
+ *
+ * Polymorphic semantics:
+ * - Pass `to` to render a React Router `<Link>` styled as a button (avoids nested `<a><button>`).
+ * - Pass `href` to render a native `<a>` styled as a button.
  */
 export const Button = forwardRef(function Button(
   {
@@ -22,6 +27,8 @@ export const Button = forwardRef(function Button(
     loading = false,
     disabled = false,
     type = 'button',
+    to,
+    href,
     className = '',
     iconLeading,
     iconTrailing,
@@ -54,6 +61,59 @@ export const Button = forwardRef(function Button(
       'bg-danger text-on-error hover:opacity-95 active:opacity-90 shadow-sm',
   }[variant] || 'btn-primary-gradient';
 
+  const classes = clsx(
+    baseStyles,
+    sizeStyles,
+    variantStyles,
+    (to || href) && isDisabled && 'opacity-50 pointer-events-none cursor-not-allowed',
+    className
+  );
+
+  const innerContent = loading ? (
+    <>
+      <Spinner size={size === 'sm' || size === 'icon-sm' ? 'sm' : 'md'} />
+      {size !== 'icon' && size !== 'icon-sm' && (
+        <span className="opacity-95">{children}</span>
+      )}
+    </>
+  ) : (
+    <>
+      {iconLeading && <span className="inline-flex shrink-0">{iconLeading}</span>}
+      {children}
+      {iconTrailing && <span className="inline-flex shrink-0">{iconTrailing}</span>}
+    </>
+  );
+
+  if (to !== undefined) {
+    return (
+      <Link
+        ref={ref}
+        to={to}
+        aria-disabled={isDisabled || undefined}
+        aria-busy={loading || undefined}
+        className={classes}
+        {...props}
+      >
+        {innerContent}
+      </Link>
+    );
+  }
+
+  if (href !== undefined) {
+    return (
+      <a
+        ref={ref}
+        href={href}
+        aria-disabled={isDisabled || undefined}
+        aria-busy={loading || undefined}
+        className={classes}
+        {...props}
+      >
+        {innerContent}
+      </a>
+    );
+  }
+
   return (
     <m.button
       ref={ref}
@@ -63,23 +123,10 @@ export const Button = forwardRef(function Button(
       data-fm-tap="true"
       whileTap={isDisabled ? undefined : { scale: 0.98 }}
       transition={MOTION_TRANSITION}
-      className={clsx(baseStyles, sizeStyles, variantStyles, className)}
+      className={classes}
       {...props}
     >
-      {loading ? (
-        <>
-          <Spinner size={size === 'sm' || size === 'icon-sm' ? 'sm' : 'md'} />
-          {size !== 'icon' && size !== 'icon-sm' && (
-            <span className="opacity-95">{children}</span>
-          )}
-        </>
-      ) : (
-        <>
-          {iconLeading && <span className="inline-flex shrink-0">{iconLeading}</span>}
-          {children}
-          {iconTrailing && <span className="inline-flex shrink-0">{iconTrailing}</span>}
-        </>
-      )}
+      {innerContent}
     </m.button>
   );
 });

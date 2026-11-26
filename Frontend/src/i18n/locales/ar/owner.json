@@ -42,7 +42,7 @@
     "title": "تسجيل الدخول للوحة التحكم",
     "subtitle": "أدخل بيانات حساب المالك المعتمد لإدارة المشاريع والطلبات والإعدادات",
     "emailLabel": "البريد الإلكتروني الإداري",
-    "emailPlaceholder": "owner@nexus.dev",
+    "emailPlaceholder": "أدخل بريد المشرف الإلكتروني",
     "passwordLabel": "كلمة المرور",
     "passwordPlaceholder": "••••••••••••",
     "requiredTag": "مطلوب",

@@ -55,7 +55,6 @@ export function SolutionsSection() {
               <StaggerItem key={item.key} className="flex">
                 <Link
                   to={item.to}
-                  aria-label={cardTitle}
                   className="group bc-card-hover rounded-xl p-6 sm:p-7 flex-1 flex flex-col justify-between gap-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
                   <div>

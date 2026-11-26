@@ -23,8 +23,7 @@ export function ContactSidebar() {
   const githubUrl = (contact.github || socials.github || '').trim();
   const linkedinUrl = (contact.linkedin || socials.linkedin || '').trim();
 
-  const locationText =
-    localized(contact.location, lang) || t('sidebar.defaultLocation');
+  const locationText = localized(contact.location, lang);
 
   const hasAnyChannel = Boolean(
     whatsappHref || email || showSeparatePhone || githubUrl || linkedinUrl
@@ -203,23 +202,25 @@ export function ContactSidebar() {
               </div>
             )}
 
-            {/* Location row inside soft info card */}
+            {/* Location & availability row inside soft info card */}
             <div className={hasAnyChannel ? 'pt-4 border-t border-outline-variant space-y-3' : 'space-y-3'}>
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-lg bg-brand-soft flex items-center justify-center shrink-0">
-                  <span className="material-symbols-rounded icon-gradient text-[24px]" aria-hidden="true">
-                    location_on
-                  </span>
+              {locationText && (
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-lg bg-brand-soft flex items-center justify-center shrink-0">
+                    <span className="material-symbols-rounded icon-gradient text-[24px]" aria-hidden="true">
+                      location_on
+                    </span>
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-xs font-medium text-muted block">
+                      {t('sidebar.locationLabel')}
+                    </span>
+                    <span className="text-sm sm:text-base text-on-surface font-bold block truncate">
+                      {locationText}
+                    </span>
+                  </div>
                 </div>
-                <div className="min-w-0">
-                  <span className="text-xs font-medium text-muted block">
-                    {t('sidebar.locationLabel')}
-                  </span>
-                  <span className="text-sm sm:text-base text-on-surface font-bold block truncate">
-                    {locationText}
-                  </span>
-                </div>
-              </div>
+              )}
 
               <div className="p-3.5 rounded-xl bg-card border border-card-border text-xs sm:text-sm text-on-surface-variant flex items-center gap-2.5">
                 <span className="w-2 h-2 rounded-full bg-primary shrink-0" aria-hidden="true" />

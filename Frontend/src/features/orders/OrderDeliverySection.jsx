@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useLang } from '../../app/providers';
 import { formatDateTime } from '../../lib/format';
@@ -88,11 +87,13 @@ export function OrderDeliverySection({ order }) {
 
           {repoAccess === 'failed' && (
             <div className="pt-2">
-              <Link to={ROUTES.CONTACT}>
-                <Button variant="outline" size="sm">
+              <Button
+                to={ROUTES.CONTACT}
+                variant="outline"
+                size="sm"
+              >
                   {t('tracking.payment.card.contactSupport')}
                 </Button>
-              </Link>
             </div>
           )}
         </div>

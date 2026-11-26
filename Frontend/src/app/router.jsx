@@ -131,9 +131,17 @@ export function buildRoutes() {
   ];
 }
 
+let cachedRouter = null;
+
+function getAppRouter() {
+  if (!cachedRouter) {
+    cachedRouter = createBrowserRouter(buildRoutes());
+  }
+  return cachedRouter;
+}
+
 export function AppRouter() {
-  const routes = buildRoutes();
-  const router = createBrowserRouter(routes);
+  const router = getAppRouter();
 
   return <RouterProvider router={router} />;
 }

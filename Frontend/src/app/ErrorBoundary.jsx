@@ -34,7 +34,7 @@ export class ErrorBoundary extends Component {
 
           <div className="relative z-10 max-w-md w-full p-8 rounded-2xl border border-card-border bg-card text-center shadow-card space-y-4">
             <div className="w-14 h-14 rounded-xl bg-error/10 text-error flex items-center justify-center mx-auto">
-              <span className="material-symbols-rounded text-[30px]">error</span>
+              <span className="material-symbols-rounded text-[30px]" aria-hidden="true">error</span>
             </div>
             <h2 className="text-xl font-extrabold text-on-surface">
               Something went wrong
@@ -43,7 +43,7 @@ export class ErrorBoundary extends Component {
               An unexpected error occurred while rendering this page.
             </p>
             {this.state.error && (
-              <pre className="text-xs bg-surface-soft border border-card-border p-3 rounded-lg overflow-x-auto text-error text-start font-mono">
+              <pre className="text-xs bg-section-band border border-card-border p-3 rounded-lg overflow-x-auto text-error text-start font-mono">
                 {this.state.error.message || String(this.state.error)}
               </pre>
             )}
@@ -52,7 +52,7 @@ export class ErrorBoundary extends Component {
                 variant="primary-gradient"
                 size="md"
                 onClick={this.handleReset}
-                iconLeading={<span className="material-symbols-rounded text-[18px]">refresh</span>}
+                iconLeading={<span className="material-symbols-rounded text-[18px]" aria-hidden="true">refresh</span>}
               >
                 Reload Page
               </Button>

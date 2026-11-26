@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 
 export function Pagination({
   page = 1,
@@ -7,6 +8,7 @@ export function Pagination({
   onPageChange,
   className = '',
 }) {
+  const { t } = useTranslation('common');
   if (totalPages <= 1) return null;
 
   const getPages = () => {
@@ -37,14 +39,14 @@ export function Pagination({
   return (
     <nav
       role="navigation"
-      aria-label="Pagination"
+      aria-label={t('pagination.label', { defaultValue: 'Pagination' })}
       className={clsx('flex items-center justify-center gap-1.5 sm:gap-2 select-none', className)}
     >
       <button
         type="button"
         disabled={page <= 1}
         onClick={() => onPageChange(page - 1)}
-        aria-label="Previous page"
+        aria-label={t('pagination.previous', { defaultValue: 'Previous page' })}
         className="w-10 h-10 rounded-full border border-outline-variant bg-card text-on-surface-variant hover:text-primary hover:bg-brand-soft hover:border-primary/40 disabled:opacity-40 disabled:pointer-events-none transition-all duration-300 flex items-center justify-center"
       >
         <span className="material-symbols-rounded text-[18px] rtl:-scale-x-100" aria-hidden="true">
@@ -88,7 +90,7 @@ export function Pagination({
         type="button"
         disabled={page >= totalPages}
         onClick={() => onPageChange(page + 1)}
-        aria-label="Next page"
+        aria-label={t('pagination.next', { defaultValue: 'Next page' })}
         className="w-10 h-10 rounded-full border border-outline-variant bg-card text-on-surface-variant hover:text-primary hover:bg-brand-soft hover:border-primary/40 disabled:opacity-40 disabled:pointer-events-none transition-all duration-300 flex items-center justify-center"
       >
         <span className="material-symbols-rounded text-[18px] rtl:-scale-x-100" aria-hidden="true">

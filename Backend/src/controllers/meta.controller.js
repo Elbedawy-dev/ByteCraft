@@ -1,5 +1,6 @@
 const Category = require('../models/Category');
 const settingsService = require('../services/settings.service');
+const env = require('../config/env');
 const asyncHandler = require('../utils/asyncHandler');
 
 /**
@@ -12,6 +13,8 @@ const asyncHandler = require('../utils/asyncHandler');
  *    - Guarantee days
  *    - Public studio contact details and social links (empty values returned as empty strings)
  * 2. Privacy & Security: Sensitive owner payout destinations are never sent here.
+ * 3. Gateway Guard: Online Paymob methods (`card`, `fawry`) are exposed as enabled ONLY
+ *    when the Settings flag is enabled AND the matching Paymob server configuration is ready.
  */
 
 const getMeta = asyncHandler(async (req, res) => {
@@ -33,10 +36,10 @@ const getMeta = asyncHandler(async (req, res) => {
       instructions: rawPm.instapay?.instructions || { ar: '', en: '' },
     },
     fawry: {
-      enabled: Boolean(rawPm.fawry?.enabled),
+      enabled: Boolean(rawPm.fawry?.enabled) && Boolean(env.PAYMOB_FAWRY_READY),
     },
     card: {
-      enabled: Boolean(rawPm.card?.enabled),
+      enabled: Boolean(rawPm.card?.enabled) && Boolean(env.PAYMOB_CONFIGURED),
     },
   };
 

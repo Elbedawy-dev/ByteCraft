@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { ROUTES } from '@/config/routes';
@@ -136,19 +135,18 @@ export function MarketplaceGrid({
                 {t('results.empty.clearAction')}
               </Button>
             ) : (
-              <Link to={ROUTES.CONTACT}>
-                <Button
-                  variant="primary-gradient"
-                  size="md"
-                  iconTrailing={
+              <Button
+                to={ROUTES.CONTACT}
+                variant="primary-gradient"
+                size="md"
+                iconTrailing={
                     <span className="material-symbols-rounded text-[18px] rtl:-scale-x-100" aria-hidden="true">
                       arrow_forward
                     </span>
                   }
-                >
+              >
                   {t('results.empty.contactAction')}
                 </Button>
-              </Link>
             )
           }
         />

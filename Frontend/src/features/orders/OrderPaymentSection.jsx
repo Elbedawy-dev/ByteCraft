@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useMeta } from '../../api/meta';
 import { useSubmitPaymentProof } from '../../api/orderTracking';
@@ -78,7 +77,7 @@ export function OrderPaymentSection({ order, token, bootstrap, mode = 'guest' })
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-lg bg-surface-container-high border border-outline-variant/70 flex items-center justify-center text-primary">
-            <span className="material-symbols-outlined text-[20px]">
+            <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
               account_balance_wallet
             </span>
           </div>
@@ -107,7 +106,7 @@ export function OrderPaymentSection({ order, token, bootstrap, mode = 'guest' })
       {/* Free Order */}
       {order.isFreeOrder && (
         <div className="p-4 rounded-xl bg-primary/10 border border-primary/25 flex items-start gap-3">
-          <span className="material-symbols-outlined text-primary text-[22px] shrink-0 mt-0.5">
+          <span className="material-symbols-outlined text-primary text-[22px] shrink-0 mt-0.5" aria-hidden="true">
             redeem
           </span>
           <div>
@@ -127,7 +126,7 @@ export function OrderPaymentSection({ order, token, bootstrap, mode = 'guest' })
           {(effectiveInstructions || instructionText) && (
             <div className="p-4 sm:p-5 rounded-xl bg-surface-container border border-outline-variant/80 space-y-4">
               <div className="flex items-center gap-2 text-primary text-sm font-bold">
-                <span className="material-symbols-outlined text-[20px]">
+                <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
                   {method === 'instapay' ? 'bolt' : 'phone_iphone'}
                 </span>
                 <span>{t('tracking.payment.manual.instructionsTitle')}</span>
@@ -174,6 +173,7 @@ export function OrderPaymentSection({ order, token, bootstrap, mode = 'guest' })
                     </div>
                     <CopyButton
                       text={effectiveInstructions.accountName}
+                      ariaLabel={t('common:actions.copy')}
                       size="icon-sm"
                       variant="ghost"
                       copiedLabel={t('common:actions.copied')}
@@ -209,7 +209,7 @@ export function OrderPaymentSection({ order, token, bootstrap, mode = 'guest' })
               className="p-4 sm:p-5 rounded-xl bg-surface-container border border-outline-variant/80 space-y-4"
             >
               <h3 className="text-sm sm:text-base font-bold text-on-surface flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[20px]">
+                <span className="material-symbols-outlined text-primary text-[20px]" aria-hidden="true">
                   upload_file
                 </span>
                 <span>
@@ -250,7 +250,7 @@ export function OrderPaymentSection({ order, token, bootstrap, mode = 'guest' })
                   role="alert"
                   className="text-xs sm:text-sm text-error flex items-center gap-1.5"
                 >
-                  <span className="material-symbols-outlined text-[16px] shrink-0">
+                  <span className="material-symbols-outlined text-[16px] shrink-0" aria-hidden="true">
                     error
                   </span>
                   <span>{proofError}</span>
@@ -264,7 +264,7 @@ export function OrderPaymentSection({ order, token, bootstrap, mode = 'guest' })
                 loading={submitProofMutation.isPending}
                 className="w-full sm:w-auto"
                 iconLeading={
-                  <span className="material-symbols-outlined text-[20px]">
+                  <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
                     verified
                   </span>
                 }
@@ -281,7 +281,7 @@ export function OrderPaymentSection({ order, token, bootstrap, mode = 'guest' })
       {/* Proof Submitted State (awaiting_review) */}
       {!order.isFreeOrder && isManualMethod && status === 'awaiting_review' && (
         <div className="p-4 sm:p-5 rounded-xl bg-primary/10 border border-primary/30 flex items-start gap-3.5">
-          <span className="material-symbols-outlined text-primary text-[24px] shrink-0 mt-0.5">
+          <span className="material-symbols-outlined text-primary text-[24px] shrink-0 mt-0.5" aria-hidden="true">
             hourglass_top
           </span>
           <div className="space-y-1.5 min-w-0">
@@ -321,7 +321,7 @@ export function OrderPaymentSection({ order, token, bootstrap, mode = 'guest' })
       {!order.isFreeOrder && method === 'fawry' && status === 'pending_payment' && (
         <div className="p-5 rounded-xl bg-surface-container border border-outline-variant/80 space-y-4">
           <div className="flex items-center gap-2 text-primary text-sm font-bold">
-            <span className="material-symbols-outlined text-[20px]">local_atm</span>
+            <span className="material-symbols-outlined text-[20px]" aria-hidden="true">local_atm</span>
             <span>{t('tracking.payment.fawry.title')}</span>
           </div>
 
@@ -349,7 +349,7 @@ export function OrderPaymentSection({ order, token, bootstrap, mode = 'guest' })
           )}
 
           <p className="text-xs text-on-surface-variant flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[16px] text-primary">
+            <span className="material-symbols-outlined text-[16px] text-primary" aria-hidden="true">
               info
             </span>
             <span>{t('tracking.payment.fawry.pendingNote')}</span>
@@ -361,7 +361,7 @@ export function OrderPaymentSection({ order, token, bootstrap, mode = 'guest' })
       {!order.isFreeOrder && method === 'card' && status === 'pending_payment' && (
         <div className="p-5 rounded-xl bg-surface-container border border-outline-variant/80 space-y-4">
           <div className="flex items-start gap-3">
-            <span className="material-symbols-outlined text-warning text-[24px] shrink-0 mt-0.5">
+            <span className="material-symbols-outlined text-warning text-[24px] shrink-0 mt-0.5" aria-hidden="true">
               credit_card
             </span>
             <div className="space-y-1.5">
@@ -378,22 +378,24 @@ export function OrderPaymentSection({ order, token, bootstrap, mode = 'guest' })
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            <Link to={ROUTES.CONTACT}>
-              <Button variant="outline" size="sm">
+            <Button
+              to={ROUTES.CONTACT}
+              variant="outline"
+              size="sm"
+            >
                 {t('tracking.payment.card.contactSupport')}
               </Button>
-            </Link>
-            <Link
+            <Button
               to={
                 order?.snapshot?.slug
                   ? projectDetailsPath(order.snapshot.slug)
                   : ROUTES.PROJECTS
               }
+              variant="secondary"
+              size="sm"
             >
-              <Button variant="secondary" size="sm">
                 {t('tracking.payment.card.newOrder')}
               </Button>
-            </Link>
           </div>
         </div>
       )}

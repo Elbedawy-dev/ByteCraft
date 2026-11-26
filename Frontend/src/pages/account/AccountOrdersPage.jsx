@@ -183,11 +183,13 @@ export default function AccountOrdersPage() {
                   {t('common:actions.resetFilters')}
                 </Button>
               ) : (
-                <Link to={ROUTES.PROJECTS}>
-                  <Button variant="primary-gradient" size="md">
+                <Button
+                  to={ROUTES.PROJECTS}
+                  variant="primary-gradient"
+                  size="md"
+                >
                     {t('account:orders.browseProjects')}
                   </Button>
-                </Link>
               )
             }
           />
@@ -273,11 +275,13 @@ export default function AccountOrdersPage() {
                             {formatDateTime(order.createdAt, lang)}
                           </td>
                           <td className="py-3.5 px-3.5 whitespace-nowrap text-end">
-                            <Link to={accountOrderDetailsPath(order.orderNumber)}>
-                              <Button variant="outline" size="sm">
+                            <Button
+                              to={accountOrderDetailsPath(order.orderNumber)}
+                              variant="outline"
+                              size="sm"
+                            >
                                 {t('common:actions.viewDetails')}
                               </Button>
-                            </Link>
                           </td>
                         </tr>
                       );
@@ -345,14 +349,14 @@ export default function AccountOrdersPage() {
                       </span>
                     </div>
 
-                    <Link
+                    <Button
                       to={accountOrderDetailsPath(order.orderNumber)}
-                      className="block w-full"
+                      variant="outline"
+                      size="sm"
+                      className="w-full"
                     >
-                      <Button variant="outline" size="sm" className="w-full">
                         {t('account:orders.viewOrder')}
                       </Button>
-                    </Link>
                   </Card>
                 );
               })}

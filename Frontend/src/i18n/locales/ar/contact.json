@@ -41,15 +41,15 @@
     "fields": {
       "name": {
         "label": "الاسم الكامل",
-        "placeholder": "مثال: أحمد عبد الرحمن"
+        "placeholder": "أدخل اسمك الكامل"
       },
       "phone": {
         "label": "رقم الهاتف / واتساب",
-        "placeholder": "+20 10 1234 5678"
+        "placeholder": "أدخل رقم الهاتف أو واتساب"
       },
       "email": {
         "label": "البريد الإلكتروني",
-        "placeholder": "ahmed@example.com"
+        "placeholder": "أدخل بريدك الإلكتروني"
       },
       "projectType": {
         "label": "نوع المشروع المطلوب",

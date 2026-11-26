@@ -10,7 +10,7 @@ Built according to [`docs/frontend-contract.md`](../docs/frontend-contract.md), 
 | Layer | Technology / Configuration | Notes |
 | :--- | :--- | :--- |
 | **Brand Identity** | `Nexus` / `NEXUS` (`src/config/brand.js`) | Ribbon `N` `LogoMark` + `BrandLogo` (`tone="auto"` / `tone="light"`), fixed `<title>Nexus</title>`, `public/favicon.svg` |
-| **Runtime** | React 18.3 (JSX) + Vite 6 | Proxies `/api` and `/uploads` to `VITE_DEV_API_TARGET` (`http://localhost:5000`, or `http://localhost:5001` in test mode) |
+| **Runtime** | React 18.3 (JSX) + Vite 6 | Proxies `/api` and `/uploads` to `VITE_DEV_API_TARGET` (`http://localhost:5000`, or `http://localhost:5001` in test mode); production `vercel.json` rewrites `/api/:path*` to `https://nexusbytes-back.vercel.app/api/:path*` |
 | **Routing** | React Router v6.30 | Auto-discovers route modules via `pages/**/routes.jsx` with lazy-loaded route chunks |
 | **Styling & Themes** | Tailwind CSS v3.4 (`darkMode: 'class'`) | Dual fully designed themes (**Light** default + **Dark**) driven by `--bc-*` RGB CSS variables |
 | **Typography** | `Plus Jakarta Sans` (EN) & `Cairo` (AR) | Self-hosted (`400–800`) via `@fontsource/plus-jakarta-sans` and `@fontsource/cairo` |
@@ -113,7 +113,9 @@ node scripts/checkMotion.cjs
 - Root `AuthProvider` (`src/features/auth/AuthProvider.jsx`) exposes `useAuth()` backed by `GET /api/auth/me` (and `useOwner()` delegates to `useAuth()`).
 - Public auth pages (`/login`, `/register`, `/forgot-password`, `/reset-password`, `/verify-email`) use `PublicLayout` with a centered `rounded-3xl` card and top `BrandLogo`; `/owner/login` redirects cleanly to `/login`.
 - Customer portal (`/account`, `/account/orders`, `/account/orders/:orderNumber`) is guarded by `<RequireAuth>` and supports checkout prefill, verification resend, guest order claiming, password changes, account deletion, and session-mode order tracking/reviews.
-- Admin management pages `/owner/users` and `/owner/admins` plus the `registrationEnabled` toggle in `/owner/settings` live under `OwnerLayout` (showing a `403` view with a `/account` link if visited by a non-admin customer).
+- Admin management pages `/owner/users` and `/owner/admins` plus the `registrationEnabled` toggle and server-aware Paymob gateway locks in `/owner/settings` live under `OwnerLayout` (showing a `403` view with a `/account` link if visited by a non-admin customer).
+- Checkout (`/checkout`) and Pricing FAQ (`/pricing`) strictly reflect live enabled payment methods from `GET /api/meta` (showing a friendly warning with a Contact link if none are enabled, and never advertising disabled/unconfigured gateways). About and Contact omit location blocks when `Settings.contact.location` is empty.
+- Navigation CTAs use polymorphic `<Button to=... / href=...>` rendering a single `<Link>` or `<a>` element with zero nested interactive controls, verified with `@axe-core/puppeteer` (0 violations across 30 routes in Light & Dark).
 
 ### UI Component Test Bench
 Open `/__ui` in development (e.g., `http://localhost:5171/__ui`) to inspect `BrandLogo`, `HeroCubes`, `.icon-gradient` chips, pill buttons, custom `Select` portals, forms, cards, tables, modals, drawers, toasts, and empty/error states in both **Light** and **Dark** themes and **AR (RTL)** / **EN (LTR)**.

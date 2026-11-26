@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { fadeUp } from '../../lib/motion';
@@ -134,17 +133,17 @@ export function OrderStatusTimeline({ order }) {
 
             {status === 'expired' && (
               <div className="pt-1">
-                <Link
+                <Button
                   to={
                     order?.snapshot?.slug
                       ? projectDetailsPath(order.snapshot.slug)
                       : ROUTES.PROJECTS
                   }
+                  variant="outline"
+                  size="sm"
                 >
-                  <Button variant="outline" size="sm">
                     {t('tracking.timeline.variants.expired.reorderCta')}
                   </Button>
-                </Link>
               </div>
             )}
           </div>

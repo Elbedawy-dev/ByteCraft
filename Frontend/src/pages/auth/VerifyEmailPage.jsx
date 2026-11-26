@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -156,18 +156,24 @@ export default function VerifyEmailPage() {
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 pt-1">
-            <Link to={isAuthenticated ? ROUTES.ACCOUNT : ROUTES.LOGIN} className="flex-1">
-              <Button variant="primary-gradient" size="md" className="w-full">
+            <Button
+              to={isAuthenticated ? ROUTES.ACCOUNT : ROUTES.LOGIN}
+              variant="primary-gradient"
+              size="md"
+              className="w-full flex-1"
+            >
                 {isAuthenticated
                   ? t('auth:verifyEmail.goToAccount')
                   : t('auth:verifyEmail.goToLogin')}
               </Button>
-            </Link>
-            <Link to={ROUTES.PROJECTS} className="flex-1">
-              <Button variant="outline" size="md" className="w-full">
+            <Button
+              to={ROUTES.PROJECTS}
+              variant="outline"
+              size="md"
+              className="w-full flex-1"
+            >
                 {t('auth:verifyEmail.browseProjects')}
               </Button>
-            </Link>
           </div>
         </div>
       )}
@@ -237,11 +243,14 @@ export default function VerifyEmailPage() {
               >
                 {t('auth:verifyEmail.resendButton')}
               </Button>
-              <Link to={ROUTES.ACCOUNT} className="block">
-                <Button variant="outline" size="md" className="w-full">
+              <Button
+                to={ROUTES.ACCOUNT}
+                variant="outline"
+                size="md"
+                className="w-full"
+              >
                   {t('auth:verifyEmail.goToAccount')}
                 </Button>
-              </Link>
             </div>
           ) : (
             <form onSubmit={handleSubmit(handleGuestResend)} noValidate className="space-y-4 pt-1">

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -386,11 +386,9 @@ export function ContactForm() {
             <Button type="button" variant="primary-gradient" onClick={handleResetSuccess}>
               {t('form.success.sendAnother')}
             </Button>
-            <Link to={ROUTES.PROJECTS}>
-              <Button type="button" variant="outline">
+            <Button to={ROUTES.PROJECTS} variant="outline">
                 {t('form.success.browseProjects')}
               </Button>
-            </Link>
           </div>
         </div>
       ) : (

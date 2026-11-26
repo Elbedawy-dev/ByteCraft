@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useClaimGuestOrders } from '../../api/account';
 import { ApiError, getApiErrorMessage } from '../../api/client';
@@ -113,11 +112,14 @@ export function ClaimOrdersCard({ user }) {
           </div>
 
           {claimResult.count > 0 && (
-            <Link to={ROUTES.ACCOUNT_ORDERS} className="shrink-0">
-              <Button variant="primary-gradient" size="sm">
+            <Button
+              to={ROUTES.ACCOUNT_ORDERS}
+              variant="primary-gradient"
+              size="sm"
+              className="shrink-0"
+            >
                 {t('account:claimOrders.viewOrders')}
               </Button>
-            </Link>
           )}
         </div>
       )}

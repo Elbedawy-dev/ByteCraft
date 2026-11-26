@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   getOrderToken,
@@ -327,17 +327,21 @@ export default function PaymentResultPage() {
                 </Button>
 
                 {orderNumber ? (
-                  <Link to={orderTrackingPath(orderNumber)}>
-                    <Button type="button" variant="outline" size="md">
+                  <Button
+                    to={orderTrackingPath(orderNumber)}
+                    variant="outline"
+                    size="md"
+                  >
                       {t('paymentResult.states.missingToken.goToOrder')}
                     </Button>
-                  </Link>
                 ) : (
-                  <Link to={ROUTES.PROJECTS}>
-                    <Button type="button" variant="outline" size="md">
+                  <Button
+                    to={ROUTES.PROJECTS}
+                    variant="outline"
+                    size="md"
+                  >
                       {t('paymentResult.states.missingOrder.browseProjects')}
                     </Button>
-                  </Link>
                 )}
               </div>
             </form>
@@ -348,24 +352,30 @@ export default function PaymentResultPage() {
             viewState === 'pending' ||
             viewState === 'failed') && (
             <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-              <Link to={targetOrderPath}>
-                <Button variant="primary-gradient" size="md">
+              <Button
+                to={targetOrderPath}
+                variant="primary-gradient"
+                size="md"
+              >
                   {t(`paymentResult.states.${viewState}.cta`)}
                 </Button>
-              </Link>
 
               {viewState === 'failed' && (
                 <>
-                  <Link to={ROUTES.PROJECTS}>
-                    <Button variant="secondary" size="md">
+                  <Button
+                    to={ROUTES.PROJECTS}
+                    variant="secondary"
+                    size="md"
+                  >
                       {t('paymentResult.states.failed.retryProjects')}
                     </Button>
-                  </Link>
-                  <Link to={ROUTES.CONTACT}>
-                    <Button variant="outline" size="md">
+                  <Button
+                    to={ROUTES.CONTACT}
+                    variant="outline"
+                    size="md"
+                  >
                       {t('paymentResult.states.failed.support')}
                     </Button>
-                  </Link>
                 </>
               )}
             </div>

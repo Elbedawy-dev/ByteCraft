@@ -148,7 +148,7 @@ export default function UiShowcase() {
 
           <Card variant="soft" padding="md" className="flex items-center justify-between gap-4">
             <div className="space-y-2">
-              <div className="w-12 h-12 rounded-lg bg-primary-soft flex items-center justify-center">
+              <div className="w-12 h-12 rounded-lg bg-brand-soft flex items-center justify-center">
                 <span className="material-symbols-rounded icon-gradient text-[24px]">
                   deployed_code
                 </span>
@@ -432,7 +432,7 @@ export default function UiShowcase() {
           <StatusBadge type="inquiry" status="new" />
         </div>
 
-        <div className="flex flex-wrap items-center gap-6 p-4 rounded-xl bg-surface-soft border border-card-border">
+        <div className="flex flex-wrap items-center gap-6 p-4 rounded-xl bg-section-band border border-card-border">
           <Rating rating={5.0} count={32} />
           <Rating rating={4.8} count={19} />
           <Rating rating={3.5} count={4} />

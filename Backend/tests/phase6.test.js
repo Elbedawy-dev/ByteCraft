@@ -263,7 +263,7 @@ async function runTests() {
       };
 
       const paymobService = require('../src/services/payments/paymob.service');
-      const hmacSecret = process.env.PAYMOB_HMAC_SECRET || 'sandbox_hmac_placeholder';
+      const hmacSecret = process.env.PAYMOB_HMAC_SECRET || 'nexus_test_paymob_hmac_secret_local_only';
       const validHmac = paymobService.calculateHmac(transactionObj, hmacSecret);
 
       // Fire TWO webhooks concurrently at the exact same moment
@@ -346,7 +346,7 @@ async function runTests() {
       };
 
       const paymobService = require('../src/services/payments/paymob.service');
-      const hmacSecret = process.env.PAYMOB_HMAC_SECRET || 'sandbox_hmac_placeholder';
+      const hmacSecret = process.env.PAYMOB_HMAC_SECRET || 'nexus_test_paymob_hmac_secret_local_only';
       const hmac = paymobService.calculateHmac(pendingTxnObj, hmacSecret);
 
       const webhookRes = await fetch(`${BASE_URL}/payments/paymob/webhook?hmac=${hmac}`, {

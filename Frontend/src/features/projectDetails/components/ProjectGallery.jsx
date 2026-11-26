@@ -90,7 +90,6 @@ export function ProjectGallery({ project, onOpenLiveDemo }) {
             <button
               type="button"
               onClick={() => setLightboxOpen(true)}
-              aria-label={t('gallery.openLightbox')}
               className="block w-full h-full relative text-start cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
             >
               <MotionImage
@@ -105,7 +104,7 @@ export function ProjectGallery({ project, onOpenLiveDemo }) {
                 <span className="material-symbols-rounded text-[16px] text-primary" aria-hidden="true">
                   zoom_in
                 </span>
-                <span className="hidden sm:inline">{t('gallery.openLightbox')}</span>
+                <span className="sr-only sm:not-sr-only">{t('gallery.openLightbox')}</span>
                 {images.length > 1 && (
                   <bdi dir="ltr" className="font-mono text-[11px] text-muted">
                     {t('gallery.counter', { current: safeIndex + 1, total: images.length })}

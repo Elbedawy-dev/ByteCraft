@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../../components/ui/Button';
 import { HeroCubes } from '../../components/shared';
@@ -33,19 +32,18 @@ export default function NotFound() {
           })}
         </p>
 
-        <Link to={ROUTES.HOME}>
-          <Button
-            variant="primary-gradient"
-            size="lg"
-            iconLeading={
+        <Button
+          to={ROUTES.HOME}
+          variant="primary-gradient"
+          size="lg"
+          iconLeading={
               <span className="material-symbols-rounded text-[20px] rtl:-scale-x-100">
                 arrow_back
               </span>
             }
-          >
+        >
             {t('actions.backToHome', { defaultValue: 'Back to Home' })}
           </Button>
-        </Link>
       </div>
     </section>
   );

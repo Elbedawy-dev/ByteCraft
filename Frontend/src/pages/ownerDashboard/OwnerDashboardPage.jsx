@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useLang } from '../../app/providers';
 import { useOwnerDashboard } from '../../api/owner/dashboard';
@@ -64,7 +63,7 @@ export default function OwnerDashboardPage() {
         title={t('ownerDashboard:title')}
         description={t('ownerDashboard:description')}
         badge={
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-soft border border-primary/20 text-primary-soft-text text-xs font-semibold">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-soft border border-primary/20 text-brand-soft-text text-xs font-semibold">
             <span className="w-1.5 h-1.5 rounded-full bg-primary" aria-hidden="true" />
             {t('ownerDashboard:liveSync')}
           </span>
@@ -84,19 +83,18 @@ export default function OwnerDashboardPage() {
             >
               {t('ownerDashboard:actions.refresh')}
             </Button>
-            <Link to={ROUTES.OWNER_PROJECTS}>
-              <Button
-                variant="primary-gradient"
-                size="sm"
-                iconLeading={
+            <Button
+              to={ROUTES.OWNER_PROJECTS}
+              variant="primary-gradient"
+              size="sm"
+              iconLeading={
                   <span className="material-symbols-rounded text-[18px]">
                     deployed_code
                   </span>
                 }
-              >
+            >
                 {t('ownerDashboard:actions.manageProjects')}
               </Button>
-            </Link>
           </>
         }
       />
@@ -120,7 +118,7 @@ export default function OwnerDashboardPage() {
             <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="space-y-1.5">
                 <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-on-surface-variant">
-                  <span className="px-2.5 py-0.5 rounded-full bg-primary-soft text-primary-soft-text font-semibold">
+                  <span className="px-2.5 py-0.5 rounded-full bg-brand-soft text-brand-soft-text font-semibold">
                     {t('owner:consoleBadge')}
                   </span>
                   <span>
@@ -135,32 +133,30 @@ export default function OwnerDashboardPage() {
               </div>
 
               <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-                <Link to={ROUTES.OWNER_ORDERS}>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    iconLeading={
+                <Button
+                  to={ROUTES.OWNER_ORDERS}
+                  variant="outline"
+                  size="sm"
+                  iconLeading={
                       <span className="material-symbols-rounded text-[18px]">
                         shopping_bag
                       </span>
                     }
-                  >
+                >
                     {t('ownerDashboard:actions.manageOrders')}
                   </Button>
-                </Link>
-                <Link to={ROUTES.OWNER_SETTINGS}>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    iconLeading={
+                <Button
+                  to={ROUTES.OWNER_SETTINGS}
+                  variant="ghost"
+                  size="sm"
+                  iconLeading={
                       <span className="material-symbols-rounded text-[18px]">
                         settings
                       </span>
                     }
-                  >
+                >
                     {t('ownerDashboard:actions.settings')}
                   </Button>
-                </Link>
               </div>
             </div>
           </Card>
@@ -172,7 +168,7 @@ export default function OwnerDashboardPage() {
               className="border-primary/25 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
             >
               <div className="flex items-start gap-3.5">
-                <div className="w-12 h-12 rounded-lg bg-primary-soft flex items-center justify-center shrink-0">
+                <div className="w-12 h-12 rounded-lg bg-brand-soft flex items-center justify-center shrink-0">
                   <span className="material-symbols-rounded icon-gradient text-[24px]">
                     rocket_launch
                   </span>
@@ -187,16 +183,20 @@ export default function OwnerDashboardPage() {
                 </div>
               </div>
               <div className="flex flex-wrap items-center gap-2 shrink-0">
-                <Link to={ROUTES.OWNER_PROJECTS}>
-                  <Button variant="primary-gradient" size="sm">
+                <Button
+                  to={ROUTES.OWNER_PROJECTS}
+                  variant="primary-gradient"
+                  size="sm"
+                >
                     {t('ownerDashboard:gettingStarted.addProjectAction')}
                   </Button>
-                </Link>
-                <Link to={ROUTES.OWNER_SETTINGS}>
-                  <Button variant="secondary" size="sm">
+                <Button
+                  to={ROUTES.OWNER_SETTINGS}
+                  variant="secondary"
+                  size="sm"
+                >
                     {t('ownerDashboard:gettingStarted.settingsAction')}
                   </Button>
-                </Link>
               </div>
             </Card>
           )}
@@ -208,8 +208,8 @@ export default function OwnerDashboardPage() {
           <React.Suspense
             fallback={
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                <div className="lg:col-span-2 h-72 rounded-xl bg-surface-soft animate-pulse" />
-                <div className="h-72 rounded-xl bg-surface-soft animate-pulse" />
+                <div className="lg:col-span-2 h-72 rounded-xl bg-section-band animate-pulse" />
+                <div className="h-72 rounded-xl bg-section-band animate-pulse" />
               </div>
             }
           >

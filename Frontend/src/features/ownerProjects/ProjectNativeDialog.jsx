@@ -1,5 +1,6 @@
 import React, { useId } from 'react';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 import { AnimatePresence, m } from 'framer-motion';
 import { Badge } from '@/components/ui';
 import {
@@ -26,9 +27,10 @@ export function ProjectNativeDialog({
   footer,
   size = 'xl', // 'sm' | 'md' | 'xl'
   preventClose = false,
-  closeLabel = 'Close',
+  closeLabel,
   className = '',
 }) {
+  const { t } = useTranslation('common');
   const titleId = useId();
   const descId = useId();
   const isMobile = useIsMobileViewport();
@@ -95,7 +97,7 @@ export function ProjectNativeDialog({
           <div className="flex flex-col gap-1 min-w-0">
             <div className="flex items-center gap-2.5 flex-wrap">
               {headerIcon && (
-                <div className="w-10 h-10 rounded-lg bg-primary-soft flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-lg bg-brand-soft flex items-center justify-center shrink-0" aria-hidden="true">
                   <span className="material-symbols-rounded icon-gradient text-[20px]">
                     {headerIcon}
                   </span>
@@ -126,17 +128,17 @@ export function ProjectNativeDialog({
             <button
               type="button"
               onClick={onClose}
-              className="w-10 h-10 shrink-0 rounded-full bg-surface-soft border border-card-border text-on-surface-variant hover:text-primary hover:border-primary/40 flex items-center justify-center transition-colors"
-              aria-label={closeLabel}
+              className="w-10 h-10 shrink-0 rounded-full bg-section-band border border-card-border text-on-surface-variant hover:text-primary hover:border-primary/40 flex items-center justify-center transition-colors"
+              aria-label={closeLabel || t('actions.close', { defaultValue: 'Close' })}
             >
-              <span className="material-symbols-rounded text-[20px]">close</span>
+              <span className="material-symbols-rounded text-[20px]" aria-hidden="true">close</span>
             </button>
           )}
         </div>
 
         {/* Sticky Section / Step Pills */}
         {subHeader && (
-          <div className="px-4 sm:px-6 py-2.5 bg-surface-soft border-b border-card-border shrink-0">
+          <div className="px-4 sm:px-6 py-2.5 bg-section-band border-b border-card-border shrink-0">
             {subHeader}
           </div>
         )}

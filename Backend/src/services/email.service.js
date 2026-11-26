@@ -139,8 +139,8 @@ class EmailService {
     let instructionsHtml = '';
     if (order.status === 'paid' || order.isFreeOrder) {
       instructionsHtml = isAr
-        ? `<p style="color: #10b981; font-weight: bold;">طلبك مجاني وتم تفعيله بنجاح! سيتم إتاحة وصول الكود المصدري لك فوراً.</p>`
-        : `<p style="color: #10b981; font-weight: bold;">Your order is free and confirmed! Source code access is being provisioned.</p>`;
+        ? `<p style="color: #067A55; font-weight: bold;">طلبك مجاني وتم تفعيله بنجاح! سيتم إتاحة وصول الكود المصدري لك فوراً.</p>`
+        : `<p style="color: #067A55; font-weight: bold;">Your order is free and confirmed! Source code access is being provisioned.</p>`;
     } else if (paymentInstructions) {
       const safeDestination = escapeHtml(paymentInstructions.destination || '');
       const safeAccountName = escapeHtml(paymentInstructions.accountName || '');
@@ -148,7 +148,7 @@ class EmailService {
         isAr ? paymentInstructions.instructions?.ar || '' : paymentInstructions.instructions?.en || ''
       );
       instructionsHtml = `
-        <div style="background: #f8fafc; padding: 15px; border-radius: 8px; margin: 15px 0; border: 1px solid #e2e8f0;">
+        <div style="background: #F5F7FC; padding: 15px; border-radius: 8px; margin: 15px 0; border: 1px solid #E6EAF5;">
           <h4 style="margin: 0 0 10px 0;">${isAr ? 'بيانات التحويل المطلوبة' : 'Payment Details'}</h4>
           <p><strong>${isAr ? 'المبلغ المطلوب' : 'Amount Due'}:</strong> ${amountEgp} EGP</p>
           <p><strong>${isAr ? 'الوجهة' : 'Destination'}:</strong> ${safeDestination} (${safeAccountName})</p>
@@ -158,9 +158,9 @@ class EmailService {
     }
 
     const html = `
-      <div style="font-family: Arial, sans-serif; direction: ${isAr ? 'rtl' : 'ltr'}; color: #1e293b; max-width: 600px; margin: auto; padding: 20px;">
-        <p style="font-size: 13px; font-weight: bold; color: #6366f1; margin: 0 0 8px 0;">${safeBrand}</p>
-        <h2 style="color: #0f172a; margin-top: 0;">${isAr ? 'مرحباً' : 'Hello'} ${safeCustomerName}${isAr ? '،' : ','}</h2>
+      <div style="font-family: Arial, sans-serif; direction: ${isAr ? 'rtl' : 'ltr'}; color: #3D4468; max-width: 600px; margin: auto; padding: 20px;">
+        <p style="font-size: 13px; font-weight: bold; color: #4150B0; margin: 0 0 8px 0;">${safeBrand}</p>
+        <h2 style="color: #0A1134; margin-top: 0;">${isAr ? 'مرحباً' : 'Hello'} ${safeCustomerName}${isAr ? '،' : ','}</h2>
         <p>${
           isAr
             ? `شكراً لاختيارك ${safeBrand}. تم استلام طلبك لشراء <strong>${safeProjectTitle}</strong>.`
@@ -169,8 +169,8 @@ class EmailService {
         <p><strong>${isAr ? 'رقم الطلب' : 'Order Number'}:</strong> ${safeOrderNumber}</p>
         ${instructionsHtml}
         <p>${isAr ? 'يمكنك متابعة حالة طلبك أو رفع إيصال الدفع في أي وقت عبر الموقع.' : 'You can track your order status and upload payment proof at any time on our website.'}</p>
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
-        <p style="font-size: 12px; color: #64748b;">${safeBrand}</p>
+        <hr style="border: none; border-top: 1px solid #E6EAF5; margin: 20px 0;" />
+        <p style="font-size: 12px; color: #5C6289;">${safeBrand}</p>
       </div>
     `;
 
@@ -199,8 +199,8 @@ class EmailService {
     const subject = `🔔 [${brand}] New Order Received #${order.orderNumber} (${amountEgp} EGP)`;
 
     const html = `
-      <div style="font-family: Arial, sans-serif; color: #1e293b; max-width: 600px; margin: auto; padding: 20px;">
-        <p style="font-size: 13px; font-weight: bold; color: #6366f1; margin: 0 0 8px 0;">${safeBrand}</p>
+      <div style="font-family: Arial, sans-serif; color: #3D4468; max-width: 600px; margin: auto; padding: 20px;">
+        <p style="font-size: 13px; font-weight: bold; color: #4150B0; margin: 0 0 8px 0;">${safeBrand}</p>
         <h2 style="margin-top: 0;">New Order Created — ${safeBrand}</h2>
         <p><strong>Order Number:</strong> ${escapeHtml(order.orderNumber)}</p>
         <p><strong>Project:</strong> ${escapeHtml(order.snapshot?.title?.en || '')} (${escapeHtml(order.snapshot?.packageKey || '')})</p>
@@ -209,8 +209,8 @@ class EmailService {
         <p><strong>Total:</strong> ${amountEgp} EGP ${order.isFreeOrder ? '(FREE ORDER)' : ''}</p>
         <p><strong>Payment Method:</strong> ${escapeHtml(order.paymentMethod || '')}</p>
         <p><strong>Status:</strong> ${escapeHtml(order.status || '')}</p>
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
-        <p style="font-size: 12px; color: #64748b;">${safeBrand}</p>
+        <hr style="border: none; border-top: 1px solid #E6EAF5; margin: 20px 0;" />
+        <p style="font-size: 12px; color: #5C6289;">${safeBrand}</p>
       </div>
     `;
 
@@ -246,16 +246,16 @@ class EmailService {
         : '';
 
     const html = `
-      <div style="font-family: Arial, sans-serif; color: #1e293b; max-width: 600px; margin: auto; padding: 20px;">
-        <p style="font-size: 13px; font-weight: bold; color: #6366f1; margin: 0 0 8px 0;">${safeBrand}</p>
+      <div style="font-family: Arial, sans-serif; color: #3D4468; max-width: 600px; margin: auto; padding: 20px;">
+        <p style="font-size: 13px; font-weight: bold; color: #4150B0; margin: 0 0 8px 0;">${safeBrand}</p>
         <h2 style="margin-top: 0;">Payment Proof Submitted for Review — ${safeBrand}</h2>
         <p><strong>Order Number:</strong> ${escapeHtml(order.orderNumber)}</p>
         <p><strong>Customer:</strong> ${escapeHtml(order.customer?.fullName || '')} (${escapeHtml(order.customer?.email || '')})</p>
         <p><strong>Reference / Notes:</strong> ${escapeHtml(order.payment?.proof?.reference || 'N/A')}</p>
         ${proofLinkHtml}
         <p>Please review and approve or reject this payment in your Owner dashboard.</p>
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
-        <p style="font-size: 12px; color: #64748b;">${safeBrand}</p>
+        <hr style="border: none; border-top: 1px solid #E6EAF5; margin: 20px 0;" />
+        <p style="font-size: 12px; color: #5C6289;">${safeBrand}</p>
       </div>
     `;
 
@@ -293,9 +293,9 @@ class EmailService {
       : `Payment Confirmed for Order #${order.orderNumber} - ${brand}`;
 
     const html = `
-      <div style="font-family: Arial, sans-serif; direction: ${isAr ? 'rtl' : 'ltr'}; color: #1e293b; max-width: 600px; margin: auto; padding: 20px;">
-        <p style="font-size: 13px; font-weight: bold; color: #6366f1; margin: 0 0 8px 0;">${safeBrand}</p>
-        <h2 style="color: #10b981; margin-top: 0;">${isAr ? 'تم تأكيد عملية الدفع بنجاح!' : 'Payment Confirmed Successfully!'}</h2>
+      <div style="font-family: Arial, sans-serif; direction: ${isAr ? 'rtl' : 'ltr'}; color: #3D4468; max-width: 600px; margin: auto; padding: 20px;">
+        <p style="font-size: 13px; font-weight: bold; color: #4150B0; margin: 0 0 8px 0;">${safeBrand}</p>
+        <h2 style="color: #067A55; margin-top: 0;">${isAr ? 'تم تأكيد عملية الدفع بنجاح!' : 'Payment Confirmed Successfully!'}</h2>
         <p>${
           isAr
             ? `مرحباً ${safeCustomerName}، يسعدنا إبلاغك بأنه تم تأكيد استلام دفعتك للطلب <strong>#${safeOrderNumber}</strong>.`
@@ -303,8 +303,8 @@ class EmailService {
         }</p>
         <p>${isAr ? 'جاري تجهيز ومنح صلاحيات المستودع البرمجي (Git Repository) لحسابك.' : 'Source code repository access is being granted to your Git account.'}</p>
         <p><strong>${isAr ? 'حساب Git المُسجل' : 'Registered Git Username'}:</strong> ${safeGitUser} (${safeGitProvider})</p>
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
-        <p style="font-size: 12px; color: #64748b;">${safeBrand}</p>
+        <hr style="border: none; border-top: 1px solid #E6EAF5; margin: 20px 0;" />
+        <p style="font-size: 12px; color: #5C6289;">${safeBrand}</p>
       </div>
     `;
 
@@ -340,9 +340,9 @@ class EmailService {
       : `Payment Proof Update for Order #${order.orderNumber} - ${brand}`;
 
     const html = `
-      <div style="font-family: Arial, sans-serif; direction: ${isAr ? 'rtl' : 'ltr'}; color: #1e293b; max-width: 600px; margin: auto; padding: 20px;">
-        <p style="font-size: 13px; font-weight: bold; color: #6366f1; margin: 0 0 8px 0;">${safeBrand}</p>
-        <h2 style="color: #ef4444; margin-top: 0;">${isAr ? 'تعذر تأكيد إيصال الدفع' : 'Payment Proof Not Verified'}</h2>
+      <div style="font-family: Arial, sans-serif; direction: ${isAr ? 'rtl' : 'ltr'}; color: #3D4468; max-width: 600px; margin: auto; padding: 20px;">
+        <p style="font-size: 13px; font-weight: bold; color: #4150B0; margin: 0 0 8px 0;">${safeBrand}</p>
+        <h2 style="color: #C81E1E; margin-top: 0;">${isAr ? 'تعذر تأكيد إيصال الدفع' : 'Payment Proof Not Verified'}</h2>
         <p>${
           isAr
             ? `مرحباً ${safeCustomerName}، نود إعلامك بأن إيصال الدفع المُرسل للطلب <strong>#${safeOrderNumber}</strong> لم يتم اعتماده للأسباب التالية:`
@@ -352,8 +352,8 @@ class EmailService {
           <strong>${isAr ? 'سبب الرفض' : 'Reason'}:</strong> ${safeReason}
         </div>
         <p>${isAr ? 'يمكنك الدخول لرابط طلبك وإعادة رفع الإيصال الصحيح أو التواصل معنا مباشرة.' : 'You can visit your order page to re-upload the correct proof or contact us directly.'}</p>
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
-        <p style="font-size: 12px; color: #64748b;">${safeBrand}</p>
+        <hr style="border: none; border-top: 1px solid #E6EAF5; margin: 20px 0;" />
+        <p style="font-size: 12px; color: #5C6289;">${safeBrand}</p>
       </div>
     `;
 
@@ -429,7 +429,7 @@ class EmailService {
         .join('');
 
       attachmentsHtml = `
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin: 15px 0;">
+        <div style="background: #F5F7FC; border: 1px solid #E6EAF5; border-radius: 8px; padding: 15px; margin: 15px 0;">
           <strong>Attachments (${attachments.length}):</strong>
           <ul style="margin: 8px 0 0 18px; padding: 0;">${itemsHtml}</ul>
         </div>
@@ -437,10 +437,10 @@ class EmailService {
     }
 
     const html = `
-      <div style="font-family: Arial, sans-serif; direction: ltr; color: #1e293b; max-width: 600px; margin: auto; padding: 20px;">
-        <p style="font-size: 13px; font-weight: bold; color: #6366f1; margin: 0 0 8px 0;">${safeBrand}</p>
-        <h2 style="color: #6366f1; margin-top: 0;">New Customer Inquiry Received — ${safeBrand}</h2>
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin: 15px 0;">
+      <div style="font-family: Arial, sans-serif; direction: ltr; color: #3D4468; max-width: 600px; margin: auto; padding: 20px;">
+        <p style="font-size: 13px; font-weight: bold; color: #4150B0; margin: 0 0 8px 0;">${safeBrand}</p>
+        <h2 style="color: #4150B0; margin-top: 0;">New Customer Inquiry Received — ${safeBrand}</h2>
+        <div style="background: #F5F7FC; border: 1px solid #E6EAF5; border-radius: 8px; padding: 15px; margin: 15px 0;">
           <p><strong>From:</strong> ${safeName} (&lt;<a href="mailto:${safeEmail}">${safeEmail}</a>&gt;)</p>
           <p><strong>Phone / WhatsApp:</strong> ${safePhone}</p>
           <p><strong>Project Type:</strong> ${safeProjectType}</p>
@@ -449,13 +449,13 @@ class EmailService {
           <p><strong>Locale:</strong> ${safeLocale}</p>
           <p><strong>Subject:</strong> ${safeSubject}</p>
         </div>
-        <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 15px; margin: 15px 0;">
+        <div style="background: #ffffff; border: 1px solid #CBD3EC; border-radius: 8px; padding: 15px; margin: 15px 0;">
           <strong>Details / Message:</strong>
           <p style="margin-top: 8px; line-height: 1.6;">${safeMessage}</p>
         </div>
         ${attachmentsHtml}
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
-        <p style="font-size: 12px; color: #64748b;">${safeBrand} Lead Notification</p>
+        <hr style="border: none; border-top: 1px solid #E6EAF5; margin: 20px 0;" />
+        <p style="font-size: 12px; color: #5C6289;">${safeBrand} Lead Notification</p>
       </div>
     `;
 
@@ -501,12 +501,12 @@ class EmailService {
   _wrapAuthEmailLayout({ brand, isAr, title, bodyHtml }) {
     const safeBrand = escapeHtml(brand);
     return `
-      <div style="font-family: Arial, sans-serif; direction: ${isAr ? 'rtl' : 'ltr'}; color: #1e293b; max-width: 600px; margin: auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 10px;">
-        <p style="font-size: 13px; font-weight: bold; color: #6366f1; margin: 0 0 8px 0;">${safeBrand}</p>
-        <h2 style="color: #0f172a; margin-top: 0;">${title}</h2>
+      <div style="font-family: Arial, sans-serif; direction: ${isAr ? 'rtl' : 'ltr'}; color: #3D4468; max-width: 600px; margin: auto; padding: 24px; border: 1px solid #E6EAF5; border-radius: 10px;">
+        <p style="font-size: 13px; font-weight: bold; color: #4150B0; margin: 0 0 8px 0;">${safeBrand}</p>
+        <h2 style="color: #0A1134; margin-top: 0;">${title}</h2>
         ${bodyHtml}
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 24px 0 12px 0;" />
-        <p style="font-size: 12px; color: #64748b; margin: 0;">${safeBrand}</p>
+        <hr style="border: none; border-top: 1px solid #E6EAF5; margin: 24px 0 12px 0;" />
+        <p style="font-size: 12px; color: #5C6289; margin: 0;">${safeBrand}</p>
       </div>
     `;
   }
@@ -515,9 +515,9 @@ class EmailService {
     const safeUrl = /^(https?:\/\/|\/)/i.test(String(url || '')) ? escapeHtml(url) : '#';
     return `
       <p style="margin: 22px 0;">
-        <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #6366f1; color: #ffffff; text-decoration: none; font-weight: bold; padding: 12px 22px; border-radius: 6px;">${escapeHtml(label)}</a>
+        <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #4150B0; background-image: linear-gradient(90deg, #2B72CF 0%, #5443A9 100%); color: #ffffff; text-decoration: none; font-weight: bold; padding: 12px 22px; border-radius: 9999px;">${escapeHtml(label)}</a>
       </p>
-      <p style="font-size: 12px; color: #64748b; word-break: break-all;">${safeUrl}</p>
+      <p style="font-size: 12px; color: #5C6289; word-break: break-all;">${safeUrl}</p>
     `;
   }
 
@@ -536,13 +536,13 @@ class EmailService {
         <p>مرحباً ${safeName}،</p>
         <p>شكراً لتسجيلك في ${escapeHtml(brand)}. يرجى الضغط على الزر التالي لتأكيد بريدك الإلكتروني:</p>
         ${this._buildActionButtonHtml(verifyUrl, 'تأكيد البريد الإلكتروني')}
-        <p style="font-size: 13px; color: #475569;">ينتهي هذا الرابط خلال 24 ساعة. إذا لم تقم بإنشاء هذا الحساب، يمكنك تجاهل هذه الرسالة.</p>
+        <p style="font-size: 13px; color: #5C6289;">ينتهي هذا الرابط خلال 24 ساعة. إذا لم تقم بإنشاء هذا الحساب، يمكنك تجاهل هذه الرسالة.</p>
       `
       : `
         <p>Hello ${safeName},</p>
         <p>Thank you for registering with ${escapeHtml(brand)}. Please click the button below to verify your email address:</p>
         ${this._buildActionButtonHtml(verifyUrl, 'Verify Email Address')}
-        <p style="font-size: 13px; color: #475569;">This link expires in 24 hours. If you did not create an account, you can safely ignore this email.</p>
+        <p style="font-size: 13px; color: #5C6289;">This link expires in 24 hours. If you did not create an account, you can safely ignore this email.</p>
       `;
 
     const html = this._wrapAuthEmailLayout({
@@ -588,13 +588,13 @@ class EmailService {
         <p>مرحباً ${safeName}،</p>
         <p>تلقينا طلباً لإعادة تعيين كلمة المرور لحسابك في ${escapeHtml(brand)}. اضغط على الزر التالي لاختيار كلمة مرور جديدة:</p>
         ${this._buildActionButtonHtml(resetUrl, 'إعادة تعيين كلمة المرور')}
-        <p style="font-size: 13px; color: #475569;">ينتهي هذا الرابط خلال ساعة واحدة (1 ساعة) ويُستخدم لمرة واحدة فقط. إذا لم تطلب ذلك، تجاهل هذه الرسالة بأمان.</p>
+        <p style="font-size: 13px; color: #5C6289;">ينتهي هذا الرابط خلال ساعة واحدة (1 ساعة) ويُستخدم لمرة واحدة فقط. إذا لم تطلب ذلك، تجاهل هذه الرسالة بأمان.</p>
       `
       : `
         <p>Hello ${safeName},</p>
         <p>We received a request to reset the password for your ${escapeHtml(brand)} account. Click the button below to choose a new password:</p>
         ${this._buildActionButtonHtml(resetUrl, 'Reset Password')}
-        <p style="font-size: 13px; color: #475569;">This single-use link expires in 1 hour. If you did not request a password reset, you can safely ignore this email.</p>
+        <p style="font-size: 13px; color: #5C6289;">This single-use link expires in 1 hour. If you did not request a password reset, you can safely ignore this email.</p>
       `;
 
     const html = this._wrapAuthEmailLayout({
@@ -645,14 +645,14 @@ class EmailService {
         <p>${inviterLineAr} للانضمام كمسؤول (Admin) في لوحة تحكم ${escapeHtml(brand)}.</p>
         <p>اضغط على الزر التالي لتعيين كلمة المرور الخاصة بك وتفعيل الدخول:</p>
         ${this._buildActionButtonHtml(inviteUrl, 'تعيين كلمة المرور')}
-        <p style="font-size: 13px; color: #475569;">هذا الرابط صالح لمرة واحدة فقط وينتهي خلال 24 ساعة.</p>
+        <p style="font-size: 13px; color: #5C6289;">هذا الرابط صالح لمرة واحدة فقط وينتهي خلال 24 ساعة.</p>
       `
       : `
         <p>Hello ${safeName},</p>
         <p>${inviterLineEn} to join ${escapeHtml(brand)} as an administrator.</p>
         <p>Click the button below to set your password and activate your access:</p>
         ${this._buildActionButtonHtml(inviteUrl, 'Set Your Password')}
-        <p style="font-size: 13px; color: #475569;">This one-time setup link expires in 24 hours.</p>
+        <p style="font-size: 13px; color: #5C6289;">This one-time setup link expires in 24 hours.</p>
       `;
 
     const html = this._wrapAuthEmailLayout({

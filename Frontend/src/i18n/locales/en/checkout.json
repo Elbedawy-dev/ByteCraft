@@ -15,13 +15,13 @@
     "subtitle": "Used for license issuance and granting private Git repository access",
     "fullNameLabel": "Full Name",
     "fullNameHint": "Technical or billing contact name",
-    "fullNamePlaceholder": "e.g., Ahmed Abdullah",
+    "fullNamePlaceholder": "Enter your full name",
     "emailLabel": "Contact & Receipt Email",
     "emailHint": "Order confirmation & delivery updates are sent here",
-    "emailPlaceholder": "name@company.com",
+    "emailPlaceholder": "Enter your email address",
     "phoneLabel": "Phone / WhatsApp Number",
     "phoneHint": "For deployment coordination & direct support",
-    "phonePlaceholder": "+20 100 000 0000",
+    "phonePlaceholder": "Enter your phone or WhatsApp number",
     "gitProviderLabel": "Git Provider",
     "gitProviderHint": "Platform where repository access will be granted",
     "providers": {
@@ -32,7 +32,7 @@
     "gitUsernameHint": "Your account handle without URL or @",
     "gitUsernamePlaceholder": "dev-username",
     "organizationLabel": "Organization / Academy Name (Optional)",
-    "organizationPlaceholder": "e.g., Future Academy"
+    "organizationPlaceholder": "Company, academy, or team name (optional)"
   },
   "validation": {
     "fullNameRequired": "Full name is required",

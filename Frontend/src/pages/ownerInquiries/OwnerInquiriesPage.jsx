@@ -356,10 +356,15 @@ export default function OwnerInquiriesPage() {
                           <div className="flex flex-col min-w-0">
                             <div className="flex items-center gap-1.5 min-w-0">
                               {isUnread && (
-                                <span
-                                  className="w-2 h-2 rounded-full bg-primary shrink-0"
-                                  aria-label={t('ownerInquiries:stats.unreadBadge')}
-                                />
+                                <>
+                                  <span
+                                    className="w-2 h-2 rounded-full bg-primary shrink-0"
+                                    aria-hidden="true"
+                                  />
+                                  <span className="sr-only">
+                                    {t('ownerInquiries:stats.unreadBadge')}
+                                  </span>
+                                </>
                               )}
                               <span
                                 className={clsx(

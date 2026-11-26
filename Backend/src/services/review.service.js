@@ -5,6 +5,7 @@ const Project = require('../models/Project');
 const { sanitizeText } = require('../utils/sanitize');
 const AppError = require('../utils/AppError');
 const { ERROR_CODES } = require('../config/constants');
+const statsService = require('./stats.service');
 
 function hashToken(rawToken) {
   if (!rawToken) return '';
@@ -74,6 +75,7 @@ class ReviewService {
     });
 
     await review.save();
+    statsService.clearCache();
     return {
       _id: review._id,
       customerName: formatPublicReviewerName(review.customerName),
@@ -253,6 +255,7 @@ class ReviewService {
 
     review.moderatedAt = new Date();
     await review.save();
+    statsService.clearCache();
 
     return review;
   }
@@ -265,6 +268,7 @@ class ReviewService {
     if (!review) {
       throw AppError.notFound(`Review "${id}" not found.`, ERROR_CODES.NOT_FOUND);
     }
+    statsService.clearCache();
     return { id: review._id };
   }
 }

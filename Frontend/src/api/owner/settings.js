@@ -9,12 +9,24 @@ export const ownerSettingsKeys = {
 
 export async function fetchOwnerSettings({ signal } = {}) {
   const { data } = await api.get('/owner/settings', { signal });
-  return data?.settings ?? null;
+  return {
+    settings: data?.settings ?? null,
+    paymentGateways: data?.paymentGateways ?? {
+      cardAvailable: false,
+      fawryAvailable: false,
+    },
+  };
 }
 
 export async function updateOwnerSettings(payload) {
   const { data } = await api.patch('/owner/settings', payload);
-  return data?.settings ?? null;
+  return {
+    settings: data?.settings ?? null,
+    paymentGateways: data?.paymentGateways ?? {
+      cardAvailable: false,
+      fawryAvailable: false,
+    },
+  };
 }
 
 export function useOwnerSettings(options = {}) {
@@ -32,11 +44,11 @@ export function useUpdateOwnerSettings(options = {}) {
 
   return useMutation({
     mutationFn: updateOwnerSettings,
-    onSuccess: (updatedSettings, variables, context) => {
-      queryClient.setQueryData(ownerSettingsKeys.detail(), updatedSettings);
+    onSuccess: (updatedData, variables, context) => {
+      queryClient.setQueryData(ownerSettingsKeys.detail(), updatedData);
       queryClient.invalidateQueries({ queryKey: ownerSettingsKeys.all });
       queryClient.invalidateQueries({ queryKey: metaKeys.all });
-      onSuccess?.(updatedSettings, variables, context);
+      onSuccess?.(updatedData, variables, context);
     },
     ...restOptions,
   });

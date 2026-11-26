@@ -1,5 +1,5 @@
 const { connectDB, disconnectDB } = require('../config/db');
-const cloudinary = require('../config/cloudinary');
+const cloudinaryConfig = require('../config/cloudinary');
 const Category = require('../models/Category');
 const Counter = require('../models/Counter');
 const Coupon = require('../models/Coupon');
@@ -24,13 +24,13 @@ const User = require('../models/User');
  * 5. Best-effort deletes Cloudinary assets associated with deleted entities.
  */
 
-const TEST_PREFIX_REGEX = /^(FE-P|\[TEST\]|Test|test|probe-|p8-)/i;
+const TEST_PREFIX_REGEX = /^(QA-|FE-P|\[TEST\]|Test|test|probe-|p8-)/i;
 const FAKE_EMAIL_REGEX = /@(example\.com|test\.com|mailinator\.com|sample\.com|spam\.net)$/i;
 
 async function destroyCloudinaryAsset(publicId) {
-  if (!publicId) return;
+  if (!publicId || !cloudinaryConfig.isConfigured) return;
   try {
-    await cloudinary.uploader.destroy(publicId);
+    await cloudinaryConfig.cloudinary.uploader.destroy(publicId);
   } catch (err) {
     // Best effort — ignore deletion failures for already removed or placeholder assets
   }
@@ -166,7 +166,7 @@ async function main() {
   // 6. Inquiries
   const sampleInquiries = await Inquiry.find({
     $or: [
-      { fullName: TEST_PREFIX_REGEX },
+      { name: TEST_PREFIX_REGEX },
       { email: FAKE_EMAIL_REGEX },
       { subject: TEST_PREFIX_REGEX },
     ],

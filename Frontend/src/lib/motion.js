@@ -1,5 +1,5 @@
 /**
- * ByteCraft Motion System
+ * Nexus Motion System
  * Unified timing (300ms) and easing [0.4, 0, 0.2, 1] aligned with Nexus tokens.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -21,6 +21,7 @@ export function useAnimatedNativeDialog({
   onClose,
   preventClose = false,
   closeOnBackdrop = true,
+  closeOnEsc = true,
 }) {
   const dialogRef = useRef(null);
   const panelRef = useRef(null);
@@ -42,7 +43,7 @@ export function useAnimatedNativeDialog({
 
     const handleCancel = (event) => {
       event.preventDefault();
-      if (!preventClose && isOpenRef.current) {
+      if (!preventClose && closeOnEsc && isOpenRef.current) {
         onClose?.();
       }
     };
@@ -60,7 +61,7 @@ export function useAnimatedNativeDialog({
       dialog.removeEventListener('cancel', handleCancel);
       dialog.removeEventListener('close', handleClose);
     };
-  }, [onClose, preventClose]);
+  }, [onClose, preventClose, closeOnEsc]);
 
   const handleExitComplete = useCallback(() => {
     const dialog = dialogRef.current;

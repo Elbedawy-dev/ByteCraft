@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useRelatedProjects } from '../../../api/projectDetails';
 import { normalizeProjectForCard } from '../../../api/home';
@@ -29,19 +28,18 @@ export function RelatedProjects({ categoryKey, currentSlug }) {
           />
         </div>
 
-        <Link to={ROUTES.PROJECTS}>
-          <Button
-            variant="outline"
-            size="sm"
-            iconTrailing={
+        <Button
+          to={ROUTES.PROJECTS}
+          variant="outline"
+          size="sm"
+          iconTrailing={
               <span className="material-symbols-rounded text-[16px] rtl:-scale-x-100" aria-hidden="true">
                 arrow_forward
               </span>
             }
-          >
+        >
             {t('sections.browseAllProjects')}
           </Button>
-        </Link>
       </Reveal>
 
       {isLoading ? (

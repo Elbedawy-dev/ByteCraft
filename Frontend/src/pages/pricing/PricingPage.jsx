@@ -1,5 +1,4 @@
 import React, { useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import { LayoutGroup, m } from 'framer-motion';
@@ -235,11 +234,13 @@ export default function PricingPage() {
               title={t('empty.title')}
               description={t('empty.description')}
               action={
-                <Link to={ROUTES.CONTACT}>
-                  <Button variant="primary-gradient" size="md">
+                <Button
+                  to={ROUTES.CONTACT}
+                  variant="primary-gradient"
+                  size="md"
+                >
                     {t('empty.cta')}
                   </Button>
-                </Link>
               }
             />
           ) : (

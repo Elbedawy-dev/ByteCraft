@@ -66,7 +66,7 @@ async function connectDB(options = {}) {
           console.warn(`⚠️  WARNING: Cloud MongoDB Atlas connection failed (${error.message})`);
           console.warn('⚠️  AUTOMATIC LOCAL FALLBACK IS ACTIVE FOR TEST DATABASE ONLY:');
           console.warn('⚠️  Target: mongodb://127.0.0.1:27017/bytecraft_test');
-          console.warn('⚠️  CRITICAL: This fallback is strictly DISABLED for the main ByteCraft database.');
+          console.warn('⚠️  CRITICAL: This fallback is strictly DISABLED for the main Nexus database.');
           console.warn('*******************************************************************************\n');
           try {
             const localConn = await mongoose.connect('mongodb://127.0.0.1:27017/bytecraft_test', {

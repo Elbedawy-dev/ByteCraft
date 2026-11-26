@@ -105,10 +105,10 @@ export function OrdersStatusChart({ ordersByStatus = [] }) {
         />
       ) : (
         <div className="flex flex-col gap-5 flex-1 justify-between">
-          {/* Donut Chart */}
-          <div className="relative h-[200px] w-full" dir="ltr">
+          {/* Donut Chart (decorative visual — full accessible breakdown is provided in the legend list below) */}
+          <div className="relative h-[200px] w-full" dir="ltr" aria-hidden="true">
             <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
+              <PieChart accessibilityLayer={false}>
                 <Pie
                   data={items}
                   dataKey="count"
@@ -119,6 +119,7 @@ export function OrdersStatusChart({ ordersByStatus = [] }) {
                   outerRadius={82}
                   paddingAngle={items.length > 1 ? 3 : 0}
                   stroke="none"
+                  rootTabIndex={-1}
                   animationDuration={300}
                   animationEasing="ease-out"
                 >
@@ -146,7 +147,7 @@ export function OrdersStatusChart({ ordersByStatus = [] }) {
             {items.map((entry) => (
               <li
                 key={entry.status}
-                className="flex items-center justify-between gap-2 text-xs py-2 px-3 rounded-lg bg-surface-soft border border-card-border"
+                className="flex items-center justify-between gap-2 text-xs py-2 px-3 rounded-lg bg-section-band border border-card-border"
               >
                 <span className="flex items-center gap-2 min-w-0">
                   <span

@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { ROUTES } from '@/config/routes';
@@ -124,11 +123,11 @@ export function AboutPreviewSection() {
             </p>
 
             <div className="pt-1">
-              <Link to={ROUTES.ABOUT}>
-                <Button
-                  variant="primary-gradient"
-                  size="lg"
-                  iconTrailing={
+              <Button
+                to={ROUTES.ABOUT}
+                variant="primary-gradient"
+                size="lg"
+                iconTrailing={
                     <span
                       className="material-symbols-rounded text-[19px] rtl:-scale-x-100"
                       aria-hidden="true"
@@ -136,10 +135,9 @@ export function AboutPreviewSection() {
                       arrow_forward
                     </span>
                   }
-                >
+              >
                   {t('about.cta')}
                 </Button>
-              </Link>
             </div>
           </Reveal>
 

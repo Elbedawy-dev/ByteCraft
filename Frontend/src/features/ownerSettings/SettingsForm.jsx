@@ -25,10 +25,12 @@ import {
   mapSettingsToFormValues,
 } from './settingsSchema';
 
-export function SettingsForm({ settings, onDirtyChange }) {
+export function SettingsForm({ settings, paymentGateways, onDirtyChange }) {
   const { t } = useTranslation(['ownerSettings', 'owner', 'common']);
   const toast = useToast();
   const updateMutation = useUpdateOwnerSettings();
+  const fawryAvailable = Boolean(paymentGateways?.fawryAvailable);
+  const cardAvailable = Boolean(paymentGateways?.cardAvailable);
 
   const schema = useMemo(
     () => createSettingsSchema((key) => t(`ownerSettings:${key}`)),
@@ -36,8 +38,8 @@ export function SettingsForm({ settings, onDirtyChange }) {
   );
 
   const initialValues = useMemo(
-    () => mapSettingsToFormValues(settings),
-    [settings]
+    () => mapSettingsToFormValues(settings, paymentGateways),
+    [settings, paymentGateways]
   );
 
   const {
@@ -84,8 +86,19 @@ export function SettingsForm({ settings, onDirtyChange }) {
 
   const onSubmit = async (values) => {
     try {
-      const updated = await updateMutation.mutateAsync(values);
-      const nextFormValues = mapSettingsToFormValues(updated || values);
+      const sanitizedPayload = {
+        ...values,
+        paymentMethods: {
+          ...values.paymentMethods,
+          fawry: { enabled: fawryAvailable && Boolean(values.paymentMethods?.fawry?.enabled) },
+          card: { enabled: cardAvailable && Boolean(values.paymentMethods?.card?.enabled) },
+        },
+      };
+      const updated = await updateMutation.mutateAsync(sanitizedPayload);
+      const nextFormValues = mapSettingsToFormValues(
+        updated?.settings || sanitizedPayload,
+        updated?.paymentGateways || paymentGateways
+      );
       reset(nextFormValues);
       toast.success(t('ownerSettings:toasts.settingsSaved'));
     } catch (err) {
@@ -111,7 +124,7 @@ export function SettingsForm({ settings, onDirtyChange }) {
             className="rounded-xl border border-chip-amber-border bg-chip-amber-bg/70 px-4 py-3 flex flex-wrap items-center justify-between gap-3"
           >
             <div className="flex items-center gap-2.5 text-sm font-medium text-warning">
-              <span className="material-symbols-outlined text-[20px]">
+              <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
                 edit_notifications
               </span>
               <span>{t('ownerSettings:unsavedBadge')}</span>
@@ -146,7 +159,7 @@ export function SettingsForm({ settings, onDirtyChange }) {
           <div className="flex flex-wrap items-start justify-between gap-3 pb-4 border-b border-outline-variant/60">
             <div>
               <h2 className="text-base sm:text-lg font-bold text-on-surface flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[20px]">
+                <span className="material-symbols-outlined text-primary text-[20px]" aria-hidden="true">
                   tune
                 </span>
                 <span>{t('ownerSettings:sections.general.title')}</span>
@@ -220,7 +233,7 @@ export function SettingsForm({ settings, onDirtyChange }) {
         <Card variant="flat" className="space-y-6">
           <div className="pb-4 border-b border-outline-variant/60">
             <h2 className="text-base sm:text-lg font-bold text-on-surface flex items-center gap-2">
-              <span className="material-symbols-outlined text-primary text-[20px]">
+              <span className="material-symbols-outlined text-primary text-[20px]" aria-hidden="true">
                 contact_mail
               </span>
               <span>{t('ownerSettings:sections.contact.title')}</span>
@@ -247,7 +260,7 @@ export function SettingsForm({ settings, onDirtyChange }) {
                 disabled={isBusy}
                 className="ps-11 pe-11"
                 iconLeading={
-                  <span className="material-symbols-outlined text-[18px]">
+                  <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
                     mail
                   </span>
                 }
@@ -269,7 +282,7 @@ export function SettingsForm({ settings, onDirtyChange }) {
                 disabled={isBusy}
                 className="ps-11 pe-11"
                 iconLeading={
-                  <span className="material-symbols-outlined text-[18px]">
+                  <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
                     chat
                   </span>
                 }
@@ -291,7 +304,7 @@ export function SettingsForm({ settings, onDirtyChange }) {
                 disabled={isBusy}
                 className="ps-11 pe-11"
                 iconLeading={
-                  <span className="material-symbols-outlined text-[18px]">
+                  <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
                     call
                   </span>
                 }
@@ -355,7 +368,7 @@ export function SettingsForm({ settings, onDirtyChange }) {
                   disabled={isBusy}
                   className="ps-11 pe-11"
                   iconLeading={
-                    <span className="material-symbols-outlined text-[18px]">
+                    <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
                       code
                     </span>
                   }
@@ -379,7 +392,7 @@ export function SettingsForm({ settings, onDirtyChange }) {
                   disabled={isBusy}
                   className="ps-11 pe-11"
                   iconLeading={
-                    <span className="material-symbols-outlined text-[18px]">
+                    <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
                       work
                     </span>
                   }
@@ -403,7 +416,7 @@ export function SettingsForm({ settings, onDirtyChange }) {
                   disabled={isBusy}
                   className="ps-11 pe-11"
                   iconLeading={
-                    <span className="material-symbols-outlined text-[18px]">
+                    <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
                       alternate_email
                     </span>
                   }
@@ -427,7 +440,7 @@ export function SettingsForm({ settings, onDirtyChange }) {
                   disabled={isBusy}
                   className="ps-11 pe-11"
                   iconLeading={
-                    <span className="material-symbols-outlined text-[18px]">
+                    <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
                       public
                     </span>
                   }
@@ -442,7 +455,7 @@ export function SettingsForm({ settings, onDirtyChange }) {
         <Card variant="flat" className="space-y-6">
           <div className="pb-4 border-b border-outline-variant/60">
             <h2 className="text-base sm:text-lg font-bold text-on-surface flex items-center gap-2">
-              <span className="material-symbols-outlined text-primary text-[20px]">
+              <span className="material-symbols-outlined text-primary text-[20px]" aria-hidden="true">
                 payments
               </span>
               <span>{t('ownerSettings:sections.payments.title')}</span>
@@ -673,6 +686,11 @@ export function SettingsForm({ settings, onDirtyChange }) {
                       {t('ownerSettings:sections.payments.fawry.description')}
                     </p>
                   </div>
+                  <Badge variant={fawryAvailable ? 'success' : 'neutral'} size="sm">
+                    {fawryAvailable
+                      ? t('ownerSettings:sections.payments.gatewayConfigured')
+                      : t('ownerSettings:sections.payments.gatewayNotConfigured')}
+                  </Badge>
                 </div>
 
                 <Controller
@@ -684,9 +702,9 @@ export function SettingsForm({ settings, onDirtyChange }) {
                       label={t(
                         'ownerSettings:sections.payments.fawry.enabledLabel'
                       )}
-                      checked={Boolean(field.value)}
+                      checked={fawryAvailable && Boolean(field.value)}
                       onChange={(e) => field.onChange(e.target.checked)}
-                      disabled={isBusy}
+                      disabled={isBusy || !fawryAvailable}
                       className="w-full"
                     />
                   )}
@@ -694,11 +712,13 @@ export function SettingsForm({ settings, onDirtyChange }) {
               </div>
 
               <div className="rounded-lg bg-surface-container-low border border-outline-variant/60 px-3 py-2.5 flex items-start gap-2 text-xs text-on-surface-variant leading-relaxed">
-                <span className="material-symbols-outlined text-[16px] text-primary shrink-0 mt-0.5">
+                <span className="material-symbols-outlined text-[16px] text-primary shrink-0 mt-0.5" aria-hidden="true">
                   info
                 </span>
                 <span>
-                  {t('ownerSettings:sections.payments.fawry.serverNote')}
+                  {fawryAvailable
+                    ? t('ownerSettings:sections.payments.fawry.serverNote')
+                    : t('ownerSettings:sections.payments.fawry.unavailableNote')}
                 </span>
               </div>
             </div>
@@ -715,6 +735,11 @@ export function SettingsForm({ settings, onDirtyChange }) {
                       {t('ownerSettings:sections.payments.card.description')}
                     </p>
                   </div>
+                  <Badge variant={cardAvailable ? 'success' : 'neutral'} size="sm">
+                    {cardAvailable
+                      ? t('ownerSettings:sections.payments.gatewayConfigured')
+                      : t('ownerSettings:sections.payments.gatewayNotConfigured')}
+                  </Badge>
                 </div>
 
                 <Controller
@@ -726,9 +751,9 @@ export function SettingsForm({ settings, onDirtyChange }) {
                       label={t(
                         'ownerSettings:sections.payments.card.enabledLabel'
                       )}
-                      checked={Boolean(field.value)}
+                      checked={cardAvailable && Boolean(field.value)}
                       onChange={(e) => field.onChange(e.target.checked)}
-                      disabled={isBusy}
+                      disabled={isBusy || !cardAvailable}
                       className="w-full"
                     />
                   )}
@@ -736,11 +761,13 @@ export function SettingsForm({ settings, onDirtyChange }) {
               </div>
 
               <div className="rounded-lg bg-surface-container-low border border-outline-variant/60 px-3 py-2.5 flex items-start gap-2 text-xs text-on-surface-variant leading-relaxed">
-                <span className="material-symbols-outlined text-[16px] text-primary shrink-0 mt-0.5">
+                <span className="material-symbols-outlined text-[16px] text-primary shrink-0 mt-0.5" aria-hidden="true">
                   info
                 </span>
                 <span>
-                  {t('ownerSettings:sections.payments.card.serverNote')}
+                  {cardAvailable
+                    ? t('ownerSettings:sections.payments.card.serverNote')
+                    : t('ownerSettings:sections.payments.card.unavailableNote')}
                 </span>
               </div>
             </div>
@@ -767,7 +794,7 @@ export function SettingsForm({ settings, onDirtyChange }) {
             loading={isBusy}
             disabled={isBusy || !isDirty}
             iconLeading={
-              <span className="material-symbols-outlined text-[18px]">
+              <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
                 save
               </span>
             }

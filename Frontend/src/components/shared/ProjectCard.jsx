@@ -141,47 +141,38 @@ export function ProjectCard({
 
           <div className="grid grid-cols-2 gap-2.5">
             {project.demoUrl ? (
-              <a
+              <Button
                 href={project.demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full"
+                variant="secondary"
+                size="sm"
+                className="w-full text-xs"
+                iconLeading={<span className="material-symbols-rounded text-[16px]" aria-hidden="true">visibility</span>}
               >
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  className="w-full text-xs"
-                  iconLeading={<span className="material-symbols-rounded text-[16px]" aria-hidden="true">visibility</span>}
-                >
                   {t('actions.liveDemo', { defaultValue: 'Live Demo' })}
                 </Button>
-              </a>
             ) : (
-              <Link to={`/projects/${project.slug}`} className="w-full">
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  className="w-full text-xs"
-                  iconTrailing={<span className="material-symbols-rounded text-[16px] rtl:-scale-x-100" aria-hidden="true">arrow_forward</span>}
-                >
-                  {t('actions.viewDetails', { defaultValue: 'Details' })}
-                </Button>
-              </Link>
-            )}
-
-            <Link
-              to={`/checkout?project=${project.slug}&package=${cheapestPackageKey}`}
-              className="w-full"
-            >
               <Button
-                variant="primary-gradient"
+                to={`/projects/${project.slug}`}
+                variant="secondary"
                 size="sm"
                 className="w-full text-xs"
                 iconTrailing={<span className="material-symbols-rounded text-[16px] rtl:-scale-x-100" aria-hidden="true">arrow_forward</span>}
               >
+                  {t('actions.viewDetails', { defaultValue: 'Details' })}
+                </Button>
+            )}
+
+            <Button
+              to={`/checkout?project=${project.slug}&package=${cheapestPackageKey}`}
+              variant="primary-gradient"
+              size="sm"
+              className="w-full text-xs"
+              iconTrailing={<span className="material-symbols-rounded text-[16px] rtl:-scale-x-100" aria-hidden="true">arrow_forward</span>}
+            >
                 {t('actions.buy', { defaultValue: 'Buy now' })}
               </Button>
-            </Link>
           </div>
         </div>
       </div>

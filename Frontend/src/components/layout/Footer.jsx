@@ -38,13 +38,13 @@ export function Footer() {
   const email = (contact.email || '').trim();
 
   const socialItems = [
-    whatsappHref && { key: 'whatsapp', href: whatsappHref, label: 'WhatsApp', icon: 'chat', external: true },
-    githubUrl && { key: 'github', href: githubUrl, label: 'GitHub', icon: 'code', external: true },
-    linkedinUrl && { key: 'linkedin', href: linkedinUrl, label: 'LinkedIn', icon: 'work', external: true },
-    twitterUrl && { key: 'twitter', href: twitterUrl, label: 'X / Twitter', icon: 'share', external: true },
-    facebookUrl && { key: 'facebook', href: facebookUrl, label: 'Facebook', icon: 'public', external: true },
+    whatsappHref && { key: 'whatsapp', href: whatsappHref, label: t('footer.channels.whatsapp', { defaultValue: 'WhatsApp' }), icon: 'chat', external: true },
+    githubUrl && { key: 'github', href: githubUrl, label: t('footer.channels.github', { defaultValue: 'GitHub' }), icon: 'code', external: true },
+    linkedinUrl && { key: 'linkedin', href: linkedinUrl, label: t('footer.channels.linkedin', { defaultValue: 'LinkedIn' }), icon: 'work', external: true },
+    twitterUrl && { key: 'twitter', href: twitterUrl, label: t('footer.channels.twitter', { defaultValue: 'X / Twitter' }), icon: 'share', external: true },
+    facebookUrl && { key: 'facebook', href: facebookUrl, label: t('footer.channels.facebook', { defaultValue: 'Facebook' }), icon: 'public', external: true },
     instagramUrl && { key: 'instagram', href: instagramUrl, label: 'Instagram', icon: 'photo_camera', external: true },
-    email && { key: 'email', href: `mailto:${email}`, label: 'Email', icon: 'mail', external: false },
+    email && { key: 'email', href: `mailto:${email}`, label: t('footer.channels.email', { defaultValue: 'Email' }), icon: 'mail', external: false },
   ].filter(Boolean);
 
   const hasCategories = categories.length > 0;
@@ -90,9 +90,9 @@ export function Footer() {
 
           {/* Col 2: Quick Links */}
           <div className={hasCategories ? 'lg:col-span-2 space-y-3.5' : 'lg:col-span-3 space-y-3.5'}>
-            <h4 className="text-sm font-bold text-white tracking-wide">
+            <h2 className="text-sm font-bold text-white tracking-wide">
               {t('footer.quickLinks', { defaultValue: 'Quick Links' })}
-            </h4>
+            </h2>
             <ul className="space-y-2.5 text-sm">
               {footerQuickLinks.map((link) => (
                 <li key={link.key}>
@@ -115,11 +115,11 @@ export function Footer() {
           {/* Col 3: Dynamic Categories (hidden if empty) */}
           {hasCategories && (
             <div className="lg:col-span-3 space-y-3.5">
-              <h4 className="text-sm font-bold text-white tracking-wide">
+              <h2 className="text-sm font-bold text-white tracking-wide">
                 {t('footer.services', {
                   defaultValue: lang === 'ar' ? 'الخدمات والتصنيفات' : 'Services & Platforms',
                 })}
-              </h4>
+              </h2>
               <ul className="space-y-2.5 text-sm">
                 {categories.map((cat) => (
                   <li key={cat._id || cat.key}>
@@ -137,11 +137,11 @@ export function Footer() {
 
           {/* Col 4: Follow Us / Contact Channels */}
           <div className={hasCategories ? 'lg:col-span-3 space-y-4' : 'lg:col-span-4 space-y-4'}>
-            <h4 className="text-sm font-bold text-white tracking-wide">
+            <h2 className="text-sm font-bold text-white tracking-wide">
               {t('footer.followUs', {
                 defaultValue: lang === 'ar' ? 'تابعنا وتواصل معنا' : 'Follow Us',
               })}
-            </h4>
+            </h2>
             <p className="text-sm text-navy-text leading-relaxed">
               {t('footer.contactNote', {
                 defaultValue: 'Ready to turn your idea into production-grade software.',

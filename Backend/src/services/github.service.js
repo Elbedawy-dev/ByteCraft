@@ -16,7 +16,7 @@ class GitHubService {
   /**
    * Invites a user as a read-only collaborator to a private repository
    * @param {object} params
-   * @param {string} params.repoOwner - e.g. "ByteCraftDev"
+   * @param {string} params.repoOwner - e.g. "Elbedawy-dev"
    * @param {string} params.repoName - e.g. "mern-store-pro"
    * @param {string} params.username - buyer GitHub username
    * @returns {Promise<{ success: boolean, error?: string }>}
@@ -44,7 +44,7 @@ class GitHubService {
         headers: {
           Authorization: `Bearer ${env.GITHUB_TOKEN}`,
           Accept: 'application/vnd.github+json',
-          'User-Agent': 'ByteCraft-Backend',
+          'User-Agent': 'Nexus-Backend',
           'X-GitHub-Api-Version': '2022-11-28',
           'Content-Type': 'application/json',
         },
