@@ -6,8 +6,8 @@ const mongoose = require('mongoose');
  * WHY:
  * 1. Verified Buyer Feedback: Only buyers with a paid or delivered order can post a review.
  * 2. Uniqueness: Strictly enforced one review per order (unique index on `order`).
- * 3. Moderation: Owner can toggle `isPublished` to hide spam or offensive reviews,
- *    and attach a public `ownerResponse`.
+ * 3. Moderation: New reviews start pending (`isPublished: false`) until an admin approves
+ *    and publishes them (and can also attach a public `ownerResponse`).
  * 4. Project Rating Sync: Project average rating and review count are updated on publish/moderation.
  */
 
@@ -50,7 +50,7 @@ const reviewSchema = new mongoose.Schema(
     },
     isPublished: {
       type: Boolean,
-      default: true,
+      default: false,
       index: true,
     },
     ownerResponse: {

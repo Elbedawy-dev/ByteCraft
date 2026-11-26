@@ -55,7 +55,7 @@ async function runTests() {
   try {
     // 0. Ensure direct connection to bytecraft_test (matching testServer.js) for DB audits
     try {
-      await mongoose.connect(TEST_DB_URI, { serverSelectionTimeoutMS: 3000 });
+      await mongoose.connect(TEST_DB_URI, { serverSelectionTimeoutMS: 10000 });
     } catch {
       await mongoose.connect(LOCAL_TEST_DB_URI);
     }
@@ -559,7 +559,7 @@ async function runTests() {
       assert(reviewJson.error.code === 'INVALID_STATE', `Expected INVALID_STATE, got ${reviewJson.error.code}`);
     });
 
-    await test('Verified buyer with paid order successfully posts a review', async () => {
+    await test('Verified buyer with paid order successfully posts a review (pending moderation by default)', async () => {
       const res = await fetch(`${BASE_URL}/orders/${paidOrderNumber}/reviews?token=${paidOrderToken}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -576,7 +576,7 @@ async function runTests() {
       cleanup.reviewIds.push(testReviewId);
 
       assert(json.data.review.rating === 5, 'Rating mismatch');
-      assert(json.data.review.isPublished === true, 'Review should be published by default');
+      assert(json.data.review.isPublished === false, 'Review should default to pending (isPublished: false)');
     });
 
     await test('Buyer attempting second review on same order is rejected (409 ALREADY_EXISTS)', async () => {
@@ -594,32 +594,160 @@ async function runTests() {
       assert(json.error.code === 'ALREADY_EXISTS', `Expected ALREADY_EXISTS, got ${json.error.code}`);
     });
 
-    await test('Public GET /api/projects/:slug/reviews returns published review, hides after owner moderation', async () => {
-      // 1. Check public reviews list includes review
-      const publicRes1 = await fetch(`${BASE_URL}/projects/${testProjectSlug}/reviews`);
-      const publicJson1 = await publicRes1.json();
-      assert(publicRes1.status === 200, `Expected 200, got ${publicRes1.status}`);
-      assert(publicJson1.data.reviews.length >= 1, 'Expected at least 1 public review');
+    await test('Pending review stays hidden publicly, sorts first in /api/owner/reviews, and becomes visible only after owner publishes', async () => {
+      // 1. Newly submitted review must NOT appear in project reviews or /api/reviews/latest while pending
+      const publicResPending = await fetch(`${BASE_URL}/projects/${testProjectSlug}/reviews`);
+      const publicJsonPending = await publicResPending.json();
+      assert(publicResPending.status === 200, `Expected 200, got ${publicResPending.status}`);
+      assert(
+        !publicJsonPending.data.reviews.some((r) => String(r._id) === String(testReviewId)),
+        'Pending review must NOT appear on public project reviews before approval'
+      );
 
-      // 2. Owner hides review (moderation: isPublished: false)
-      const modRes = await fetch(`${BASE_URL}/owner/reviews/${testReviewId}`, {
+      const latestResPending = await fetch(`${BASE_URL}/reviews/latest?limit=12`);
+      const latestJsonPending = await latestResPending.json();
+      assert(latestResPending.status === 200, `Expected 200, got ${latestResPending.status}`);
+      assert(
+        !latestJsonPending.data.reviews.some((r) => String(r._id) === String(testReviewId)),
+        'Pending review must NOT appear on /api/reviews/latest before approval'
+      );
+
+      // 2. Dashboard pendingReviews counts it & /api/owner/reviews?isPublished=false includes it
+      const dashBeforeRes = await fetch(`${BASE_URL}/owner/dashboard`, {
+        headers: { Cookie: cookieHeader },
+      });
+      const dashBeforeJson = await dashBeforeRes.json();
+      assert(dashBeforeRes.status === 200);
+      const pendingBeforePublish = dashBeforeJson.data.totals.pendingReviews;
+      assert(typeof pendingBeforePublish === 'number' && pendingBeforePublish >= 1, 'pendingReviews should count pending review');
+
+      const pendingListRes = await fetch(`${BASE_URL}/owner/reviews?projectId=${testProjectId}&isPublished=false`, {
+        headers: { Cookie: cookieHeader },
+      });
+      const pendingListJson = await pendingListRes.json();
+      assert(pendingListRes.status === 200);
+      assert(
+        pendingListJson.data.reviews.some((r) => String(r._id) === String(testReviewId)),
+        'Pending review must appear in /api/owner/reviews?isPublished=false'
+      );
+
+      // 3. Verify default /api/owner/reviews ordering puts pending reviews BEFORE newer published reviews
+      const secondRawToken = crypto.randomBytes(24).toString('hex');
+      const secondOrder = await OrderModel.create({
+        orderNumber: `P6-SORT-${Date.now()}`,
+        publicToken: crypto.createHash('sha256').update(secondRawToken).digest('hex'),
+        locale: 'en',
+        project: testProjectId,
+        snapshot: {
+          title: { ar: 'منصة إدارة سحابية', en: 'Cloud SaaS Management' },
+          slug: testProjectSlug,
+          packageKey: 'starter',
+          packageName: { ar: 'الأساسية', en: 'Starter' },
+          licenseType: 'single',
+        },
+        customer: {
+          fullName: 'Newer Published Buyer',
+          email: 'newer-published@example.com',
+          phone: '01000000010',
+          gitProvider: 'github',
+          gitUsername: 'newer-buyer',
+        },
+        pricing: { currency: 'EGP', subtotal: 500000, discount: 0, total: 500000 },
+        paymentMethod: 'card',
+        status: 'paid',
+      });
+      cleanup.orderIds.push(secondOrder._id);
+
+      const publishedNewerReview = await ReviewModel.create({
+        order: secondOrder._id,
+        orderNumber: secondOrder.orderNumber,
+        project: testProjectId,
+        customerName: 'Newer Published Buyer',
+        rating: 4,
+        comment: 'Published review created after the pending review.',
+        isPublished: true,
+        createdAt: new Date(Date.now() + 5000),
+      });
+      cleanup.reviewIds.push(publishedNewerReview._id);
+
+      const defaultOwnerListRes = await fetch(`${BASE_URL}/owner/reviews?projectId=${testProjectId}`, {
+        headers: { Cookie: cookieHeader },
+      });
+      const defaultOwnerListJson = await defaultOwnerListRes.json();
+      assert(defaultOwnerListRes.status === 200);
+      assert(defaultOwnerListJson.data.reviews.length >= 2, 'Expected at least 2 reviews for project');
+      assert(
+        String(defaultOwnerListJson.data.reviews[0]._id) === String(testReviewId),
+        'Default /api/owner/reviews must sort pending reviews BEFORE newer published reviews'
+      );
+      assert(
+        defaultOwnerListJson.data.reviews[0].isPublished === false,
+        'First review in default owner list must be pending'
+      );
+
+      // 4. Owner publishes review + attaches response
+      const pubRes = await fetch(`${BASE_URL}/owner/reviews/${testReviewId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json', Cookie: cookieHeader },
         body: JSON.stringify({
-          isPublished: false,
+          isPublished: true,
           ownerResponse: 'Thank you for your valuable feedback!',
         }),
       });
-      const modJson = await modRes.json();
-      assert(modRes.status === 200, `Expected 200, got ${modRes.status}`);
-      assert(modJson.data.review.isPublished === false, 'Review should be unpublished');
-      assert(modJson.data.review.ownerResponse === 'Thank you for your valuable feedback!', 'Response mismatch');
+      const pubJson = await pubRes.json();
+      assert(pubRes.status === 200, `Expected 200, got ${pubRes.status}`);
+      assert(pubJson.data.review.isPublished === true, 'Review should now be published');
+      assert(pubJson.data.review.ownerResponse === 'Thank you for your valuable feedback!', 'Response mismatch');
 
-      // 3. Public reviews list now hides it!
-      const publicRes2 = await fetch(`${BASE_URL}/projects/${testProjectSlug}/reviews`);
-      const publicJson2 = await publicRes2.json();
-      const foundHidden = publicJson2.data.reviews.find((r) => r.orderNumber === paidOrderNumber);
-      assert(foundHidden === undefined, 'Hidden review must NOT appear in public API');
+      // 5. Now visible on project page reviews AND /api/reviews/latest, and dashboard pendingReviews decremented
+      const publicResPublished = await fetch(`${BASE_URL}/projects/${testProjectSlug}/reviews`);
+      const publicJsonPublished = await publicResPublished.json();
+      assert(publicResPublished.status === 200);
+      assert(
+        publicJsonPublished.data.reviews.some((r) => String(r._id) === String(testReviewId)),
+        'Published review must appear on public project reviews'
+      );
+
+      const latestResPublished = await fetch(`${BASE_URL}/reviews/latest?limit=12`);
+      const latestJsonPublished = await latestResPublished.json();
+      assert(latestResPublished.status === 200);
+      assert(
+        latestJsonPublished.data.reviews.some((r) => String(r._id) === String(testReviewId)),
+        'Published review must appear on /api/reviews/latest'
+      );
+
+      const dashAfterPubRes = await fetch(`${BASE_URL}/owner/dashboard`, {
+        headers: { Cookie: cookieHeader },
+      });
+      const dashAfterPubJson = await dashAfterPubRes.json();
+      assert(
+        dashAfterPubJson.data.totals.pendingReviews === pendingBeforePublish - 1,
+        `Expected pendingReviews to decrement to ${pendingBeforePublish - 1}, got ${dashAfterPubJson.data.totals.pendingReviews}`
+      );
+
+      // 6. Owner hides review again (isPublished: false) -> disappears publicly & increments pendingReviews
+      const hideRes = await fetch(`${BASE_URL}/owner/reviews/${testReviewId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', Cookie: cookieHeader },
+        body: JSON.stringify({ isPublished: false }),
+      });
+      const hideJson = await hideRes.json();
+      assert(hideRes.status === 200, `Expected 200, got ${hideRes.status}`);
+      assert(hideJson.data.review.isPublished === false, 'Review should be unpublished');
+
+      const publicResHidden = await fetch(`${BASE_URL}/projects/${testProjectSlug}/reviews`);
+      const publicJsonHidden = await publicResHidden.json();
+      assert(
+        !publicJsonHidden.data.reviews.some((r) => String(r._id) === String(testReviewId)),
+        'Hidden review must NOT appear in public project API'
+      );
+
+      const latestResHidden = await fetch(`${BASE_URL}/reviews/latest?limit=12`);
+      const latestJsonHidden = await latestResHidden.json();
+      assert(
+        !latestJsonHidden.data.reviews.some((r) => String(r._id) === String(testReviewId)),
+        'Hidden review must NOT appear in /api/reviews/latest'
+      );
     });
 
     // ==========================================
@@ -643,6 +771,12 @@ async function runTests() {
       assert(data.totals.ordersCount >= 1, 'ordersCount should be at least 1');
       assert(typeof data.totals.pendingProofs === 'number', 'pendingProofs should be a number');
       assert(typeof data.totals.newInquiries === 'number', 'newInquiries should be a number');
+      assert(typeof data.totals.pendingReviews === 'number', 'pendingReviews should be a number');
+      const expectedPendingReviews = await ReviewModel.countDocuments({ isPublished: false });
+      assert(
+        data.totals.pendingReviews === expectedPendingReviews,
+        `pendingReviews mismatch: expected ${expectedPendingReviews}, got ${data.totals.pendingReviews}`
+      );
       assert(typeof data.totals.publishedProjects === 'number', 'publishedProjects should be a number');
 
       // Validate 12-month revenue timeline

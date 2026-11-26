@@ -163,6 +163,7 @@ function SidebarNavContent({
   onNavigate,
   pendingProofs = 0,
   newInquiries = 0,
+  pendingReviews = 0,
   owner,
   onLogout,
   isLoggingOut,
@@ -173,6 +174,7 @@ function SidebarNavContent({
   const badgeByKey = {
     orders: pendingProofs,
     inquiries: newInquiries,
+    reviews: pendingReviews,
   };
 
   return (
@@ -445,7 +447,8 @@ function OwnerLayoutShell() {
 
   const pendingProofs = dashboardData?.totals?.pendingProofs ?? 0;
   const newInquiries = dashboardData?.totals?.newInquiries ?? 0;
-  const totalNotifications = pendingProofs + newInquiries;
+  const pendingReviews = dashboardData?.totals?.pendingReviews ?? 0;
+  const totalNotifications = pendingProofs + newInquiries + pendingReviews;
 
   const activeNavItem = useMemo(() => {
     return OWNER_NAV_ITEMS.find((item) => {
@@ -579,6 +582,7 @@ function OwnerLayoutShell() {
               collapsed={sidebarCollapsed}
               pendingProofs={pendingProofs}
               newInquiries={newInquiries}
+              pendingReviews={pendingReviews}
               owner={owner}
               onLogout={handleLogout}
               isLoggingOut={isLoggingOut}
@@ -602,6 +606,7 @@ function OwnerLayoutShell() {
             onNavigate={() => setMobileDrawerOpen(false)}
             pendingProofs={pendingProofs}
             newInquiries={newInquiries}
+            pendingReviews={pendingReviews}
             owner={owner}
             onLogout={handleLogout}
             isLoggingOut={isLoggingOut}
@@ -821,6 +826,36 @@ function OwnerLayoutShell() {
                                   <p className="text-xs text-on-surface-variant mt-0.5">
                                     {t('owner:topbar.newInquiriesDesc', {
                                       count: newInquiries,
+                                    })}
+                                  </p>
+                                </div>
+                              </Link>
+                            )}
+
+                            {pendingReviews > 0 && (
+                              <Link
+                                to={`${ROUTES.OWNER_REVIEWS}?isPublished=false`}
+                                role="menuitem"
+                                onClick={() => setNotifMenuOpen(false)}
+                                className="flex items-start gap-3 p-2.5 rounded-xl bg-section-band hover:bg-brand-soft/60 border border-card-border transition-colors"
+                              >
+                                <div className="w-9 h-9 rounded-lg bc-chip-violet border flex items-center justify-center shrink-0">
+                                  <span className="material-symbols-rounded text-[18px]" aria-hidden="true">
+                                    rate_review
+                                  </span>
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <div className="flex items-center justify-between gap-2">
+                                    <span className="text-xs font-semibold text-on-surface truncate">
+                                      {t('owner:topbar.pendingReviews')}
+                                    </span>
+                                    <span className="text-[11px] font-mono font-bold text-tertiary shrink-0">
+                                      {formatNumber(pendingReviews)}
+                                    </span>
+                                  </div>
+                                  <p className="text-xs text-on-surface-variant mt-0.5">
+                                    {t('owner:topbar.pendingReviewsDesc', {
+                                      count: pendingReviews,
                                     })}
                                   </p>
                                 </div>

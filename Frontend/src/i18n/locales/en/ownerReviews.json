@@ -1,12 +1,13 @@
 {
   "title": "Reviews Moderation",
-  "subtitle": "Moderate verified buyer reviews, toggle public visibility, and publish official studio replies.",
+  "subtitle": "Review and approve pending verified buyer submissions before they appear on project pages and Home, and publish official studio replies.",
   "stats": {
     "total": "Total Reviews",
     "showing": "Showing {{from}} - {{to}} of {{total}}"
   },
   "filters": {
-    "visibilityLabel": "Visibility",
+    "visibilityLabel": "Moderation Status",
+    "pending": "Pending",
     "all": "All Reviews",
     "published": "Published",
     "hidden": "Hidden",
@@ -23,7 +24,9 @@
     "viewProject": "View Project",
     "unknownProject": "Project unavailable",
     "publishedBadge": "Published",
+    "pendingBadge": "Pending Approval",
     "hiddenBadge": "Hidden",
+    "approvePublish": "Approve & Publish",
     "togglePublish": "Publish Review",
     "toggleHide": "Hide Review",
     "visibilitySwitchLabel": "Publicly visible",
@@ -38,8 +41,8 @@
     "delete": "Delete Review"
   },
   "messages": {
-    "published": "Review published and visible on the project page.",
-    "hidden": "Review hidden from public project listings.",
+    "published": "Review approved and published on the project page and Home.",
+    "hidden": "Review hidden from public listings.",
     "responseSaved": "Owner response saved successfully.",
     "deleted": "Review permanently deleted."
   },
@@ -49,6 +52,9 @@
     "confirm": "Delete Review"
   },
   "empty": {
+    "pendingTitle": "No pending reviews",
+    "pendingDescription": "All verified buyer reviews have been moderated. Switch to All Reviews to view published feedback.",
+    "viewAllAction": "View All Reviews",
     "title": "No matching reviews",
     "description": "No reviews matched your current visibility or rating filter.",
     "noReviewsTitle": "No reviews yet",

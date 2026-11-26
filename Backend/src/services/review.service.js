@@ -38,7 +38,8 @@ function trimReviewComment(comment, maxLength = 240) {
  *    is 'paid' or 'delivered'.
  * 2. Strict Access Control: Validates guest identity via secret SHA-256 order publicToken.
  * 3. Idempotency / Single Review Rule: Enforces exactly one review per order.
- * 4. Moderation Workflow: Empowers the owner to hide spam reviews or publish administrative responses.
+ * 4. Moderation Workflow: New reviews default to pending (`isPublished: false`) and only appear
+ *    publicly after an admin approves/publishes them (optionally with an `ownerResponse`).
  */
 
 class ReviewService {
@@ -71,7 +72,7 @@ class ReviewService {
       customerName: cleanCustomerName,
       rating: Number(rating),
       comment: cleanComment,
-      isPublished: true,
+      isPublished: false,
     });
 
     await review.save();
@@ -203,7 +204,7 @@ class ReviewService {
   }
 
   /**
-   * Owner: List all reviews with moderation filters
+   * Owner: List all reviews with moderation filters (pending reviews sorted first by default)
    */
   async getOwnerReviews({ page = 1, limit = 20, projectId, isPublished, rating } = {}) {
     const filter = {};
@@ -218,7 +219,7 @@ class ReviewService {
       Review.find(filter)
         .populate('project', 'title slug')
         .populate('order', 'orderNumber status customer')
-        .sort({ createdAt: -1 })
+        .sort({ isPublished: 1, createdAt: -1 })
         .skip(skip)
         .limit(limit)
         .lean(),

@@ -1490,7 +1490,7 @@
 								{ "key": "limit", "value": "20", "description": "1..50" }
 							]
 						},
-						"description": "Owner reviews moderation queue with populated project & order info."
+						"description": "Owner reviews moderation queue with populated project & order info. Defaults to pending reviews first (`isPublished: false` before `true`)."
 					}
 				},
 				{

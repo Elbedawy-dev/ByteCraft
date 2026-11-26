@@ -26,6 +26,7 @@ export function ReviewModerationCard({ review }) {
 
   const id = review._id || review.id;
   const isPublished = Boolean(review.isPublished);
+  const isPendingApproval = !isPublished && !review.moderatedAt;
   const projectObj = review.project && typeof review.project === 'object' ? review.project : null;
   const projectTitle = projectObj ? localized(projectObj.title, lang) || projectObj.slug : '';
   const customerEmail = review.order?.customer?.email || '';
@@ -84,8 +85,11 @@ export function ReviewModerationCard({ review }) {
     <>
       <article
         className={clsx(
-          'rounded-2xl border p-5 sm:p-6 space-y-4 bg-card border-card-border shadow-card transition-colors',
-          !isPublished && 'opacity-90'
+          'rounded-2xl border p-5 sm:p-6 space-y-4 bg-card shadow-card transition-colors',
+          isPendingApproval
+            ? 'border-chip-amber-border border-s-4 border-s-warning'
+            : 'border-card-border',
+          !isPublished && !isPendingApproval && 'opacity-90'
         )}
       >
         {/* Top Header: Reviewer, Rating, Publish Switch & Delete */}
@@ -101,12 +105,18 @@ export function ReviewModerationCard({ review }) {
                     {review.customerName}
                   </h2>
                   <Badge variant="primary" size="sm">
-                    <span className="material-symbols-outlined text-[13px] me-0.5">verified</span>
+                    <span className="material-symbols-outlined text-[13px] me-0.5" aria-hidden="true">verified</span>
                     {t('ownerReviews:card.verifiedBuyer')}
                   </Badge>
-                  <Badge variant={isPublished ? 'success' : 'neutral'} dot size="sm">
+                  <Badge
+                    variant={isPublished ? 'success' : isPendingApproval ? 'warning' : 'neutral'}
+                    dot
+                    size="sm"
+                  >
                     {isPublished
                       ? t('ownerReviews:card.publishedBadge')
+                      : isPendingApproval
+                      ? t('ownerReviews:card.pendingBadge')
                       : t('ownerReviews:card.hiddenBadge')}
                   </Badge>
                 </div>
@@ -156,7 +166,23 @@ export function ReviewModerationCard({ review }) {
           </div>
 
           {/* Moderation Controls */}
-          <div className="flex items-center gap-3 shrink-0 flex-wrap lg:justify-end">
+          <div className="flex items-center gap-2.5 shrink-0 flex-wrap lg:justify-end">
+            {!isPublished && (
+              <Button
+                variant="primary-gradient"
+                size="sm"
+                onClick={handleTogglePublished}
+                loading={moderateMutation.isPending}
+                iconLeading={
+                  <span className="material-symbols-rounded text-[17px]" aria-hidden="true">
+                    check_circle
+                  </span>
+                }
+              >
+                {t('ownerReviews:card.approvePublish')}
+              </Button>
+            )}
+
             <div className="px-3 rounded-xl bg-surface-container-low border border-outline-variant">
               <Switch
                 id={`review-publish-${id}`}
@@ -176,7 +202,7 @@ export function ReviewModerationCard({ review }) {
               title={t('ownerReviews:card.delete')}
               aria-label={t('ownerReviews:card.delete')}
             >
-              <span className="material-symbols-outlined text-[18px]">delete</span>
+              <span className="material-symbols-outlined text-[18px]" aria-hidden="true">delete</span>
             </Button>
           </div>
         </div>

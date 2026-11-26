@@ -14,8 +14,8 @@ import '@fontsource/plus-jakarta-sans/600.css';
 import '@fontsource/plus-jakarta-sans/700.css';
 import '@fontsource/plus-jakarta-sans/800.css';
 
-// Material Symbols (Rounded, self-hosted via npm)
-import 'material-symbols/rounded.css';
+// Material Symbols (Rounded, build-time subset font)
+import './styles/material-symbols.css';
 
 // Global Styles & Design Tokens
 import './styles/index.css';

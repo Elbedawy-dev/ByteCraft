@@ -1,6 +1,7 @@
 const Order = require('../models/Order');
 const Inquiry = require('../models/Inquiry');
 const Project = require('../models/Project');
+const Review = require('../models/Review');
 
 /**
  * Dashboard Service
@@ -37,12 +38,14 @@ class DashboardService {
       paidOrders,
       pendingProofs,
       newInquiries,
+      pendingReviews,
       publishedProjects,
     ] = await Promise.all([
       Order.countDocuments({}),
       Order.countDocuments({ status: { $in: ['paid', 'delivered'] } }),
       Order.countDocuments({ status: 'awaiting_review' }),
       Inquiry.countDocuments({ status: 'new' }),
+      Review.countDocuments({ isPublished: false }),
       Project.countDocuments({ status: 'published' }),
     ]);
 
@@ -137,6 +140,7 @@ class DashboardService {
         paidOrders,
         pendingProofs,
         newInquiries,
+        pendingReviews,
         publishedProjects,
       },
       revenueByMonth,

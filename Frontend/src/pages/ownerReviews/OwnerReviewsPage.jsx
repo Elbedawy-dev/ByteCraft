@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import { useOwnerPageTitle } from '@/components/layout/OwnerLayout';
 import { getApiErrorMessage } from '@/api/client';
+import { useOwnerDashboard } from '@/api/owner/dashboard';
 import { useOwnerReviews } from '@/api/owner/reviews';
+import { formatNumber } from '@/lib/format';
 import { Badge, Button, Card, Pagination, Select, Skeleton } from '@/components/ui';
 import { EmptyState, ErrorState } from '@/components/shared';
 import { ReviewModerationCard } from '@/features/ownerReviews/ReviewModerationCard';
@@ -13,12 +16,38 @@ const RATING_OPTIONS = [5, 4, 3, 2, 1];
 
 export default function OwnerReviewsPage() {
   const { t } = useTranslation(['ownerReviews', 'common']);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useOwnerPageTitle(t('ownerReviews:title'));
 
-  const [visibility, setVisibility] = useState(''); // '' | 'true' | 'false'
+  // Default filter is 'false' (Pending); URL ?isPublished=true|false|all stays synced
+  const urlIsPublished = searchParams.get('isPublished');
+  const visibility =
+    urlIsPublished === 'true'
+      ? 'true'
+      : urlIsPublished === 'all'
+      ? ''
+      : 'false';
+
   const [rating, setRating] = useState('');
   const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    setPage(1);
+  }, [visibility]);
+
+  const handleVisibilityChange = (nextValue) => {
+    setPage(1);
+    const next = new URLSearchParams(searchParams);
+    if (nextValue === 'false') {
+      next.delete('isPublished');
+    } else if (nextValue === 'true') {
+      next.set('isPublished', 'true');
+    } else {
+      next.set('isPublished', 'all');
+    }
+    setSearchParams(next, { replace: true });
+  };
 
   const queryParams = {
     isPublished: visibility || undefined,
@@ -27,16 +56,19 @@ export default function OwnerReviewsPage() {
     limit: PAGE_LIMIT,
   };
 
+  const { data: dashboardData } = useOwnerDashboard({ staleTime: 30 * 1000 });
   const { data, isLoading, isFetching, isError, error, refetch } = useOwnerReviews(queryParams);
 
+  const pendingReviewsCount = dashboardData?.totals?.pendingReviews ?? 0;
   const reviews = data?.reviews || [];
   const meta = data?.meta || { page: 1, limit: PAGE_LIMIT, total: 0, totalPages: 1 };
-  const hasActiveFilters = Boolean(visibility || rating);
+  const isDefaultPendingEmpty = visibility === 'false' && !rating;
+  const hasActiveFilters = Boolean(rating);
 
   const handleResetFilters = () => {
-    setVisibility('');
     setRating('');
     setPage(1);
+    handleVisibilityChange('');
   };
 
   const rangeFrom = meta.total === 0 ? 0 : (meta.page - 1) * meta.limit + 1;
@@ -61,6 +93,14 @@ export default function OwnerReviewsPage() {
                   {meta.total}
                 </bdi>
               </Badge>
+              {pendingReviewsCount > 0 && (
+                <Badge variant="warning" dot size="md">
+                  {t('ownerReviews:filters.pending')}:{' '}
+                  <bdi dir="ltr" className="font-mono font-bold">
+                    {formatNumber(pendingReviewsCount)}
+                  </bdi>
+                </Badge>
+              )}
             </div>
             <p className="text-sm text-on-surface-variant mt-1.5 max-w-2xl">
               {t('ownerReviews:subtitle')}
@@ -72,30 +112,44 @@ export default function OwnerReviewsPage() {
       {/* Filters Bar */}
       <Card variant="flat" padding="sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          {/* Published / Hidden Segmented Pills */}
-          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-surface border border-card-border w-fit max-w-full overflow-x-auto">
+          {/* Pending / Published / All Segmented Pills */}
+          <div
+            role="group"
+            aria-label={t('ownerReviews:filters.visibilityLabel')}
+            className="flex items-center gap-1.5 p-1 rounded-xl bg-surface border border-card-border w-fit max-w-full overflow-x-auto"
+          >
             {[
-              { value: '', label: t('ownerReviews:filters.all') },
+              { value: 'false', label: t('ownerReviews:filters.pending'), count: pendingReviewsCount },
               { value: 'true', label: t('ownerReviews:filters.published') },
-              { value: 'false', label: t('ownerReviews:filters.hidden') },
+              { value: '', label: t('ownerReviews:filters.all') },
             ].map((tab) => {
               const active = visibility === tab.value;
               return (
                 <button
                   key={tab.value || 'all'}
                   type="button"
-                  onClick={() => {
-                    setVisibility(tab.value);
-                    setPage(1);
-                  }}
+                  aria-pressed={active}
+                  onClick={() => handleVisibilityChange(tab.value)}
                   className={clsx(
-                    'px-4 h-10 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition-colors',
+                    'inline-flex items-center gap-1.5 px-4 h-10 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition-colors',
                     active
                       ? 'bg-badge-green-bg text-badge-green-text font-semibold'
                       : 'text-on-surface-variant hover:text-on-surface hover:bg-card'
                   )}
                 >
-                  {tab.label}
+                  <span>{tab.label}</span>
+                  {typeof tab.count === 'number' && tab.count > 0 && (
+                    <span
+                      className={clsx(
+                        'px-1.5 py-0.5 rounded-full text-[11px] font-mono font-bold leading-none',
+                        active
+                          ? 'bg-primary text-on-primary'
+                          : 'bg-chip-amber-bg text-chip-amber-fg'
+                      )}
+                    >
+                      {tab.count > 99 ? '99+' : formatNumber(tab.count)}
+                    </span>
+                  )}
                 </button>
               );
             })}
@@ -130,9 +184,12 @@ export default function OwnerReviewsPage() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={handleResetFilters}
+                onClick={() => {
+                  setRating('');
+                  setPage(1);
+                }}
                 iconLeading={
-                  <span className="material-symbols-outlined text-[16px]">filter_alt_off</span>
+                  <span className="material-symbols-outlined text-[16px]" aria-hidden="true">filter_alt_off</span>
                 }
               >
                 {t('ownerReviews:filters.clearFilters')}
@@ -153,19 +210,27 @@ export default function OwnerReviewsPage() {
         </div>
       ) : reviews.length === 0 ? (
         <EmptyState
-          icon="reviews"
+          icon={isDefaultPendingEmpty ? 'task_alt' : 'reviews'}
           title={
-            hasActiveFilters
-              ? t('ownerReviews:empty.title')
-              : t('ownerReviews:empty.noReviewsTitle')
+            isDefaultPendingEmpty
+              ? t('ownerReviews:empty.pendingTitle')
+              : visibility === '' && !rating
+              ? t('ownerReviews:empty.noReviewsTitle')
+              : t('ownerReviews:empty.title')
           }
           description={
-            hasActiveFilters
-              ? t('ownerReviews:empty.description')
-              : t('ownerReviews:empty.noReviewsDescription')
+            isDefaultPendingEmpty
+              ? t('ownerReviews:empty.pendingDescription')
+              : visibility === '' && !rating
+              ? t('ownerReviews:empty.noReviewsDescription')
+              : t('ownerReviews:empty.description')
           }
           action={
-            hasActiveFilters ? (
+            isDefaultPendingEmpty ? (
+              <Button variant="outline" size="sm" onClick={() => handleVisibilityChange('')}>
+                {t('ownerReviews:empty.viewAllAction')}
+              </Button>
+            ) : visibility !== '' || rating ? (
               <Button variant="outline" size="sm" onClick={handleResetFilters}>
                 {t('ownerReviews:filters.clearFilters')}
               </Button>

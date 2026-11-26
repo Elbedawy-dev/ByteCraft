@@ -181,8 +181,10 @@ export function useSubmitAccountOrderReview(orderNumber) {
     mutationFn: ({ rating, comment, customerName }) =>
       submitAccountOrderReview({ orderNumber, rating, comment, customerName }),
     onSuccess: (review) => {
-      setStoredOrderReview(orderNumber, review || { submittedAt: new Date().toISOString() });
+      setStoredOrderReview(orderNumber, review || { isPublished: false, submittedAt: new Date().toISOString() });
       queryClient.invalidateQueries({ queryKey: accountKeys.order(orderNumber) });
+      queryClient.invalidateQueries({ queryKey: ['owner', 'dashboard'] });
+      queryClient.invalidateQueries({ queryKey: ['owner', 'reviews'] });
     },
   });
 }

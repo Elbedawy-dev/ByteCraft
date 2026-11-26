@@ -168,15 +168,20 @@
       "nameHint": "Displayed publicly as first name and last initial only for privacy",
       "commentLabel": "Your Review",
       "commentPlaceholder": "Share your feedback on code quality, documentation, delivery speed, and support...",
-      "submit": "Publish Review",
-      "submitting": "Publishing...",
+      "submit": "Submit Review",
+      "submitting": "Submitting...",
       "ratingRequired": "Please select a rating from 1 to 5 stars",
       "commentMin": "Review comment must be at least 5 characters",
       "commentMax": "Review comment must be 2,000 characters or fewer",
-      "submitSuccess": "Thank you! Your verified review is now live.",
+      "submitSuccess": "Thanks! Your review will appear after it is approved",
+      "pendingApproval": {
+        "badge": "Pending Approval",
+        "title": "Thanks! Your review will appear after it is approved",
+        "description": "Our team reviews every verified buyer submission before publishing it on the project page and homepage."
+      },
       "alreadyReviewed": {
         "title": "You Already Reviewed This Order",
-        "description": "Thank you for sharing your feedback with Nexus! One verified review is allowed per order.",
+        "description": "Thank you for sharing your feedback with Nexus! One verified review is allowed per order, and new reviews appear once approved.",
         "viewProject": "View Project Page"
       }
     },

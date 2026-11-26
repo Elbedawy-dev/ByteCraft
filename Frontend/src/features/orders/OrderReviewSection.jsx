@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -12,7 +12,7 @@ import { useSubmitAccountOrderReview } from '../../api/account';
 import { ApiError, applyApiErrorsToForm, getApiErrorMessage } from '../../api/client';
 import { useToast } from '../../app/providers';
 import { projectDetailsPath } from '../../config/routes';
-import { Button, Card, FormField, Input, Textarea } from '../../components/ui';
+import { Badge, Button, Card, FormField, Input, Textarea } from '../../components/ui';
 import { Rating } from '../../components/shared';
 
 export function OrderReviewSection({ order, token, mode = 'guest' }) {
@@ -26,6 +26,12 @@ export function OrderReviewSection({ order, token, mode = 'guest' }) {
     Boolean(getStoredOrderReview(order?.orderNumber))
   );
   const [hoverRating, setHoverRating] = useState(0);
+
+  useEffect(() => {
+    const stored = getStoredOrderReview(order?.orderNumber);
+    setSavedReview(stored);
+    setAlreadyReviewed(Boolean(stored));
+  }, [order?.orderNumber]);
 
   const schema = useMemo(
     () =>
@@ -76,7 +82,7 @@ export function OrderReviewSection({ order, token, mode = 'guest' }) {
   const onSubmit = async (values) => {
     try {
       const review = await submitReviewMutation.mutateAsync(values);
-      setSavedReview(review || values);
+      setSavedReview(review || { ...values, isPublished: false });
       setAlreadyReviewed(true);
       toast.success(t('tracking.review.submitSuccess'));
     } catch (err) {
@@ -97,21 +103,46 @@ export function OrderReviewSection({ order, token, mode = 'guest' }) {
   };
 
   if (alreadyReviewed) {
+    const isPendingModeration = Boolean(savedReview && savedReview.isPublished === false);
+
     return (
       <Card variant="flat" padding="md" className="space-y-4">
         <div
           role="status"
-          className="p-5 rounded-xl bg-primary/10 border border-primary/30 flex items-start gap-3.5"
+          aria-live="polite"
+          className={clsx(
+            'p-5 rounded-xl border flex items-start gap-3.5',
+            isPendingModeration
+              ? 'bg-chip-amber-bg/50 border-chip-amber-border'
+              : 'bg-primary/10 border-primary/30'
+          )}
         >
-          <span className="material-symbols-outlined text-primary text-[26px] shrink-0 mt-0.5">
-            rate_review
+          <span
+            className={clsx(
+              'material-symbols-rounded text-[26px] shrink-0 mt-0.5',
+              isPendingModeration ? 'text-warning' : 'text-primary'
+            )}
+            aria-hidden="true"
+          >
+            {isPendingModeration ? 'schedule' : 'rate_review'}
           </span>
           <div className="space-y-2 flex-1 min-w-0">
-            <h2 className="text-base sm:text-lg font-bold text-on-surface">
-              {t('tracking.review.alreadyReviewed.title')}
-            </h2>
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-on-surface">
+                {isPendingModeration
+                  ? t('tracking.review.pendingApproval.title')
+                  : t('tracking.review.alreadyReviewed.title')}
+              </h2>
+              {isPendingModeration && (
+                <Badge variant="warning" dot size="sm">
+                  {t('tracking.review.pendingApproval.badge')}
+                </Badge>
+              )}
+            </div>
             <p className="text-xs sm:text-sm text-on-surface-variant leading-relaxed">
-              {t('tracking.review.alreadyReviewed.description')}
+              {isPendingModeration
+                ? t('tracking.review.pendingApproval.description')
+                : t('tracking.review.alreadyReviewed.description')}
             </p>
 
             {savedReview?.rating && (
@@ -132,8 +163,8 @@ export function OrderReviewSection({ order, token, mode = 'guest' }) {
                   variant="outline"
                   size="sm"
                 >
-                    {t('tracking.review.alreadyReviewed.viewProject')}
-                  </Button>
+                  {t('tracking.review.alreadyReviewed.viewProject')}
+                </Button>
               </div>
             )}
           </div>
@@ -148,7 +179,7 @@ export function OrderReviewSection({ order, token, mode = 'guest' }) {
     <Card variant="flat" padding="md" className="space-y-5">
       <div className="flex items-start gap-2.5">
         <div className="w-9 h-9 rounded-lg bg-surface-container-high border border-outline-variant/70 flex items-center justify-center text-primary shrink-0">
-          <span className="material-symbols-outlined text-[20px]">star</span>
+          <span className="material-symbols-outlined text-[20px]" aria-hidden="true">star</span>
         </div>
         <div>
           <h2 className="text-lg font-bold text-on-surface">
@@ -200,6 +231,7 @@ export function OrderReviewSection({ order, token, mode = 'guest' }) {
                         ? { fontVariationSettings: "'FILL' 1" }
                         : undefined
                     }
+                    aria-hidden="true"
                   >
                     star
                   </span>
@@ -248,7 +280,7 @@ export function OrderReviewSection({ order, token, mode = 'guest' }) {
           size="md"
           loading={submitReviewMutation.isPending}
           iconLeading={
-            <span className="material-symbols-outlined text-[20px]">publish</span>
+            <span className="material-symbols-rounded text-[20px] rtl:-scale-x-100" aria-hidden="true">send</span>
           }
         >
           {submitReviewMutation.isPending

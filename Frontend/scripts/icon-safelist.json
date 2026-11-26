@@ -1,0 +1,19 @@
+{
+  "description": "Dynamic, fallback, or conditional Material Symbols icon names that may not be statically detectable in JSX/JS/JSON scans.",
+  "icons": [
+    "arrow_right_alt",
+    "code_blocks",
+    "deployed_code",
+    "east",
+    "error",
+    "error_outline",
+    "help_outline",
+    "hourglass_empty",
+    "inbox",
+    "info",
+    "inventory_2",
+    "layers",
+    "payments",
+    "warning"
+  ]
+}

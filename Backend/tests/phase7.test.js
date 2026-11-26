@@ -12,7 +12,7 @@
  * 3. Public Reviews Privacy Hardening:
  *    - Public review responses never leak orderNumber, email, phone, or token.
  *    - Reviewer name is masked to "Firstname L." format (e.g. "Mohamed A.").
- *    - Confirms isPublished default is true.
+ *    - Confirms isPublished default is false (pending moderation before appearing publicly).
  * 4. Token Guess Limiter:
  *    - Rate limiter blocks requests to public token endpoints after 20 attempts.
  * 5. Production Environment Hardening (NODE_ENV=production):
@@ -114,7 +114,7 @@ async function runTests() {
 
   // Connect to DB directly (matching testServer.js) for model fixtures and assertions
   try {
-    await mongoose.connect(TEST_DB_URI, { serverSelectionTimeoutMS: 3000 });
+    await mongoose.connect(TEST_DB_URI, { serverSelectionTimeoutMS: 10000 });
   } catch {
     await mongoose.connect(LOCAL_TEST_DB_URI);
   }
@@ -471,16 +471,28 @@ async function runTests() {
     assert.strictEqual(json.data.review.email, undefined, 'email must not be returned');
     assert.strictEqual(json.data.review.phone, undefined, 'phone must not be returned');
     assert.strictEqual(json.data.review.token, undefined, 'token must not be returned');
-    assert.strictEqual(json.data.review.isPublished, true, 'isPublished default must be true');
+    assert.strictEqual(json.data.review.isPublished, false, 'isPublished default must be false');
 
-    // Fetch public list
+    // Fetch public list before approval -> must NOT appear yet
+    const listPendingRes = await fetch(`${BASE_URL}/projects/${proj.slug}/reviews`);
+    const listPendingJson = await listPendingRes.json();
+    assert.strictEqual(listPendingRes.status, 200);
+    assert.strictEqual(
+      listPendingJson.data.reviews.find((r) => r._id === json.data.review._id),
+      undefined,
+      'Pending review must not appear in public list before admin approval'
+    );
+
+    // Publish review (simulating admin moderation) and verify privacy projection in public list
+    await ReviewModel.findByIdAndUpdate(json.data.review._id, { isPublished: true, moderatedAt: new Date() });
+
     const listRes = await fetch(`${BASE_URL}/projects/${proj.slug}/reviews`);
     const listJson = await listRes.json();
     assert.strictEqual(listRes.status, 200);
     assert.ok(listJson.data.reviews.length >= 1);
 
     const publicReview = listJson.data.reviews.find((r) => r._id === json.data.review._id);
-    assert.ok(publicReview, 'Review must be present in public list');
+    assert.ok(publicReview, 'Published review must be present in public list');
     assert.strictEqual(publicReview.customerName, 'Omar F.');
     assert.strictEqual(publicReview.orderNumber, undefined);
     assert.strictEqual(publicReview.email, undefined);
